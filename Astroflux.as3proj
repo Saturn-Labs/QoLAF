@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <output>
+    <movie fps="32"/>
+    <movie version="32"/>
+    <movie background="#FFFFFF"/>
+    <movie width="800"/>
+    <movie height="600"/>
+    <movie disabled="False"/>
+    <movie input=""/>
+    <movie path="bin-debug/Astroflux.swf"/>
+    <movie platform="AIR"/>
+  </output>
+  &lt;!-- Other classes to be compiled into your SWF --&gt;
+  <classpaths>
+    <class path="src"/>
+    <class path="libs/src"/>
+  </classpaths>
+  <moonshineResourcePaths></moonshineResourcePaths>
+  <moonshineNativeExtensionPaths></moonshineNativeExtensionPaths>
+  <build>
+    <option customSDK=""/>
+    <option showUnusedTypeSelectorWarnings="True"/>
+    <option es="False"/>
+    <option staticLinkRSL="False"/>
+    <option strict="False"/>
+    <option additional=""/>
+    <option compilerConstants=""/>
+    <option useNetwork="True"/>
+    <option optimize="False"/>
+    <option sourceMap="False"/>
+    <option loadConfig=""/>
+    <option showActionScriptWarnings="True"/>
+    <option antBuildPath="build/build.xml"/>
+    <option accessible="False"/>
+    <option warnings="True"/>
+    <option locale=""/>
+    <option showBindingWarnings="True"/>
+    <option useResourceBundleMetadata="True"/>
+    <option allowSourcePathOverlap="False"/>
+    <option verboseStackTraces="False"/>
+    <option showDeprecationWarnings="True"/>
+    <option benchmark="False"/>
+    <option linkReport=""/>
+  </build>
+  <mavenBuild>
+    <option settingsFilePath=""/>
+    <option commandLine=""/>
+    <option dominoNotesProgram=""/>
+    <option mavenBuildPath="."/>
+    <option dominoNotesPlatform=""/>
+    <actions>
+      <action actionName="Build" action="install"/>
+      <action actionName="Clean and package" action="clean package"/>
+      <action actionName="Clean" action="clean"/>
+      <action actionName="Clean and Build" action="clean install"/>
+      <action actionName="Exploded" action="war:exploded"/>
+    </actions>
+  </mavenBuild>
+  <includeLibraries></includeLibraries>
+  <libraryPaths>
+    <element path="libs"/>
+  </libraryPaths>
+  <externalLibraryPaths></externalLibraryPaths>
+  <rslPaths></rslPaths>
+  <intrinsics></intrinsics>
+  <library></library>
+  <modules/>
+  <compileTargets>
+    <compile path="src/Astroflux.as"/>
+  </compileTargets>
+  <hiddenPaths></hiddenPaths>
+  <preBuildCommand>null</preBuildCommand>
+  <postBuildCommand alwaysRun="False">null</postBuildCommand>
+  <trustSVNCertificate>False</trustSVNCertificate>
+  <options>
+    <option defaultBuildTargets=""/>
+    <option isRoyale="False"/>
+    <option visualEditorExportPath=""/>
+    <option jdkType="default-java"/>
+    <option isDominoVisualEditor="False"/>
+    <option showHiddenPaths="False"/>
+    <option testMovieCommand=""/>
+    <option isPrimeFacesVisualEditor="False"/>
+    <option isExportedToExistingSource="False"/>
+    <option testMovie="AIR"/>
+  </options>
+  <moonshineRunCustomization>
+    <option webBrowser="null"/>
+    <option customUrlToLaunch=""/>
+    <option projectType="1"/>
+    <option launchMethod="Simulator"/>
+    <option targetPlatform="1"/>
+    <option deviceConnectType="USB"/>
+    <option urlToLaunch=""/>
+    <option deviceSimulator="null"/>
+    <deviceSimulator>null</deviceSimulator>
+    <certAndroid>null</certAndroid>
+    <certIos>null</certIos>
+    <certIosProvisioning>null</certIosProvisioning>
+  </moonshineRunCustomization>
+</project>

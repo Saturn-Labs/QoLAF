@@ -424,7 +424,7 @@ package facebook
          {
             if (param3 || typeof param1[_loc5_] == "undefined")
             {
-               param1[_loc5_] = typeof param4 == "function" ? param4(param2[_loc5_]) : param2[_loc5_];
+               param1[_loc5_] = (typeof param4 == "function" ? param4(param2[_loc5_]) : param2[_loc5_]);
             }
          }
          return param1;
