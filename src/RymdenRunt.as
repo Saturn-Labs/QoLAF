@@ -10,29 +10,29 @@ package
 	import starling.core.Starling;
 	import starling.events.Event;
 	import starling.events.ResizeEvent;
-
+	
 	public class RymdenRunt extends Sprite
 	{
 		public static var s:Starling;
-
+		
 		public static var origin:String = "not set";
-
+		
 		public static var isInFocus:Boolean = true;
-
+		
 		public static var instance:RymdenRunt;
-
+		
 		public static var info:Object;
-
+		
 		public static var isDesktop:Boolean;
-
+		
 		public static var isBuggedFlashVersion:Boolean = false;
-
+		
 		public static var parameters:Object = {};
-
+		
 		public static var partnerSegmentArray:Array = [];
-
+		
 		private static var startTime:Date = new Date();
-
+		
 		public function RymdenRunt(param1:Object = null)
 		{
 			super();
@@ -72,12 +72,12 @@ package
 				addEventListener("addedToStage", init);
 			}
 		}
-
+		
 		public static function initTimeStamp():void
 		{
 			startTime = new Date();
 		}
-
+		
 		private function init(param1:Object):void
 		{
 			var o:Object = param1;
@@ -91,22 +91,22 @@ package
 			s.skipUnchangedFrames = true;
 			s.addEventListener("rootCreated", onRootCreated);
 			stage.addEventListener("rightClick", function():void
-				{
-					s.stage.dispatchEventWith("rightClick");
-				});
+			{
+				s.stage.dispatchEventWith("rightClick");
+			});
 			stage.addEventListener("rightMouseDown", function():void
-				{
-					s.stage.dispatchEventWith("rightClickDown");
-				});
+			{
+				s.stage.dispatchEventWith("rightClickDown");
+			});
 			stage.addEventListener("rightMouseUp", function():void
-				{
-					s.stage.dispatchEventWith("rightClickUp");
-				});
+			{
+				s.stage.dispatchEventWith("rightClickUp");
+			});
 			stage.addEventListener("deactivate", notFocused);
 			stage.addEventListener("activate", focused);
 			loaderInfo.uncaughtErrorEvents.addEventListener("uncaughtError", onUncaughtError);
 		}
-
+		
 		private function onUncaughtError(param1:UncaughtErrorEvent):void
 		{
 			if (!Game.instance || !Game.instance.client)
@@ -125,7 +125,7 @@ package
 			Game.instance.client.errorLog.writeError(param1.error.toString(), "UncaughtErrorEvent", param1.error.getStackTrace(), _loc2_);
 			throw param1;
 		}
-
+		
 		private function onRootCreated(param1:starling.events.Event, param2:Login):void
 		{
 			s.removeEventListener("rootCreated", onRootCreated);
@@ -133,7 +133,7 @@ package
 			resize();
 			param2.start();
 		}
-
+		
 		private function resize(param1:ResizeEvent = null):void
 		{
 			if (!s.context || s.context.driverInfo == "Disposed")
@@ -153,12 +153,12 @@ package
 			_loc3_.height = _loc4_;
 			s.viewPort = _loc3_;
 		}
-
+		
 		private function notFocused(param1:flash.events.Event):void
 		{
 			isInFocus = false;
 		}
-
+		
 		private function focused(param1:flash.events.Event):void
 		{
 			isInFocus = true;

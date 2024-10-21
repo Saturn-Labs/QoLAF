@@ -35,7 +35,7 @@
 <initialWindow>
 <!--  The main SWF or HTML file of the application. Required.  -->
 <!--  Note: In Flash Builder, the SWF reference is set automatically.  -->
-<content>Astroflux.swf</content>
+<content>Game.swf</content>
 <!--  The title of the main window. Optional.  -->
 <!--  <title></title>  -->
 <!--  The type of system chrome to use (either "standard" or "none"). Optional. Default standard.  -->
