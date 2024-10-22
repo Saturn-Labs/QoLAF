@@ -2,7 +2,7 @@ package embeds
 {
 	import flash.display.Bitmap;
 	
-	[Embed(source = "../../images/logo.png")]
+	[Embed(source = "/images/logo.png")]
 	public class LogoBitmap extends Bitmap
 	{
 		public function LogoBitmap()

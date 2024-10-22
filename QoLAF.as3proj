@@ -17,6 +17,7 @@
   <classpaths>
     <class path="src" />
     <class path="libs\src" />
+    <class path="assets" />
   </classpaths>
   <!-- Build options -->
   <build>
@@ -35,7 +36,7 @@
     <option showInvalidCSS="True" />
     <option showDeprecationWarnings="True" />
     <option showUnusedTypeSelectorWarnings="True" />
-    <option strict="False" />
+    <option strict="True" />
     <option useNetwork="True" />
     <option useResourceBundleMetadata="True" />
     <option warnings="True" />
@@ -49,11 +50,12 @@
   </build>
   <!-- SWC Include Libraries -->
   <includeLibraries>
-    <!-- example: <element path="..." /> -->
+    <element path="" />
   </includeLibraries>
   <!-- SWC Libraries -->
   <libraryPaths>
     <element path="libs\" />
+    <element path="libs\mx\mx.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

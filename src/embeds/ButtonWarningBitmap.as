@@ -2,7 +2,7 @@ package embeds
 {
 	import flash.display.Bitmap;
 	
-	[Embed(source = "../../images/button_warning.png")]
+	[Embed(source = "/images/button_warning.png")]
 	public class ButtonWarningBitmap extends Bitmap
 	{
 		public function ButtonWarningBitmap()

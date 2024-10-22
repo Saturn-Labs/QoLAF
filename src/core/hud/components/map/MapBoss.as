@@ -1,39 +1,46 @@
 package core.hud.components.map
 {
-   import core.boss.Boss;
-   import starling.display.Image;
-   import starling.display.Sprite;
-   import textures.ITextureManager;
-   import textures.TextureLocator;
-
-   public class MapBoss
-   {
-      private var boss:Boss;
-
-      private var scale:Number = 0.4;
-
-      private var layer:Sprite;
-
-      private var scull:Image;
-
-      public function MapBoss(param1:Sprite, param2:Boss)
-      {
-         layer = new Sprite();
-         super();
-         this.boss = param2;
-         param1.addChild(layer);
-         layer.touchable = false;
-         var _loc3_:ITextureManager = TextureLocator.getService();
-         scull = new Image(_loc3_.getTextureGUIByTextureName("radar_boss.png"));
-         scull.color = 16729156;
-         layer.addChild(scull);
-      }
-
-      public function update():void
-      {
-         scull.visible = boss.alive;
-         layer.x = boss.pos.x * Map.SCALE - layer.width / 2;
-         layer.y = boss.pos.y * Map.SCALE - layer.height / 2;
-      }
-   }
+	import core.boss.Boss;
+	import flash.display.Bitmap;
+	import starling.display.Image;
+	import starling.display.Sprite;
+	import textures.ITextureManager;
+	import textures.TextureLocator;
+	import embeds.qolaf.minimap.bosses.TefatBitmap;
+	import starling.textures.Texture;
+	import starling.display.Sprite;
+	import starling.display.Quad;
+	
+	public class MapBoss
+	{
+		private var boss:Boss;
+		private var scale:Number = 0.4;
+		private var bossImage:Image;
+		private var pivotMarker:Quad;
+		private var hasIcon:Boolean;
+		
+		public function MapBoss(parent:Sprite, boss:Boss)
+		{
+			super();
+			this.boss = boss;
+			var textureManager:ITextureManager = TextureLocator.getService();
+			bossImage = new Image(textureManager.getTextureByTextureName(boss.name.toLowerCase() + "_mini", "texture_main_NEW.png"));
+			bossImage.width = bossImage.width / 1.8;
+			bossImage.height = bossImage.height / 1.8;
+			hasIcon = true;
+			bossImage.alignPivot();
+			parent.addChild(bossImage);
+			parent.setChildIndex(bossImage, parent.numChildren - 1);
+		}
+		
+		public function update():void
+		{
+			bossImage.visible = boss.alive;
+			if (hasIcon) {
+				bossImage.rotation = boss.rotation;
+			}
+			bossImage.x = boss.pos.x * Map.SCALE;
+			bossImage.y = boss.pos.y * Map.SCALE;
+		}
+	}
 }

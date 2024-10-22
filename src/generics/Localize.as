@@ -4,7 +4,6 @@ package generics
    import embeds.LangJson;
    import flash.utils.ByteArray;
    import flash.globalization.LocaleID;
-   import flash.globalization.ResourceManager;
 
    public class Localize
    {
@@ -26,7 +25,7 @@ package generics
       public static function setLocale(param1:String = "en_US"):void
       {
          // Set the locale using ResourceManager (if needed for other functionalities)
-         LocaleID.current = param1 || "en_US";
+         
       }
 
       public static function t(param1:String):String
