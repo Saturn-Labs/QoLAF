@@ -205,7 +205,7 @@ package textures
             currentRequest = currentRequest.replace(".png", ".xml");
             currentRequest = currentRequest.replace(".jpg", ".xml");
             _loc3_ = param1.target.content as Bitmap;
-            _loc2_ = Texture.fromBitmap(_loc3_, false);
+            _loc2_ = Texture.fromBitmap(_loc3_, true);
             textureAtlasDict[itemsArray[currItem - 1]] = new TextureAtlas(_loc2_, xmlDict[currentRequest]);
          }
          else if (currentRequest.match("xml"))
