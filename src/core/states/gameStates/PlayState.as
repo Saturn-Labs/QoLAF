@@ -126,43 +126,43 @@ package core.states.gameStates
 
       public function updateMouseAim():void
       {
-         var _loc3_:PlayerShip = me.ship;
-         var _loc2_:Heading = _loc3_.course;
-         var _loc5_:Point = _loc3_.getGlobalPos();
-         var _loc8_:Number = _loc5_.x;
-         var _loc7_:Number = _loc5_.y;
-         var _loc1_:Number = _loc3_.engine.rotationSpeed / 33;
-         var _loc6_:Number = Math.atan2(Starling.current.nativeOverlay.mouseY - _loc7_, Starling.current.nativeOverlay.mouseX - _loc8_);
-         var _loc4_:Number = Util.angleDifference(_loc3_.rotation, _loc6_);
-         if (_loc4_ < _loc1_ && _loc4_ > -_loc1_)
+         var ship:PlayerShip = me.ship;
+         var heading:Heading = ship.course;
+         var globalPosition:Point = ship.getGlobalPos();
+         var globalX:Number = globalPosition.x;
+         var globalY:Number = globalPosition.y;
+         var rotationSnap:Number = ship.engine.rotationSpeed / 33;
+         var angle:Number = Math.atan2(Starling.current.nativeOverlay.mouseY - globalY, Starling.current.nativeOverlay.mouseX - globalX);
+         var angleDiff:Number = Util.angleDifference(ship.rotation, angle);
+         if (angleDiff < rotationSnap && angleDiff > -rotationSnap)
          {
-            if (_loc2_.rotateLeft)
+            if (heading.rotateLeft)
             {
                sendCommand(1, false);
             }
-            if (_loc2_.rotateRight)
+            if (heading.rotateRight)
             {
                sendCommand(2, false);
             }
          }
-         else if (_loc4_ > _loc1_)
+         else if (angleDiff > rotationSnap)
          {
-            if (_loc2_.rotateRight)
+            if (heading.rotateRight)
             {
                sendCommand(2, false);
             }
-            else if (!_loc2_.rotateLeft)
+            else if (!heading.rotateLeft)
             {
                sendCommand(1, true);
             }
          }
-         else if (_loc4_ < -_loc1_)
+         else if (angleDiff < -rotationSnap)
          {
-            if (_loc2_.rotateLeft)
+            if (heading.rotateLeft)
             {
                sendCommand(1, false);
             }
-            else if (!_loc2_.rotateRight)
+            else if (!heading.rotateRight)
             {
                sendCommand(2, true);
             }
