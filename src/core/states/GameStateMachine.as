@@ -1,6 +1,6 @@
 package core.states
 {
-   import Clock.Clock;
+   import Clock;
    import debug.Console;
    import flash.utils.getDefinitionByName;
    import flash.utils.getQualifiedClassName;

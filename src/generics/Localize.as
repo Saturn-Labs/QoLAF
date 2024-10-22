@@ -2,7 +2,8 @@ package generics
 {
    import com.adobe.serialization.json.JSONDecoder;
    import flash.utils.ByteArray;
-   import mx.resources.Locale;
+   import flash.globalization.LocaleID;
+   import flash.globalization.ResourceManager;
 
    public class Localize
    {
@@ -23,7 +24,8 @@ package generics
 
       public static function setLocale(param1:String = "en_US"):void
       {
-         var _loc2_:Locale = new Locale(param1 || "en_US");
+         // Set the locale using ResourceManager (if needed for other functionalities)
+         LocaleID.current = param1 || "en_US";
       }
 
       public static function t(param1:String):String
@@ -38,15 +40,11 @@ package generics
             return param1;
          }
          var _loc2_:String = langObj[language][_loc3_];
-         if (_loc2_ == null)
+         if (_loc2_ == null || _loc2_ == "")
          {
             return param1;
          }
-         if (_loc2_ == "")
-         {
-            return param1;
-         }
-         return langObj[language][_loc3_].replace(/\\n/g, "\n");
+         return _loc2_.replace(/\\n/g, "\n");
       }
 
       public static function cacheLanguageData():void

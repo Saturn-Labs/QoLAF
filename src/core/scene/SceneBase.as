@@ -1,6 +1,6 @@
 package core.scene
 {
-   import Clock.Clock;
+   import Clock;
    import camerafocus.StarlingCameraFocus;
    import com.greensock.TweenMax;
    import core.hud.components.ToolTip;

@@ -418,13 +418,9 @@ package joinRoom
                         failedCallback("This room only allows players under level " + StarMap.selectedSolarSystem.pvpLvlCap);
                      }
                   };
-               })(), (function():*
-               {
-                  var onError:Function;
-                  return onError = function(param1:PlayerIOError):void
+               })(), function(param1:PlayerIOError):void
                   {
-                  };
-               })());
+                  });
       }
 
       private function showErrorDialog(param1:String, param2:Boolean = false, param3:PlayerIOError = null, param4:Function = null, param5:Boolean = false):void

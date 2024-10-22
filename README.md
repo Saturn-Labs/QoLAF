@@ -1,2 +1,2 @@
 # What is this?
-This project is basically compilable astroflux project for Moonshine IDE.
+This project is basically compilable astroflux project for FlashDevelop.

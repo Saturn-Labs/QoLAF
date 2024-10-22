@@ -1,6 +1,5 @@
-package Clock
+package
 {
-	
 	public class TimeDelta
 	{
 		public var latency:Number;

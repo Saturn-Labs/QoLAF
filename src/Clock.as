@@ -1,4 +1,4 @@
-package Clock
+package
 {
 	import flash.utils.getTimer;
 	import playerio.Client;
