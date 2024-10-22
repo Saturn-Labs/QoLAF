@@ -31,6 +31,7 @@ package
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.external.ExternalInterface;
+	import flash.filesystem.File;
 	import flash.net.SharedObject;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
@@ -66,149 +67,81 @@ package
 	import textures.TextureLocator;
 	import textures.TextureManager;
 	import com.hurlant.crypto.hash.MD5;
+	import flash.filesystem.FileMode;
+	import flash.filesystem.FileStream;
 	
 	public class Login extends Sprite
 	{
 		public static const DEV_SERVER:String = "";
-		
 		public static const CLIENT_VERSION:int = 1379;
-		
 		public static const SERVER_ROOM_TYPE:String = "game";
-		
 		public static const SERVICE_ROOM_TYPE:String = "service";
-		
 		public static const MENU_WIDTH:int = 760;
-		
 		public static const MENU_HEIGHT:int = 600;
-		
 		public static const START_SOLAR_SYSTEM:String = "HrAjOBivt0SHPYtxKyiB_Q";
-		
 		public static const STATE_PASSWORD_RECOVER:String = "password_recover";
-		
 		public static const STATE_LOGIN:String = "site";
-		
 		public static const STATE_REGISTER:String = "register";
-		
 		public static const STATE_FACEBOOK:String = "facebook";
-		
 		public static const STATE_KONGREGATE:String = "kongregate";
-		
 		public static const STATE_MOUSEBREAKER:String = "mousebreaker";
-		
 		public static const STATE_SPILGAMES:String = "spilgames";
-		
 		public static const STATE_ARMORGAMES:String = "armorgames";
-		
 		public static const STATE_GAMESAMBA:String = "gamesamba";
-		
 		public static const STATE_Y8:String = "y8";
-		
 		public static const STATE_STEAM:String = "steam";
-		
 		public static const STATE_DESKTOP:String = "desktop";
-		
 		public static const STATE_PSN:String = "psn";
-		
 		public static const TERMS_OF_SERVICE_VERSION:int = 3;
-		
 		public static const ERROR_SCREEN:Boolean = false;
-		
 		public static const ALLOW_MOUSE_AIM:Boolean = true;
-		
 		public static const ALLOW_CUSTOM_ROTATION_SPEED:Boolean = true;
-		
 		public static var isNewPlayer:Boolean = false;
-		
 		public static var fbAppId:String = "102658826485517";
-		
 		public static var gameId:String = "rymdenrunt-k9qmg7cvt0ylialudmldvg";
-		
 		public static var kongregateApiPath:String = "https://www.kongregate.com/flash/API_AS3_Local.swf";
-		
 		public static var partnerId:String = "";
-		
 		public static var transferId:String = null;
-		
 		public static var transferCode:String = "";
-		
 		public static var origin:String = "";
-		
 		public static var useSecure:Boolean = false;
-		
 		public static var hasFacebookLiked:Boolean = false;
-		
 		public static var currentState:String;
-		
 		public static var START_SETUP_IS_ACTIVE:Boolean = false;
-		
 		public static var START_SETUP_IS_DONE:Boolean = false;
-		
 		public static var isSaleSpinner:Boolean = false;
-		
 		public static var client:Client;
-		
 		public static var fadeScreen:FadeScreen;
-		
 		private static var instance:Login;
-		
 		public static var kongregate:Object = null;
-		
 		private var textureManager:TextureManager;
-		
 		private var soundManager:SoundManager;
-		
 		private var isLoggedIn:Boolean;
-		
 		private var background:Image;
-		
 		private var container:Sprite;
-		
 		private var logoContainer:Sprite;
-		
 		private var effectContainer:Sprite;
-		
 		private var registerDialog:RegisterDialog2;
-		
 		private var recoverDialog:RecoverDialog;
-		
 		private var exitButton:LoginButton;
-		
 		private var enterPressed:Boolean;
-		
 		private var mySharedObject:SharedObject;
-		
 		private var connectStatus:ConnectStatus;
-		
 		private var assets:AssetManager;
-		
 		private var joinData:Object;
-		
 		private var playerInfo:Object;
-		
 		private var preload:Preload;
-		
 		private var bgWidth:Number;
-		
 		private var bgHeight:Number;
-		
 		private var loginContainer:Sprite;
-		
 		private var emailInput:LoginInput;
-		
 		private var passwordInput:LoginInput;
-		
 		private var y8str1:String = "";
-		
 		private var y8str2:String = "";
-		
 		private var joinRoomManager:JoinRoomManager;
-		
 		private var serviceRoomSelector:ServiceRoomSelector;
-		
 		private var theStartSetup:IStartSetup;
-		
 		private var effects:Vector.<Image>;
-		
 		private var effectTweens:Vector.<TweenMax>;
 		
 		public function Login()
@@ -371,6 +304,7 @@ package
 				recoverForm();
 				registerForm();
 				addExitButton();
+				tryToLoginByJson();
 			}
 			else if (RymdenRunt.parameters.fb_access_token)
 			{
@@ -425,9 +359,44 @@ package
 				loginForm();
 				recoverForm();
 				registerForm();
+				tryToLoginByJson();
 			}
 			Game.trackPageView("preload");
 			resize();
+		}
+		
+		private function tryToLoginByJson(): Boolean 
+		{
+			var currentDir:File = File.applicationStorageDirectory;
+			var jsonFile:File = new File(currentDir.nativePath + "/login.json");
+			if (!jsonFile.exists)
+				return false;
+			var fileStream:FileStream = new FileStream();
+			
+			try {
+				fileStream.open(jsonFile, FileMode.READ);
+				var jsonString:String = fileStream.readUTFBytes(fileStream.bytesAvailable);
+				var jsonData:Object = JSON.parse(jsonString);
+				fileStream.close();
+				
+				var email:String = Util.trimUsername(jsonData["email"]);
+				var pass:String = Util.trimUsername(jsonData["password"]);
+				hideLogin();
+				updateStatus(Localize.t("Connecting to Server using login.json"));
+				mySharedObject.data.email = email;
+				mySharedObject.flush();
+				PlayerIO.quickConnect.simpleConnect(Starling.current.nativeStage, gameId, email, pass, handleConnect, handleLoginError);
+				
+				return true;
+			} catch (error:Error) {
+				throw error;
+				return false;
+			}
+			
+			hideLogin();
+			
+			
+			return true;
 		}
 		
 		private function connectPSN():void
