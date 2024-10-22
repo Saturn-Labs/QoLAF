@@ -1,6 +1,7 @@
 package generics
 {
    import com.adobe.serialization.json.JSONDecoder;
+   import embeds.LangJson;
    import flash.utils.ByteArray;
    import flash.globalization.LocaleID;
    import flash.globalization.ResourceManager;
@@ -13,7 +14,7 @@ package generics
 
       public static var activateLanguageSelection:Boolean = false;
 
-      private static var LanguageFile:Class = LangJson;
+      private static var LanguageFile:Class = embeds.LangJson;
 
       private static var r:RegExp = new RegExp(/(\W+)/g);
 

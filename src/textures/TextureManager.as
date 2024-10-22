@@ -166,6 +166,7 @@ package textures
          var _loc3_:LoaderContext = null;
          var _loc4_:URLLoader = null;
          currentRequest = param2[param1].toString();
+		 trace(fs.getUrl("/textures/" + param2[param1].toString(), Login.useSecure));
          if (currentRequest.match("png|jpg"))
          {
             _loc5_ = new Loader();

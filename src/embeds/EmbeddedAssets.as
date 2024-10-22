@@ -1,6 +1,5 @@
-package
+package embeds
 {
-	
 	public class EmbeddedAssets
 	{
 		public static const astroflux_wide:Class = BackgroundBitmap;

@@ -25,6 +25,7 @@ package
 	import data.DataLocator;
 	import data.DataManager;
 	import debug.Console;
+	import embeds.EmbeddedAssets;
 	import facebook.FB;
 	import feathers.core.FocusManager;
 	import flash.display.Loader;
@@ -281,7 +282,7 @@ package
 			assets.verbose = false;
 			assets.useMipMaps = false;
 			assets.keepFontXmls = true;
-			assets.enqueue(EmbeddedAssets);
+			assets.enqueue(embeds.EmbeddedAssets);
 			assets.loadQueue(function(param1:Number):void
 			{
 				if (param1 == 1)

@@ -1,5 +1,6 @@
 package core.hud.components
 {
+	import embeds.TextInputBitmap;
 	import feathers.controls.TextInput;
 	import feathers.controls.text.TextFieldTextEditor;
 	import feathers.skins.IStyleProvider;
@@ -12,7 +13,7 @@ package core.hud.components
 	{
 		public static var globalStyleProvider:IStyleProvider;
 		
-		private static var TextInputBackground:Class = TextInputBitmap;
+		private static var TextInputBackground:Class = embeds.TextInputBitmap;
 		
 		private static var textFormat:TextFormat = new TextFormat("Verdana", 12, 16777215);
 		

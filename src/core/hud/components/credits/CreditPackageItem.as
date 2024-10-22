@@ -7,6 +7,7 @@ package core.hud.components.credits
    import core.hud.components.Text;
    import core.hud.components.dialogs.PopupMessage;
    import core.scene.Game;
+   import embeds.BuyButtonBitmap;
    import facebook.FB;
    import flash.display.Bitmap;
    import flash.display.Sprite;
@@ -68,7 +69,7 @@ package core.hud.components.credits
          aquiredContainer = new starling.display.Sprite();
          aquiredText = new Text();
          nativeLayer = new flash.display.Sprite();
-         BuyButtonAsset = BuyButtonBitmap;
+         BuyButtonAsset = embeds.BuyButtonBitmap;
          super(param1, param2, param3);
       }
 

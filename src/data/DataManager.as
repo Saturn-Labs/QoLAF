@@ -3,6 +3,7 @@ package data
    import com.adobe.serialization.json.JSONDecoder;
    import core.artifact.Artifact;
    import debug.Console;
+   import embeds.CacheJson;
    import flash.utils.ByteArray;
    import playerio.*;
    import starling.display.Sprite;
@@ -19,7 +20,7 @@ package data
 
       public function DataManager(param1:Client)
       {
-         CacheFile = CacheJson;
+         CacheFile = embeds.CacheJson;
          _artifacts = new Vector.<Artifact>();
          super();
          this._client = param1;

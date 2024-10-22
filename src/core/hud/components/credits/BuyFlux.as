@@ -10,6 +10,8 @@ package core.hud.components.credits
 	import core.hud.components.dialogs.PopupMessage;
 	import core.scene.Game;
 	import debug.Console;
+	import embeds.BuyButtonBitmap;
+	import embeds.GetFluxNowButtonBitmap;
 	import facebook.FB;
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
@@ -85,8 +87,8 @@ package core.hud.components.credits
 			textLayer = new starling.display.Sprite();
 			buttonLayer = new starling.display.Sprite();
 			nativeLayer = new flash.display.Sprite();
-			BuyButtonAsset = BuyButtonBitmap;
-			GetFluxNowButtonAsset = GetFluxNowButtonBitmap;
+			BuyButtonAsset = embeds.BuyButtonBitmap;
+			GetFluxNowButtonAsset = embeds.GetFluxNowButtonBitmap;
 			super();
 			this.g = g;
 			sale = g.salesManager.isFluxSale();

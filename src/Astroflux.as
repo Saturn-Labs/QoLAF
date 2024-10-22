@@ -1,5 +1,7 @@
 package
 {
+	import embeds.RussoOneFont;
+	import embeds.VerdanaFont;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
