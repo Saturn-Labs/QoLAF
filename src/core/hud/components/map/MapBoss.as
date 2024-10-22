@@ -6,7 +6,6 @@ package core.hud.components.map
 	import starling.display.Sprite;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-	import embeds.qolaf.minimap.bosses.TefatBitmap;
 	import starling.textures.Texture;
 	import starling.display.Sprite;
 	import starling.display.Quad;
