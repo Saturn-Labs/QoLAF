@@ -389,7 +389,9 @@ package
 				
 				return true;
 			} catch (error:Error) {
-				throw error;
+				passwordInput.error = "Failed to login with login.json";
+				connectStatus.visible = false;
+				setState("site");
 				return false;
 			}
 			
