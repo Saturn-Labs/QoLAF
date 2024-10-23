@@ -1,7 +1,7 @@
 package core.hud
 {
 	import com.greensock.TweenMax;
-	import core.hud.components.BossHealth;
+	//import core.hud.components.BossHealth;
 	import core.hud.components.Button;
 	import core.hud.components.ButtonCargo;
 	import core.hud.components.ButtonClan;
@@ -84,7 +84,10 @@ package core.hud
 		public var pvpQuickMatchButton:ButtonPvPQuickMatch;
 		public var healthAndShield:HealthAndShield;
 		public var powerBar:PowerBar;
-		public var bossHealth:BossHealth;
+		
+		// QoLAF
+		//public var bossHealth:BossHealth;
+		
 		public var weaponHotkeys:WeaponHotkeys;
 		public var radar:Radar;
 		private var shopIcons:ShopIcons;
@@ -123,7 +126,10 @@ package core.hud
 			this.g = game;
 			healthAndShield = new HealthAndShield(game);
 			powerBar = new PowerBar(game);
-			bossHealth = new BossHealth(game);
+			
+			// QoLAF
+			//bossHealth = new BossHealth(game);
+			
 			weaponHotkeys = new WeaponHotkeys(game);
 			radar = new Radar(game);
 			experience = new Experience(game);
@@ -151,7 +157,10 @@ package core.hud
 			container.addChild(bgr);
 			healthAndShield.load();
 			powerBar.load();
-			bossHealth.load();
+			
+			// QoLAF
+			//bossHealth.load();
+			
 			weaponHotkeys.load();
 			radar.load();
 			experience.load();
@@ -336,7 +345,10 @@ package core.hud
 				container.addChild(uberStats);
 			}
 			container.addChild(healthAndShield);
-			container.addChild(bossHealth);
+			
+			// QoLAF
+			//container.addChild(bossHealth);
+			
 			container.addChild(powerBar);
 			container.addChild(radar);
 			container.addChild(experience);
@@ -834,7 +846,7 @@ package core.hud
 			healthAndShield = null;
 			podButton = null;
 			powerBar = null;
-			bossHealth = null;
+			//bossHealth = null;
 			weaponHotkeys = null;
 			radar = null;
 			shopIcons = null;

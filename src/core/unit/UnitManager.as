@@ -36,15 +36,15 @@ package core.unit
 			unit.canvas = canvas;
 			
 			// QoLAF
-			if (TargetSystem.CanTargetUnit(unit)) {
-				unit.movieClip.touchable = true;
-				unit.movieClip.addEventListener(TouchEvent.TOUCH, function(event:TouchEvent):void {
-					var touch:Touch = event.getTouch(unit.movieClip);
-					if (touch && touch.phase == TouchPhase.BEGAN) {
-						Game.instance.targetSystem.SetCurrentUnit(unit);
-					}
-				});
-			}
+			unit.movieClip.touchable = true;
+			unit.movieClip.addEventListener(TouchEvent.TOUCH, function(event:TouchEvent):void {
+				if (!TargetSystem.CanTargetUnit(unit) || !TargetSystem.IsInRange(unit))
+					return;
+				var touch:Touch = event.getTouch(unit.movieClip);
+				if (touch && touch.phase == TouchPhase.BEGAN) {
+					Game.instance.targetSystem.SetCurrentUnit(unit);
+				}
+			});
 			
 			
 			if (unit.isBossUnit)

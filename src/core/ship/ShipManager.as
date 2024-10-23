@@ -22,6 +22,7 @@ package core.ship
    import generics.Random;
    import movement.Heading;
    import playerio.Message;
+   import qolaf.target.TargetSystem;
 
    public class ShipManager
    {
@@ -359,27 +360,32 @@ package core.ship
          }
       }
 
-      public function damaged(param1:Message, param2:int):void
+      public function damaged(message:Message, pointer:int):void
       {
-         var _loc5_:int = 0;
-         var _loc4_:int = param1.getInt(param2 + 1);
-         var _loc3_:EnemyShip = enemiesById[_loc4_];
-         if (_loc3_ != null)
+         var damage:int = 0;
+         var enemyId:int = message.getInt(pointer + 1);
+         var ship:EnemyShip = enemiesById[enemyId];
+         if (ship != null)
          {
-            _loc5_ = param1.getInt(param2 + 2);
-            _loc3_.takeDamage(_loc5_);
-            _loc3_.shieldHp = param1.getInt(param2 + 3);
-            if (_loc3_.shieldHp == 0)
+            damage = message.getInt(pointer + 2);
+			
+			// QoLAF
+			if (Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.GetDistance(Game.instance.playerManager.me.ship, ship) < 600)
+				Game.instance.targetSystem.SetCurrentUnit(ship);
+			
+            ship.takeDamage(damage);
+            ship.shieldHp = message.getInt(pointer + 3);
+            if (ship.shieldHp == 0)
             {
-               if (_loc3_.shieldRegenCounter > -1000)
+               if (ship.shieldRegenCounter > -1000)
                {
-                  _loc3_.shieldRegenCounter = -1000;
+                  ship.shieldRegenCounter = -1000;
                }
             }
-            _loc3_.hp = param1.getInt(param2 + 4);
-            if (param1.getBoolean(param2 + 5))
+            ship.hp = message.getInt(pointer + 4);
+            if (message.getBoolean(pointer + 5))
             {
-               _loc3_.doDOTEffect(param1.getInt(param2 + 6), param1.getString(param2 + 7), param1.getInt(param2 + 8));
+               ship.doDOTEffect(message.getInt(pointer + 6), message.getString(pointer + 7), message.getInt(pointer + 8));
             }
          }
       }

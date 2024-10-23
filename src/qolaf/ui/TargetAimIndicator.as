@@ -19,7 +19,7 @@ package qolaf.ui
 		private var angleRotation:Number = 0;
 		private var radiusAnim:Number = 0;
 		
-		public function TargetAimIndicator(targetSystem:TargetSystem, arrows:Number = 3) 
+		public function TargetAimIndicator(targetSystem:TargetSystem, arrows:Number = 3, color:Number = 0xFFFFFF) 
 		{
 			this.targetSystem = targetSystem;
 			arrowAmount = arrows;
@@ -27,7 +27,7 @@ package qolaf.ui
 			var arrowTexture:Texture = Texture.fromBitmap(new TargetIconBitmap(), true);
 			for (var i = 0; i < arrows; i++) {
 				var arrowImage:Image = new Image(arrowTexture);
-				arrowImage.color = 0xff9d00;
+				arrowImage.color = color;
 				arrowImage.alignPivot();
 				addChild(arrowImage);
 				arrowImages.push(arrowImage);
@@ -38,8 +38,7 @@ package qolaf.ui
 			if (!TargetSystem.CanTargetUnit(targetSystem.GetCurrentUnit()))
 				return;
 			var angle:Number = angleRotation;
-			var radius:Number = (targetSystem.GetCurrentUnit().texture.width / 2 + 20) + Math.sin(radiusAnim) * 4;
-			//width = height = 50;
+			var radius:Number = (targetSystem.GetCurrentUnit().texture.width / 2 + 25) + Math.sin(radiusAnim) * 4;
 			for (var i = 0; i < arrowAmount; i++) {
 				var x:Number = radius * Math.cos(angle * (Math.PI / 180)) + targetSystem.GetCurrentUnit().x;
 				var y:Number = radius * Math.sin(angle * (Math.PI / 180)) + targetSystem.GetCurrentUnit().y;
