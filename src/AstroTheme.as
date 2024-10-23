@@ -17,6 +17,7 @@ package
 	import feathers.themes.AeonDesktopTheme;
 	import flash.geom.Rectangle;
 	import flash.text.TextFormat;
+	import flash.text.TextFormatAlign;
 	import starling.core.Starling;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
@@ -78,6 +79,18 @@ package
 			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName("artifact_setup", artifactSetupButton);
 			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName("chat_tab", chatTab);
 			this.getStyleProviderForClass(TabBar).setFunctionForStyleName("chat_tabs", chatTabs);
+			this.getStyleProviderForClass(Label).setFunctionForStyleName("target_info", targetInfoLabel);
+		}
+		
+		// QoLAF
+		protected function targetInfoLabel(label:Label): void 
+		{
+			label.textRendererFactory = textRendererFactory;
+			var format:TextFormat = new TextFormat("Verdana", 13, 0xFFFFFF);
+			format.align = TextFormatAlign.CENTER;
+			label.textRendererProperties.textFormat = format;
+			label.textRendererProperties.isHTML = true;
+			label.touchable = false;
 		}
 		
 		override protected function setScrollerStyles(param1:Scroller):void
