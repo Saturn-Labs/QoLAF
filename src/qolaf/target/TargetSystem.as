@@ -3,6 +3,7 @@ package qolaf.target
 	import core.GameObject;
 	import core.boss.Boss;
 	import core.scene.Game;
+	import core.ship.PlayerShip;
 	import core.ship.Ship;
 	import core.solarSystem.Body;
 	import core.unit.Unit;
@@ -84,7 +85,7 @@ package qolaf.target
 		public static function CanTargetUnit(unit:Unit): Boolean {
 			if (Game.instance.playerManager.me == null || Game.instance.playerManager.me.ship == null)
 				return false;
-			return unit != null && unit.type != "playerShip" && unit.alive;
+			return unit != null && unit.alive && (unit is PlayerShip ? !(unit as PlayerShip).landed : true);
 		}
 		
 		public static function IsInRange(unit:Unit): Boolean {

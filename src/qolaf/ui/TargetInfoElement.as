@@ -164,10 +164,10 @@ package qolaf.ui
 			
 			lerpShield = Util.lerp(lerpShield, currentShield, game.deltaTime * 2);
 			lerpHealth = Util.lerp(lerpHealth, currentHealth, game.deltaTime * 2);
-			shieldBar.width = SH_AND_HP_BAR_WIDTH * currentShield;
-			healthBar.width = SH_AND_HP_BAR_WIDTH * currentHealth;
-			shieldBarTrail.width = SH_AND_HP_BAR_WIDTH * lerpShield;
-			healthBarTrail.width = SH_AND_HP_BAR_WIDTH * lerpHealth;
+			shieldBar.width = Math.min(SH_AND_HP_BAR_WIDTH * currentShield, SH_AND_HP_BAR_WIDTH);
+			healthBar.width = Math.min(SH_AND_HP_BAR_WIDTH * currentHealth, SH_AND_HP_BAR_WIDTH);
+			shieldBarTrail.width = Math.min(SH_AND_HP_BAR_WIDTH * lerpShield, SH_AND_HP_BAR_WIDTH);
+			healthBarTrail.width = Math.min(SH_AND_HP_BAR_WIDTH * lerpHealth, SH_AND_HP_BAR_WIDTH);
 			shieldTextAmount.text = Math.floor(unit.shieldHp) + " / " + Math.floor(unit.shieldHpMax);
 			healthTextAmount.text = Math.floor(unit.hp) + " / " + Math.floor(unit.hpMax);
 		}

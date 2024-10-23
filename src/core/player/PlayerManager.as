@@ -35,6 +35,7 @@ package core.player
 	import joinRoom.JoinRoomLocator;
 	import movement.Heading;
 	import playerio.Message;
+	import qolaf.target.TargetSystem;
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
 	
@@ -797,24 +798,29 @@ package core.player
 			}
 		}
 		
-		public function damaged(param1:Message, param2:int):void
+		public function damaged(message:Message, pointer:int):void
 		{
 			var _loc6_:int = 0;
-			var _loc4_:int = 0;
-			var _loc3_:String = param1.getString(param2);
-			var _loc5_:Player = _playersById[_loc3_];
-			if (_loc5_ != null && _loc5_.ship != null)
+			var damage:int = 0;
+			var playerId:String = message.getString(pointer);
+			var player:Player = _playersById[playerId];
+			if (player != null && player.ship != null)
 			{
-				_loc6_ = param1.getInt(param2 + 1);
-				_loc4_ = param1.getInt(param2 + 2);
-				_loc5_.ship.shieldHp = param1.getInt(param2 + 3);
-				_loc5_.ship.hp = param1.getInt(param2 + 4);
-				_loc5_.ship.takeDamage(_loc4_);
-				if (param1.getBoolean(param2 + 5))
+				_loc6_ = message.getInt(pointer + 1);
+				damage = message.getInt(pointer + 2);
+				player.ship.shieldHp = message.getInt(pointer + 3);
+				player.ship.hp = message.getInt(pointer + 4);
+				
+				// QoLAF
+				if (!player.isMe && Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.GetDistance(Game.instance.playerManager.me.ship, player.ship) < 600)
+					Game.instance.targetSystem.SetCurrentUnit(player.ship);
+				
+				player.ship.takeDamage(damage);
+				if (message.getBoolean(pointer + 5))
 				{
-					_loc5_.ship.doDOTEffect(param1.getInt(param2 + 6), param1.getString(param2 + 7), param1.getInt(param2 + 8), param1.getString(param2 + 9));
+					player.ship.doDOTEffect(message.getInt(pointer + 6), message.getString(pointer + 7), message.getInt(pointer + 8), message.getString(pointer + 9));
 				}
-				if (_loc5_.isMe)
+				if (player.isMe)
 				{
 					g.hud.healthAndShield.update();
 				}
