@@ -168,7 +168,7 @@ package core.scene
          canvas.addChild(canvasEffects);
          canvas.addChild(canvasTexts);
          Login.fadeScreen.repositionScreen(overlay);
-         canvas.touchable = false;
+         canvas.touchable = true;
          layersInfo = [ {
                   "name": "canvasBackground",
                   "instance": this.canvasBackground,

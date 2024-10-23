@@ -51,6 +51,7 @@ package core.hud
 	import data.KeyBinds;
 	import generics.Localize;
 	import playerio.Message;
+	import qolaf.ui.TargetInfoElement;
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.MeshBatch;
@@ -63,96 +64,53 @@ package core.hud
 	public class Hud
 	{
 		private var g:Game;
-		
 		private var container:Sprite;
-		
 		private var shipButton:ButtonHud;
-		
 		private var mapButton:ButtonHud;
-		
 		public var cargoButton:ButtonCargo;
-		
 		public var resourceBox:ResourceBox;
-		
 		private var podButton:PodButton;
-		
 		private var settingsButton:ButtonHud;
-		
 		private var shopButton:Button;
-		
 		public var buyFluxButton:BuyFluxButton;
-		
 		public var clanButton:ButtonClan;
-		
 		private var newMissionsButton:ButtonNewMission;
-		
 		public var missionsButton:ButtonMissions;
-		
 		public var artifactsButton:ButtonHud;
-		
 		public var leaderboardButton:ButtonHud;
-		
 		public var encountersButton:ButtonHud;
-		
 		public var salesButton:Button;
-		
 		public var pvpMenuButton:ButtonPvPMenu;
-		
 		public var pvpQuickMatchButton:ButtonPvPQuickMatch;
-		
 		public var healthAndShield:HealthAndShield;
-		
 		public var powerBar:PowerBar;
-		
 		public var bossHealth:BossHealth;
-		
 		public var weaponHotkeys:WeaponHotkeys;
-		
 		public var radar:Radar;
-		
 		private var shopIcons:ShopIcons;
-		
 		private var pvpIcon:PvPIcon;
-		
 		private var textureManager:ITextureManager;
-		
 		public var abilities:Abilities;
-		
 		public var compas:Compas;
-		
 		public var playerListButton:ButtonPlayers;
-		
 		private var bgr:MeshBatch;
-		
 		private var experience:Experience;
-		
 		private var landText:TextBitmap;
-		
 		private var safeZoneText:TextBitmap;
-		
 		private var repairText:TextBitmap;
-		
 		private var hintMapText:TextBitmap;
-		
 		public var uberStats:UberStats;
-		
 		private var artifactLimitText:TextBitmap;
-		
 		private var loadComplete:Boolean = false;
-		
 		private var fullScreenButton:FullScreenButton;
-		
 		private var isShowingNewMissionsButton:Boolean = false;
-		
 		private var hintMapFlashCounter:int = 0;
-		
 		private var fullScreenHintImage:Image;
-		
 		private var artifactTween:TweenMax;
-		
 		private var showUtilityTexts:Boolean = true;
+		private var targetInfoElement:TargetInfoElement;
 		
-		public function Hud(param1:Game)
+		public function Hud(game:Game)
 		{
 			container = new Sprite();
 			bgr = new MeshBatch();
@@ -162,19 +120,28 @@ package core.hud
 			artifactLimitText = new TextBitmap();
 			fullScreenButton = new FullScreenButton();
 			super();
-			this.g = param1;
-			healthAndShield = new HealthAndShield(param1);
-			powerBar = new PowerBar(param1);
-			bossHealth = new BossHealth(param1);
-			weaponHotkeys = new WeaponHotkeys(param1);
-			radar = new Radar(param1);
-			experience = new Experience(param1);
-			abilities = new Abilities(param1);
-			compas = new Compas(param1);
-			shopIcons = new ShopIcons(param1);
-			pvpIcon = new PvPIcon(param1);
-			uberStats = new UberStats(param1);
+			this.g = game;
+			healthAndShield = new HealthAndShield(game);
+			powerBar = new PowerBar(game);
+			bossHealth = new BossHealth(game);
+			weaponHotkeys = new WeaponHotkeys(game);
+			radar = new Radar(game);
+			experience = new Experience(game);
+			abilities = new Abilities(game);
+			compas = new Compas(game);
+			shopIcons = new ShopIcons(game);
+			pvpIcon = new PvPIcon(game);
+			uberStats = new UberStats(game);
+			
+			// QoLAF
+			targetInfoElement = new TargetInfoElement(game);
+			
 			textureManager = TextureLocator.getService();
+		}
+		
+		// QoLAF
+		public function GetTargetInfoElement(): TargetInfoElement {
+			return targetInfoElement;
 		}
 		
 		public function load():void
@@ -407,6 +374,10 @@ package core.hud
 			container.addChild(shopButton);
 			container.addChild(playerListButton);
 			container.addChild(resourceBox);
+			
+			// QoLAF
+			container.addChild(targetInfoElement);
+			
 			if (showUtilityTexts)
 			{
 				container.addChild(safeZoneText);
@@ -558,6 +529,10 @@ package core.hud
 			compas.update();
 			experience.update();
 			shopIcons.update();
+			
+			// QoLAF
+			targetInfoElement.Update();
+			
 			if (hintMapText != null)
 			{
 				hintMapFlashCounter++;
@@ -872,6 +847,7 @@ package core.hud
 			bgr = null;
 			experience = null;
 			resourceBox = null;
+			targetInfoElement = null;
 			safeZoneText.dispose();
 			repairText.dispose();
 			landText.dispose();
