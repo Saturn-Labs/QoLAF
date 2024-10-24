@@ -4,11 +4,14 @@ package qolaf.ui
 	import core.unit.Unit;
 	import feathers.controls.Label;
 	import generics.Util;
+	import qolaf.ui.elements.ValueTrailAnimatedSlider;
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.display.DisplayObject;
+	import starling.events.Event;
+	import starling.filters.GlowFilter;
 	import starling.text.TextField;
 	import starling.text.TextFormat;
 	import starling.utils.Align;
@@ -32,24 +35,12 @@ package qolaf.ui
 		
 		private var game:Game;
 		public var targetName:Label;
-		public var shieldBar:Quad;
-		public var shieldBarTrail:Quad;
-		public var healthBar:Quad;
-		public var healthBarTrail:Quad;
+		public var shieldBar:ValueTrailAnimatedSlider;
+		public var healthBar:ValueTrailAnimatedSlider;
 		public var lastUnit:Unit = null;
 		public var lockIcon:Texture;
 		public var unlockIcon:Texture;
-		
 		public var lockButton:Image;
-		
-		public var shieldTextAmount:Label;
-		public var healthTextAmount:Label;
-		
-		public var currentShield:Number = 1.0;
-		public var lerpShield:Number = 1.0;
-		
-		public var currentHealth:Number = 1.0;
-		public var lerpHealth:Number = 1.0;
 		
 		public function TargetInfoElement(game:Game) 
 		{
@@ -77,39 +68,17 @@ package qolaf.ui
 			targetName.x = targetName.y = 0;
 			addChild(targetName);
 			
-			shieldBar = new Quad(SH_AND_HP_BAR_WIDTH, SH_AND_HP_BAR_HEIGHT, 0x0099ff);
+			shieldBar = new ValueTrailAnimatedSlider(SH_AND_HP_BAR_WIDTH, SH_AND_HP_BAR_HEIGHT, 0x0099ff);
 			shieldBar.alignPivot(Align.LEFT, Align.TOP);
+			shieldBar.x = -(SH_AND_HP_BAR_WIDTH / 2);
+			shieldBar.y = TARGET_INFO_TEXT_HEIGHT + 2;
 			addChild(shieldBar);
 			
-			shieldBarTrail = new Quad(SH_AND_HP_BAR_WIDTH, SH_AND_HP_BAR_HEIGHT, 0x0099ff);
-			shieldBarTrail.alpha = TRAILS_ALPHA;
-			shieldBarTrail.alignPivot(Align.LEFT, Align.TOP);
-			addChild(shieldBarTrail);
-			
-			healthBar = new Quad(SH_AND_HP_BAR_WIDTH, SH_AND_HP_BAR_HEIGHT, 0xff0000);
+			healthBar = new ValueTrailAnimatedSlider(SH_AND_HP_BAR_WIDTH, SH_AND_HP_BAR_HEIGHT, 0xff0000);
 			healthBar.alignPivot(Align.LEFT, Align.TOP);
+			healthBar.x = -(SH_AND_HP_BAR_WIDTH / 2);
+			healthBar.y = shieldBar.y + SH_AND_HP_BAR_HEIGHT;
 			addChild(healthBar);
-			
-			healthBarTrail = new Quad(SH_AND_HP_BAR_WIDTH, SH_AND_HP_BAR_HEIGHT, 0xff0000);
-			healthBarTrail.alpha = TRAILS_ALPHA;
-			healthBarTrail.alignPivot(Align.LEFT, Align.TOP);
-			addChild(healthBarTrail);
-			
-			shieldTextAmount = new Label();
-			shieldTextAmount.width = SH_AND_HP_BAR_WIDTH;
-			shieldTextAmount.height = SH_AND_HP_BAR_HEIGHT;
-			shieldTextAmount.styleName = "target_info";
-			shieldTextAmount.alignPivot(Align.CENTER, Align.CENTER);
-			shieldTextAmount.text = "0 / 0";
-			addChild(shieldTextAmount);
-			
-			healthTextAmount = new Label();
-			healthTextAmount.width = SH_AND_HP_BAR_WIDTH;
-			healthTextAmount.height = SH_AND_HP_BAR_HEIGHT;
-			healthTextAmount.styleName = "target_info";
-			healthTextAmount.alignPivot(Align.CENTER, Align.CENTER);
-			healthTextAmount.text = "0 / 0";
-			addChild(healthTextAmount);
 		}
 		
 		public function OnClickLock(event:TouchEvent):void 
@@ -128,48 +97,16 @@ package qolaf.ui
 			y = 60;
 			if (unit == null)
 				return;
-			currentShield = (unit.shieldHp / unit.shieldHpMax);
-			currentHealth = (unit.hp / unit.hpMax);
-			
-			if (lastUnit != unit) {
-				lerpShield = currentShield;
-				lerpHealth = currentHealth;
-			}
 			lastUnit = unit;
 			lockButton.texture = Game.instance.targetSystem.lockedTarget ? lockIcon : unlockIcon;
 			
 			var hasShield:Boolean = unit.shieldHpMax > 0;
 			shieldBar.visible = hasShield;
-			shieldBarTrail.visible = hasShield;
-			shieldTextAmount.visible = hasShield;
-			if (hasShield) {
-				shieldBar.x = -(SH_AND_HP_BAR_WIDTH / 2);
-				shieldBar.y = TARGET_INFO_TEXT_HEIGHT + 2;
-				shieldBarTrail.x = -(SH_AND_HP_BAR_WIDTH / 2);
-				shieldBarTrail.y = TARGET_INFO_TEXT_HEIGHT + 2;
-				shieldTextAmount.y = shieldBar.y + SH_AND_HP_BAR_HEIGHT / 3;
-				healthBar.x = -(SH_AND_HP_BAR_WIDTH / 2);
-				healthBar.y = shieldBar.y + SH_AND_HP_BAR_HEIGHT;
-				healthBarTrail.x = -(SH_AND_HP_BAR_WIDTH / 2);
-				healthBarTrail.y = shieldBar.y + SH_AND_HP_BAR_HEIGHT;
-				healthTextAmount.y = healthBar.y + SH_AND_HP_BAR_HEIGHT / 3;
-			}
-			else {
-				healthBar.x = -(SH_AND_HP_BAR_WIDTH / 2);
-				healthBar.y = TARGET_INFO_TEXT_HEIGHT + 2;
-				healthBarTrail.x = -(SH_AND_HP_BAR_WIDTH / 2);
-				healthBarTrail.y = TARGET_INFO_TEXT_HEIGHT + 2;
-				healthTextAmount.y = healthBar.y + SH_AND_HP_BAR_HEIGHT / 3;
-			}
-			
-			lerpShield = Util.lerp(lerpShield, currentShield, game.deltaTime * 2);
-			lerpHealth = Util.lerp(lerpHealth, currentHealth, game.deltaTime * 2);
-			shieldBar.width = Math.min(SH_AND_HP_BAR_WIDTH * currentShield, SH_AND_HP_BAR_WIDTH);
-			healthBar.width = Math.min(SH_AND_HP_BAR_WIDTH * currentHealth, SH_AND_HP_BAR_WIDTH);
-			shieldBarTrail.width = Math.min(SH_AND_HP_BAR_WIDTH * lerpShield, SH_AND_HP_BAR_WIDTH);
-			healthBarTrail.width = Math.min(SH_AND_HP_BAR_WIDTH * lerpHealth, SH_AND_HP_BAR_WIDTH);
-			shieldTextAmount.text = Math.floor(unit.shieldHp) + " / " + Math.floor(unit.shieldHpMax);
-			healthTextAmount.text = Math.floor(unit.hp) + " / " + Math.floor(unit.hpMax);
+			//
+			shieldBar.setValue(unit.shieldHp, unit.shieldHpMax);
+			shieldBar.update();
+			healthBar.setValue(unit.hp, unit.hpMax);
+			healthBar.update();
 		}
 	}
 }

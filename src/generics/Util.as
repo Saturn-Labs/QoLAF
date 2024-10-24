@@ -13,7 +13,8 @@ package generics
 		}
 		
 		public static function lerp(start:Number, end:Number, t:Number): Number {
-			return start + (end - start) * t;
+			var v:Number = start + (end - start) * t;
+			return isNaN(v) ? end : v;
 		}
 		
 		public static function distance(lhs:Point, rhs:Point): Number {
@@ -227,6 +228,24 @@ package generics
 		public static function trimUsername(param1:String):String
 		{
 			return param1.replace(/^([\s|\t|\n]+)?(.*)([\s|\t|\n]+)?$/gm, "$2");
+		}
+		
+		public static function clamp(value:Number, min:Number, max:Number): Number {
+			return Math.max(min, Math.min(value, max));
+		}
+		
+		public static function normalize(value:Number, min:Number, max:Number): Number {
+			if (max - min == 0) {
+				return 0;
+			}
+			return (value - min) / (max - min);
+		}
+		
+		public static function rescale(value:Number, sourceMin:Number, sourceMax:Number, targetMin:Number, targetMax:Number): Number {
+			if (sourceMax - sourceMin == 0) {
+				return targetMin;
+			}
+			return targetMin + ((value - sourceMin) / (sourceMax - sourceMin)) * (targetMax - targetMin);
 		}
 	}
 }
