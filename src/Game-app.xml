@@ -1,18 +1,28 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <application xmlns="http://ns.adobe.com/air/application/32.0">
-	<id>net.astroflux.desktop</id>
-	<filename>Astroflux</filename>
-	<versionNumber>1.0.0</versionNumber>
-	<initialWindow>
-		<content>Game.swf</content>
-		<width>1280</width>
-		<height>720</height>
-		<renderMode>direct</renderMode>
-		<autoOrients>false</autoOrients>
-		<fullScreen>true</fullScreen>
-		<visible>true</visible>
-		<aspectRatio>landscape</aspectRatio>
-		<systemChrome>standard</systemChrome>
-	</initialWindow>
-	<supportedProfiles>extendedDesktop</supportedProfiles>
+  <id>net.astroflux.desktop</id>
+  <filename>Astroflux</filename>
+  <versionNumber>1.0.0</versionNumber>
+  <initialWindow>
+    <content>Game.swf</content>
+    <width>1280</width>
+    <height>720</height>
+    <renderMode>direct</renderMode>
+    <autoOrients>false</autoOrients>
+    <fullScreen>true</fullScreen>
+    <visible>true</visible>
+    <aspectRatio>landscape</aspectRatio>
+    <systemChrome>standard</systemChrome>
+    <depthAndStencil>true</depthAndStencil>
+  </initialWindow>
+  <supportedProfiles>desktop extendedDesktop mobileDevice</supportedProfiles>
+  <icon>
+    <image16x16>icons/Astroflux16.png</image16x16>
+    <image32x32>icons/Astroflux32.png</image32x32>
+    <image48x48>icons/Astroflux48.png</image48x48>
+    <image128x128>icons/Astroflux128.png</image128x128>
+  </icon>
+  <android>
+    <manifestAdditions><![CDATA[<manifest android:installLocation="auto" xmlns:android="http://schemas.android.com/apk/res/android" />]]></manifestAdditions>
+  </android>
 </application>
