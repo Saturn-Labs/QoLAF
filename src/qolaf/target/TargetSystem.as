@@ -72,7 +72,7 @@ package qolaf.target
 					mainObject = (mainObject as Unit).parentObj;
 				}
 				
-				targetInfoElement.targetName.text = "<FONT COLOR='#fcba03'>Lv. " + currentUnit.level + "</FONT> " + mainObject.name.replace(/lvl \d+/g, "").replace(/ +/g, " ");
+				targetInfoElement.targetName.text = "<font face='Arial' size='14px'><font color='#fcba03'><b>Lv. " + currentUnit.level + "</b></font> " + mainObject.name.replace(/lvl \d+/g, "").replace(/ +/g, " ") + "</font>";
 			}
 			if (targetTimeout > 0)
 				targetTimeout -= game.deltaTime;

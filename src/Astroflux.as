@@ -12,6 +12,9 @@ package
 	
 	public class Astroflux extends Sprite
 	{
+		public static const VERSION_NAME:String = "QoLAF - PROTOTYPE";
+		public static const VERSION_NUMBER:String = "v0.1.0";
+		
 		public function Astroflux(info:Object = null)
 		{
 			super();

@@ -36,6 +36,9 @@ package
 		protected var artifactSetupDefaultFormat:TextFormat;
 		protected var artifactSetupSelectedFormat:TextFormat;
 		
+		// QoLAF
+		protected var targetInfoFormat:TextFormat;
+		
 		public function AstroTheme()
 		{
 			inputFormat = new TextFormat("Verdana", 12, 16777215);
@@ -44,6 +47,7 @@ package
 			shopListFormat = new TextFormat("DAIDRR", 14, 16689475);
 			artifactSetupDefaultFormat = new TextFormat("DAIDRR", 10, 11579568);
 			artifactSetupSelectedFormat = new TextFormat("DAIDRR", 10, 16777215);
+			targetInfoFormat = new TextFormat("Verdana", 12, 0xFFFFFF);
 			super();
 			Starling.current.stage.color = 0;
 			Starling.current.nativeStage.color = 0;
@@ -86,7 +90,7 @@ package
 		protected function targetInfoLabel(label:Label): void 
 		{
 			label.textRendererFactory = textRendererFactory;
-			var format:TextFormat = new TextFormat("Verdana", 13, 0xFFFFFF);
+			var format:TextFormat = targetInfoFormat;
 			format.align = TextFormatAlign.CENTER;
 			label.textRendererProperties.textFormat = format;
 			label.textRendererProperties.isHTML = true;

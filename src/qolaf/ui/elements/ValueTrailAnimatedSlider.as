@@ -7,8 +7,10 @@ package qolaf.ui.elements
 	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.rendering.Painter;
+	import starling.text.TextFormat;
 	import starling.utils.Align;
 	import starling.filters.GlowFilter;
+	import starling.display.BlendMode;
 	
 	/**
 	 * @author rydev
@@ -16,6 +18,7 @@ package qolaf.ui.elements
 	public class ValueTrailAnimatedSlider extends DisplayObjectContainer 
 	{	
 		private var mainSlider:Quad;
+		private var mainSliderCover:Quad;
 		private var trailSlider:Quad;
 		private var sliderTip:Quad;
 		private var valueText:Label;
@@ -50,18 +53,21 @@ package qolaf.ui.elements
 			valueText.height = barHeight;
 			valueText.styleName = "target_info";
 			valueText.alignPivot();
-			valueText.x = valueText.y = 0;
+			valueText.x = 0;
+			valueText.y = 0;
 			valueText.visible = showValueText;
 			
 			sliderTip = new Quad(1, height, color);
 			sliderTip.alpha = 1;
 			sliderTip.alignPivot(Align.LEFT, Align.CENTER);
+			sliderTip.blendMode = BlendMode.ADD;
 			tipGlowFilter = new GlowFilter(0xffffff, 10, 10, 1);
 			
 			addChild(trailSlider);
 			addChild(mainSlider);
 			addChild(valueText);
 			addChild(sliderTip);
+			
 			sliderTip.filter = tipGlowFilter;
 		}
 		
@@ -80,13 +86,13 @@ package qolaf.ui.elements
 			var newWidthMain:Number = (barWidth * currentValue);
 			var newWidthTrail:Number = (barWidth * lerpValue);
 			var lerpDistance:Number = Util.clamp(Math.abs(lerpValue - currentValue), 0.0, 1.0);
-			tipGlowFilter.alpha = Util.clamp(lerpDistance * 200, 0, 12.5);
+			tipGlowFilter.alpha = Util.clamp(lerpDistance * 215, 0, 10.5);
 			
 			mainSlider.width = newWidthMain;
 			trailSlider.width = newWidthTrail;
 			sliderTip.x = mainSlider.width - (barWidth / 2);
 			
-			valueText.text = Math.floor(rawValue) + " / " + Math.floor(rawMaxValue);
+			valueText.text = "<font face='Verdana' size='" + barHeight / 1.15 + "px'>" + Math.floor(rawValue) + " ⁄ " + Math.floor(rawMaxValue) + "</font>";
 		}
 	}
 

@@ -31,7 +31,6 @@ package qolaf.ui
 		private static var TARGET_INFO_TEXT_HEIGHT = 20;
 		private static var SH_AND_HP_BAR_HEIGHT = 14;
 		private static var SH_AND_HP_BAR_WIDTH = 300;
-		private static var TRAILS_ALPHA = 0.6;
 		
 		private var game:Game;
 		public var targetName:Label;
@@ -49,13 +48,14 @@ package qolaf.ui
 			height = 90;
 			
 			var manager:ITextureManager = TextureLocator.getService();
-			lockIcon = manager.getTextureByTextureName("ti_supporter", "texture_gui1_test.png");
-			unlockIcon = manager.getTextureByTextureName("ti_supporter_inactive", "texture_gui1_test.png");
+			lockIcon = manager.getTextureByTextureName("ti_cargo_protection", "texture_gui1_test.png");
+			unlockIcon = manager.getTextureByTextureName("ti_cargo_protection_inactive", "texture_gui1_test.png");
 			
 			lockButton = new Image(unlockIcon);
 			lockButton.alignPivot(Align.LEFT, Align.TOP);
 			lockButton.scale = 0.5;
 			lockButton.x = -(SH_AND_HP_BAR_WIDTH / 2);
+			lockButton.y = -2;
 			lockButton.touchable = true;
 			lockButton.addEventListener(TouchEvent.TOUCH, OnClickLock);
 			addChild(lockButton);
@@ -68,13 +68,13 @@ package qolaf.ui
 			targetName.x = targetName.y = 0;
 			addChild(targetName);
 			
-			shieldBar = new ValueTrailAnimatedSlider(SH_AND_HP_BAR_WIDTH, SH_AND_HP_BAR_HEIGHT, 0x0099ff);
+			shieldBar = new ValueTrailAnimatedSlider(SH_AND_HP_BAR_WIDTH, SH_AND_HP_BAR_HEIGHT, 0x3377ff);
 			shieldBar.alignPivot(Align.LEFT, Align.TOP);
 			shieldBar.x = -(SH_AND_HP_BAR_WIDTH / 2);
-			shieldBar.y = TARGET_INFO_TEXT_HEIGHT + 2;
+			shieldBar.y = TARGET_INFO_TEXT_HEIGHT;
 			addChild(shieldBar);
 			
-			healthBar = new ValueTrailAnimatedSlider(SH_AND_HP_BAR_WIDTH, SH_AND_HP_BAR_HEIGHT, 0xff0000);
+			healthBar = new ValueTrailAnimatedSlider(SH_AND_HP_BAR_WIDTH, SH_AND_HP_BAR_HEIGHT, 0xff0022);
 			healthBar.alignPivot(Align.LEFT, Align.TOP);
 			healthBar.x = -(SH_AND_HP_BAR_WIDTH / 2);
 			healthBar.y = shieldBar.y + SH_AND_HP_BAR_HEIGHT;
@@ -102,7 +102,14 @@ package qolaf.ui
 			
 			var hasShield:Boolean = unit.shieldHpMax > 0;
 			shieldBar.visible = hasShield;
-			//
+			if (hasShield) {
+				shieldBar.y = TARGET_INFO_TEXT_HEIGHT;
+				healthBar.y = shieldBar.y + SH_AND_HP_BAR_HEIGHT;
+			}
+			else {
+				healthBar.y = TARGET_INFO_TEXT_HEIGHT;
+			}
+			
 			shieldBar.setValue(unit.shieldHp, unit.shieldHpMax);
 			shieldBar.update();
 			healthBar.setValue(unit.hp, unit.hpMax);
