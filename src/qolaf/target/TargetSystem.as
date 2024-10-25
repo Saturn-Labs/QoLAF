@@ -85,7 +85,7 @@ package qolaf.target
 		public static function CanTargetUnit(unit:Unit): Boolean {
 			if (Game.instance.playerManager.me == null || Game.instance.playerManager.me.ship == null)
 				return false;
-			return unit != null && unit.alive && (unit is PlayerShip ? !(unit as PlayerShip).landed : true);
+			return unit != null && unit.alive && (unit is PlayerShip ? !(unit as PlayerShip).landed && !(unit as PlayerShip).player.isMe : true);
 		}
 		
 		public static function IsInRange(unit:Unit): Boolean {

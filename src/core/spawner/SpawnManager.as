@@ -1,6 +1,7 @@
 package core.spawner
 {
 	import core.scene.Game;
+	import core.scene.SceneBase;
 	import debug.Console;
 	import playerio.Message;
 	import qolaf.target.TargetSystem;
@@ -128,7 +129,7 @@ package core.spawner
 			}
 			
 			// QoLAF
-			if (Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.GetDistance(Game.instance.playerManager.me.ship, spawner) < 600)
+			if (Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.GetDistance(Game.instance.playerManager.me.ship, spawner) < 600 && SceneBase.clientSettings.autoTarget)
 				Game.instance.targetSystem.SetCurrentUnit(spawner);
 			
 			spawner.takeDamage(damage);

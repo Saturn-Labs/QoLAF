@@ -1,6 +1,7 @@
 package core.scene
 {
 	import flash.utils.getTimer;
+	import qolaf.data.ClientSettings;
 	import starling.core.Starling;
 	import com.google.analytics.AnalyticsTracker;
 	import com.google.analytics.GATracker;
@@ -347,6 +348,11 @@ package core.scene
 			{
 				settings = new Settings();
 			}
+			
+			// QoLAF
+			if (clientSettings == null)
+				clientSettings = new ClientSettings(this);
+			
 			settings.sb = this;
 			bodyManager.initSolarSystem(param1);
 			Console.write("Init solar system complete");

@@ -1,6 +1,7 @@
 package core.ship
 {
    import core.scene.Game;
+   import core.scene.SceneBase;
    import core.spawner.Spawner;
    import core.states.AIStates.AIChase;
    import core.states.AIStates.AIExit;
@@ -370,7 +371,7 @@ package core.ship
             damage = message.getInt(pointer + 2);
 			
 			// QoLAF
-			if (Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.GetDistance(Game.instance.playerManager.me.ship, ship) < 600)
+			if (Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.GetDistance(Game.instance.playerManager.me.ship, ship) < 600 && SceneBase.clientSettings.autoTarget)
 				Game.instance.targetSystem.SetCurrentUnit(ship);
 			
             ship.takeDamage(damage);

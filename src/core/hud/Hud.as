@@ -1,6 +1,7 @@
 package core.hud
 {
 	import com.greensock.TweenMax;
+	import flash.system.Capabilities;
 	//import core.hud.components.BossHealth;
 	import core.hud.components.Button;
 	import core.hud.components.ButtonCargo;
@@ -506,7 +507,7 @@ package core.hud
 				cargoButton.update();
 				resourceBox.update();
 			}
-			fullScreenButton.visible = param1;
+			fullScreenButton.visible = param1 && !(Capabilities.manufacturer.indexOf("Android") >= 0 || Capabilities.manufacturer.indexOf("iOS") >= 0);
 			container.visible = param1;
 		}
 		

@@ -14,6 +14,7 @@ package core.player
 	import core.particle.EmitterFactory;
 	import core.projectile.Projectile;
 	import core.scene.Game;
+	import core.scene.SceneBase;
 	import core.ship.PlayerShip;
 	import core.solarSystem.Body;
 	import core.spawner.Spawner;
@@ -812,7 +813,7 @@ package core.player
 				player.ship.hp = message.getInt(pointer + 4);
 				
 				// QoLAF
-				if (!player.isMe && Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.GetDistance(Game.instance.playerManager.me.ship, player.ship) < 600)
+				if (!player.isMe && Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.GetDistance(Game.instance.playerManager.me.ship, player.ship) < 600 && SceneBase.clientSettings.autoTarget)
 					Game.instance.targetSystem.SetCurrentUnit(player.ship);
 				
 				player.ship.takeDamage(damage);
