@@ -28,14 +28,16 @@ package core.scene
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import startSetup.StartSetup;
+  
+  import qolaf.data.ClientSettings;
 	
 	public class SceneBase extends DisplayObjectContainer implements ISceneState
 	{
 		public static var settings:Settings;
-		
+
 		// QoLAF
 		public static var clientSettings:ClientSettings;
-		
+				
 		public var myCargo:Cargo;
 		private var clockInitComplete:Boolean;
 		private var userJoinedComplete:Boolean;
@@ -127,7 +129,10 @@ package core.scene
 			canvas.addChild(canvasEffects);
 			canvas.addChild(canvasTexts);
 			Login.fadeScreen.repositionScreen(overlay);
+
+      // QoLAF
 			canvas.touchable = true;
+
 			layersInfo = [{"name": "canvasBackground", "instance": this.canvasBackground, "ratio": 1}, {"name": "canvasBodies", "instance": this.canvasBodies, "ratio": 0}, {"name": "canvasSpawmers", "instance": this.canvasSpawners, "ratio": 0}, {"name": "canvasTurrets", "instance": this.canvasTurrets, "ratio": 0}, {"name": "canvasBosses", "instance": this.canvasBosses, "ratio": 0}, {"name": "canvasEnemyShip", "instance": this.canvasEnemyShips, "ratio": 0}, {"name": "canvasDrops", "instance": this.canvasDrops, "ratio": 0}, {"name": "canvasPlayerShip", "instance": this.canvasPlayerShips, "ratio": 0}, {"name": "canvasProjectiles", "instance": this.canvasProjectiles, "ratio": 0}, {"name": "canvasEffects", "instance": this.canvasEffects, "ratio": 0}, {"name": "canvasTexts", "instance": this.canvasTexts, "ratio": 0}];
 			initConnection(param3);
 		}
@@ -536,6 +541,7 @@ package core.scene
 			var type:String = param1;
 			var handler:Function = param2;
 			var args:Array = rest;
+
 			connection.addMessageHandler(type, (function():Function
 			{
 				var rpcHandler:Function;
@@ -559,6 +565,7 @@ package core.scene
 		{
 			var mess:Message = param1;
 			var handler:Function = param2;
+
 			connection.addMessageHandler(mess.type, (function():Function
 			{
 				var rpcHandler:Function;
@@ -668,6 +675,7 @@ package core.scene
 			var type:String = param1;
 			var handler:Function = param2;
 			var args:Array = rest;
+
 			serviceConnection.addMessageHandler(type, (function():Function
 			{
 				var rpcHandler:Function;

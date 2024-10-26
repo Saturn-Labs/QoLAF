@@ -1,5 +1,7 @@
 package core.scene
 {
+	import flash.utils.getTimer;
+	import starling.core.Starling;
 	import com.google.analytics.AnalyticsTracker;
 	import com.google.analytics.GATracker;
 	import com.greensock.TweenMax;
@@ -92,158 +94,93 @@ package core.scene
 	import starling.utils.AssetManager;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
+  
+  import qolaf.target.TargetSystem;
+  import qolaf.data.ClientSettings;
 	
 	public class Game extends SceneBase
 	{
 		public static const TICK_LENGTH:int = 33;
-		
 		public static const SOUND_DISTANCE:int = 250000;
-		
 		public static const FRICTION:Number = 0.009;
-		
 		public static const MAX_LEVEL:Number = 150;
-		
 		public static const SAFEZONEFULLREGENTIME:int = 10;
-		
 		public static const DEFENSEBONUS:int = 8;
-		
 		public static const DMGBONUS:int = 8;
-		
 		public static const REGENBONUS:int = 1;
-		
 		public static const SYNC_FREQUENCY:Number = 50000;
-		
 		public static var instance:Game;
-		
 		private static var tracker:AnalyticsTracker;
-		
 		public static var highSettings:Boolean = true;
-		
 		public static var lastActive:int;
-		
 		public static var assets:AssetManager = new AssetManager();
-		
 		public var solarSystem:SolarSystem;
-		
 		public var parallaxManager:ParallaxManager;
-		
 		public var playerManager:PlayerManager;
-		
 		public var unitManager:UnitManager;
-		
 		public var shipManager:ShipManager;
-		
 		public var ribbonTrailPool:RibbonTrailPool;
-		
 		public var linePool:LinePool;
-		
 		public var beamLinePool:BeamLinePool;
-		
 		public var bossManager:BossManager;
-		
 		public var emitterManager:EmitterManager;
-		
 		public var weaponManager:WeaponManager;
-		
 		public var projectileManager:ProjectileManager;
-		
 		public var bodyManager:BodyManager;
-		
 		public var spawnManager:SpawnManager;
-		
 		public var dailyManager:DailyManager;
-		
 		public var turretManager:TurretManager;
-		
 		public var messagePackHandler:MessagePackHandler;
-		
 		public var deathLineManager:DeathLineManager;
-		
 		public var gameStateMachine:GameStateMachine;
-		
 		public var hud:Hud;
-		
 		public var textManager:TextManager;
-		
 		public var dropManager:DropManager;
-		
 		public var commandManager:CommandManager;
-		
 		public var groupManager:GroupManager;
-		
 		public var friendManager:FriendManager;
-		
 		public var tutorial:Tutorial;
-		
 		public var creditManager:CreditManager;
-		
 		public var messageLog:MessageLog;
-		
 		public var chatInput:ChatInputText;
-		
 		public var dataManager:IDataManager;
-		
 		public var textureManager:ITextureManager;
-		
 		public var queueManager:QueueManager;
-		
 		public var pvpManager:PvpManager;
-		
 		public var controlZoneManager:ControlZoneManager;
-		
 		public var salesManager:SalesManager;
-		
 		public var quality:int = 10;
-		
 		private var initSolarSystemComplete:Boolean = false;
-		
 		private var initPlayerComplete:Boolean = false;
-		
 		private var initEnemyPlayersComplete:Boolean = false;
-		
 		private var initEnemiesComplete:Boolean = false;
-		
 		private var initDropsComplete:Boolean = false;
-		
 		private var initServerComplete:Boolean = false;
-		
 		private var isTOSPopup:Boolean = false;
-		
 		private var isSaleSpinner:Boolean = false;
-		
 		private var nextSync:Number;
-		
 		private var welcomeText:ScreenTextField;
-		
 		private var solarSystemData:Text;
-		
 		private var requestID:String = "";
-		
 		public var gameStartedTime:Number = 0;
-		
 		private var enableTrackFPS:Boolean = false;
-		
 		private var runningFPS:int = -1;
-		
 		private var frameCount:int = 0;
-		
 		private var totalTime:Number = 0;
-		
 		private var elapsedTime:Number = 0;
-		
 		private var qualityText:Text;
-		
 		private var synchedEnemies:Boolean = false;
-		
 		private var tweenCount:int = 0;
-		
 		private var rot:Number = 0;
-		
 		private var disconnectPopup:PopupMessage;
-		
 		private var loadingSprite:Sprite;
-		
 		private var loadingFadeTween:TweenMax;
+		private var clientTime:Number = 0;
+		private var oldClientTime:Number = 0;
+		public var deltaTime:Number = 0;
+		
+		// QoLAF
+		public var targetSystem:TargetSystem;
 		
 		public function Game(param1:Client, param2:Connection, param3:Connection, param4:Room)
 		{
@@ -262,6 +199,9 @@ package core.scene
 				trace("TEST RECEIVED");
 			});
 			instance = this;
+
+			// QoLAF
+			targetSystem = new TargetSystem(this);
 		}
 		
 		public static function trackPageView(param1:String):void
@@ -409,6 +349,11 @@ package core.scene
 			{
 				settings = new Settings();
 			}
+      
+      // QoLAF
+			if (clientSettings == null)
+				clientSettings = new ClientSettings(this);
+        
 			settings.sb = this;
 			bodyManager.initSolarSystem(param1);
 			Console.write("Init solar system complete");
@@ -884,6 +829,12 @@ package core.scene
 		
 		public function tickUpdate():void
 		{
+			oldClientTime = clientTime;
+			clientTime = getTimer() / 1000.0;
+			if (oldClientTime == 0)
+				oldClientTime = clientTime;
+			deltaTime = clientTime - oldClientTime;
+			
 			time = getServerTime();
 			playerManager.update();
 			textManager.update();
@@ -901,6 +852,10 @@ package core.scene
 			camera.update();
 			hud.update();
 			deathLineManager.update();
+
+			// QoLAF
+			targetSystem.Update();
+			
 			if (pvpManager != null)
 			{
 				pvpManager.update();
@@ -962,6 +917,7 @@ package core.scene
 			{
 				return;
 			}
+      
 			Login.fadeScreen.addEventListener("fadeInComplete", (function():Function
 			{
 				var onFadeInComplete:Function;
@@ -1325,6 +1281,7 @@ package core.scene
 			solarSystemData.touchable = false;
 			addChild(solarSystemData);
 			TweenMax.to(solarSystemData, 2, {"alpha": 2});
+
 			welcomeText.addEventListener("paragraphFinished", (function():Function
 			{
 				var r:Function;
@@ -1333,6 +1290,7 @@ package core.scene
 					welcomeText.removeEventListener("paragraphFinished", r);
 				};
 			})());
+
 			welcomeText.addEventListener("animationFinished", (function():Function
 			{
 				var r:Function;

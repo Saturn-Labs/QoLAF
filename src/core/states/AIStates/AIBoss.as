@@ -61,7 +61,8 @@ package core.states.AIStates
                   }
                }
             }
-            g.hud.bossHealth.update();
+			// QoLAF
+            //g.hud.bossHealth.update();
             nextRegen = g.time + 1000;
          }
          if (b.teleportExitTime != 0)
