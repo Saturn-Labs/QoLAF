@@ -30,49 +30,49 @@ package core.hud.components.credits
 	import starling.text.TextFormat;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class BuyFlux extends starling.display.Sprite
 	{
 		private var g:Game;
-
+		
 		private var textureManager:ITextureManager;
-
+		
 		private var bgrQuad:Quad;
-
+		
 		private var bundles:Array;
-
+		
 		private var box:Box;
-
+		
 		private var textLayer:starling.display.Sprite;
-
+		
 		private var buttonLayer:starling.display.Sprite;
-
+		
 		private var nativeLayer:flash.display.Sprite;
-
+		
 		private const DARK_GREY:uint = 2302755;
-
+		
 		private const LIGHT_GREY:uint = 5131854;
-
+		
 		private const GREEN:uint = 4718367;
-
+		
 		private const YELLOW:uint = 15582483;
-
+		
 		private const GOLD:uint = 15526144;
-
+		
 		private var BuyButtonAsset:Class;
-
+		
 		private var GetFluxNowButtonAsset:Class;
-
+		
 		public var sale:Boolean = false;
-
+		
 		public var saleMultiplier:Number = 2;
-
+		
 		public var saleDesc:String = "";
-
+		
 		public var saleEvent:Sale;
-
+		
 		public var bgWidth:int;
-
+		
 		public function BuyFlux(param1:Game)
 		{
 			var i:int;
@@ -108,152 +108,37 @@ package core.hud.components.credits
 			textureManager = TextureLocator.getService();
 			if (Login.currentState == "facebook")
 			{
-				bundles.push( {
-							"amount": 8500,
-							"price": "$50",
-							"bonus": 3500,
-							"bonusLabel": Localize.t("Best Value!"),
-							"size": 26
-						});
-				bundles.push( {
-							"amount": 5600,
-							"price": "$35",
-							"bonus": 2100,
-							"size": 24
-						});
-				bundles.push( {
-							"amount": 3000,
-							"price": "$20",
-							"bonus": 1000,
-							"bonusLabel": Localize.t("Most Popular!"),
-							"size": 22
-						});
-				bundles.push( {
-							"amount": 1100,
-							"price": "$10",
-							"bonus": 100,
-							"size": 20
-						});
-				bundles.push( {
-							"amount": 500,
-							"price": "$5",
-							"size": 18
-						});
-				bundles.push( {
-							"amount": 100,
-							"type": "fb"
-						});
-				bundles.push( {
-							"amount": 100,
-							"type": "invite"
-						});
+				bundles.push({"amount": 8500, "price": "$50", "bonus": 3500, "bonusLabel": Localize.t("Best Value!"), "size": 26});
+				bundles.push({"amount": 5600, "price": "$35", "bonus": 2100, "size": 24});
+				bundles.push({"amount": 3000, "price": "$20", "bonus": 1000, "bonusLabel": Localize.t("Most Popular!"), "size": 22});
+				bundles.push({"amount": 1100, "price": "$10", "bonus": 100, "size": 20});
+				bundles.push({"amount": 500, "price": "$5", "size": 18});
+				bundles.push({"amount": 100, "type": "fb"});
+				bundles.push({"amount": 100, "type": "invite"});
 			}
 			else if (Login.currentState == "steam")
 			{
-				bundles.push( {
-							"amount": 8500,
-							"price": "$50",
-							"bonus": 3500,
-							"bonusLabel": Localize.t("Best Value!"),
-							"size": 26
-						});
-				bundles.push( {
-							"amount": 5600,
-							"price": "$35",
-							"bonus": 2100,
-							"size": 24
-						});
-				bundles.push( {
-							"amount": 3000,
-							"price": "$20",
-							"bonus": 1000,
-							"bonusLabel": Localize.t("Most Popular!"),
-							"size": 22
-						});
-				bundles.push( {
-							"amount": 1100,
-							"price": "$10",
-							"bonus": 100,
-							"size": 20
-						});
-				bundles.push( {
-							"amount": 500,
-							"price": "$5",
-							"size": 18
-						});
+				bundles.push({"amount": 8500, "price": "$50", "bonus": 3500, "bonusLabel": Localize.t("Best Value!"), "size": 26});
+				bundles.push({"amount": 5600, "price": "$35", "bonus": 2100, "size": 24});
+				bundles.push({"amount": 3000, "price": "$20", "bonus": 1000, "bonusLabel": Localize.t("Most Popular!"), "size": 22});
+				bundles.push({"amount": 1100, "price": "$10", "bonus": 100, "size": 20});
+				bundles.push({"amount": 500, "price": "$5", "size": 18});
 			}
 			else if (Login.currentState == "kongregate")
 			{
-				bundles.push( {
-							"amount": 8500,
-							"price": "500",
-							"image": "kred",
-							"bonus": 3500,
-							"bonusLabel": Localize.t("Best Value!"),
-							"size": 26
-						});
-				bundles.push( {
-							"amount": 5600,
-							"price": "350",
-							"image": "kred",
-							"bonus": 2100,
-							"size": 24
-						});
-				bundles.push( {
-							"amount": 3000,
-							"price": "200",
-							"image": "kred",
-							"bonus": 1000,
-							"bonusLabel": Localize.t("Most Popular!"),
-							"size": 22
-						});
-				bundles.push( {
-							"amount": 1100,
-							"price": "100",
-							"image": "kred",
-							"bonus": 100,
-							"size": 20
-						});
-				bundles.push( {
-							"amount": 500,
-							"price": "50",
-							"image": "kred",
-							"size": 18
-						});
+				bundles.push({"amount": 8500, "price": "500", "image": "kred", "bonus": 3500, "bonusLabel": Localize.t("Best Value!"), "size": 26});
+				bundles.push({"amount": 5600, "price": "350", "image": "kred", "bonus": 2100, "size": 24});
+				bundles.push({"amount": 3000, "price": "200", "image": "kred", "bonus": 1000, "bonusLabel": Localize.t("Most Popular!"), "size": 22});
+				bundles.push({"amount": 1100, "price": "100", "image": "kred", "bonus": 100, "size": 20});
+				bundles.push({"amount": 500, "price": "50", "image": "kred", "size": 18});
 			}
 			else
 			{
-				bundles.push( {
-							"amount": 8500,
-							"price": "$50",
-							"bonus": 3500,
-							"bonusLabel": Localize.t("Best Value!"),
-							"size": 26
-						});
-				bundles.push( {
-							"amount": 5600,
-							"price": "$35",
-							"bonus": 2100,
-							"size": 24
-						});
-				bundles.push( {
-							"amount": 3000,
-							"price": "$20",
-							"bonus": 1000,
-							"bonusLabel": Localize.t("Most Popular!"),
-							"size": 22
-						});
-				bundles.push( {
-							"amount": 1100,
-							"price": "$10",
-							"bonus": 100,
-							"size": 20
-						});
-				bundles.push( {
-							"amount": 500,
-							"price": "$5",
-							"size": 18
-						});
+				bundles.push({"amount": 8500, "price": "$50", "bonus": 3500, "bonusLabel": Localize.t("Best Value!"), "size": 26});
+				bundles.push({"amount": 5600, "price": "$35", "bonus": 2100, "size": 24});
+				bundles.push({"amount": 3000, "price": "$20", "bonus": 1000, "bonusLabel": Localize.t("Most Popular!"), "size": 22});
+				bundles.push({"amount": 1100, "price": "$10", "bonus": 100, "size": 20});
+				bundles.push({"amount": 500, "price": "$5", "size": 18});
 			}
 			i = 0;
 			while (i < bundles.length)
@@ -268,10 +153,10 @@ package core.hud.components.credits
 			h += 40;
 			box = new Box(bgWidth, h, "highlight", 1, 20);
 			close = new Button(function():void
-				{
-					onClose();
-					dispatchClose();
-				}, "close");
+			{
+				onClose();
+				dispatchClose();
+			}, "close");
 			close.x = bgWidth - close.width;
 			close.y = Math.round(h - close.height / 2 - 20);
 			buttonLayer.addChild(close);
@@ -296,7 +181,7 @@ package core.hud.components.credits
 			redraw();
 			Game.trackPageView("viewbuyflux");
 		}
-
+		
 		private function addBundle(param1:Object, param2:int):void
 		{
 			var fluxIcon:Image;
@@ -403,31 +288,31 @@ package core.hud.components.credits
 			{
 				bitmap = new BuyButtonAsset();
 				button = new NativeImageButton(function():void
+				{
+					Starling.current.nativeStage.removeChild(nativeLayer);
+					if (Login.currentState == "facebook")
 					{
-						Starling.current.nativeStage.removeChild(nativeLayer);
-						if (Login.currentState == "facebook")
-						{
-							onBuyFacebook(obj);
-						}
-						else if (Login.currentState == "steam")
-						{
-							onBuySteam(obj);
-						}
-						else if (Login.currentState == "kongregate")
-						{
-							onBuyKred(obj);
-						}
-						else
-						{
-							onBuyPaypal(obj);
-						}
-					}, bitmap.bitmapData);
+						onBuyFacebook(obj);
+					}
+					else if (Login.currentState == "steam")
+					{
+						onBuySteam(obj);
+					}
+					else if (Login.currentState == "kongregate")
+					{
+						onBuyKred(obj);
+					}
+					else
+					{
+						onBuyPaypal(obj);
+					}
+				}, bitmap.bitmapData);
 				button.x = bg.x + bg.width - button.width - 25;
 				button.y = bg.y;
 				nativeLayer.addChild(button);
 			}
 		}
-
+		
 		private function addPaymentInfo():void
 		{
 			if (Login.currentState != "site")
@@ -442,7 +327,7 @@ package core.hud.components.credits
 			_loc1_.y = _loc2_.y - _loc1_.height - 10;
 			textLayer.addChild(_loc1_);
 		}
-
+		
 		private function addSuperRewards():void
 		{
 			if (Login.currentState != "site")
@@ -465,7 +350,7 @@ package core.hud.components.credits
 			_loc3_.y = _loc1_.y + _loc1_.height + 10;
 			nativeLayer.addChild(_loc3_);
 		}
-
+		
 		private function onBuySuperRewards():void
 		{
 			var url:String;
@@ -476,19 +361,15 @@ package core.hud.components.credits
 			popup = new PopupMessage();
 			popup.text = Localize.t("Click me when transaction is finished.\n\nIt can take up to 48 hours for free flux to appear.");
 			g.addChildToOverlay(popup);
-			popup.addEventListener("close", (function():*
-					{
-						var closePopup:Function;
-						return closePopup = function(param1:Event):void
-						{
-							g.removeChildFromOverlay(popup);
-							popup.removeEventListeners();
-							onClose();
-							dispatchClose();
-						};
-					})());
+			popup.addEventListener("close", (function(param1:Event):void
+			{
+				g.removeChildFromOverlay(popup);
+				popup.removeEventListeners();
+				onClose();
+				dispatchClose();
+			})());
 		}
-
+		
 		private function onBuyPaypal(param1:Object):void
 		{
 			var url:String;
@@ -516,18 +397,14 @@ package core.hud.components.credits
 			popup = new PopupMessage();
 			popup.text = Localize.t("Click me when transaction is finished. If your flux is not shown instantly, try reloading the game.");
 			g.addChildToOverlay(popup);
-			popup.addEventListener("close", (function():*
-					{
-						var closePopup:Function;
-						return closePopup = function(param1:Event):void
-						{
-							g.removeChildFromOverlay(popup, true);
-							onClose();
-							dispatchClose();
-						};
-					})());
+			popup.addEventListener("close", (function(param1:Event):void
+			{
+				g.removeChildFromOverlay(popup, true);
+				onClose();
+				dispatchClose();
+			})());
 		}
-
+		
 		private function onBuySteam(param1:Object):void
 		{
 			var desc:String;
@@ -542,51 +419,44 @@ package core.hud.components.credits
 			{
 				desc = obj.amount + " Flux";
 			}
-			info = {
-					"steamid": RymdenRunt.info.userId,
-					"appid": RymdenRunt.info.appId,
-					"language": "EN",
-					"coinamount": obj.amount,
-					"description": desc,
-					"currency": "USD"
-				};
+			info = {"steamid": RymdenRunt.info.userId, "appid": RymdenRunt.info.appId, "language": "EN", "coinamount": obj.amount, "description": desc, "currency": "USD"};
 			vault = g.client.payVault;
 			vault.getBuyCoinsInfo("steam", info, function(param1:Object):void
+			{
+				var SteamBuySuccess:Function;
+				var SteamBuyFail:Function;
+				var obj:Object = param1;
+				info.orderid = obj.orderid;
+				SteamBuySuccess = function():void
 				{
-					var SteamBuySuccess:Function;
-					var SteamBuyFail:Function;
-					var obj:Object = param1;
-					info.orderid = obj.orderid;
-					SteamBuySuccess = function():void
+					RymdenRunt.instance.removeEventListener("steambuysuccess", SteamBuySuccess);
+					RymdenRunt.instance.removeEventListener("steambuyfail", SteamBuyFail);
+					vault.usePaymentInfo("steam", info, function(param1:Object):void
 					{
-						RymdenRunt.instance.removeEventListener("steambuysuccess", SteamBuySuccess);
-						RymdenRunt.instance.removeEventListener("steambuyfail", SteamBuyFail);
-						vault.usePaymentInfo("steam", info, function(param1:Object):void
-							{
-								Starling.current.nativeStage.addChild(nativeLayer);
-								Game.trackEvent("buy", "boughtflux", "steam", obj.amount);
-								onSuccess();
-							}, function(param1:Object):void
-							{
-								Starling.current.nativeStage.addChild(nativeLayer);
-								onFail();
-							});
-					};
-					SteamBuyFail = function():void
-					{
-						RymdenRunt.instance.removeEventListener("steambuysuccess", SteamBuySuccess);
-						RymdenRunt.instance.removeEventListener("steambuyfail", SteamBuyFail);
 						Starling.current.nativeStage.addChild(nativeLayer);
-					};
-					RymdenRunt.instance.addEventListener("steambuysuccess", SteamBuySuccess);
-					RymdenRunt.instance.addEventListener("steambuyfail", SteamBuyFail);
-				}, function(param1:Object):void
+						Game.trackEvent("buy", "boughtflux", "steam", obj.amount);
+						onSuccess();
+					}, function(param1:Object):void
+					{
+						Starling.current.nativeStage.addChild(nativeLayer);
+						onFail();
+					});
+				};
+				SteamBuyFail = function():void
 				{
+					RymdenRunt.instance.removeEventListener("steambuysuccess", SteamBuySuccess);
+					RymdenRunt.instance.removeEventListener("steambuyfail", SteamBuyFail);
 					Starling.current.nativeStage.addChild(nativeLayer);
-					onFail();
-				});
+				};
+				RymdenRunt.instance.addEventListener("steambuysuccess", SteamBuySuccess);
+				RymdenRunt.instance.addEventListener("steambuyfail", SteamBuyFail);
+			}, function(param1:Object):void
+			{
+				Starling.current.nativeStage.addChild(nativeLayer);
+				onFail();
+			});
 		}
-
+		
 		private function onBuyFacebook(param1:Object):void
 		{
 			var desc:String;
@@ -600,41 +470,12 @@ package core.hud.components.credits
 			{
 				desc = obj.amount + " Flux";
 			}
-			g.client.payVault.getBuyCoinsInfo("facebookv2", {
-						"coinamount": obj.amount,
-						"title": desc,
-						"description": Localize.t("Thank you for supporting the game."),
-						"image": g.client.gameFS.getUrl("/img/credit_small_dark.png", Login.useSecure),
-						"currencies": "USD"
-					}, function(param1:Object):void
-					{
-						var info:Object = param1;
-						FB.ui(info, function(param1:Object):void
-							{
-								if (param1.status == "completed")
-								{
-									onSuccess();
-								}
-								else
-								{
-									Starling.current.nativeStage.addChild(nativeLayer);
-									onFail();
-									Console.write("Purchase failed.");
-								}
-							});
-					}, function(param1:PlayerIOError):void
-					{
-						Console.write("Unable to buy coins", param1);
-					});
-		}
-
-		private function onBuyKred(param1:Object):void
-		{
-			var obj:Object = param1;
-			Starling.current.nativeStage.displayState = "normal";
-			Login.kongregate.mtx.purchaseItems(["coins" + obj.amount], function(param1:Object):void
+			g.client.payVault.getBuyCoinsInfo("facebookv2", {"coinamount": obj.amount, "title": desc, "description": Localize.t("Thank you for supporting the game."), "image": g.client.gameFS.getUrl("/img/credit_small_dark.png", Login.useSecure), "currencies": "USD"}, function(param1:Object):void
+			{
+				var info:Object = param1;
+				FB.ui(info, function(param1:Object):void
 				{
-					if (param1.success)
+					if (param1.status == "completed")
 					{
 						onSuccess();
 					}
@@ -642,10 +483,33 @@ package core.hud.components.credits
 					{
 						Starling.current.nativeStage.addChild(nativeLayer);
 						onFail();
+						Console.write("Purchase failed.");
 					}
 				});
+			}, function(param1:PlayerIOError):void
+			{
+				Console.write("Unable to buy coins", param1);
+			});
 		}
-
+		
+		private function onBuyKred(param1:Object):void
+		{
+			var obj:Object = param1;
+			Starling.current.nativeStage.displayState = "normal";
+			Login.kongregate.mtx.purchaseItems(["coins" + obj.amount], function(param1:Object):void
+			{
+				if (param1.success)
+				{
+					onSuccess();
+				}
+				else
+				{
+					Starling.current.nativeStage.addChild(nativeLayer);
+					onFail();
+				}
+			});
+		}
+		
 		private function onSuccess():void
 		{
 			var popup:PopupMessage;
@@ -653,18 +517,14 @@ package core.hud.components.credits
 			popup = new PopupMessage();
 			popup.text = Localize.t("Your transaction has finished successfully. If your flux is not shown instantly, try reloading the game.");
 			g.addChildToOverlay(popup);
-			popup.addEventListener("close", (function():*
-					{
-						var closePopup:Function;
-						return closePopup = function(param1:Event):void
-						{
-							g.removeChildFromOverlay(popup);
-							popup.removeEventListeners();
-							dispatchClose();
-						};
-					})());
+			popup.addEventListener("close", (function(param1:Event):void
+			{
+				g.removeChildFromOverlay(popup);
+				popup.removeEventListeners();
+				dispatchClose();
+			})());
 		}
-
+		
 		private function onFail():void
 		{
 			var popup:PopupMessage;
@@ -672,23 +532,19 @@ package core.hud.components.credits
 			popup = new PopupMessage();
 			popup.text = Localize.t("The transaction failed.");
 			g.addChildToOverlay(popup);
-			popup.addEventListener("close", (function():*
-					{
-						var closePopup:Function;
-						return closePopup = function(param1:Event):void
-						{
-							g.removeChildFromOverlay(popup);
-							popup.removeEventListeners();
-							dispatchClose();
-						};
-					})());
+			popup.addEventListener("close", (function(param1:Event):void
+			{
+				g.removeChildFromOverlay(popup);
+				popup.removeEventListeners();
+				dispatchClose();
+			})());
 		}
-
+		
 		private function dispatchClose():void
 		{
 			dispatchEventWith("buyFluxClose");
 		}
-
+		
 		private function onClose(param1:TouchEvent = null):void
 		{
 			if (Starling.current.nativeStage.contains(nativeLayer))
@@ -696,7 +552,7 @@ package core.hud.components.credits
 				Starling.current.nativeStage.removeChild(nativeLayer);
 			}
 		}
-
+		
 		private function redraw(param1:Event = null):void
 		{
 			var _loc2_:int = g.stage.stageWidth;

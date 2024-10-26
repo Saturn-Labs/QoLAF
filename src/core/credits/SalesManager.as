@@ -141,7 +141,7 @@ package core.credits
 					return _loc2_;
 				}
 			}
-			return null;
+			return false;
 		}
 		
 		public function isFluxSale():Boolean

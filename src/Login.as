@@ -728,7 +728,7 @@ package
 			loader = new Loader();
 			loader.load(request);
 			Starling.current.nativeStage.addChild(loader);
-			loader.contentLoaderInfo.addEventListener("complete", (function():*
+			loader.contentLoaderInfo.addEventListener("complete", (function():Function
 			{
 				var onLoad:Function;
 				return onLoad = function(param1:flash.events.Event):void
@@ -783,7 +783,7 @@ package
 			}
 			mRequest = new URLRequest("http://api.playerio.com/clientintegrations/mousebreaker/auth?game=4&token=" + RymdenRunt.parameters.token);
 			mRequest.method = "GET";
-			mLoader.addEventListener("complete", (function():*
+			mLoader.addEventListener("complete", (function():Function
 			{
 				var onLoad:Function;
 				return onLoad = function(param1:flash.events.Event):void
@@ -808,7 +808,7 @@ package
 			request.method = "GET";
 			loader = new URLLoader();
 			loader.dataFormat = "text";
-			loader.addEventListener("complete", (function():*
+			loader.addEventListener("complete", (function():Function
 			{
 				var onLoad:Function;
 				return onLoad = function(param1:flash.events.Event):void
@@ -834,7 +834,7 @@ package
 			request.method = "GET";
 			loader = new URLLoader();
 			loader.dataFormat = "text";
-			loader.addEventListener("complete", (function():*
+			loader.addEventListener("complete", (function():Function
 			{
 				var onLoad:Function;
 				return onLoad = function(param1:flash.events.Event):void
