@@ -544,7 +544,7 @@ package core.hud
 			shopIcons.update();
 			
 			// QoLAF
-			targetInfoElement.Update();
+			targetInfoElement.update();
 			
 			if (hintMapText != null)
 			{

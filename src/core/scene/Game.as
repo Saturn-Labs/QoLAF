@@ -854,7 +854,7 @@ package core.scene
 			deathLineManager.update();
 
 			// QoLAF
-			targetSystem.Update();
+			targetSystem.update();
 			
 			if (pvpManager != null)
 			{

@@ -67,7 +67,7 @@ package core.states.gameStates.missions
 		
 		private function sortByDate():void
 		{
-			missions = missions.sort((function(param1:Mission, param2:Mission):int
+			missions = missions.sort(function(param1:Mission, param2:Mission):int
 			{
 				if (param1.created < param2.created)
 				{
@@ -78,7 +78,7 @@ package core.states.gameStates.missions
 					return -1;
 				}
 				return 0;
-			})());
+			});
 		}
 		
 		private function reload(param1:Event = null):void

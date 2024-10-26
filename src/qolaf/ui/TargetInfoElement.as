@@ -65,7 +65,7 @@ package qolaf.ui
 			lockButton.x = -(SH_AND_HP_BAR_WIDTH / 2);
 			lockButton.y = -2;
 			lockButton.touchable = true;
-			lockButton.addEventListener(TouchEvent.TOUCH, OnClickLock);
+			lockButton.addEventListener(TouchEvent.TOUCH, onClickLock);
 			addChild(lockButton);
 			
 			targetName = new Label();
@@ -96,18 +96,18 @@ package qolaf.ui
 			addChild(effects);
 		}
 		
-		public function OnClickLock(event:TouchEvent):void 
+		public function onClickLock(event:TouchEvent):void 
 		{
 			var touch:Touch = event.getTouch(lockButton);
-			if (touch == null || touch.phase != TouchPhase.BEGAN || Game.instance.targetSystem == null || !Game.instance.targetSystem.CurrentUnitValid())
+			if (touch == null || touch.phase != TouchPhase.BEGAN || Game.instance.targetSystem == null || !Game.instance.targetSystem.currentUnitValid())
 				return;
 				
 			Game.instance.targetSystem.lockedTarget = !Game.instance.targetSystem.lockedTarget;
 		}
 		
-		public function Update():void 
+		public function update():void 
 		{
-			var unit:Unit = game.targetSystem.GetCurrentUnit();
+			var unit:Unit = game.targetSystem.getCurrentUnit();
 			x = game.stage.stageWidth / 2.0;
 			y = 60;
 			if (unit == null)

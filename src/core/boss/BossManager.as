@@ -298,8 +298,8 @@ package core.boss
 			var damage:int = message.getInt(pointer + 2);
 			
 			// QoLAF
-			if (Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.GetDistance(Game.instance.playerManager.me.ship, component) < 600 && SceneBase.clientSettings.autoTarget)
-				Game.instance.targetSystem.SetCurrentUnit(component);
+			if (Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.getDistance(Game.instance.playerManager.me.ship, component) < 600 && SceneBase.clientSettings.autoTarget)
+				Game.instance.targetSystem.setCurrentUnit(component);
 				
 			component.takeDamage(damage);
 			component.shieldHp = message.getInt(pointer + 3);
