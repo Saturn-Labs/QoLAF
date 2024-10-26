@@ -21,6 +21,7 @@ package core.scene
 	import playerio.Connection;
 	import playerio.Message;
 	import playerio.PlayerIOError;
+	import qolaf.data.ClientSettings;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
@@ -32,96 +33,54 @@ package core.scene
 	{
 		public static var settings:Settings;
 		
+		// QoLAF
+		public static var clientSettings:ClientSettings;
+		
 		public var myCargo:Cargo;
-		
 		private var clockInitComplete:Boolean;
-		
 		private var userJoinedComplete:Boolean;
-		
 		public var room:Room;
-		
 		public var client:Client;
-		
 		private var connection:Connection;
-		
 		protected var roomId:String;
-		
 		protected var serviceRoomId:String;
-		
 		public var serviceConnection:Connection;
-		
 		protected var clock:Clock;
-		
 		public var canvas:Sprite;
-		
 		private var hud:Sprite;
-		
 		private var menu:Sprite;
-		
 		private var overlay:Sprite;
-		
 		public const CANVAS_BACKGROUND:String = "canvasBackground";
-		
 		public const CANVAS_BODIES:String = "canvasBodies";
-		
 		public const CANVAS_DROPS:String = "canvasDrops";
-		
 		public const CANVAS_SPAWNERS:String = "canvasSpawmers";
-		
 		public const CANVAS_TURRETS:String = "canvasTurrets";
-		
 		public const CANVAS_BOSSES:String = "canvasBosses";
-		
 		public const CANVAS_ENEMY_SHIPS:String = "canvasEnemyShip";
-		
 		public const CANVAS_PLAYER_SHIPS:String = "canvasPlayerShip";
-		
 		public const CANVAS_PROJECTILES:String = "canvasProjectiles";
-		
 		public const CANVAS_EFFECTS:String = "canvasEffects";
-		
 		public const CANVAS_TEXTS:String = "canvasTexts";
-		
 		public var canvasBackground:DisplayObjectContainer;
-		
 		public var canvasBodies:Sprite;
-		
 		public var canvasDrops:Sprite;
-		
 		public var canvasSpawners:Sprite;
-		
 		public var canvasTurrets:Sprite;
-		
 		public var canvasBosses:Sprite;
-		
 		public var canvasEnemyShips:Sprite;
-		
 		public var canvasPlayerShips:Sprite;
-		
 		public var canvasProjectiles:Sprite;
-		
 		public var canvasEffects:Sprite;
-		
 		public var canvasTexts:Sprite;
-		
 		private var layersInfo:Array;
-		
 		private var connectionHandlers:Dictionary;
-		
 		private var serviceHandlers:Dictionary;
-		
 		protected var _stateMachine:SceneStateMachine;
-		
 		protected var _leaving:Boolean;
-		
 		public var blockHotkeys:Boolean = false;
-		
 		public var camera:StarlingCameraFocus;
-		
 		private var resizeCallbacks:Array;
-		
 		public var time:Number = 0;
-		
 		public var messageCounter:Dictionary;
 		
 		public function SceneBase(param1:Client, param2:Connection, param3:Connection, param4:Room)
@@ -168,7 +127,7 @@ package core.scene
 			canvas.addChild(canvasEffects);
 			canvas.addChild(canvasTexts);
 			Login.fadeScreen.repositionScreen(overlay);
-			canvas.touchable = false;
+			canvas.touchable = true;
 			layersInfo = [{"name": "canvasBackground", "instance": this.canvasBackground, "ratio": 1}, {"name": "canvasBodies", "instance": this.canvasBodies, "ratio": 0}, {"name": "canvasSpawmers", "instance": this.canvasSpawners, "ratio": 0}, {"name": "canvasTurrets", "instance": this.canvasTurrets, "ratio": 0}, {"name": "canvasBosses", "instance": this.canvasBosses, "ratio": 0}, {"name": "canvasEnemyShip", "instance": this.canvasEnemyShips, "ratio": 0}, {"name": "canvasDrops", "instance": this.canvasDrops, "ratio": 0}, {"name": "canvasPlayerShip", "instance": this.canvasPlayerShips, "ratio": 0}, {"name": "canvasProjectiles", "instance": this.canvasProjectiles, "ratio": 0}, {"name": "canvasEffects", "instance": this.canvasEffects, "ratio": 0}, {"name": "canvasTexts", "instance": this.canvasTexts, "ratio": 0}];
 			initConnection(param3);
 		}
