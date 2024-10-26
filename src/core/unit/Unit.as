@@ -502,7 +502,6 @@ package core.unit
 		public function doDOTEffect(duration:int, effectId:String, debuffId:int = -1, param4:String = ""):void
 		{
 			var visualEffects:Vector.<Emitter> = undefined;
-			var timer:TweenMax = null;
 			if (effectId == null || !alive || !isAddedToCanvas)
 			{
 				return;
@@ -541,19 +540,16 @@ package core.unit
 					break;
 			}
 			
-			if (dotTimers.length > 0 && dotTimers[0]._active && this.dotEffect == effectId)
+			for each (var timer:TweenMax in dotTimers)
 			{
-				for each (var timer:TweenMax in dotTimers)
-				{
+				if (dotTimers.length > 0 && dotTimers[0]._active && this.dotEffect == effectId)
 					timer.restart();
-				}
-			}
-			else
-			{
-				for each (var timer:TweenMax in dotTimers)
-				{
+				else
 					timer.seek(timer.totalDuration(), false);
-				}
+			}
+			
+			if (!(dotTimers.length > 0 && dotTimers[0]._active && this.dotEffect == effectId))
+			{
 				dotTimers.splice(0, -1);
 				visualEffects = EmitterFactory.create(effectId, g, pos.x, pos.y, this, true);
 				for each (var emitter:Emitter in visualEffects)
@@ -563,6 +559,7 @@ package core.unit
 				}
 				this.dotEffect = effectId;
 			}
+
 			if (param4 != "" && this == g.me.ship)
 			{
 				g.textManager.createDebuffText(param4, this);

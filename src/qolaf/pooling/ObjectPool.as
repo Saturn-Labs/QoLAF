@@ -14,15 +14,16 @@ package qolaf.pooling
 		}
 		
 		public function getObject(): Object {
+			var obj:Object = null;
 			if (inactiveObjects.length <= 0)
 			{
-				var obj:Object = factoryFunction();
+				obj = factoryFunction();
 				activeObjects.push(obj);
 				return obj;
 			}
 			else 
 			{
-				var obj:Object = inactiveObjects.removeAt(0);
+				obj = inactiveObjects.removeAt(0);
 				activeObjects.push(obj);
 				return obj;
 			}

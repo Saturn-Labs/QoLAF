@@ -30,9 +30,9 @@ package qolaf.ui
 	 */
 	public class TargetInfoElement extends DisplayObjectContainer 
 	{
-		private static var TARGET_INFO_TEXT_HEIGHT = 20;
-		private static var SH_AND_HP_BAR_HEIGHT = 14;
-		private static var SH_AND_HP_BAR_WIDTH = 300;
+		private static var TARGET_INFO_TEXT_HEIGHT:Number = 20;
+		private static var SH_AND_HP_BAR_HEIGHT:Number = 14;
+		private static var SH_AND_HP_BAR_WIDTH:Number = 300;
 		
 		private var game:Game;
 		public var targetName:Label;
@@ -126,7 +126,7 @@ package qolaf.ui
 			}
 			
 			{
-				var currentHeight = 0;
+				var currentHeight:Number = 0;
 				for (var i:Number = 0; i < effects.numChildren; i++)
 					objPool.recicleObject(effects.getChildAt(i));
 				effects.removeChildren();
