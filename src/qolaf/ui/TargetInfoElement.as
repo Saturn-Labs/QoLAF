@@ -4,6 +4,8 @@ package qolaf.ui
 	import core.unit.Unit;
 	import feathers.controls.Label;
 	import generics.Util;
+	import qolaf.debuffs.DebuffEffect;
+	import qolaf.pooling.ObjectPool;
 	import qolaf.ui.elements.ValueTrailAnimatedSlider;
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
@@ -40,12 +42,18 @@ package qolaf.ui
 		public var lockIcon:Texture;
 		public var unlockIcon:Texture;
 		public var lockButton:Image;
+		public var effects:Sprite;
+		public var objPool:ObjectPool;
 		
 		public function TargetInfoElement(game:Game) 
 		{
 			this.game = game;
 			width = 370;
 			height = 90;
+			
+			objPool = new ObjectPool(function(): Label {
+				return new Label();
+			});
 			
 			var manager:ITextureManager = TextureLocator.getService();
 			lockIcon = manager.getTextureByTextureName("ti_cargo_protection", "texture_gui1_test.png");
@@ -79,6 +87,13 @@ package qolaf.ui
 			healthBar.x = -(SH_AND_HP_BAR_WIDTH / 2);
 			healthBar.y = shieldBar.y + SH_AND_HP_BAR_HEIGHT;
 			addChild(healthBar);
+			
+			effects = new Sprite();
+			effects.alignPivot(Align.CENTER, Align.TOP);
+			effects.width = 370;
+			effects.x = 0;
+			effects.y = healthBar.y + SH_AND_HP_BAR_HEIGHT;
+			addChild(effects);
 		}
 		
 		public function OnClickLock(event:TouchEvent):void 
@@ -108,6 +123,26 @@ package qolaf.ui
 			}
 			else {
 				healthBar.y = TARGET_INFO_TEXT_HEIGHT;
+			}
+			
+			{
+				var currentHeight = 0;
+				for (var i:Number = 0; i < effects.numChildren; i++)
+					objPool.recicleObject(effects.getChildAt(i));
+				effects.removeChildren();
+				
+				for each (var debuff:DebuffEffect in unit.currentDebuffs) {
+					var effectText:Label = objPool.getObject() as Label;
+					effectText.width = SH_AND_HP_BAR_WIDTH;
+					effectText.height = TARGET_INFO_TEXT_HEIGHT;
+					effectText.styleName = "target_info";
+					effectText.alignPivot(Align.CENTER, Align.TOP);
+					effectText.x = 0;
+					effectText.y = currentHeight + 2;
+					effectText.text = "Debuff " + debuff.getDebuffId() + ": x" + debuff.getStacks() + " Time: " + (debuff.getEndTime() - game.time);
+					effects.addChild(effectText);
+					currentHeight += TARGET_INFO_TEXT_HEIGHT;
+				}
 			}
 			
 			shieldBar.setValue(unit.shieldHp, unit.shieldHpMax);

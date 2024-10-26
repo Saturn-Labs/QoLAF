@@ -14,8 +14,10 @@ package core.unit
 	import core.spawner.Spawner;
 	import core.states.StateMachine;
 	import core.text.TextParticle;
+	import core.weapon.Debuff;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import qolaf.debuffs.DebuffEffect;
 	import sound.ISound;
 	import sound.SoundLocator;
 	import starling.display.Image;
@@ -26,164 +28,88 @@ package core.unit
 	public class Unit extends GameObject
 	{
 		private static const HP_MAXWIDTH:int = 20;
-		
 		private static const HP_MINWIDTH:int = 10;
-		
 		private static const HP_MAXWIDTH_PVP:int = 50;
-		
 		private var damageFilter:ColorMatrixFilter;
-		
 		private var healFilter:ColorMatrixFilter;
-		
 		protected var hpBar:Image;
-		
 		protected var shieldBar:Image;
-		
 		private var _bodyName:String;
-		
 		public var syncId:int;
-		
 		public var parentObj:GameObject;
-		
 		public var disableHealEndtime:Number;
-		
 		public var nextHitEffectReady:Number = 0;
-		
 		public var lastDmgText:TextParticle;
-		
 		public var lastDmgTextOffset:int;
-		
 		public var lastDmgTime:Number;
-		
 		public var lastDmg:int;
-		
 		public var lastHealText:TextParticle;
-		
 		public var lastHealTextOffset:int;
-		
 		public var lastHealTime:Number;
-		
 		public var lastHeal:int;
-		
 		public var team:int;
-		
 		public var stateMachine:StateMachine;
-		
 		public var hasDmgBoost:Boolean;
-		
 		public var dmgBoostCD:int;
-		
 		public var dmgBoostNextRdy:Number;
-		
 		public var dmgBoostEndTime:Number;
-		
 		public var dmgBoostDuration:int;
-		
 		public var dmgBoostCost:Number;
-		
 		public var usingDmgBoost:Boolean;
-		
 		public var dmgBoostBonus:Number;
-		
 		public var alive:Boolean;
-		
 		public var uberDifficulty:Number;
-		
 		public var uberLevelFactor:Number;
-		
 		public var hp:int;
-		
 		private var _hpMax:int;
-		
 		public var armorThreshold:int;
-		
 		public var armorThresholdBase:int;
-		
 		public var shieldHp:int;
-		
 		protected var _shieldHpMax:int;
-		
 		public var xp:int;
-		
 		public var level:int;
-		
 		public var collisionRadius:Number;
-		
 		public var explosionEffect:String;
-		
 		public var explosionSound:String;
-		
 		public var shieldRegen:int;
-		
 		public var shieldRegenBase:int;
-		
 		public var shieldRegenCounter:int = 0;
-		
 		public var shieldRegenDuration:int = 1000;
-		
 		public var shieldRegenBonus:Number = 1;
-		
 		public var hpRegen:Number;
-		
 		public var hpRegenCounter:int;
-		
 		public var hpRegenDuration:int = 1000;
-		
 		public var invulnerable:Boolean = false;
-		
 		public var essential:Boolean = true;
-		
 		public var resistances:Vector.<Number>;
-		
 		private var barMaxWidth:int = 0;
-		
 		private var isFlashing:Boolean = false;
-		
 		protected var g:Game;
-		
 		private var _speed:Point;
-		
 		public var weaponPos:Point;
-		
 		public var enginePos:Point;
-		
 		public var group:Group;
-		
 		public var factions:Vector.<String>;
-		
 		public var isHostile:Boolean;
-		
 		public var dotTimers:Vector.<TweenMax>;
-		
 		public var dotEffect:String;
-		
 		public var obj:Object;
-		
 		public var active:Boolean = true;
-		
 		public var hideIfInactive:Boolean;
-		
 		public var triggersToActivte:int = 1;
-		
 		public var triggers:Vector.<Trigger>;
-		
 		public var lastBulletLocal:Number = 0;
-		
 		public var lastBulletGlobal:Number = 0;
-		
 		public var lastBulletTargetList:Vector.<Unit> = null;
-		
 		public var isBossUnit:Boolean = false;
-		
 		public var forceupdate:Boolean;
-		
 		public var originalFilter:ColorMatrixFilter;
-		
 		public var owner:PlayerShip = null;
-		
 		public var isInjured:Boolean = false;
-		
 		private var miniBarsAreAddedToCanvas:Boolean = false;
+		
+		// QoLAF
+		public var currentDebuffs:Vector.<DebuffEffect> = new Vector.<DebuffEffect>;
 		
 		public function Unit(param1:Game)
 		{
@@ -236,6 +162,15 @@ package core.unit
 			{
 				nextDistanceCalculation -= 33;
 			}
+			
+			// QoLAF
+			for (var i:Number = currentDebuffs.length - 1; i >= 0; i--) {
+				var effect:DebuffEffect = currentDebuffs[i];
+				if (effect.getEndTime() < g.time) {
+					currentDebuffs.removeAt(i);
+				}
+			}
+			
 			super.update();
 		}
 		
@@ -564,60 +499,69 @@ package core.unit
 			});
 		}
 		
-		public function doDOTEffect(param1:int, param2:String, param3:int = -1, param4:String = ""):void
+		public function doDOTEffect(duration:int, effectId:String, debuffId:int = -1, param4:String = ""):void
 		{
-			var _loc9_:* = undefined;
-			var _loc5_:TweenMax = null;
-			if (param2 == null || !alive || !isAddedToCanvas)
+			var visualEffects:Vector.<Emitter> = undefined;
+			var timer:TweenMax = null;
+			if (effectId == null || !alive || !isAddedToCanvas)
 			{
 				return;
 			}
-			if (param3 == 5)
+			
+			// QoLAF
 			{
-				if (shieldRegenCounter > -param1 * 1000)
-				{
-					shieldRegenCounter = -param1 * 1000;
+				var found:Boolean = false;
+				for each (var debuffEffect:DebuffEffect in currentDebuffs) {
+					if (debuffEffect.getDebuffId() == debuffId) {
+						debuffEffect.addStack();
+						found = true;
+						break;
+					}
+				}
+
+				if (!found) {
+					currentDebuffs.push(new DebuffEffect(debuffId, duration * 1000.0));
 				}
 			}
-			if (param3 == 6)
-			{
-				if (disableHealEndtime < g.time)
-				{
-					disableHealEndtime = g.time + param1 * 1000;
-				}
+			
+			switch (debuffId) {
+				case Debuff.DISABLE_REGEN:
+					if (shieldRegenCounter > -duration * 1000)
+						shieldRegenCounter = -duration * 1000;
+					break;
+				case Debuff.DISABLE_HEAL:
+					if (disableHealEndtime < g.time)
+						disableHealEndtime = g.time + duration * 1000;
+					break;
+				case Debuff.TOTALTYPES:
+					if (disableHealEndtime < g.time)
+						disableHealEndtime = g.time + duration * 1000;
+					if (shieldRegenCounter > -duration * 1000)
+						shieldRegenCounter = -duration * 1000;
+					break;
 			}
-			if (param3 == 11)
+			
+			if (dotTimers.length > 0 && dotTimers[0]._active && this.dotEffect == effectId)
 			{
-				if (disableHealEndtime < g.time)
+				for each (var timer:TweenMax in dotTimers)
 				{
-					disableHealEndtime = g.time + param1 * 1000;
-				}
-				if (shieldRegenCounter > -param1 * 1000)
-				{
-					shieldRegenCounter = -param1 * 1000;
-				}
-			}
-			if (dotTimers.length > 0 && dotTimers[0]._active && this.dotEffect == param2)
-			{
-				for each (var _loc8_:* in dotTimers)
-				{
-					_loc8_.restart();
+					timer.restart();
 				}
 			}
 			else
 			{
-				for each (var _loc6_:* in dotTimers)
+				for each (var timer:TweenMax in dotTimers)
 				{
-					_loc6_.seek(_loc6_.totalDuration(), false);
+					timer.seek(timer.totalDuration(), false);
 				}
 				dotTimers.splice(0, -1);
-				_loc9_ = EmitterFactory.create(param2, g, pos.x, pos.y, this, true);
-				for each (var _loc7_:* in _loc9_)
+				visualEffects = EmitterFactory.create(effectId, g, pos.x, pos.y, this, true);
+				for each (var emitter:Emitter in visualEffects)
 				{
-					_loc5_ = TweenMax.to(_loc7_, param1, {"startAlpha": 0.1, "onComplete": removeDot(_loc7_)});
-					dotTimers.push(_loc5_);
+					timer = TweenMax.to(emitter, duration, {"startAlpha": 0.1, "onComplete": removeDot(emitter)});
+					dotTimers.push(timer);
 				}
-				this.dotEffect = param2;
+				this.dotEffect = effectId;
 			}
 			if (param4 != "" && this == g.me.ship)
 			{
