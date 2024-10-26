@@ -1,7 +1,6 @@
 package core.scene
 {
 	import flash.utils.getTimer;
-	import qolaf.data.ClientSettings;
 	import starling.core.Starling;
 	import com.google.analytics.AnalyticsTracker;
 	import com.google.analytics.GATracker;
@@ -85,7 +84,6 @@ package core.scene
 	import playerio.Client;
 	import playerio.Connection;
 	import playerio.Message;
-	import qolaf.target.TargetSystem;
 	import sound.Playlist;
 	import sound.SoundLocator;
 	import starling.core.Starling;
@@ -96,6 +94,9 @@ package core.scene
 	import starling.utils.AssetManager;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
+  
+  import qolaf.target.TargetSystem;
+  import qolaf.data.ClientSettings;
 	
 	public class Game extends SceneBase
 	{
@@ -198,7 +199,7 @@ package core.scene
 				trace("TEST RECEIVED");
 			});
 			instance = this;
-			
+
 			// QoLAF
 			targetSystem = new TargetSystem(this);
 		}
@@ -348,11 +349,11 @@ package core.scene
 			{
 				settings = new Settings();
 			}
-			
-			// QoLAF
+      
+      // QoLAF
 			if (clientSettings == null)
 				clientSettings = new ClientSettings(this);
-			
+        
 			settings.sb = this;
 			bodyManager.initSolarSystem(param1);
 			Console.write("Init solar system complete");
@@ -367,7 +368,7 @@ package core.scene
 			var m:Message = param1;
 			try
 			{
-				rpcServiceRoom("requestRating", (function():*
+				rpcServiceRoom("requestRating", (function():Function
 				{
 					var rpcHandler:Function;
 					return rpcHandler = function(param1:Message):void
@@ -851,7 +852,7 @@ package core.scene
 			camera.update();
 			hud.update();
 			deathLineManager.update();
-			
+
 			// QoLAF
 			targetSystem.Update();
 			
@@ -916,7 +917,8 @@ package core.scene
 			{
 				return;
 			}
-			Login.fadeScreen.addEventListener("fadeInComplete", (function():*
+      
+			Login.fadeScreen.addEventListener("fadeInComplete", (function():Function
 			{
 				var onFadeInComplete:Function;
 				return onFadeInComplete = function(param1:starling.events.Event):void
@@ -1279,7 +1281,8 @@ package core.scene
 			solarSystemData.touchable = false;
 			addChild(solarSystemData);
 			TweenMax.to(solarSystemData, 2, {"alpha": 2});
-			welcomeText.addEventListener("paragraphFinished", (function():*
+
+			welcomeText.addEventListener("paragraphFinished", (function():Function
 			{
 				var r:Function;
 				return r = function(param1:starling.events.Event):void
@@ -1287,7 +1290,8 @@ package core.scene
 					welcomeText.removeEventListener("paragraphFinished", r);
 				};
 			})());
-			welcomeText.addEventListener("animationFinished", (function():*
+
+			welcomeText.addEventListener("animationFinished", (function():Function
 			{
 				var r:Function;
 				return r = function(param1:starling.events.Event):void

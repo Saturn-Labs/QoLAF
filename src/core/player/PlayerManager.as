@@ -156,14 +156,10 @@ package core.player
 			}
 			g.addChildToOverlay(popup);
 			g.creditManager.refresh();
-			popup.addEventListener("close", (function():*
+			popup.addEventListener("close", (function(param1:Event):void
 			{
-				var closePopup:Function;
-				return closePopup = function(param1:Event):void
-				{
-					g.removeChildFromOverlay(popup);
-					popup.removeEventListeners();
-				};
+				g.removeChildFromOverlay(popup);
+				popup.removeEventListeners();
 			})());
 		}
 		
@@ -185,18 +181,14 @@ package core.player
 					popup.text = "Congratulations Captain! \n\nWell done reaching " + value2 + "! Have " + value + " Flux for free! \nGet yourself something nice! :)";
 					g.addChildToOverlay(popup);
 					g.creditManager.refresh();
-					popup.addEventListener("close", (function():*
+					popup.addEventListener("close", (function(param1:Event):void
 					{
-						var closePopup:Function;
-						return closePopup = function(param1:Event):void
+						g.removeChildFromOverlay(popup);
+						popup.removeEventListeners();
+						if (Login.currentState == "facebook" || Login.currentState == "kongregate")
 						{
-							g.removeChildFromOverlay(popup);
-							popup.removeEventListeners();
-							if (Login.currentState == "facebook" || Login.currentState == "kongregate")
-							{
-								TweenMax.delayedCall(5, showInvitePopup);
-							}
-						};
+							TweenMax.delayedCall(5, showInvitePopup);
+						}
 					})());
 				}
 			}
@@ -215,14 +207,10 @@ package core.player
 				popup.text = Localize.t("You have received your " + value + " bonus flux!");
 				g.addChildToOverlay(popup);
 				g.creditManager.refresh();
-				popup.addEventListener("close", (function():*
+				popup.addEventListener("close", (function(param1:Event):void
 				{
-					var closePopup:Function;
-					return closePopup = function(param1:Event):void
-					{
-						g.removeChildFromOverlay(popup);
-						popup.removeEventListeners();
-					};
+					g.removeChildFromOverlay(popup);
+					popup.removeEventListeners();
 				})());
 			}
 		}
@@ -646,15 +634,11 @@ package core.player
 			{
 				g.me.fbLike = true;
 			}
-			creditBox.addEventListener("close", (function():*
+			creditBox.addEventListener("close", (function(param1:Event):void
 			{
-				var close:Function;
-				return close = function(param1:Event):void
-				{
-					g.creditManager.refresh();
-					g.hud.buyFluxButton.flash();
-					g.removeChildFromOverlay(creditBox);
-				};
+				g.creditManager.refresh();
+				g.hud.buyFluxButton.flash();
+				g.removeChildFromOverlay(creditBox);
 			})());
 		}
 		
