@@ -2,6 +2,8 @@ package
 {
 	import com.adobe.crypto.MD5;
 	import com.greensock.TweenMax;
+	import starling.display.DisplayObjectContainer;
+	import starling.display.Quad;
 	import com.hurlant.crypto.rsa.RSAKey;
 	import com.hurlant.util.Hex;
 	import com.hurlant.util.der.PEM;
@@ -27,6 +29,7 @@ package
 	import debug.Console;
 	import embeds.EmbeddedAssets;
 	import facebook.FB;
+	import feathers.controls.Label;
 	import feathers.core.FocusManager;
 	import flash.display.Loader;
 	import flash.events.Event;
@@ -69,6 +72,7 @@ package
 	import com.hurlant.crypto.hash.MD5;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
+	import starling.utils.Align;
 	
 	public class Login extends Sprite
 	{
@@ -159,6 +163,8 @@ package
 			Localize.cacheLanguageData();
 			Starling.current.stage.color = 0;
 			Starling.current.nativeStage.color = 0;
+			
+			
 		}
 		
 		public static function submitKongregateStat(param1:String, param2:int):void
@@ -248,6 +254,19 @@ package
 			bgWidth = background.width;
 			bgHeight = background.height;
 			addChild(background);
+			
+			// QoLAF
+			var clientInfo:TextField = new TextField(180, 30, Astroflux.VERSION_NAME + " " + Astroflux.VERSION_NUMBER + "", new TextFormat("DAIDRR", 12, 0xffffff));
+			clientInfo.alignPivot(Align.LEFT, Align.TOP);
+			clientInfo.x = clientInfo.y = 0;
+			var infoContainer:Sprite = new Sprite();
+			infoContainer.alignPivot();
+			infoContainer.width = bgWidth;
+			infoContainer.height = bgHeight;
+			addChild(infoContainer);
+			infoContainer.addChild(clientInfo);
+			
+			
 			if (SalesManager.isSalePeriod())
 			{
 				saleSticker = new SaleSticker("Halloween", "Sale", "Special", 14942208, assets.getTexture("sale_sticker"), assets.getTexture("fb_sale_lg"));

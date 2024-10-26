@@ -1,12 +1,15 @@
 package core.boss
 {
 	import core.scene.Game;
+	import core.scene.SceneBase;
 	import core.solarSystem.Body;
 	import core.unit.Unit;
 	import debug.Console;
 	import flash.geom.Point;
+	import generics.Util;
 	import movement.Heading;
 	import playerio.Message;
+	import qolaf.target.TargetSystem;
 	import sound.SoundLocator;
 	
 	public class BossManager
@@ -284,21 +287,26 @@ package core.boss
 			_loc4_.destroy();
 		}
 		
-		public function damaged(param1:Message, param2:int):void
+		public function damaged(message:Message, pointer:int):void
 		{
-			var _loc3_:int = param1.getInt(param2 + 1);
-			var _loc5_:Unit = getComponentById(_loc3_);
-			if (_loc5_ == null)
+			var componentId:int = message.getInt(pointer + 1);
+			var component:Unit = getComponentById(componentId);
+			if (component == null)
 			{
 				return;
 			}
-			var _loc4_:int = param1.getInt(param2 + 2);
-			_loc5_.takeDamage(_loc4_);
-			_loc5_.shieldHp = param1.getInt(param2 + 3);
-			_loc5_.hp = param1.getInt(param2 + 4);
-			if (param1.getBoolean(param2 + 5))
+			var damage:int = message.getInt(pointer + 2);
+			
+			// QoLAF
+			if (Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.GetDistance(Game.instance.playerManager.me.ship, component) < 600 && SceneBase.clientSettings.autoTarget)
+				Game.instance.targetSystem.SetCurrentUnit(component);
+				
+			component.takeDamage(damage);
+			component.shieldHp = message.getInt(pointer + 3);
+			component.hp = message.getInt(pointer + 4);
+			if (message.getBoolean(pointer + 5))
 			{
-				_loc5_.doDOTEffect(param1.getInt(param2 + 6), param1.getString(param2 + 7));
+				component.doDOTEffect(message.getInt(pointer + 6), message.getString(pointer + 7));
 			}
 		}
 		

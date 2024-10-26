@@ -14,7 +14,7 @@ package core
 	
 	public class GameObject
 	{
-		protected var _mc:MovieClip;
+		public var _mc:MovieClip;
 		
 		protected var _name:String;
 		

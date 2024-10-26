@@ -17,6 +17,7 @@ package
 	import feathers.themes.AeonDesktopTheme;
 	import flash.geom.Rectangle;
 	import flash.text.TextFormat;
+	import flash.text.TextFormatAlign;
 	import starling.core.Starling;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
@@ -35,6 +36,9 @@ package
 		protected var artifactSetupDefaultFormat:TextFormat;
 		protected var artifactSetupSelectedFormat:TextFormat;
 		
+		// QoLAF
+		protected var targetInfoFormat:TextFormat;
+		
 		public function AstroTheme()
 		{
 			inputFormat = new TextFormat("Verdana", 12, 16777215);
@@ -43,6 +47,7 @@ package
 			shopListFormat = new TextFormat("DAIDRR", 14, 16689475);
 			artifactSetupDefaultFormat = new TextFormat("DAIDRR", 10, 11579568);
 			artifactSetupSelectedFormat = new TextFormat("DAIDRR", 10, 16777215);
+			targetInfoFormat = new TextFormat("Verdana", 12, 0xFFFFFF);
 			super();
 			Starling.current.stage.color = 0;
 			Starling.current.nativeStage.color = 0;
@@ -78,6 +83,18 @@ package
 			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName("artifact_setup", artifactSetupButton);
 			this.getStyleProviderForClass(ToggleButton).setFunctionForStyleName("chat_tab", chatTab);
 			this.getStyleProviderForClass(TabBar).setFunctionForStyleName("chat_tabs", chatTabs);
+			this.getStyleProviderForClass(Label).setFunctionForStyleName("target_info", targetInfoLabel);
+		}
+		
+		// QoLAF
+		protected function targetInfoLabel(label:Label): void 
+		{
+			label.textRendererFactory = textRendererFactory;
+			var format:TextFormat = targetInfoFormat;
+			format.align = TextFormatAlign.CENTER;
+			label.textRendererProperties.textFormat = format;
+			label.textRendererProperties.isHTML = true;
+			label.touchable = false;
 		}
 		
 		override protected function setScrollerStyles(param1:Scroller):void
