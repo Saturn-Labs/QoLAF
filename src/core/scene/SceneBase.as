@@ -21,6 +21,7 @@ package core.scene
 	import playerio.Connection;
 	import playerio.Message;
 	import playerio.PlayerIOError;
+	import qolaf.data.ClientSettings;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
@@ -36,7 +37,7 @@ package core.scene
 
 		// QoLAF
 		public static var clientSettings:ClientSettings;
-		
+				
 		public var myCargo:Cargo;
 		private var clockInitComplete:Boolean;
 		private var userJoinedComplete:Boolean;
