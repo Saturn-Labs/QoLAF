@@ -53,10 +53,10 @@ package core.hud.components.chat
 			{
 				addText(obj);
 			}
-			Starling.juggler.delayCall(function():void
+			Starling.juggler.delayCall((function():void
 			{
 				scroll.scrollToPosition(0, scroll.maxVerticalScrollPosition, 0);
-			}, 0.2);
+			})(), 0.2);
 		}
 		
 		private function unload(param1:Event):void
@@ -79,10 +79,10 @@ package core.hud.components.chat
 			addText(obj);
 			if (scroll.verticalScrollPosition == scroll.maxVerticalScrollPosition)
 			{
-				Starling.juggler.delayCall(function():void
+				Starling.juggler.delayCall((function():void
 				{
 					scroll.scrollToPosition(0, scroll.maxVerticalScrollPosition, 0);
-				}, 0.2);
+				})(), 0.2);
 			}
 		}
 		
