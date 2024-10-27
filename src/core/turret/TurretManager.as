@@ -206,8 +206,8 @@ package core.turret
 			if (turret.isAddedToCanvas)
 			{
 				// QoLAF
-				if (Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.getDistance(Game.instance.playerManager.me.ship, turret) < 600 && SceneBase.clientSettings.autoTarget)
-					Game.instance.targetSystem.setCurrentUnit(turret);
+				if (Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.GetDistance(Game.instance.playerManager.me.ship, turret) < 600 && SceneBase.clientSettings.autoTarget)
+					Game.instance.targetSystem.SetCurrentUnit(turret);
 				
 				turret.takeDamage(damage);
 			}

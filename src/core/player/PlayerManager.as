@@ -156,10 +156,14 @@ package core.player
 			}
 			g.addChildToOverlay(popup);
 			g.creditManager.refresh();
-			popup.addEventListener("close", (function(param1:Event):void
+			popup.addEventListener("close", (function():*
 			{
-				g.removeChildFromOverlay(popup);
-				popup.removeEventListeners();
+				var closePopup:Function;
+				return closePopup = function(param1:Event):void
+				{
+					g.removeChildFromOverlay(popup);
+					popup.removeEventListeners();
+				};
 			})());
 		}
 		
@@ -181,14 +185,18 @@ package core.player
 					popup.text = "Congratulations Captain! \n\nWell done reaching " + value2 + "! Have " + value + " Flux for free! \nGet yourself something nice! :)";
 					g.addChildToOverlay(popup);
 					g.creditManager.refresh();
-					popup.addEventListener("close", (function(param1:Event):void
+					popup.addEventListener("close", (function():*
 					{
-						g.removeChildFromOverlay(popup);
-						popup.removeEventListeners();
-						if (Login.currentState == "facebook" || Login.currentState == "kongregate")
+						var closePopup:Function;
+						return closePopup = function(param1:Event):void
 						{
-							TweenMax.delayedCall(5, showInvitePopup);
-						}
+							g.removeChildFromOverlay(popup);
+							popup.removeEventListeners();
+							if (Login.currentState == "facebook" || Login.currentState == "kongregate")
+							{
+								TweenMax.delayedCall(5, showInvitePopup);
+							}
+						};
 					})());
 				}
 			}
@@ -207,10 +215,14 @@ package core.player
 				popup.text = Localize.t("You have received your " + value + " bonus flux!");
 				g.addChildToOverlay(popup);
 				g.creditManager.refresh();
-				popup.addEventListener("close", (function(param1:Event):void
+				popup.addEventListener("close", (function():*
 				{
-					g.removeChildFromOverlay(popup);
-					popup.removeEventListeners();
+					var closePopup:Function;
+					return closePopup = function(param1:Event):void
+					{
+						g.removeChildFromOverlay(popup);
+						popup.removeEventListeners();
+					};
 				})());
 			}
 		}
@@ -634,11 +646,15 @@ package core.player
 			{
 				g.me.fbLike = true;
 			}
-			creditBox.addEventListener("close", (function(param1:Event):void
+			creditBox.addEventListener("close", (function():*
 			{
-				g.creditManager.refresh();
-				g.hud.buyFluxButton.flash();
-				g.removeChildFromOverlay(creditBox);
+				var close:Function;
+				return close = function(param1:Event):void
+				{
+					g.creditManager.refresh();
+					g.hud.buyFluxButton.flash();
+					g.removeChildFromOverlay(creditBox);
+				};
 			})());
 		}
 		
@@ -797,8 +813,8 @@ package core.player
 				player.ship.hp = message.getInt(pointer + 4);
 				
 				// QoLAF
-				if (!player.isMe && Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.getDistance(Game.instance.playerManager.me.ship, player.ship) < 600 && SceneBase.clientSettings.autoTarget)
-					Game.instance.targetSystem.setCurrentUnit(player.ship);
+				if (!player.isMe && Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.GetDistance(Game.instance.playerManager.me.ship, player.ship) < 600 && SceneBase.clientSettings.autoTarget)
+					Game.instance.targetSystem.SetCurrentUnit(player.ship);
 				
 				player.ship.takeDamage(damage);
 				if (message.getBoolean(pointer + 5))
