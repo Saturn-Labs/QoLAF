@@ -580,8 +580,7 @@ package core.scene
          var type:String = param1;
          var handler:Function = param2;
          var args:Array = rest;
-         connection.addMessageHandler(type, (function():*
-               {
+         connection.addMessageHandler(type, (function(): Function {
                   var rpcHandler:Function;
                   return rpcHandler = function(param1:Message):void
                   {
@@ -603,8 +602,7 @@ package core.scene
       {
          var mess:Message = param1;
          var handler:Function = param2;
-         connection.addMessageHandler(mess.type, (function():*
-               {
+         connection.addMessageHandler(mess.type, (function(): Function {
                   var rpcHandler:Function;
                   return rpcHandler = function(param1:Message):void
                   {
@@ -715,8 +713,7 @@ package core.scene
          var type:String = param1;
          var handler:Function = param2;
          var args:Array = rest;
-         serviceConnection.addMessageHandler(type, (function():*
-               {
+         serviceConnection.addMessageHandler(type, (function(): Function {
                   var rpcHandler:Function;
                   return rpcHandler = function(param1:Message):void
                   {

@@ -367,15 +367,10 @@ package core.scene
 			var m:Message = param1;
 			try
 			{
-				rpcServiceRoom("requestRating", (function():*
-				{
-					var rpcHandler:Function;
-					return rpcHandler = function(param1:Message):void
-					{
-						me.ranking = param1.getInt(0);
-						me.rating = param1.getNumber(1);
-					};
-				})());
+				rpcServiceRoom("requestRating", function(): void {
+					me.ranking = param1.getInt(0);
+					me.rating = param1.getNumber(1);
+				});
 				playerManager.initPlayer(m, 0);
 				initPlayerComplete = true;
 				camera.focusTarget = me.ship.movieClip;
@@ -916,7 +911,7 @@ package core.scene
 			{
 				return;
 			}
-			Login.fadeScreen.addEventListener("fadeInComplete", (function():*
+			Login.fadeScreen.addEventListener("fadeInComplete", (function():Function
 			{
 				var onFadeInComplete:Function;
 				return onFadeInComplete = function(param1:starling.events.Event):void
@@ -1279,7 +1274,7 @@ package core.scene
 			solarSystemData.touchable = false;
 			addChild(solarSystemData);
 			TweenMax.to(solarSystemData, 2, {"alpha": 2});
-			welcomeText.addEventListener("paragraphFinished", (function():*
+			welcomeText.addEventListener("paragraphFinished", (function():Function
 			{
 				var r:Function;
 				return r = function(param1:starling.events.Event):void
@@ -1287,7 +1282,7 @@ package core.scene
 					welcomeText.removeEventListener("paragraphFinished", r);
 				};
 			})());
-			welcomeText.addEventListener("animationFinished", (function():*
+			welcomeText.addEventListener("animationFinished", (function():Function
 			{
 				var r:Function;
 				return r = function(param1:starling.events.Event):void
