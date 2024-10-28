@@ -2,6 +2,7 @@ package
 {
 	import com.adobe.crypto.MD5;
 	import com.greensock.TweenMax;
+	import metadata.BuildData;
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Quad;
 	import com.hurlant.crypto.rsa.RSAKey;
@@ -256,7 +257,7 @@ package
 			addChild(background);
 			
 			// QoLAF
-			var clientInfo:TextField = new TextField(180, 30, Astroflux.VERSION_NAME + " " + Astroflux.VERSION_NUMBER + "", new TextFormat("DAIDRR", 12, 0xffffff));
+			var clientInfo:TextField = new TextField(180, 30, Astroflux.VERSION_NAME + " " + Astroflux.VERSION_NUMBER + " | " + BuildData.COMMIT, new TextFormat("DAIDRR", 12, 0xffffff));
 			clientInfo.alignPivot(Align.LEFT, Align.TOP);
 			clientInfo.x = clientInfo.y = 0;
 			var infoContainer:Sprite = new Sprite();

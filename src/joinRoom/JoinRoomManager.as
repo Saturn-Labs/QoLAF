@@ -359,7 +359,7 @@ package joinRoom
 				return;
 			}
 			searchCriteria = {"solarSystemKey": destination};
-			client.multiplayer.listRooms("game", searchCriteria, 100, 0, function(rooms:Vector.<RoomInfo>): void {
+			client.multiplayer.listRooms("game", searchCriteria, 100, 0, function(rooms:Array): void {
 				var _loc3_:RoomInfo = null;
 				var _loc6_:int = 0;
 				_loc6_ = 0;

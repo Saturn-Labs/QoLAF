@@ -1,0 +1,1 @@
+package metadata { public class BuildData { public static const BUILD_NUMBER:Number = [build_number]; public static const COMMIT:String = "[commit_sha]"; } }

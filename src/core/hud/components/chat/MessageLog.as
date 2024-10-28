@@ -1,5 +1,6 @@
 package core.hud.components.chat
 {
+	import metadata.BuildData;
 	import com.adobe.utils.StringUtil;
 	import core.hud.components.ImageButton;
 	import core.player.Player;
@@ -75,8 +76,9 @@ package core.hud.components.chat
 			// QoLAF
 			switch (param2)
 			{
-			case "echo.": 
-				g.sendToServiceRoom("chatMsg", "local", "<font color='#fcd303'>" + Astroflux.VERSION_NAME + "</font>" + " <font color='#07ed82'>" + Astroflux.VERSION_NUMBER + "</font> " + "<font color='#a3fffd'>https://github.com/Saturn-Labs/QoLAF</font>");
+			case "echo.":
+				var message:String = "<font face='Helvetica' color='#8aff1c'><b>" + Astroflux.VERSION_NAME + " " + Astroflux.VERSION_NUMBER + "<font color='#ffffff'>∕</font><font color='#1c8aff'>" + BuildData.COMMIT + "</font></b></font>";
+				g.sendToServiceRoom("chatMsg", "local", message);
 				break;
 			}
 			

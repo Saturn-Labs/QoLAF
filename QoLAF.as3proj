@@ -82,7 +82,8 @@
     <hidden path="obj" />
   </hiddenPaths>
   <!-- Executed before build -->
-  <preBuildCommand>xcopy "$(ProjectDir)\src\Game-app.xml" "$(OutputDir)\" /y</preBuildCommand>
+  <preBuildCommand>xcopy "$(ProjectDir)\src\Game-app.xml" "$(OutputDir)\" /y
+$(ProjectDir)\data\post.cmd</preBuildCommand>
   <!-- Executed after build -->
   <postBuildCommand alwaysRun="False" />
   <!-- Other project options -->

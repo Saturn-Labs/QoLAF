@@ -75,7 +75,6 @@ package core.hud.components.chat
          input.y = 24;
          input.width = param4;
          input.height = param5;
-         input.restrict = "^<>=&#[]{}";
          addChild(input);
       }
 
