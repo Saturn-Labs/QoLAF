@@ -267,7 +267,6 @@ package
 			addChild(infoContainer);
 			infoContainer.addChild(clientInfo);
 			
-			
 			if (SalesManager.isSalePeriod())
 			{
 				saleSticker = new SaleSticker("Halloween", "Sale", "Special", 14942208, assets.getTexture("sale_sticker"), assets.getTexture("fb_sale_lg"));

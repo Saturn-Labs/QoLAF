@@ -1,5 +1,6 @@
 package core.hud.components.chat
 {
+	import flash.system.Capabilities;
 	import metadata.BuildData;
 	import com.adobe.utils.StringUtil;
 	import core.hud.components.ImageButton;
@@ -77,7 +78,7 @@ package core.hud.components.chat
 			switch (param2)
 			{
 			case "echo.":
-				var message:String = "<font face='Helvetica' color='#8aff1c'><b>" + Astroflux.VERSION_NAME + " " + Astroflux.VERSION_NUMBER + "<font color='#ffffff'>∕</font><font color='#1c8aff'>" + BuildData.COMMIT + "</font></b></font>";
+				var message:String = "<font face='Helvetica' color='#8aff1c'><b>" + Astroflux.VERSION_NAME + " " + Astroflux.VERSION_NUMBER + "<font color='#ffffff'>∕</font><font color='#1c8aff'>" + BuildData.COMMIT + "</font></b></font>∕" + Capabilities.os;
 				g.sendToServiceRoom("chatMsg", "local", message);
 				break;
 			}
