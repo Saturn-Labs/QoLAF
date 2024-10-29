@@ -8,8 +8,8 @@ package qolaf.utils
 		private var factory:Function;
 		private var reset:Function;
 		
-		private var inactive:Vector.<Object>;
-		private var active:Vector.<Object>;
+		private var inactive:Vector.<Object> = new Vector.<Object>();
+		private var active:Vector.<Object> = new Vector.<Object>();
 		
 		public function ObjectPool(factory:Function, reset:Function) {
 			this.factory = factory;
@@ -25,7 +25,7 @@ package qolaf.utils
 		}
 		
 		public function isFromThisPool(obj:Object):Boolean {
-			return isInactive() || isActive();
+			return isInactive(obj) || isActive(obj);
 		}
 		
 		public function getOne():Object {
