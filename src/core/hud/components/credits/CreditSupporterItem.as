@@ -200,12 +200,11 @@ package core.hud.components.credits
 			popup = new PopupMessage();
 			popup.text = Localize.t("Click me when transaction is finished. If your supporter package is not shown instantly, try reloading the game.");
 			g.addChildToOverlay(popup);
-			popup.addEventListener("close", (function(param1:Event):void
-			{
+			popup.addEventListener("close", function():void {
 				g.removeChildFromOverlay(popup);
-				popup.removeEventListeners();
-				onClose();
-			})());
+                popup.removeEventListeners();
+                onClose();
+			});
 		}
 		
 		override protected function showInfo(param1:Boolean):void
@@ -272,12 +271,11 @@ package core.hud.components.credits
 			popup = new PopupMessage();
 			popup.text = Localize.t("Click me when transaction is finished. If your supporter package is not shown instantly, try reloading the game. You need to land on a station to switch active ship.");
 			g.addChildToOverlay(popup);
-			popup.addEventListener("close", (function(param1:Event):void
-			{
+			popup.addEventListener("close", function():void {
 				g.removeChildFromOverlay(popup);
 				popup.removeEventListeners();
 				onClose();
-			})());
+			});
 		}
 		
 		private function onBuySteam():void

@@ -55,7 +55,6 @@
   <!-- SWC Libraries -->
   <libraryPaths>
     <element path="libs\" />
-    <element path="libs\mx\mx.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>
@@ -82,14 +81,15 @@
     <hidden path="obj" />
   </hiddenPaths>
   <!-- Executed before build -->
-  <preBuildCommand>xcopy "$(ProjectDir)\src\Game-app.xml" "$(OutputDir)\" /y</preBuildCommand>
+  <preBuildCommand>xcopy "$(ProjectDir)\src\application.xml" "$(OutputDir)\" /y
+$(ProjectDir)\data\post.cmd</preBuildCommand>
   <!-- Executed after build -->
   <postBuildCommand alwaysRun="False" />
   <!-- Other project options -->
   <options>
     <option showHiddenPaths="False" />
     <option testMovie="Custom" />
-    <option testMovieCommand="$(FlexSDK)/bin/adl.exe bin/Game-app.xml" />
+    <option testMovieCommand="$(FlexSDK)/bin/adl.exe bin/application.xml" />
   </options>
   <!-- Plugin storage -->
   <storage />

@@ -135,11 +135,11 @@ package core.queue
 				errorPopup = new PopupMessage();
 				errorPopup.text = reason;
 				g.addChildToOverlay(errorPopup);
-				errorPopup.addEventListener("close", (function(param1:Event):void
+				errorPopup.addEventListener("close", function(event:Event): void
 				{
 					g.removeChildFromOverlay(errorPopup);
 					errorPopup.removeEventListeners();
-				})());
+				});
 			}
 			for each (qi in queues)
 			{
@@ -167,11 +167,11 @@ package core.queue
 				errorPopup = new PopupMessage();
 				errorPopup.text = reason;
 				g.addChildToOverlay(errorPopup);
-				errorPopup.addEventListener("close", (function(param1:Event):void
+				errorPopup.addEventListener("close", function(event:Event): void
 				{
 					g.removeChildFromOverlay(errorPopup);
 					errorPopup.removeEventListeners();
-				})());
+				});
 			}
 			for each (qi in queues)
 			{

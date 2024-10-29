@@ -33,37 +33,21 @@ package core.states.gameStates
 	public class ClanState extends PlayState implements IGameState
 	{
 		private var confirmBuyWithFlux:CreditBuyBox;
-		
 		private var createClanButton:Button;
-		
 		private var viewContainer:Sprite;
-		
 		private var scrollContainer:ScrollContainer;
-		
 		private var applicationsList:ScrollContainer;
-		
 		private var dataManager:IDataManager;
-		
 		private const STATUS_CLAN:String = "clan";
-		
 		private const STATUS_EDIT:String = "edit";
-		
 		private const STATUS_APPLY:String = "apply";
-		
 		private const STATUS_HANDLE_APPLICATIONS:String = "handle_applications";
-		
 		private const STATUS_TOP_CLANS:String = "clans";
-		
 		private var STATUS:String = "";
-		
 		private var bgr:Image;
-		
 		private var toClan:String;
-		
 		private var searchField:TextInput;
-		
 		private var searchButton:Button;
-		
 		private var clanApplicationCheck:ClanApplicationCheck;
 		
 		public function ClanState(param1:Game, param2:String = "")
@@ -270,7 +254,7 @@ package core.states.gameStates
 		private function fClanTouch(param1:Object):Function
 		{
 			var obj:Object = param1;
-			return (function(param1:TouchEvent):void
+			return function():void
 			{
 				var _loc2_:Quad = param1.target as Quad;
 				if (param1.getTouch(_loc2_, "ended"))
@@ -285,7 +269,7 @@ package core.states.gameStates
 				{
 					_loc2_.color = 921102;
 				}
-			})();
+			};
 		}
 		
 		private function drawClanView(param1:String):void
@@ -734,26 +718,26 @@ package core.states.gameStates
 			var promoteContainer:Sprite = param2;
 			var troonContainer:Sprite = param3;
 			var target:Sprite = param4;
-			return (function(param1:TouchEvent):void
+			return function(event:TouchEvent):void
 			{
-				param1.stopPropagation();
-				if (!param1.getTouch(target, "ended"))
+				event.stopPropagation();
+				if (!event.getTouch(target, "ended"))
 				{
-					if (!param1.getTouch(target, "began"))
+					if (!event.getTouch(target, "began"))
 					{
-						if (param1.interactsWith(target))
+						if (event.interactsWith(target))
 						{
 							troonContainer.visible = false;
 							promoteContainer.visible = true;
 						}
-						else if (!param1.interactsWith(target))
+						else if (!event.interactsWith(target))
 						{
 							troonContainer.visible = true;
 							promoteContainer.visible = false;
 						}
 					}
 				}
-			})();
+			};
 		}
 		
 		private function createClan(param1:TouchEvent):void

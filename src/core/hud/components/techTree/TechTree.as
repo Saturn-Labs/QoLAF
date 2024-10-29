@@ -313,11 +313,11 @@ package core.hud.components.techTree
 			{
 				popup = new EliteTechPopupMenu(g, eliteTechSelectedForUpgrade);
 				g.addChildToOverlay(popup);
-				popup.addEventListener("close", (function(param1:Event):void
+				popup.addEventListener("close", function(event:Event):void
 				{
 					g.removeChildFromOverlay(popup);
 					popup.removeEventListeners();
-				})());
+				});
 				eliteTechSelectedForUpgrade.update(eliteTechSelectedForUpgrade.level);
 				return;
 			}

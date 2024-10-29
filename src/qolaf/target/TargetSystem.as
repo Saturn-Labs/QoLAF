@@ -35,7 +35,7 @@ package qolaf.target
 			game.canvas.addChild(targetIndicator);
 		}
 		
-		public function setCurrentUnit(unit:Unit): void {
+		public function SetCurrentUnit(unit:Unit): void {
 			if (targetTimeout > 0 || lockedTarget)
 				return;
 			oldUnit = currentUnit;
@@ -43,26 +43,26 @@ package qolaf.target
 			targetTimeout = 0.5;
 		}
 		
-		public function getCurrentUnit(): Unit {
+		public function GetCurrentUnit(): Unit {
 			return currentUnit;
 		}
 		
-		public function reset(): void {
+		public function Reset(): void {
 			currentUnit = null;
 			targetTimeout = 0.0;
 			lockedTarget = false;
 		}
 		
-		public function update(): void 
+		public function Update(): void 
 		{
 			var targetInfoElement:TargetInfoElement = game.hud.GetTargetInfoElement();
-			if (!TargetSystem.canTargetUnit(currentUnit))
-				reset();
-			if (!lockedTarget && !TargetSystem.isInRange(currentUnit))
-				reset();
+			if (!TargetSystem.CanTargetUnit(currentUnit))
+				Reset();
+			if (!lockedTarget && !TargetSystem.IsInRange(currentUnit))
+				Reset();
 				
 			targetIndicator.visible = currentUnit != null;
-			targetIndicator.update();
+			targetIndicator.Update();
 			targetInfoElement.visible = currentUnit != null;
 			if (currentUnit != null) {
 				var mainObject:GameObject = currentUnit.parentObj;
@@ -78,23 +78,23 @@ package qolaf.target
 				targetTimeout -= game.deltaTime;
 		}
 		
-		public function currentUnitValid(): Boolean {
-			return TargetSystem.canTargetUnit(currentUnit);
+		public function CurrentUnitValid(): Boolean {
+			return TargetSystem.CanTargetUnit(currentUnit);
 		}
 		
-		public static function canTargetUnit(unit:Unit): Boolean {
+		public static function CanTargetUnit(unit:Unit): Boolean {
 			if (Game.instance.playerManager.me == null || Game.instance.playerManager.me.ship == null)
 				return false;
 			return unit != null && unit.alive && (unit is PlayerShip ? !(unit as PlayerShip).landed && !(unit as PlayerShip).player.isMe : true);
 		}
 		
-		public static function isInRange(unit:Unit): Boolean {
+		public static function IsInRange(unit:Unit): Boolean {
 			if (Game.instance.playerManager.me == null || Game.instance.playerManager.me.ship == null || unit == null)
 				return false;
-			return getDistance(Game.instance.playerManager.me.ship, unit) < TARGET_MAX_DISTANCE;
+			return GetDistance(Game.instance.playerManager.me.ship, unit) < TARGET_MAX_DISTANCE;
 		}
 		
-		public static function getDistance(lhs:Unit, rhs:Unit): Number {
+		public static function GetDistance(lhs:Unit, rhs:Unit): Number {
 			return Util.distance(lhs.pos, rhs.pos);
 		}
 	}

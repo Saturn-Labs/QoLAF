@@ -156,11 +156,11 @@ package core.player
 			}
 			g.addChildToOverlay(popup);
 			g.creditManager.refresh();
-			popup.addEventListener("close", (function(param1:Event):void
+			popup.addEventListener("close", function(event:Event): void
 			{
 				g.removeChildFromOverlay(popup);
 				popup.removeEventListeners();
-			})());
+			});
 		}
 		
 		private function m_GiftFlux(param1:Message):void
@@ -181,15 +181,14 @@ package core.player
 					popup.text = "Congratulations Captain! \n\nWell done reaching " + value2 + "! Have " + value + " Flux for free! \nGet yourself something nice! :)";
 					g.addChildToOverlay(popup);
 					g.creditManager.refresh();
-					popup.addEventListener("close", (function(param1:Event):void
-					{
+					popup.addEventListener("close", function(event:Event): void {
 						g.removeChildFromOverlay(popup);
 						popup.removeEventListeners();
 						if (Login.currentState == "facebook" || Login.currentState == "kongregate")
 						{
 							TweenMax.delayedCall(5, showInvitePopup);
 						}
-					})());
+					});
 				}
 			}
 			g.creditManager.refresh();
@@ -207,11 +206,10 @@ package core.player
 				popup.text = Localize.t("You have received your " + value + " bonus flux!");
 				g.addChildToOverlay(popup);
 				g.creditManager.refresh();
-				popup.addEventListener("close", (function(param1:Event):void
-				{
+				popup.addEventListener("close", function(event:Event): void {
 					g.removeChildFromOverlay(popup);
 					popup.removeEventListeners();
-				})());
+				});
 			}
 		}
 		
@@ -634,12 +632,11 @@ package core.player
 			{
 				g.me.fbLike = true;
 			}
-			creditBox.addEventListener("close", (function(param1:Event):void
-			{
+			creditBox.addEventListener("close", function(event:Event): void {
 				g.creditManager.refresh();
 				g.hud.buyFluxButton.flash();
 				g.removeChildFromOverlay(creditBox);
-			})());
+			});
 		}
 		
 		private function modWarpToUser(param1:Message):void
@@ -797,8 +794,8 @@ package core.player
 				player.ship.hp = message.getInt(pointer + 4);
 				
 				// QoLAF
-				if (!player.isMe && Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.getDistance(Game.instance.playerManager.me.ship, player.ship) < 600 && SceneBase.clientSettings.autoTarget)
-					Game.instance.targetSystem.setCurrentUnit(player.ship);
+				if (!player.isMe && Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.GetDistance(Game.instance.playerManager.me.ship, player.ship) < 600 && SceneBase.clientSettings.autoTarget)
+					Game.instance.targetSystem.SetCurrentUnit(player.ship);
 				
 				player.ship.takeDamage(damage);
 				if (message.getBoolean(pointer + 5))

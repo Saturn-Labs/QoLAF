@@ -389,7 +389,7 @@ package core.states.gameStates
 		private function createClickOpenPod(param1:Pod):Function
 		{
 			var pod:Pod = param1;
-			return (function():void
+			return function():void
 			{
 				var message:Message;
 				UpdateNrOfPods();
@@ -402,7 +402,7 @@ package core.states.gameStates
 					boughtPods--;
 					onOpenPod(param1, pod);
 				});
-			})();
+			};
 		}
 		
 		private function onOpenPod(param1:Message, param2:Pod):void
@@ -678,14 +678,14 @@ class Pod extends Sprite
 		var callback:Function = param1;
 		center.enabled = true;
 		tween = TweenMax.fromTo(center, 0.3, {"alpha": 1, "scaleX": 1, "scaleY": 1}, {"alpha": 0.9, "scaleX": 1.2, "scaleY": 1.2, "yoyo": true, "repeat": -1});
-		center.addEventListener("triggered", (function():void
+		center.addEventListener("triggered", function():void
 		{
 			center.removeEventListeners();
 			callback();
 			tween.kill();
 			SoundLocator.getService().play("3hVYqbNNSUWoDGk_pK1BdQ");
 			cTween = TweenMax.fromTo(center, 0.5, {"color": 16777215}, {"color": 16711935, "yoyo": true, "repeat": -1});
-		})());
+		});
 	}
 	
 	public function animateOpen(param1:Function = null):void

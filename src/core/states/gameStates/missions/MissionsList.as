@@ -67,13 +67,13 @@ package core.states.gameStates.missions
 		
 		private function sortByDate():void
 		{
-			missions = missions.sort(function(param1:Mission, param2:Mission):int
+			missions = missions.sort(function(mission1:Mission, mission2:Mission): int
 			{
-				if (param1.created < param2.created)
+				if (mission1.created < mission2.created)
 				{
 					return 1;
 				}
-				if (param1.created > param2.created)
+				if (mission1.created > mission2.created)
 				{
 					return -1;
 				}

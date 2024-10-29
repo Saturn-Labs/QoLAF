@@ -43,7 +43,7 @@ package core.states.gameStates
 			stf.pageReadTime = 180000;
 			addChild(stf);
 			i++;
-			stf.addEventListener("beforeFadeOut", (function():Function
+			stf.addEventListener("beforeFadeOut", (function(): Function
 			{
 				var r:Function;
 				return r = function(param1:Event):void
@@ -59,7 +59,7 @@ package core.states.gameStates
 					{
 						stf.stop();
 						stf.doFadeOut();
-						stf.addEventListener("pageFinished", (function():Function
+						stf.addEventListener("pageFinished", (function(): Function
 						{
 							var r:Function;
 							return r = function(param1:Event):void

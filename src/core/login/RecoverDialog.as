@@ -54,12 +54,11 @@ package core.login
 				var recoverPopup:PopupMessage = new PopupMessage();
 				recoverPopup.text = Localize.t("Email with instruction has been sent.");
 				login.addChild(recoverPopup);
-				recoverPopup.addEventListener("close", (function(param1:Event):void
-				{
+				recoverPopup.addEventListener("close", function(event:Event): void {
 					login.removeChild(recoverPopup, true);
 					login.setState("site");
 					recoverButton.enabled = true;
-				})());
+				});
 			}, function(param1:PlayerIOError):void
 			{
 				recoverEmail.error = param1.message;

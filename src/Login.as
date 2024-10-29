@@ -2,6 +2,7 @@ package
 {
 	import com.adobe.crypto.MD5;
 	import com.greensock.TweenMax;
+	import metadata.BuildData;
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Quad;
 	import com.hurlant.crypto.rsa.RSAKey;
@@ -256,7 +257,7 @@ package
 			addChild(background);
 			
 			// QoLAF
-			var clientInfo:TextField = new TextField(180, 30, Astroflux.VERSION_NAME + " " + Astroflux.VERSION_NUMBER + "", new TextFormat("DAIDRR", 12, 0xffffff));
+			var clientInfo:TextField = new TextField(180, 30, Astroflux.VERSION_NAME + " " + Astroflux.VERSION_NUMBER + " | " + BuildData.COMMIT, new TextFormat("DAIDRR", 12, 0xffffff));
 			clientInfo.alignPivot(Align.LEFT, Align.TOP);
 			clientInfo.x = clientInfo.y = 0;
 			var infoContainer:Sprite = new Sprite();
@@ -265,7 +266,6 @@ package
 			infoContainer.height = bgHeight;
 			addChild(infoContainer);
 			infoContainer.addChild(clientInfo);
-			
 			
 			if (SalesManager.isSalePeriod())
 			{
@@ -747,7 +747,7 @@ package
 			loader = new Loader();
 			loader.load(request);
 			Starling.current.nativeStage.addChild(loader);
-			loader.contentLoaderInfo.addEventListener("complete", (function():Function
+			loader.contentLoaderInfo.addEventListener("complete", (function(): Function
 			{
 				var onLoad:Function;
 				return onLoad = function(param1:flash.events.Event):void
@@ -802,7 +802,7 @@ package
 			}
 			mRequest = new URLRequest("http://api.playerio.com/clientintegrations/mousebreaker/auth?game=4&token=" + RymdenRunt.parameters.token);
 			mRequest.method = "GET";
-			mLoader.addEventListener("complete", (function():Function
+			mLoader.addEventListener("complete", (function(): Function
 			{
 				var onLoad:Function;
 				return onLoad = function(param1:flash.events.Event):void
@@ -827,7 +827,7 @@ package
 			request.method = "GET";
 			loader = new URLLoader();
 			loader.dataFormat = "text";
-			loader.addEventListener("complete", (function():Function
+			loader.addEventListener("complete", (function(): Function
 			{
 				var onLoad:Function;
 				return onLoad = function(param1:flash.events.Event):void
@@ -853,7 +853,7 @@ package
 			request.method = "GET";
 			loader = new URLLoader();
 			loader.dataFormat = "text";
-			loader.addEventListener("complete", (function():Function
+			loader.addEventListener("complete", (function(): Function
 			{
 				var onLoad:Function;
 				return onLoad = function(param1:flash.events.Event):void

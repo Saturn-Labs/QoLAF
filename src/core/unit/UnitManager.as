@@ -38,11 +38,11 @@ package core.unit
 			// QoLAF
 			unit.movieClip.touchable = true;
 			unit.movieClip.addEventListener(TouchEvent.TOUCH, function(event:TouchEvent):void {
-				if (!TargetSystem.canTargetUnit(unit) || !TargetSystem.isInRange(unit))
+				if (!TargetSystem.CanTargetUnit(unit) || !TargetSystem.IsInRange(unit))
 					return;
 				var touch:Touch = event.getTouch(unit.movieClip);
 				if (touch && touch.phase == TouchPhase.BEGAN) {
-					Game.instance.targetSystem.setCurrentUnit(unit);
+					Game.instance.targetSystem.SetCurrentUnit(unit);
 				}
 			});
 			

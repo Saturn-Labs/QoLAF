@@ -359,16 +359,15 @@ package joinRoom
 				return;
 			}
 			searchCriteria = {"solarSystemKey": destination};
-			client.multiplayer.listRooms("game", searchCriteria, 100, 0, (function(param1:Array):void
-			{
+			client.multiplayer.listRooms("game", searchCriteria, 100, 0, function(rooms:Array): void {
 				var _loc3_:RoomInfo = null;
 				var _loc6_:int = 0;
 				_loc6_ = 0;
-				while (_loc6_ < param1.length)
+				while (_loc6_ < rooms.length)
 				{
-					if (param1[_loc6_].id == _desiredRoomId)
+					if (rooms[_loc6_].id == _desiredRoomId)
 					{
-						_loc3_ = param1[_loc6_];
+						_loc3_ = rooms[_loc6_];
 						break;
 					}
 					_loc6_++;
@@ -411,9 +410,8 @@ package joinRoom
 				{
 					failedCallback("This room only allows players under level " + StarMap.selectedSolarSystem.pvpLvlCap);
 				}
-			})(), function(param1:PlayerIOError):void
-			{
-			});
+			}, 
+			function(param1:PlayerIOError): void {});
 		}
 		
 		private function showErrorDialog(param1:String, param2:Boolean = false, param3:PlayerIOError = null, param4:Function = null, param5:Boolean = false):void

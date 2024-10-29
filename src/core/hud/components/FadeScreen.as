@@ -248,11 +248,10 @@ package core.hud.components
 			}
 			else if (Game.instance)
 			{
-				Game.instance.rpcServiceRoom("getPromotionImage", (function(param1:Message):void
-				{
-					promotionUrl = param1.getString(0);
-					createCustomPromotionButton(param1.getString(1));
-				})());
+				Game.instance.rpcServiceRoom("getPromotionImage", function(message:Message): void {
+					promotionUrl = message.getString(0);
+					createCustomPromotionButton(message.getString(1));
+				});
 			}
 			loadingText.visible = true;
 			textArray = texts[Math.floor(Math.random() * (texts.length - 0.1))];

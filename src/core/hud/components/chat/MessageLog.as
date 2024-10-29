@@ -1,5 +1,7 @@
 package core.hud.components.chat
 {
+	import flash.system.Capabilities;
+	import metadata.BuildData;
 	import com.adobe.utils.StringUtil;
 	import core.hud.components.ImageButton;
 	import core.player.Player;
@@ -60,7 +62,7 @@ package core.hud.components.chat
 			write(param1);
 		}
 		
-		public static function writeChatMsg(type:String, message:String, playerKey:String = null, playerName:String = null, param5:String = "", isSupporter:Boolean = false):void
+		public static function writeChatMsg(param1:String, param2:String, param3:String = null, param4:String = null, param5:String = "", param6:Boolean = false):void
 		{
 			var _loc9_:Object = null;
 			var _loc13_:Player = null;
@@ -71,32 +73,34 @@ package core.hud.components.chat
 			{
 				return;
 			}
-
+			
 			// QoLAF
-			switch (message) {
-				case "echo.":
-					g.sendToServiceRoom("chatMsg", "local", "<font color='#fcd303'>" + Astroflux.VERSION_NAME + "</font>" + " <font color='#07ed82'>" + Astroflux.VERSION_NUMBER + "</font>");
-					break;
+			switch (param2)
+			{
+			case "echo.":
+				var message:String = "<font face='Helvetica' color='#8aff1c'><b>" + Astroflux.VERSION_NAME + " " + Astroflux.VERSION_NUMBER + "<font color='#ffffff'>∕</font><font color='#1c8aff'>" + BuildData.COMMIT + "</font></b></font>∕" + Capabilities.os;
+				g.sendToServiceRoom("chatMsg", "local", message);
+				break;
 			}
 			
-			if (message.length > 250)
+			if (param2.length > 250)
 			{
 				_loc9_ = {};
-				_loc9_.length = message.length;
-				_loc9_.msg = message;
+				_loc9_.length = param2.length;
+				_loc9_.msg = param2;
 				g.client.errorLog.writeError("Very long chat message, over 1000 chars: ", "", "", _loc9_);
 				return;
 			}
-			if (g.solarSystem.type == "pvp dom" && type == "local")
+			if (g.solarSystem.type == "pvp dom" && param1 == "local")
 			{
-				_loc13_ = g.playerManager.playersById[playerKey];
+				_loc13_ = g.playerManager.playersById[param3];
 				if (g.me != null && _loc13_ != null && _loc13_.team != -1 && g.me.team != -1)
 				{
 					if (_loc13_.team != g.me.team)
 					{
 						return;
 					}
-					type = "team";
+					param1 = "team";
 				}
 			}
 			for (var _loc10_:* in profanities)
@@ -109,26 +113,26 @@ package core.hud.components.chat
 					_loc12_++;
 				}
 				_loc11_ = new RegExp(_loc10_, "gi");
-				message = message.replace(_loc11_, _loc7_);
+				param2 = param2.replace(_loc11_, _loc7_);
 			}
-			var _loc14_:String = colorCoding("[" + type + "]");
-			var _loc8_:* = message;
-			if (playerName)
+			var _loc14_:String = colorCoding("[" + param1 + "]");
+			var _loc8_:* = param2;
+			if (param4)
 			{
-				_loc8_ = playerName + ": " + _loc8_;
+				_loc8_ = param4 + ": " + _loc8_;
 			}
-			if (isSupporter)
+			if (param6)
 			{
 				_loc8_ = "<font color='#ffff66'>&#9733;</font>" + _loc8_;
 			}
 			_loc8_ = colorRights(param5, _loc8_);
 			var _loc15_:Object = {};
-			_loc15_.type = type;
+			_loc15_.type = param1;
 			_loc15_.text = StringUtil.trim(_loc14_ + " " + _loc8_);
 			_loc15_.timeout = g.time + 60000;
-			_loc15_.playerKey = playerKey;
-			_loc15_.playerName = playerName;
-			_loc15_.supporter = isSupporter;
+			_loc15_.playerKey = param3;
+			_loc15_.playerName = param4;
+			_loc15_.supporter = param6;
 			textQueue.push(_loc15_);
 			if (textQueue.length > extendedMaxLines)
 			{

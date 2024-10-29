@@ -409,11 +409,10 @@ package core.hud.components.techTree
 			{
 				popup = new EliteTechPopupMenu(g, this);
 				g.addChildToOverlay(popup);
-				popup.addEventListener("close", (function(param1:Event):void
-				{
+				popup.addEventListener("close", function(): void {
 					g.removeChildFromOverlay(popup);
-					popup.removeEventListeners();
-				})());
+                    popup.removeEventListeners();
+				});
 				return;
 			}
 			if (state == "selected")

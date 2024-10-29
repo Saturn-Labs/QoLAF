@@ -361,12 +361,16 @@ package core.hud.components.credits
 			popup = new PopupMessage();
 			popup.text = Localize.t("Click me when transaction is finished.\n\nIt can take up to 48 hours for free flux to appear.");
 			g.addChildToOverlay(popup);
-			popup.addEventListener("close", (function(param1:Event):void
+			popup.addEventListener("close", (function():Function
 			{
-				g.removeChildFromOverlay(popup);
-				popup.removeEventListeners();
-				onClose();
-				dispatchClose();
+				var closePopup:Function;
+				return closePopup = function(param1:Event):void
+				{
+					g.removeChildFromOverlay(popup);
+					popup.removeEventListeners();
+					onClose();
+					dispatchClose();
+				};
 			})());
 		}
 		
@@ -397,11 +401,15 @@ package core.hud.components.credits
 			popup = new PopupMessage();
 			popup.text = Localize.t("Click me when transaction is finished. If your flux is not shown instantly, try reloading the game.");
 			g.addChildToOverlay(popup);
-			popup.addEventListener("close", (function(param1:Event):void
+			popup.addEventListener("close", (function():Function
 			{
-				g.removeChildFromOverlay(popup, true);
-				onClose();
-				dispatchClose();
+				var closePopup:Function;
+				return closePopup = function(param1:Event):void
+				{
+					g.removeChildFromOverlay(popup, true);
+					onClose();
+					dispatchClose();
+				};
 			})());
 		}
 		
@@ -517,11 +525,15 @@ package core.hud.components.credits
 			popup = new PopupMessage();
 			popup.text = Localize.t("Your transaction has finished successfully. If your flux is not shown instantly, try reloading the game.");
 			g.addChildToOverlay(popup);
-			popup.addEventListener("close", (function(param1:Event):void
+			popup.addEventListener("close", (function():Function
 			{
-				g.removeChildFromOverlay(popup);
-				popup.removeEventListeners();
-				dispatchClose();
+				var closePopup:Function;
+				return closePopup = function(param1:Event):void
+				{
+					g.removeChildFromOverlay(popup);
+					popup.removeEventListeners();
+					dispatchClose();
+				};
 			})());
 		}
 		
@@ -532,11 +544,15 @@ package core.hud.components.credits
 			popup = new PopupMessage();
 			popup.text = Localize.t("The transaction failed.");
 			g.addChildToOverlay(popup);
-			popup.addEventListener("close", (function(param1:Event):void
+			popup.addEventListener("close", (function():Function
 			{
-				g.removeChildFromOverlay(popup);
-				popup.removeEventListeners();
-				dispatchClose();
+				var closePopup:Function;
+				return closePopup = function(param1:Event):void
+				{
+					g.removeChildFromOverlay(popup);
+					popup.removeEventListeners();
+					dispatchClose();
+				};
 			})());
 		}
 		

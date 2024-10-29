@@ -28,37 +28,21 @@ package core.hud.components.credits
 	public class CreditPackageItem extends CreditBaseItem
 	{
 		public var button:NativeImageButton;
-		
 		public var buyContainer:starling.display.Sprite;
-		
 		private var price:Text;
-		
 		protected var descriptionContainer:starling.display.Sprite;
-		
 		protected var waitingContainer:starling.display.Sprite;
-		
 		protected var aquiredContainer:starling.display.Sprite;
-		
 		protected var aquiredText:Text;
-		
 		protected var aquired:Boolean = false;
-		
 		private var nativeLayer:flash.display.Sprite;
-		
 		private var BuyButtonAsset:Class;
-		
 		protected var description:String = "";
-		
 		protected var checkoutDescription:String = "";
-		
 		protected var checkoutDescriptionShort:String = "";
-		
 		protected var preview:String = "";
-		
 		protected var buyButtonText:String = "";
-		
 		protected var itemKey:String = "";
-		
 		protected var rpcFunction:String = "";
 		
 		public function CreditPackageItem(param1:Game, param2:starling.display.Sprite, param3:Boolean = false)
@@ -197,12 +181,11 @@ package core.hud.components.credits
 			popup = new PopupMessage();
 			popup.text = "Click me when transaction is finished. If your package content is not shown instantly, try reloading the game. You need to land on a station to switch active ship.";
 			g.addChildToOverlay(popup);
-			popup.addEventListener("close", (function(param1:Event):void
-			{
+			popup.addEventListener("close", function():void {
 				g.removeChildFromOverlay(popup);
 				popup.removeEventListeners();
 				onClose();
-			})());
+			});
 		}
 		
 		public function redraw():void
@@ -308,12 +291,11 @@ package core.hud.components.credits
 			popup = new PopupMessage();
 			popup.text = "Click me when transaction is finished. If your package content is not shown instantly, try reloading the game. You need to land on a station to switch active ship.";
 			g.addChildToOverlay(popup);
-			popup.addEventListener("close", (function(param1:Event):void
-			{
+			popup.addEventListener("close", function():void {
 				g.removeChildFromOverlay(popup);
 				popup.removeEventListeners();
 				onClose();
-			})());
+			});
 		}
 		
 		private function onBuyKred():void

@@ -9,11 +9,12 @@ package
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
 	import flash.text.Font;
+	import metadata.BuildData;
 	
 	public class Astroflux extends Sprite
 	{
-		public static const VERSION_NAME:String = "QoLAF - PROTOTYPE";
-		public static const VERSION_NUMBER:String = "v0.1.0";
+		public static const VERSION_NAME:String = "QoLAF";
+		public static const VERSION_NUMBER:String = "v0.1." + BuildData.BUILD_NUMBER;
 		
 		public function Astroflux(info:Object = null)
 		{
