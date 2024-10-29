@@ -24,7 +24,7 @@
     <option accessible="False" />
     <option advancedTelemetry="False" />
     <option allowSourcePathOverlap="False" />
-    <option benchmark="False" />
+    <option benchmark="True" />
     <option es="False" />
     <option inline="False" />
     <option locale="" />
