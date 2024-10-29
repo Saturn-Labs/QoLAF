@@ -9,6 +9,7 @@ package
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
 	import flash.text.Font;
+	import flash.utils.getTimer;
 	import metadata.BuildData;
 	
 	public class Astroflux extends Sprite
