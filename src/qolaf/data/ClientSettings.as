@@ -11,6 +11,7 @@ package qolaf.data
 	{
 		public static const SETTINGS_FILE:String = "\\qolaf\\local_settings.json";
 		public static const AUTO_TARGET:String = "auto_target";
+		public static const ZOOM_FACTOR:String = "zoom_factor";
 		
 		private var sceneBase:SceneBase;
 		private var sharedObject:SharedObject;
@@ -74,9 +75,25 @@ package qolaf.data
 			settingsObject[playerId][AUTO_TARGET] = value;
 		}
 		
+		public function get zoomFactor(): Number {
+			var playerId:String = Game.instance.playerManager.me.id;
+			if (playerId in settingsObject && ZOOM_FACTOR in settingsObject[playerId])
+				return settingsObject[playerId][ZOOM_FACTOR] as Number;
+			return 1.0;
+		}
+		
+		public function set zoomFactor(value:Number): void 
+		{
+			var playerId:String = Game.instance.playerManager.me.id;
+			if (!(playerId in settingsObject))
+				settingsObject[playerId] = buildDefaults();
+			settingsObject[playerId][ZOOM_FACTOR] = value;
+		}
+		
 		public function buildDefaults(): Object {
 			var object:Object = {};
 			object[AUTO_TARGET] = autoTarget;
+			object[ZOOM_FACTOR] = 1.0;
 			return object;
 		}
 	}
