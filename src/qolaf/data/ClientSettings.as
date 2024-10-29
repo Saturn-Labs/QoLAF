@@ -2,9 +2,6 @@ package qolaf.data
 {
 	import core.scene.SceneBase;
 	import core.scene.Game;
-	import flash.filesystem.File;
-	import flash.filesystem.FileStream;
-	import flash.filesystem.FileMode;
 	import flash.net.SharedObject;
 	
 	/**
@@ -15,7 +12,6 @@ package qolaf.data
 		public static const SETTINGS_FILE:String = "\\qolaf\\local_settings.json";
 		public static const AUTO_TARGET:String = "auto_target";
 		
-		private var settingsFile:File;
 		private var sceneBase:SceneBase;
 		private var sharedObject:SharedObject;
 		private var settingsObject:Object = {};
@@ -23,7 +19,6 @@ package qolaf.data
 		public function ClientSettings(sceneBase:SceneBase) 
 		{
 			this.sceneBase = sceneBase;
-			settingsFile = new File(File.applicationStorageDirectory.nativePath + SETTINGS_FILE);
 			sharedObject = SharedObject.getLocal("QoLAFSettings");
 			load();
 		}
