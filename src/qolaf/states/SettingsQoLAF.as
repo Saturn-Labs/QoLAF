@@ -15,57 +15,58 @@ package qolaf.states
 	 */
 	public class SettingsQoLAF extends Sprite
 	{
-		private var game:Game;
-		private var clientSettings:ClientSettings;
-		private var currentHeight:Number = 20;
-		private var currentWidth:Number = 50;
-		private var scrollArea:ScrollContainer;
+		private var _game:Game;
 		
-		private var autoTarget:Check;
+		private var _clientSettings:ClientSettings;
+		private var _currentHeight:Number = 20;
+		private var _currentWidth:Number = 50;
+		private var _scrollArea:ScrollContainer;
+		
+		private var _autoTarget:Check;
 		
 		public function SettingsQoLAF(game:Game) 
 		{
-			this.game = game;
-			this.clientSettings = SceneBase.clientSettings;
-			scrollArea = new ScrollContainer();
-			scrollArea.y = 50;
-			scrollArea.x = 10;
-			scrollArea.width = 700;
-			scrollArea.height = 500;
+			this._game = game;
+			this._clientSettings = SceneBase.clientSettings;
+			_scrollArea = new ScrollContainer();
+			_scrollArea.y = 50;
+			_scrollArea.x = 10;
+			_scrollArea.width = 700;
+			_scrollArea.height = 500;
 			initComponents();
-			addChild(scrollArea);
+			addChild(_scrollArea);
 		}
 		
 		private function initComponents(): void {
 			var targetSystemSettings:Text = new Text();
 			targetSystemSettings.htmlText = Localize.t("Target system:");
 			targetSystemSettings.size = 16;
-			targetSystemSettings.y = currentHeight;
-			targetSystemSettings.x = currentWidth;
-			scrollArea.addChild(targetSystemSettings);
-			currentHeight += 40;
+			targetSystemSettings.y = _currentHeight;
+			targetSystemSettings.x = _currentWidth;
+			_scrollArea.addChild(targetSystemSettings);
+			_currentHeight += 40;
 			
-			autoTarget = new Check();
-			autoTarget.isSelected = clientSettings.autoTarget;
-			autoTarget.addEventListener("change", function(event:Event): void
+			_autoTarget = new Check();
+			_autoTarget.isSelected = _clientSettings.autoTarget;
+			_autoTarget.addEventListener("change", function(event:Event): void
 			{
-				clientSettings.autoTarget = autoTarget.isSelected;
+				_clientSettings.autoTarget = _autoTarget.isSelected;
 			});
-			addCheckbox(autoTarget, "Enable auto target");
+			addCheckbox(_autoTarget, "Enable auto target");
 		}
 		
 		private function addCheckbox(box:Check, boxText:String): void
 		{
 			var boxTextDisplay:Text = new Text();
 			boxTextDisplay.htmlText = boxText;
-			boxTextDisplay.y = currentHeight;
-			boxTextDisplay.x = currentWidth + 30;
-			box.x = currentWidth;
-			box.y = currentHeight - 4;
+			boxTextDisplay.y = _currentHeight;
+			boxTextDisplay.x = _currentWidth + 30;
+			box.x = _currentWidth;
+			box.y = _currentHeight - 4;
 			box.useHandCursor = true;
-			scrollArea.addChild(boxTextDisplay);
-			scrollArea.addChild(box);
-			currentHeight += 40;
+			_scrollArea.addChild(boxTextDisplay);
+			_scrollArea.addChild(box);
+			_currentHeight += 40;
 		}
 	}
 }

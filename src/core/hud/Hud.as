@@ -147,7 +147,7 @@ package core.hud
 		}
 		
 		// QoLAF
-		public function GetTargetInfoElement(): TargetInfoElement {
+		public function getTargetInfoElement(): TargetInfoElement {
 			return targetInfoElement;
 		}
 		
@@ -542,9 +542,6 @@ package core.hud
 			compas.update();
 			experience.update();
 			shopIcons.update();
-			
-			// QoLAF
-			targetInfoElement.Update();
 			
 			if (hintMapText != null)
 			{

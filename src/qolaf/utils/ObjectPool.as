@@ -5,23 +5,23 @@ package qolaf.utils
 	 */
 	public class ObjectPool 
 	{
-		private var factory:Function;
-		private var reset:Function;
+		private var _factory:Function;
+		private var _reset:Function;
 		
-		private var inactive:Vector.<Object> = new Vector.<Object>();
-		private var active:Vector.<Object> = new Vector.<Object>();
+		private var _inactive:Vector.<Object> = new Vector.<Object>();
+		private var _active:Vector.<Object> = new Vector.<Object>();
 		
 		public function ObjectPool(factory:Function, reset:Function) {
-			this.factory = factory;
-			this.reset = reset;
+			this._factory = factory;
+			this._reset = reset;
 		}
 		
 		public function isActive(obj:Object):Boolean {
-			return active.indexOf(obj) != -1;
+			return _active.indexOf(obj) != -1;
 		}
 		
 		public function isInactive(obj:Object):Boolean {
-			return inactive.indexOf(obj) != -1;
+			return _inactive.indexOf(obj) != -1;
 		}
 		
 		public function isFromThisPool(obj:Object):Boolean {
@@ -30,15 +30,15 @@ package qolaf.utils
 		
 		public function getOne():Object {
 			var obj:Object = null;
-			if (inactive.length >= 1) {
-				obj = inactive.pop();
+			if (_inactive.length >= 1) {
+				obj = _inactive.pop();
 			}
 			else {
-				if (factory == null)
+				if (_factory == null)
 					throw new Error("Can't create a instance a object from the pool because the 'factory' is invalid!");
-				obj = factory();
+				obj = _factory();
 			}
-			active.push(obj);
+			_active.push(obj);
 			return obj;
 		}
 		
@@ -52,11 +52,11 @@ package qolaf.utils
 		public function recycleOne(obj:Object):void {
 			if (!isActive(obj))
 				return;
-			var index:int = active.indexOf(obj);
-			active.splice(index, 1);
-			inactive.push(obj);
-			if (reset != null)
-				reset(obj);
+			var index:int = _active.indexOf(obj);
+			_active.splice(index, 1);
+			_inactive.push(obj);
+			if (_reset != null)
+				_reset(obj);
 		}
 		
 		public function recycleMany(objs:Vector.<Object>):void {

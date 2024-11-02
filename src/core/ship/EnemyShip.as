@@ -151,7 +151,7 @@ package core.ship
 
       private var AFName:TextBitmap;
 
-      private var rareEmitters:Vector.<Emitter>;
+      public var rareEmitters:Vector.<Emitter>;
 
       private var sign:int = 1;
 

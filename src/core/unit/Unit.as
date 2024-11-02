@@ -16,6 +16,7 @@ package core.unit
 	import core.text.TextParticle;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import qolaf.debuff.DebuffEffect;
 	import sound.ISound;
 	import sound.SoundLocator;
 	import starling.display.Image;
@@ -26,164 +27,88 @@ package core.unit
 	public class Unit extends GameObject
 	{
 		private static const HP_MAXWIDTH:int = 20;
-		
 		private static const HP_MINWIDTH:int = 10;
-		
 		private static const HP_MAXWIDTH_PVP:int = 50;
-		
 		private var damageFilter:ColorMatrixFilter;
-		
 		private var healFilter:ColorMatrixFilter;
-		
 		protected var hpBar:Image;
-		
 		protected var shieldBar:Image;
-		
 		private var _bodyName:String;
-		
 		public var syncId:int;
-		
 		public var parentObj:GameObject;
-		
 		public var disableHealEndtime:Number;
-		
 		public var nextHitEffectReady:Number = 0;
-		
 		public var lastDmgText:TextParticle;
-		
 		public var lastDmgTextOffset:int;
-		
 		public var lastDmgTime:Number;
-		
 		public var lastDmg:int;
-		
 		public var lastHealText:TextParticle;
-		
 		public var lastHealTextOffset:int;
-		
 		public var lastHealTime:Number;
-		
 		public var lastHeal:int;
-		
 		public var team:int;
-		
 		public var stateMachine:StateMachine;
-		
 		public var hasDmgBoost:Boolean;
-		
 		public var dmgBoostCD:int;
-		
 		public var dmgBoostNextRdy:Number;
-		
 		public var dmgBoostEndTime:Number;
-		
 		public var dmgBoostDuration:int;
-		
 		public var dmgBoostCost:Number;
-		
 		public var usingDmgBoost:Boolean;
-		
 		public var dmgBoostBonus:Number;
-		
 		public var alive:Boolean;
-		
 		public var uberDifficulty:Number;
-		
 		public var uberLevelFactor:Number;
-		
 		public var hp:int;
-		
 		private var _hpMax:int;
-		
 		public var armorThreshold:int;
-		
 		public var armorThresholdBase:int;
-		
 		public var shieldHp:int;
-		
 		protected var _shieldHpMax:int;
-		
 		public var xp:int;
-		
 		public var level:int;
-		
 		public var collisionRadius:Number;
-		
 		public var explosionEffect:String;
-		
 		public var explosionSound:String;
-		
 		public var shieldRegen:int;
-		
 		public var shieldRegenBase:int;
-		
 		public var shieldRegenCounter:int = 0;
-		
 		public var shieldRegenDuration:int = 1000;
-		
 		public var shieldRegenBonus:Number = 1;
-		
 		public var hpRegen:Number;
-		
 		public var hpRegenCounter:int;
-		
 		public var hpRegenDuration:int = 1000;
-		
 		public var invulnerable:Boolean = false;
-		
 		public var essential:Boolean = true;
-		
 		public var resistances:Vector.<Number>;
-		
 		private var barMaxWidth:int = 0;
-		
 		private var isFlashing:Boolean = false;
-		
 		protected var g:Game;
-		
 		private var _speed:Point;
-		
 		public var weaponPos:Point;
-		
 		public var enginePos:Point;
-		
 		public var group:Group;
-		
 		public var factions:Vector.<String>;
-		
 		public var isHostile:Boolean;
-		
 		public var dotTimers:Vector.<TweenMax>;
-		
 		public var dotEffect:String;
-		
 		public var obj:Object;
-		
 		public var active:Boolean = true;
-		
 		public var hideIfInactive:Boolean;
-		
 		public var triggersToActivte:int = 1;
-		
 		public var triggers:Vector.<Trigger>;
-		
 		public var lastBulletLocal:Number = 0;
-		
 		public var lastBulletGlobal:Number = 0;
-		
 		public var lastBulletTargetList:Vector.<Unit> = null;
-		
 		public var isBossUnit:Boolean = false;
-		
 		public var forceupdate:Boolean;
-		
 		public var originalFilter:ColorMatrixFilter;
-		
 		public var owner:PlayerShip = null;
-		
 		public var isInjured:Boolean = false;
-		
 		private var miniBarsAreAddedToCanvas:Boolean = false;
+		
+		// QoLAF
+		public var debuffs:Vector.<DebuffEffect> = new Vector.<DebuffEffect>();
 		
 		public function Unit(param1:Game)
 		{
@@ -228,6 +153,12 @@ package core.unit
 		
 		override public function update():void
 		{
+			// QoLAF
+			for (var i:int = debuffs.length - 1; i >= 0; i--) {
+				if (debuffs[i].hasEnded)
+					debuffs.removeAt(i);
+			}
+			
 			if (nextDistanceCalculation <= 0)
 			{
 				updateIsNear();
@@ -564,7 +495,7 @@ package core.unit
 			});
 		}
 		
-		public function doDOTEffect(param1:int, param2:String, param3:int = -1, param4:String = ""):void
+		public function doDOTEffect(duration:int, param2:String, debuff:int = -1, param4:String = ""):void
 		{
 			var _loc9_:* = undefined;
 			var _loc5_:TweenMax = null;
@@ -572,31 +503,47 @@ package core.unit
 			{
 				return;
 			}
-			if (param3 == 5)
+			if (debuff == 5)
 			{
-				if (shieldRegenCounter > -param1 * 1000)
+				if (shieldRegenCounter > -duration * 1000)
 				{
-					shieldRegenCounter = -param1 * 1000;
+					shieldRegenCounter = -duration * 1000;
 				}
 			}
-			if (param3 == 6)
-			{
-				if (disableHealEndtime < g.time)
-				{
-					disableHealEndtime = g.time + param1 * 1000;
-				}
-			}
-			if (param3 == 11)
+			if (debuff == 6)
 			{
 				if (disableHealEndtime < g.time)
 				{
-					disableHealEndtime = g.time + param1 * 1000;
-				}
-				if (shieldRegenCounter > -param1 * 1000)
-				{
-					shieldRegenCounter = -param1 * 1000;
+					disableHealEndtime = g.time + duration * 1000;
 				}
 			}
+			if (debuff == 11)
+			{
+				if (disableHealEndtime < g.time)
+				{
+					disableHealEndtime = g.time + duration * 1000;
+				}
+				if (shieldRegenCounter > -duration * 1000)
+				{
+					shieldRegenCounter = -duration * 1000;
+				}
+			}
+			
+			if (debuff != -1 && debuff != 11) {
+				var found:DebuffEffect = null;
+				for each (var effect:DebuffEffect in debuffs) {
+					if (effect.debuff == debuff) {
+						found = effect;
+						break;
+					}
+				}
+				
+				if (found != null)
+					found.stackAndReset();
+				else
+					debuffs.push(new DebuffEffect(debuff, duration * 1000));
+			}
+			
 			if (dotTimers.length > 0 && dotTimers[0]._active && this.dotEffect == param2)
 			{
 				for each (var _loc8_:* in dotTimers)
@@ -614,7 +561,7 @@ package core.unit
 				_loc9_ = EmitterFactory.create(param2, g, pos.x, pos.y, this, true);
 				for each (var _loc7_:* in _loc9_)
 				{
-					_loc5_ = TweenMax.to(_loc7_, param1, {"startAlpha": 0.1, "onComplete": removeDot(_loc7_)});
+					_loc5_ = TweenMax.to(_loc7_, duration, {"startAlpha": 0.1, "onComplete": removeDot(_loc7_)});
 					dotTimers.push(_loc5_);
 				}
 				this.dotEffect = param2;
