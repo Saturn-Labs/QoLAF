@@ -11,6 +11,7 @@ package
 	import flash.text.Font;
 	import flash.utils.getTimer;
 	import metadata.BuildData;
+	import qolaf.utils.Query;
 	
 	public class Astroflux extends Sprite
 	{

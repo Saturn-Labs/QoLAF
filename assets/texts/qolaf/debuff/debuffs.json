@@ -1,0 +1,65 @@
+[
+    {
+        "id": 5,
+        "negative": true,
+        "name": "Disabled Regen",
+        "self_description": "You are unable to drain/regenerate shield.",
+        "enemy_description": "[enemy] is unable to drain/regenerate shield.",
+        "icon": "ti2_disable_shield_regen",
+        "color": [1, 0, 0, 1]
+    },
+    {
+        "id": 6,
+        "negative": true,
+        "name": "Disabled Healing",
+        "self_description": "You are unable to drain/regenerate health.",
+        "enemy_description": "[enemy] is unable to drain/regenerate health.",
+        "icon": "ti2_disable_healing",
+        "color": [1, 0, 0, 1]
+    },
+    {
+        "id": 0,
+        "negative": true,
+        "name": "Damage over time",
+        "self_description": "You are taking damage over time.",
+        "enemy_description": "[enemy] is taking damage over time.",
+        "icon": "ti2_energy_dot20",
+        "color": [1, 0, 0, 1]
+    },
+    {
+        "id": 1,
+        "negative": true,
+        "name": "Damage over time",
+        "self_description": "You are taking damage over time.",
+        "enemy_description": "[enemy] is taking damage over time.",
+        "icon": "ti2_energy_dot20",
+        "color": [1, 0, 0, 1]
+    },
+    {
+        "id": 8,
+        "negative": true,
+        "name": "Reduced kinetic resist",
+        "self_description": "Your kinetic resistance has been reduced.",
+        "enemy_description": "[enemy] kinetic resistance has been reduced.",
+        "icon": "ti2_pen_kinetic",
+        "color": [1, 0, 0, 1]
+    },
+    {
+        "id": 9,
+        "negative": true,
+        "name": "Reduced energy resist",
+        "self_description": "Your energy resistance has been reduced.",
+        "enemy_description": "[enemy] energy resistance has been reduced.",
+        "icon": "ti2_pen_energy",
+        "color": [1, 0, 0, 1]
+    },
+    {
+        "id": 10,
+        "negative": true,
+        "name": "Reduced corrosive resist",
+        "self_description": "Your corrosive resistance has been reduced.",
+        "enemy_description": "[enemy] corrosive resistance has been reduced.",
+        "icon": "ti2_pen_corrosive",
+        "color": [1, 0, 0, 1]
+    }
+]

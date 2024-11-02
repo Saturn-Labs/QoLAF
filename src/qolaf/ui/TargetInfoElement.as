@@ -3,6 +3,7 @@ package qolaf.ui
 	import core.GameObject;
 	import core.boss.Boss;
 	import core.scene.Game;
+	import core.scene.SceneBase;
 	import core.ship.EnemyShip;
 	import core.spawner.Spawner;
 	import core.unit.Unit;
@@ -12,6 +13,7 @@ package qolaf.ui
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.VerticalAlign;
 	import feathers.layout.VerticalLayout;
+	import flash.geom.Point;
 	import generics.Util;
 	import qolaf.ui.debuff.DebuffDisplay;
 	import qolaf.ui.elements.CustomProgressBar;
@@ -122,12 +124,17 @@ package qolaf.ui
 		}
 		
 		public function onEnterFrame(event:EnterFrameEvent):void {
-			x = (_game.stage.stageWidth - width) / 2.0;
-			y = 60;
+			var pos:Point = SceneBase.clientSettings.targetInfoPosition;
+			
+			x = (_game.stage.stageWidth - width) * pos.x;
+			y = (_game.stage.stageHeight - height) * pos.y;
 			
 			var unit:Unit = _game.targetSystem.getCurrentUnit();
-			if (unit == null)
+			if (unit == null) {
+				if (_debuffDisplay.debuffInfoTooltip.visible)
+					_debuffDisplay.debuffInfoTooltip.visible = false;
 				return;
+			}
 				
 			var level:int = unit.level;
 			var name:String = unit.name;
@@ -180,7 +187,7 @@ package qolaf.ui
 			_targetLevel.text = StringUtils.substitute(TARGET_LEVEL_TEXT_TEMPLATE, {
 				"[level]": level
 			});
-			_debuffDisplay.updateDebuffs(unit.debuffs);
+			_debuffDisplay.updateDebuffs(unit.debuffs, unit);
 
 			_targetName.text = getUnitNameWithoutLevel(name);
 			_lockButton.texture = Game.instance.targetSystem._lockedTarget ? _lockIcon : _unlockIcon;
@@ -213,6 +220,30 @@ package qolaf.ui
 			if (name == null)
 				return "Unknown";
 			return (name.split("lvl")[0] as String).replace(/^\s+|\s+$/g, "");
+		}
+		
+		public static function getUnitTrueName(unit:Unit):String {
+			var name:String = "";
+			if (unit is Spawner) {
+				var spawner:Spawner = unit as Spawner;
+				if (spawner.factions.length == 0)
+					name = spawner.spawnerType.charAt(0).toUpperCase() + spawner.spawnerType.substring(1) + " Spawner";
+				else
+					name = spawner.factions[0] + " Spawner";
+			}
+			else if (unit.isBossUnit || unit.parentObj is Boss) {
+				var parentObj:GameObject = unit.parentObj;
+				while (!(parentObj is Boss))
+					parentObj = unit.parentObj;
+				if (parentObj is Boss) {
+					var boss:Boss = parentObj as Boss;
+					name = boss.name;
+				}
+			}
+			else {
+				name = getUnitNameWithoutLevel(unit.name);
+			}
+			return name;
 		}
 	}
 }
