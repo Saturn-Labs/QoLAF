@@ -23,6 +23,7 @@ package core.player
 	import core.states.gameStates.missions.MissionsList;
 	import core.unit.Unit;
 	import core.weapon.Beam;
+	import core.weapon.Debuff;
 	import core.weapon.Heat;
 	import core.weapon.Teleport;
 	import core.weapon.Weapon;
@@ -36,6 +37,7 @@ package core.player
 	import joinRoom.JoinRoomLocator;
 	import movement.Heading;
 	import playerio.Message;
+	import qolaf.modifiers.Modifier;
 	import qolaf.target.TargetSystem;
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
@@ -248,6 +250,9 @@ package core.player
 				_loc2_.ship.course = _loc3_;
 				_loc2_.ship.x = 824124;
 				_loc2_.ship.y = -725215;
+				
+				// QoLAF
+				_loc2_.ship.addModifier(new Modifier(Debuff.CLOAKED, 0, true));
 			}
 		}
 		
@@ -264,6 +269,9 @@ package core.player
 				_loc2_.ship.x = _loc3_.pos.x;
 				_loc2_.ship.y = _loc3_.pos.y;
 				_loc2_.ship.addToCanvasForReal();
+				
+				// QoLAF
+				_loc2_.ship.removeModifier(new Modifier(Debuff.CLOAKED, 0, true));
 			}
 		}
 		
@@ -693,14 +701,17 @@ package core.player
 			{
 				return;
 			}
-			var _loc5_:PlayerShip = _loc4_.ship;
-			if (_loc5_ == null)
+			var ship:PlayerShip = _loc4_.ship;
+			if (ship == null)
 			{
 				return;
 			}
-			_loc5_.usingDmgBoost = true;
-			_loc5_.dmgBoostEndTime = g.time + _loc5_.dmgBoostDuration;
-			_loc5_.damageBoostEffect();
+			ship.usingDmgBoost = true;
+			ship.dmgBoostEndTime = g.time + ship.dmgBoostDuration;
+			ship.damageBoostEffect();
+			
+			// QoLAF
+			ship.addModifier(new Modifier(Debuff.POWER_BOOST, ship.dmgBoostDuration));
 		}
 		
 		public function hardenShield(param1:Message, param2:int):void
@@ -711,14 +722,17 @@ package core.player
 			{
 				return;
 			}
-			var _loc5_:PlayerShip = _loc4_.ship;
-			if (_loc5_ == null)
+			var ship:PlayerShip = _loc4_.ship;
+			if (ship == null)
 			{
 				return;
 			}
-			_loc5_.usingHardenedShield = true;
-			_loc5_.hardenEndTimer = g.time + _loc5_.hardenDuration;
-			_loc5_.hardenShieldEffect();
+			ship.usingHardenedShield = true;
+			ship.hardenEndTimer = g.time + ship.hardenDuration;
+			ship.hardenShieldEffect();
+			
+			// QoLAF
+			ship.addModifier(new Modifier(Debuff.HARD_SHIELD, ship.hardenDuration));
 		}
 		
 		public function convShield(param1:Message, param2:int):void
@@ -731,24 +745,27 @@ package core.player
 			{
 				return;
 			}
-			var _loc5_:PlayerShip = _loc4_.ship;
-			if (_loc5_ == null)
+			var ship:PlayerShip = _loc4_.ship;
+			if (ship == null)
 			{
 				return;
 			}
-			_loc5_.shieldHp -= _loc6_;
-			_loc5_.hp += _loc7_;
-			if (_loc4_.ship.hp > _loc5_.hpMax)
+			ship.shieldHp -= _loc6_;
+			ship.hp += _loc7_;
+			if (_loc4_.ship.hp > ship.hpMax)
 			{
-				_loc7_ -= _loc5_.hp - _loc5_.hpMax;
-				_loc5_.hp = _loc5_.hpMax;
+				_loc7_ -= ship.hp - ship.hpMax;
+				ship.hp = ship.hpMax;
 			}
-			_loc5_.converShieldEffect();
-			g.textManager.createDmgText(-_loc7_, _loc5_);
+			ship.converShieldEffect();
+			g.textManager.createDmgText(-_loc7_, ship);
 			if (_loc4_.isMe && g.hud != null)
 			{
 				g.hud.healthAndShield.update();
 			}
+			
+			// QoLAF
+			ship.addModifier(new Modifier(Debuff.HEALING, 2000));
 		}
 		
 		public function powerUpHeal(param1:Message, param2:int):void
@@ -1373,6 +1390,10 @@ package core.player
 				EmitterFactory.create("UZ3AiNHAEUmBD4ev0Itu0A", g, ship.pos.x, ship.pos.y, ship, true);
 				line++;
 				emitters = EmitterFactory.create("5BSaDIEYj0mEuVkMVp1JGw", g, heading.pos.x, heading.pos.y, null, true);
+				
+				// QoLAF
+				ship.addModifier(new Modifier(Debuff.TELEPORTING, (channelingEnd - g.time)));
+				
 				TweenMax.delayedCall(timeDiff, function():void
 				{
 					g.emitterManager.clean(ship);

@@ -189,6 +189,18 @@ package core.unit
 			return true;
 		}
 		
+		// QoLAF
+		public function removeModifierById(modifierId:int):Boolean {
+			var modifier:Modifier = Query.first(_modifiers, function(obj:Modifier):Boolean {
+				return obj.id == modifierId;
+			});
+			if (modifier == null)
+				return false;
+			Query.removeEquals(_modifiers, modifier);
+			dispatchEvent(new ModifierRemovedEvent(ModifierRemovedEvent.EVENT, modifier));
+			return true;
+		}
+		
 		override public function update():void
 		{
 			// QoLAF

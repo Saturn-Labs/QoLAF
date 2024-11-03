@@ -18,7 +18,7 @@ package qolaf.ui.elements {
 	public class ModifierTooltip extends LayoutGroup {
 		public static const MAX_WIDTH:int = 260;
 		public static const MAX_HEIGHT:int = 210;
-		public static const MODIFIER_NAME_TEMPLATE:String = "[name] x[stacks]";
+		public static const MODIFIER_NAME_TEMPLATE:String = "[name] [stacks]";
 		
 		private var _title:TextField;
 		private var _time:TextField;
@@ -45,7 +45,7 @@ package qolaf.ui.elements {
 			titleAndTimeGroup.layout = hLayout;
 			
 			
-			_title = new TextField(MAX_WIDTH * 0.75, 15, "Unknown Debuff x1", new TextFormat("DAIDRR", 12, 0xffffff, Align.LEFT, Align.TOP));
+			_title = new TextField(MAX_WIDTH * 0.75, 15, "Unknown Debuff", new TextFormat("DAIDRR", 12, 0xffffff, Align.LEFT, Align.TOP));
 			titleAndTimeGroup.addChild(_title);
 			_time = new TextField(MAX_WIDTH * 0.25, 15, "0h 0m 0s", new TextFormat("DAIDRR", 12, 0xffffff, Align.RIGHT, Align.TOP));
 			titleAndTimeGroup.addChild(_time);

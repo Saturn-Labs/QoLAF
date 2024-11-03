@@ -15,6 +15,14 @@ package core.weapon {
 		public static const REDUCED_ENERGY_RESIST:int = 9;
 		public static const REDUCED_CORROSIVE_RESIST:int = 10;
 		
+		// QoLAF
+		public static const CLOAKED:int = 12;
+		public static const HARD_SHIELD:int = 13;
+		public static const POWER_BOOST:int = 14;
+		public static const SPEED_BOOST:int = 15;
+		public static const HEALING:int = 16;
+		public static const TELEPORTING:int = 17;
+		
 		public function Debuff() {
 			super();
 		}

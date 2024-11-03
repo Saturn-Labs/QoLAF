@@ -10,5 +10,6 @@ package qolaf.modifiers {
 		function getModifiers():Vector.<Modifier>;
 		function addModifier(modifier:Modifier):void;
 		function removeModifier(modifier:Modifier):Boolean;
+		function removeModifierById(modifierId:int):Boolean;
 	}
 }

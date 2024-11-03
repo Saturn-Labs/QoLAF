@@ -1,6 +1,7 @@
 package qolaf.ui.modifiers {
 	import core.scene.Game;
 	import core.unit.Unit;
+	import core.weapon.Debuff;
 	import feathers.controls.LayoutGroup;
 	import feathers.layout.TiledRowsLayout;
 	import feathers.layout.VerticalLayout;
@@ -100,11 +101,11 @@ package qolaf.ui.modifiers {
 			
 			_modifierTooltip.title.text = StringUtils.substitute(ModifierTooltip.MODIFIER_NAME_TEMPLATE, {
 				"[name]": name,
-				"[stacks]": _selectedModifier.stacks
+				"[stacks]": Debuff.canStack(_selectedModifier.id) ? ("x" + _selectedModifier.stacks) : ""
 			});
 			
-			_modifierTooltip.time.text = StringUtils.formatTime(_selectedModifier.currentDuration);
-			_modifierTooltip.time.format.color = _selectedModifier.currentDuration <= 10000 ? 0xff0000 : 0xffffff;
+			_modifierTooltip.time.text = _selectedModifier.indeterminate ? "Ind.." : StringUtils.formatTime(_selectedModifier.currentDuration);
+			_modifierTooltip.time.format.color = _selectedModifier.indeterminate ? 0xffffff : _selectedModifier.currentDuration <= 10000 ? 0xff0000 : 0xffffff;
 			
 			_modifierTooltip.descriptionText = StringUtils.substitute(description, {
 				"[enemy]": _target is Unit ? TargetInfoElement.getUnitTrueName(_target as Unit) : "Unknown"

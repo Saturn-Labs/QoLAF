@@ -10,12 +10,14 @@ package qolaf.modifiers {
 		private var _duration:int = 0;
 		private var _startTime:int = 0;
 		private var _stacks:uint = 1;
+		private var _indeterminateTime:Boolean = false;
 		
-		public function Modifier(id:int, duration:int) {
+		public function Modifier(id:int, duration:int, indeterminate:Boolean = false) {
 			this._id = id;
 			this._duration = duration;
 			this._startTime = Game.instance.time;
 			this._stacks = 1;
+			this._indeterminateTime = indeterminate;
 		}
 		
 		public function stackAndReset():void {
@@ -38,7 +40,7 @@ package qolaf.modifiers {
 		}
 		
 		public function get endTime():int {
-			return startTime + duration;
+			return _indeterminateTime ? Game.instance.time + 1000 : startTime + duration;
 		}
 		
 		public function get stacks():uint {
@@ -46,11 +48,15 @@ package qolaf.modifiers {
 		}
 		
 		public function get currentDuration():int {
-			return endTime - Game.instance.time;
+			return _indeterminateTime ? 1000 : endTime - Game.instance.time;
 		}
 		
 		public function get hasEnded():Boolean {
-			return currentDuration <= 0;
+			return _indeterminateTime ? false : currentDuration <= 0;
+		}
+		
+		public function get indeterminate():Boolean {
+			return _indeterminateTime;
 		}
 	}
 }

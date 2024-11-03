@@ -5,8 +5,7 @@
         "name": "Disabled Regen",
         "self_description": "You are unable to drain/regenerate shield.",
         "enemy_description": "[enemy] is unable to drain/regenerate shield.",
-        "icon": "ti2_disable_shield_regen",
-        "color": [1, 0, 0, 1]
+        "icon": "ti2_disable_shield_regen"
     },
     {
         "id": 6,
@@ -14,8 +13,7 @@
         "name": "Disabled Healing",
         "self_description": "You are unable to drain/regenerate health.",
         "enemy_description": "[enemy] is unable to drain/regenerate health.",
-        "icon": "ti2_disable_healing",
-        "color": [1, 0, 0, 1]
+        "icon": "ti2_disable_healing"
     },
     {
         "id": 0,
@@ -23,8 +21,7 @@
         "name": "Damage over time",
         "self_description": "You are taking damage over time.",
         "enemy_description": "[enemy] is taking damage over time.",
-        "icon": "ti2_energy_dot20",
-        "color": [1, 0, 0, 1]
+        "icon": "ti2_energy_dot20"
     },
     {
         "id": 1,
@@ -32,8 +29,7 @@
         "name": "Damage over time",
         "self_description": "You are taking damage over time.",
         "enemy_description": "[enemy] is taking damage over time.",
-        "icon": "ti2_energy_dot20",
-        "color": [1, 0, 0, 1]
+        "icon": "ti2_energy_dot20"
     },
     {
         "id": 8,
@@ -41,8 +37,7 @@
         "name": "Reduced kinetic resist",
         "self_description": "Your kinetic resistance has been reduced.",
         "enemy_description": "[enemy] kinetic resistance has been reduced.",
-        "icon": "ti2_pen_kinetic",
-        "color": [1, 0, 0, 1]
+        "icon": "ti2_pen_kinetic"
     },
     {
         "id": 9,
@@ -50,8 +45,7 @@
         "name": "Reduced energy resist",
         "self_description": "Your energy resistance has been reduced.",
         "enemy_description": "[enemy] energy resistance has been reduced.",
-        "icon": "ti2_pen_energy",
-        "color": [1, 0, 0, 1]
+        "icon": "ti2_pen_energy"
     },
     {
         "id": 10,
@@ -59,8 +53,7 @@
         "name": "Reduced corrosive resist",
         "self_description": "Your corrosive resistance has been reduced.",
         "enemy_description": "[enemy] corrosive resistance has been reduced.",
-        "icon": "ti2_pen_corrosive",
-        "color": [1, 0, 0, 1]
+        "icon": "ti2_pen_corrosive"
     },
     {
         "id": 2,
@@ -68,8 +61,7 @@
         "name": "Sticky bombs",
         "self_description": "You are covered by bombs.",
         "enemy_description": "[enemy] is covered by bombs.",
-        "icon": "ti_sticky_bombs",
-        "color": [1, 0, 0, 1]
+        "icon": "ti_sticky_bombs"
     },
     {
         "id": 4,
@@ -77,8 +69,7 @@
         "name": "Burning",
         "self_description": "You are being burned to ashes.",
         "enemy_description": "[enemy] is being burned to ashes.",
-        "icon": "ti_flamethrower",
-        "color": [1, 0, 0, 1]
+        "icon": "ti_flamethrower"
     },
     {
         "id": 7,
@@ -86,8 +77,7 @@
         "name": "Reduced damage",
         "self_description": "Your damage was reduced.",
         "enemy_description": "[enemy] damage was reduced.",
-        "icon": "ti_concussion_sphere",
-        "color": [1, 0, 0, 1]
+        "icon": "ti_concussion_sphere"
     },
     {
         "id": 3,
@@ -95,7 +85,55 @@
         "name": "Reduced armor",
         "self_description": "Your armor was reduced.",
         "enemy_description": "[enemy] armor was reduced.",
-        "icon": "ti2_pen_armor",
-        "color": [1, 0, 0, 1]
+        "icon": "ti2_pen_armor"
+    },
+
+    {
+        "id": 12,
+        "negative": true,
+        "name": "Cloaked",
+        "self_description": "You are invisible temporarily.",
+        "enemy_description": "[enemy] is invisible temporarily.",
+        "icon": "ti_cloak"
+    },
+    {
+        "id": 13,
+        "negative": true,
+        "name": "Hardened Shields",
+        "self_description": "You are invulnerable temporarily.",
+        "enemy_description": "[enemy] is invulnerable temporarily.",
+        "icon": "ti_shield"
+    },
+    {
+        "id": 14,
+        "negative": true,
+        "name": "Power Boost",
+        "self_description": "Your attack damage is increased temporarily.",
+        "enemy_description": "[enemy] attack damage is increased temporarily.",
+        "icon": "ti_power"
+    },
+    {
+        "id": 15,
+        "negative": true,
+        "name": "Speed Boost",
+        "self_description": "Your movement speed is increased temporarily.",
+        "enemy_description": "[enemy] movement speed is increased temporarily.",
+        "icon": "ti_engine"
+    },
+    {
+        "id": 16,
+        "negative": true,
+        "name": "Healing",
+        "self_description": "You're healing.",
+        "enemy_description": "[enemy] is healing.",
+        "icon": "ti_armor"
+    },
+    {
+        "id": 17,
+        "negative": true,
+        "name": "Teleporting",
+        "self_description": "You are teleporting.",
+        "enemy_description": "[enemy] is teleporting.",
+        "icon": "ti_teleport"
     }
 ]
