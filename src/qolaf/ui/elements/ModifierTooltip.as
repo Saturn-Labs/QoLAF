@@ -15,16 +15,16 @@ package qolaf.ui.elements {
 	/**
 	 * @author rydev
 	 */
-	public class DebuffInfoTooltip extends LayoutGroup {
+	public class ModifierTooltip extends LayoutGroup {
 		public static const MAX_WIDTH:int = 260;
 		public static const MAX_HEIGHT:int = 210;
-		public static const DEBUFF_NAME_TEMPLATE:String = "[name] x[stacks]";
+		public static const MODIFIER_NAME_TEMPLATE:String = "[name] x[stacks]";
 		
 		private var _title:TextField;
 		private var _time:TextField;
 		private var _description:TextField;
 		
-		public function DebuffInfoTooltip() {
+		public function ModifierTooltip() {
 			var verticalLayout:VerticalLayout = new VerticalLayout();
 			verticalLayout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_LEFT;
 			verticalLayout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;

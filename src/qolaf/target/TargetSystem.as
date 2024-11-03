@@ -43,7 +43,7 @@ package qolaf.target
 				return;
 			_oldUnit = _currentUnit;
 			_currentUnit = value;
-			dispatchEvent(new TargetUpdatedEvent(TargetUpdatedEvent.EVENT, this));
+			dispatchEvent(new TargetUpdatedEvent(TargetUpdatedEvent.EVENT, value));
 			_targetTimeout = 0.5;
 		}
 		

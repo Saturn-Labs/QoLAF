@@ -15,12 +15,14 @@ package qolaf.ui
 	import feathers.layout.VerticalLayout;
 	import flash.geom.Point;
 	import generics.Util;
-	import qolaf.debuff.DebuffEffect;
-	import qolaf.events.DebuffAddedEvent;
-	import qolaf.events.DebuffRemovedEvent;
-	import qolaf.events.DebuffStackEvent;
+	import qolaf.modifiers.IModifierTarget;
+	import qolaf.modifiers.Modifier;
+	import qolaf.events.ModifierAddedEvent;
+	import qolaf.events.ModifierRemovedEvent;
+	import qolaf.events.ModifierStackedEvent;
 	import qolaf.events.TargetUpdatedEvent;
-	import qolaf.ui.debuff.DebuffDisplay;
+	import qolaf.ui.modifiers.IModifierDisplay;
+	import qolaf.ui.modifiers.TargetModifierDisplay;
 	import qolaf.ui.elements.CustomProgressBar;
 	import qolaf.utils.StringUtils;
 	import starling.display.DisplayObjectContainer;
@@ -62,7 +64,7 @@ package qolaf.ui
 		private var _shieldBar:CustomProgressBar;
 		private var _healthBar:CustomProgressBar;
 		private var _lockButton:Image;
-		private var _debuffDisplay:DebuffDisplay;
+		private var _modifierDisplay:IModifierDisplay;
 		
 		private var _lockIcon:Texture;
 		private var _unlockIcon:Texture;
@@ -118,37 +120,7 @@ package qolaf.ui
 		}
 		
 		private function onTargetUpdated(e:TargetUpdatedEvent):void {
-			if (e.targetSystem == null)
-				return;
-				
-			_debuffDisplay.clearDebuffs();
-			
-			if (e.targetSystem.oldUnit != null) {
-				e.targetSystem.oldUnit.removeEventListener(DebuffAddedEvent.EVENT, onDebuffAdded);
-				e.targetSystem.oldUnit.removeEventListener(DebuffStackEvent.EVENT, onDebuffStacked);
-				e.targetSystem.oldUnit.removeEventListener(DebuffRemovedEvent.EVENT, onDebuffRemoved);
-			}
-			
-			if (e.targetSystem.unit != null) {
-				e.targetSystem.unit.addEventListener(DebuffAddedEvent.EVENT, onDebuffAdded);
-				e.targetSystem.unit.addEventListener(DebuffStackEvent.EVENT, onDebuffStacked);
-				e.targetSystem.unit.addEventListener(DebuffRemovedEvent.EVENT, onDebuffRemoved);
-				for each (var effect:DebuffEffect in e.targetSystem.unit.debuffs) {
-					_debuffDisplay.addDebuff(e.targetSystem.unit, effect);
-				}
-			}
-		}
-		
-		private function onDebuffAdded(e:DebuffAddedEvent):void {
-			_debuffDisplay.addDebuff(e.currentTarget as Unit, e.effect);
-		}
-		
-		private function onDebuffStacked(e:DebuffStackEvent):void {
-			
-		}
-		
-		private function onDebuffRemoved(e:DebuffRemovedEvent):void {
-			_debuffDisplay.removeDebuff(e.currentTarget as Unit, e.effect);
+			_modifierDisplay.setTarget(e.updatedTarget as IModifierTarget);
 		}
 		
 		private function createShieldAndHealthBar():void {
@@ -159,8 +131,8 @@ package qolaf.ui
 		}
 		
 		private function createDebuffDisplay():void {
-			_debuffDisplay = new DebuffDisplay();
-			addChild(_debuffDisplay);
+			_modifierDisplay = new TargetModifierDisplay();
+			addChild(_modifierDisplay as TargetModifierDisplay);
 		}
 		
 		public function onEnterFrame(event:EnterFrameEvent):void {
@@ -171,8 +143,8 @@ package qolaf.ui
 			
 			var unit:Unit = _game.targetSystem.unit;
 			if (unit == null) {
-				if (_debuffDisplay.debuffInfoTooltip.visible)
-					_debuffDisplay.debuffInfoTooltip.visible = false;
+				if (_modifierDisplay.getTooltip().visible)
+					_modifierDisplay.getTooltip().visible = false;
 				return;
 			}
 				

@@ -17,10 +17,13 @@ package core.unit
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
-	import qolaf.debuff.DebuffEffect;
-	import qolaf.events.DebuffAddedEvent;
-	import qolaf.events.DebuffRemovedEvent;
-	import qolaf.events.DebuffStackEvent;
+	import qolaf.modifiers.IModifierTarget;
+	import qolaf.modifiers.Modifier;
+	import qolaf.events.ModifierAddedEvent;
+	import qolaf.events.ModifierRemovedEvent;
+	import qolaf.events.ModifierStackedEvent;
+	import qolaf.target.ITarget;
+	import qolaf.utils.Query;
 	import sound.ISound;
 	import sound.SoundLocator;
 	import starling.display.Image;
@@ -28,7 +31,8 @@ package core.unit
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class Unit extends GameObject
+	// QoLAF
+	public class Unit extends GameObject implements IModifierTarget
 	{
 		private static const HP_MAXWIDTH:int = 20;
 		private static const HP_MINWIDTH:int = 10;
@@ -112,7 +116,7 @@ package core.unit
 		private var miniBarsAreAddedToCanvas:Boolean = false;
 		
 		// QoLAF
-		public var debuffs:Vector.<DebuffEffect> = new Vector.<DebuffEffect>();
+		private var _modifiers:Vector.<Modifier> = new Vector.<Modifier>();
 		
 		public function Unit(param1:Game)
 		{
@@ -155,13 +159,42 @@ package core.unit
 			super();
 		}
 		
+		// QoLAF
+		public function getModifiers():Vector.<Modifier> {
+			return _modifiers;
+		}
+		
+		// QoLAF
+		public function addModifier(modifier:Modifier):void {
+			var found:Modifier = Query.first(_modifiers, function(obj:Modifier):Boolean {
+				return obj.id == modifier.id;
+			});
+			
+			if (found != null) {
+				found.stackAndReset();
+				dispatchEvent(new ModifierStackedEvent(ModifierStackedEvent.EVENT, found));
+			}
+			else {
+				found = modifier;
+				_modifiers.push(found);
+				dispatchEvent(new ModifierAddedEvent(ModifierAddedEvent.EVENT, found));
+			}
+		}
+		
+		// QoLAF
+		public function removeModifier(modifier:Modifier):Boolean {
+			if (!Query.removeEquals(_modifiers, modifier))
+				return false;
+			dispatchEvent(new ModifierRemovedEvent(ModifierRemovedEvent.EVENT, modifier));
+			return true;
+		}
+		
 		override public function update():void
 		{
 			// QoLAF
-			for (var i:int = debuffs.length - 1; i >= 0; i--) {
-				if (debuffs[i].hasEnded) {
-					dispatchEvent(new DebuffRemovedEvent(DebuffRemovedEvent.EVENT, debuffs[i]));
-					debuffs.removeAt(i);
+			for (var i:int = _modifiers.length - 1; i >= 0; i--) {
+				if (_modifiers[i].hasEnded) {
+					removeModifier(_modifiers[i]);
 				}
 			}
 			
@@ -501,7 +534,7 @@ package core.unit
 			});
 		}
 		
-		public function doDOTEffect(duration:int, param2:String, debuff:int = -1, param4:String = ""):void
+		public function doDOTEffect(duration:int, param2:String, modifierId:int = -1, param4:String = ""):void
 		{
 			var _loc9_:* = undefined;
 			var _loc5_:TweenMax = null;
@@ -509,21 +542,21 @@ package core.unit
 			{
 				return;
 			}
-			if (debuff == 5)
+			if (modifierId == 5)
 			{
 				if (shieldRegenCounter > -duration * 1000)
 				{
 					shieldRegenCounter = -duration * 1000;
 				}
 			}
-			if (debuff == 6)
+			if (modifierId == 6)
 			{
 				if (disableHealEndtime < g.time)
 				{
 					disableHealEndtime = g.time + duration * 1000;
 				}
 			}
-			if (debuff == 11)
+			if (modifierId == 11)
 			{
 				if (disableHealEndtime < g.time)
 				{
@@ -535,24 +568,8 @@ package core.unit
 				}
 			}
 			
-			if (debuff != -1 && debuff != 11) {
-				var found:DebuffEffect = null;
-				for each (var effect:DebuffEffect in debuffs) {
-					if (effect.debuff == debuff) {
-						found = effect;
-						break;
-					}
-				}
-				
-				if (found != null) {
-					found.stackAndReset();
-					dispatchEvent(new DebuffStackEvent(DebuffStackEvent.EVENT, found));
-				}
-				else {
-					found = new DebuffEffect(debuff, duration * 1000)
-					debuffs.push(found);
-					dispatchEvent(new DebuffAddedEvent(DebuffAddedEvent.EVENT, found));
-				}
+			if (modifierId != -1 && modifierId != 11) {
+				addModifier(new Modifier(modifierId, duration * 1000));
 			}
 			
 			if (dotTimers.length > 0 && dotTimers[0]._active && this.dotEffect == param2)

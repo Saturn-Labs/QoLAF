@@ -79,8 +79,10 @@ package core.hud.components.chat
 			switch (param2)
 			{
 			case "echo.":
-				var message:String = "<font face='Helvetica' color='#8aff1c'><b>" + Astroflux.VERSION_NAME + " " + Astroflux.VERSION_NUMBER + "<font color='#ffffff'>∕</font><font color='#1c8aff'>" + BuildData.COMMIT + "</font></b></font>";
-				g.sendToServiceRoom("chatMsg", "local", message);
+				g.sendToServiceRoom("chatMsg", "local", "<font face='Helvetica' color='#8aff1c'><b>" + Astroflux.VERSION_NAME + " " + Astroflux.VERSION_NUMBER + "<font color='#ffffff'>∕</font><font color='#1c8aff'>" + BuildData.COMMIT + "</font></b></font>");
+				break;
+			case "os.":
+				g.sendToServiceRoom("chatMsg", "local", "<font face='Helvetica' color='#8aff1c'><b>" + System.getOSName() + "</b></font>");
 				break;
 			}
 			

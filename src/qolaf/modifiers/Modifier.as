@@ -1,32 +1,32 @@
-package qolaf.debuff {
+package qolaf.modifiers {
 	import core.scene.Game;
 	import core.weapon.Debuff;
 	
 	/**
 	 * @author rydev
 	 */
-	public class DebuffEffect {
-		private var _debuff:int = -1;
+	public class Modifier {
+		private var _id:int = -1;
 		private var _duration:int = 0;
 		private var _startTime:int = 0;
 		private var _stacks:uint = 1;
 		
-		public function DebuffEffect(debuff:int, duration:int) {
-			this._debuff = debuff;
+		public function Modifier(id:int, duration:int) {
+			this._id = id;
 			this._duration = duration;
 			this._startTime = Game.instance.time;
 			this._stacks = 1;
 		}
 		
 		public function stackAndReset():void {
-			if (Debuff.canStack(debuff))
+			if (Debuff.canStack(_id))
 				_stacks++;
-			if (!Debuff.stacksDontResetTime(debuff))
+			if (!Debuff.stacksDontResetTime(_id))
 				this._startTime = Game.instance.time;
 		}
 		
-		public function get debuff():int {
-			return _debuff;
+		public function get id():int {
+			return _id;
 		}
 		
 		public function get duration():int {
