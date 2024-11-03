@@ -15,6 +15,11 @@ package qolaf.ui
 	import feathers.layout.VerticalLayout;
 	import flash.geom.Point;
 	import generics.Util;
+	import qolaf.debuff.DebuffEffect;
+	import qolaf.events.DebuffAddedEvent;
+	import qolaf.events.DebuffRemovedEvent;
+	import qolaf.events.DebuffStackEvent;
+	import qolaf.events.TargetUpdatedEvent;
 	import qolaf.ui.debuff.DebuffDisplay;
 	import qolaf.ui.elements.CustomProgressBar;
 	import qolaf.utils.StringUtils;
@@ -74,6 +79,7 @@ package qolaf.ui
 			createShieldAndHealthBar();
 			createDebuffDisplay();
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			game.targetSystem.addEventListener(TargetUpdatedEvent.EVENT, onTargetUpdated);
 		}
 		
 		private function createLockAndInfoLabel():void {
@@ -111,6 +117,40 @@ package qolaf.ui
 			addChild(_lockAndInfoLayout);
 		}
 		
+		private function onTargetUpdated(e:TargetUpdatedEvent):void {
+			if (e.targetSystem == null)
+				return;
+				
+			_debuffDisplay.clearDebuffs();
+			
+			if (e.targetSystem.oldUnit != null) {
+				e.targetSystem.oldUnit.removeEventListener(DebuffAddedEvent.EVENT, onDebuffAdded);
+				e.targetSystem.oldUnit.removeEventListener(DebuffStackEvent.EVENT, onDebuffStacked);
+				e.targetSystem.oldUnit.removeEventListener(DebuffRemovedEvent.EVENT, onDebuffRemoved);
+			}
+			
+			if (e.targetSystem.unit != null) {
+				e.targetSystem.unit.addEventListener(DebuffAddedEvent.EVENT, onDebuffAdded);
+				e.targetSystem.unit.addEventListener(DebuffStackEvent.EVENT, onDebuffStacked);
+				e.targetSystem.unit.addEventListener(DebuffRemovedEvent.EVENT, onDebuffRemoved);
+				for each (var effect:DebuffEffect in e.targetSystem.unit.debuffs) {
+					_debuffDisplay.addDebuff(e.targetSystem.unit, effect);
+				}
+			}
+		}
+		
+		private function onDebuffAdded(e:DebuffAddedEvent):void {
+			_debuffDisplay.addDebuff(e.currentTarget as Unit, e.effect);
+		}
+		
+		private function onDebuffStacked(e:DebuffStackEvent):void {
+			
+		}
+		
+		private function onDebuffRemoved(e:DebuffRemovedEvent):void {
+			_debuffDisplay.removeDebuff(e.currentTarget as Unit, e.effect);
+		}
+		
 		private function createShieldAndHealthBar():void {
 			_shieldBar = new CustomProgressBar(SH_AND_HP_BAR_WIDTH, SH_AND_HP_BAR_HEIGHT, 0x3377ff);
 			addChild(_shieldBar);
@@ -129,7 +169,7 @@ package qolaf.ui
 			x = (_game.stage.stageWidth - width) * pos.x;
 			y = (_game.stage.stageHeight - height) * pos.y;
 			
-			var unit:Unit = _game.targetSystem.getCurrentUnit();
+			var unit:Unit = _game.targetSystem.unit;
 			if (unit == null) {
 				if (_debuffDisplay.debuffInfoTooltip.visible)
 					_debuffDisplay.debuffInfoTooltip.visible = false;
@@ -182,12 +222,11 @@ package qolaf.ui
 			_healthBar.maxValue = hpMax;
 			_healthBar.value = hp;
 			_targetNameAuraEffect.color = auraColor;
-			_targetNameAuraEffect.alpha = auraAlpha + Math.sin(_auraEffectGlowAnimDeg) / 2.5;
+			_targetNameAuraEffect.alpha = auraAlpha + Math.sin(_auraEffectGlowAnimDeg) / 2.0;
 			_targetLevel.format.color = getColorForLevel(level);
 			_targetLevel.text = StringUtils.substitute(TARGET_LEVEL_TEXT_TEMPLATE, {
 				"[level]": level
 			});
-			_debuffDisplay.updateDebuffs(unit.debuffs, unit);
 
 			_targetName.text = getUnitNameWithoutLevel(name);
 			_lockButton.texture = Game.instance.targetSystem._lockedTarget ? _lockIcon : _unlockIcon;
@@ -199,7 +238,7 @@ package qolaf.ui
 		public function onClickLock(event:TouchEvent):void 
 		{
 			var touch:Touch = event.getTouch(_lockButton);
-			if (touch == null || touch.phase != TouchPhase.BEGAN || Game.instance.targetSystem == null || !Game.instance.targetSystem.isCurrentUnitValid())
+			if (touch == null || touch.phase != TouchPhase.BEGAN || Game.instance.targetSystem == null || !Game.instance.targetSystem.isTargetValid())
 				return;
 				
 			Game.instance.targetSystem._lockedTarget = !Game.instance.targetSystem._lockedTarget;

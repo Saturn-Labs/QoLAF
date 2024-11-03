@@ -130,7 +130,7 @@ package core.spawner
 			
 			// QoLAF
 			if (Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.getDistance(Game.instance.playerManager.me.ship, spawner) < 600 && SceneBase.clientSettings.autoTarget)
-				Game.instance.targetSystem.setCurrentUnit(spawner);
+				Game.instance.targetSystem.unit = spawner;
 			
 			spawner.takeDamage(damage);
 			spawner.shieldHp = sh;

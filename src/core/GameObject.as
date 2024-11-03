@@ -3,6 +3,7 @@ package core
 	import data.DataLocator;
 	import data.IDataManager;
 	import debug.Console;
+	import flash.events.EventDispatcher;
 	import flash.geom.Point;
 	import starling.core.Starling;
 	import starling.display.MovieClip;
@@ -12,7 +13,7 @@ package core
 	import textures.TextureLocator;
 	import textures.TextureManager;
 	
-	public class GameObject
+	public class GameObject extends EventDispatcher
 	{
 		public var _mc:MovieClip;
 		

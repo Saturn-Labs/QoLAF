@@ -42,7 +42,7 @@ package core.unit
 					return;
 				var touch:Touch = event.getTouch(unit.movieClip);
 				if (touch && touch.phase == TouchPhase.BEGAN) {
-					Game.instance.targetSystem.setCurrentUnit(unit);
+					Game.instance.targetSystem.unit = unit;
 				}
 			});
 			

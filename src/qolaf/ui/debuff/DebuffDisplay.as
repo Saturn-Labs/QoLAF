@@ -7,6 +7,7 @@ package qolaf.ui.debuff {
 	import qolaf.data.DebuffInfo;
 	import qolaf.ui.TargetInfoElement;
 	import qolaf.ui.elements.DebuffInfoTooltip;
+	import qolaf.utils.ColorUtils;
 	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -35,7 +36,7 @@ package qolaf.ui.debuff {
 		private var _matrixFilterPool:ObjectPool;
 		private var _debuffIconBack:Texture;
 		private var _debuffInfoTooltip:DebuffInfoTooltip;
-		private var _currentDebuffs:Vector.<DebuffEffect>;
+		private var _currentDebuffs:Vector.<DebuffEffect> = new Vector.<DebuffEffect>();
 		private var _currentUnit:Unit;
 		private var _selectedDebuff:DebuffEffect = null;
 		private var _textureManager:ITextureManager;
@@ -120,55 +121,49 @@ package qolaf.ui.debuff {
 			return _debuffInfoTooltip;
 		}
 		
-		// 100000% optimal code
-		public function updateDebuffs(debuffs:Vector.<DebuffEffect>, target:Unit):void {
-			_currentDebuffs = debuffs;
-			_currentUnit = target;
-			var image:Image = null;
-			for (var i:int = 0; i < numChildren; i++) {
-				var child:DisplayObject = getChildAt(i);
-				if (child is Image) {
-					image = child as Image;
-					_imagePool.recycleOne(image);
-				}
-			}
+		public function clearDebuffs():void {
+			_currentDebuffs.splice(0, _currentDebuffs.length);
 			removeChildren();
+		}
+		
+		public function addDebuff(target:Unit, debuff:DebuffEffect):void {
+			_currentDebuffs.push(debuff);
+			_currentUnit = target;
 			
-			for (var b:int = 0; b < debuffs.length; b++) {
-				image = _imagePool.getOne() as Image;
-				var debuffInfo:Object = DebuffInfo.getDebuff(debuffs[b].debuff);
-				if (debuffInfo != null) {
-					image.addEventListener(Event.ADDED_TO_STAGE, function(e:Event):void {
-						var matrixFilter:ColorMatrixFilter = _matrixFilterPool.getOne() as ColorMatrixFilter;
-						var r:Number = debuffInfo.color[0];
-						var g:Number = debuffInfo.color[1];
-						var b:Number = debuffInfo.color[2];
-						var a:Number = debuffInfo.color[3];
-						
-						var vec:Vector.<Number> = new Vector.<Number>();
-						vec.push(
-							r, 0, 0, 0, 0,
-							0, g, 0, 0, 0,
-							0, 0, b, 0, 0,
-							0, 0, 0, a, 0
-						);
-						
-						matrixFilter.matrix = vec;
-					});
-					image.texture = _textureManager.getTextureByTextureName(debuffInfo.icon, "texture_gui1_test.png");
-				}
-				
-				image.addEventListener(TouchEvent.TOUCH, function(e:TouchEvent):void {
-					var touch:Touch = e.getTouch(e.currentTarget as Image);
-					if (touch != null && touch.phase == TouchPhase.BEGAN && _selectedDebuff == null) {
-						_selectedDebuff = _currentDebuffs[b - 1];
-					}
-					else if (touch != null && touch.phase == TouchPhase.ENDED && _selectedDebuff == _currentDebuffs[b - 1]) {
-						_selectedDebuff = null;
-					}
+			var image:Image = _imagePool.getOne() as Image;
+			var debuffInfo:Object = DebuffInfo.getDebuff(debuff.debuff);
+			if (debuffInfo != null) {
+				image.addEventListener(Event.ADDED_TO_STAGE, function(e:Event):void {
+					var matrixFilter:ColorMatrixFilter = _matrixFilterPool.getOne() as ColorMatrixFilter;
+					var r:Number = debuffInfo.color[0];
+					var g:Number = debuffInfo.color[1];
+					var b:Number = debuffInfo.color[2];
+					matrixFilter.adjustSaturation(-1);
+					matrixFilter.tint(ColorUtils.rgb2hex(r, g, b));
 				});
-				addChild(image);
+				image.texture = _textureManager.getTextureByTextureName(debuffInfo.icon, "texture_gui1_test.png");
 			}
+			
+			image.addEventListener(TouchEvent.TOUCH, function(e:TouchEvent):void {
+				var touch:Touch = e.getTouch(e.currentTarget as Image);
+				if (touch != null && touch.phase == TouchPhase.BEGAN && _selectedDebuff == null) {
+					_selectedDebuff = debuff;
+				}
+				else if (touch != null && touch.phase == TouchPhase.ENDED && _selectedDebuff == debuff) {
+					_selectedDebuff = null;
+				}
+			});
+			addChild(image);
+		}
+		
+		public function removeDebuff(target:Unit, debuff:DebuffEffect):void {
+			var indexOfDebuff:int = _currentDebuffs.indexOf(debuff);
+			if (indexOfDebuff == -1)
+				return;
+			var image:Image = getChildAt(indexOfDebuff) as Image;
+			_imagePool.recycleOne(image);
+			removeChildAt(indexOfDebuff);
+			_currentDebuffs.removeAt(indexOfDebuff);
 		}
 	}
 }

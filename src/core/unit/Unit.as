@@ -16,7 +16,11 @@ package core.unit
 	import core.text.TextParticle;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.utils.Dictionary;
 	import qolaf.debuff.DebuffEffect;
+	import qolaf.events.DebuffAddedEvent;
+	import qolaf.events.DebuffRemovedEvent;
+	import qolaf.events.DebuffStackEvent;
 	import sound.ISound;
 	import sound.SoundLocator;
 	import starling.display.Image;
@@ -155,8 +159,10 @@ package core.unit
 		{
 			// QoLAF
 			for (var i:int = debuffs.length - 1; i >= 0; i--) {
-				if (debuffs[i].hasEnded)
+				if (debuffs[i].hasEnded) {
+					dispatchEvent(new DebuffRemovedEvent(DebuffRemovedEvent.EVENT, debuffs[i]));
 					debuffs.removeAt(i);
+				}
 			}
 			
 			if (nextDistanceCalculation <= 0)
@@ -538,10 +544,15 @@ package core.unit
 					}
 				}
 				
-				if (found != null)
+				if (found != null) {
 					found.stackAndReset();
-				else
-					debuffs.push(new DebuffEffect(debuff, duration * 1000));
+					dispatchEvent(new DebuffStackEvent(DebuffStackEvent.EVENT, found));
+				}
+				else {
+					found = new DebuffEffect(debuff, duration * 1000)
+					debuffs.push(found);
+					dispatchEvent(new DebuffAddedEvent(DebuffAddedEvent.EVENT, found));
+				}
 			}
 			
 			if (dotTimers.length > 0 && dotTimers[0]._active && this.dotEffect == param2)
@@ -781,7 +792,7 @@ package core.unit
 			return "Unit, unidentified type!";
 		}
 		
-		public function toString():String
+		override public function toString():String
 		{
 			return "[ Name: " + _name + " Body name: " + _bodyName + " Type: " + type + " ]";
 		}

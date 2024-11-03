@@ -8,6 +8,8 @@ package qolaf.target
 	import core.solarSystem.Body;
 	import core.unit.Unit;
 	import embeds.qolaf.TargetIconBitmap;
+	import flash.events.EventDispatcher;
+	import qolaf.events.TargetUpdatedEvent;
 	import qolaf.ui.TargetAimIndicator;
 	import qolaf.ui.TargetInfoElement;
 	import starling.display.Image;
@@ -17,7 +19,7 @@ package qolaf.target
 	/**
 	 * @author rydev
 	 */
-	public class TargetSystem 
+	public class TargetSystem extends EventDispatcher
 	{
 		public static const TARGET_MAX_DISTANCE:Number = 1000;
 		
@@ -36,20 +38,27 @@ package qolaf.target
 			game.canvas.addChild(_targetIndicator);
 		}
 		
-		public function setCurrentUnit(unit:Unit): void {
+		public function set unit(value:Unit): void {
 			if (_targetTimeout > 0 || _lockedTarget)
 				return;
 			_oldUnit = _currentUnit;
-			_currentUnit = unit;
+			_currentUnit = value;
+			dispatchEvent(new TargetUpdatedEvent(TargetUpdatedEvent.EVENT, this));
 			_targetTimeout = 0.5;
 		}
 		
-		public function getCurrentUnit(): Unit {
+		public function get unit(): Unit {
 			return _currentUnit;
 		}
 		
-		public function reset(): void {
+		public function get oldUnit(): Unit {
+			return _oldUnit;
+		}
+		
+		private function reset(): void {
+			_oldUnit = _currentUnit;
 			_currentUnit = null;
+			dispatchEvent(new TargetUpdatedEvent(TargetUpdatedEvent.EVENT, null));
 			_targetTimeout = 0.0;
 			_lockedTarget = false;
 		}
@@ -68,7 +77,7 @@ package qolaf.target
 				_targetTimeout -= _game.deltaTime;
 		}
 		
-		public function isCurrentUnitValid(): Boolean {
+		public function isTargetValid(): Boolean {
 			return TargetSystem.canTargetUnit(_currentUnit);
 		}
 		
@@ -86,13 +95,6 @@ package qolaf.target
 		
 		public static function getDistance(lhs:Unit, rhs:Unit):Number {
 			return Util.distance(lhs.pos, rhs.pos);
-		}
-		
-		public static function getParent(unit:Unit, ofClass:Class):Object {
-			if (unit == null)
-				return null;
-				
-			return null;
 		}
 	}
 }

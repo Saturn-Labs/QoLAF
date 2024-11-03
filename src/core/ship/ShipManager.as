@@ -372,7 +372,7 @@ package core.ship
 			
 			// QoLAF
 			if (Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.getDistance(Game.instance.playerManager.me.ship, ship) < 600 && SceneBase.clientSettings.autoTarget)
-				Game.instance.targetSystem.setCurrentUnit(ship);
+				Game.instance.targetSystem.unit = ship;
 			
             ship.takeDamage(damage);
             ship.shieldHp = message.getInt(pointer + 3);
