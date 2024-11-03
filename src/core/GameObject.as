@@ -13,46 +13,28 @@ package core
 	import textures.TextureLocator;
 	import textures.TextureManager;
 	
+	// QoLAF
 	public class GameObject extends EventDispatcher
 	{
-		public var _mc:MovieClip;
-		
+		protected var _mc:MovieClip;
 		protected var _name:String;
-		
 		protected var _pos:Point;
-		
 		protected var _rotation:Number = 0;
-		
 		public var canvas:Sprite;
-		
 		public var forcedRotation:Boolean;
-		
 		public var forcedRotationSpeed:Number;
-		
 		public var forcedRotationAim:Boolean;
-		
 		public var forcedRotationAngle:Number = 0;
-		
 		public var distanceToCamera:int = 0;
-		
 		public var distanceToCameraX:int = 0;
-		
 		public var distanceToCameraY:int = 0;
-		
 		public var nextDistanceCalculation:int = -1;
-		
 		public var isAddedToCanvas:Boolean = false;
-		
 		private var oldImageObjKey:String = "";
-		
 		protected var _textures:Vector.<Texture>;
-		
 		public var layer:int;
-		
 		private var _id:int;
-		
 		protected var imgObj:Object;
-		
 		public var textureWidth:int = 0;
 		
 		public function GameObject()

@@ -21,7 +21,8 @@ package qolaf.debuff {
 		public function stackAndReset():void {
 			if (Debuff.canStack(debuff))
 				_stacks++;
-			this._startTime = Game.instance.time;
+			if (!Debuff.stacksDontResetTime(debuff))
+				this._startTime = Game.instance.time;
 		}
 		
 		public function get debuff():int {

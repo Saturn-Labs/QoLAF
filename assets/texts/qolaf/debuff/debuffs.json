@@ -61,5 +61,41 @@
         "enemy_description": "[enemy] corrosive resistance has been reduced.",
         "icon": "ti2_pen_corrosive",
         "color": [1, 0, 0, 1]
+    },
+    {
+        "id": 2,
+        "negative": true,
+        "name": "Sticky bombs",
+        "self_description": "You are covered by bombs.",
+        "enemy_description": "[enemy] is covered by bombs.",
+        "icon": "ti_sticky_bombs",
+        "color": [1, 0, 0, 1]
+    },
+    {
+        "id": 4,
+        "negative": true,
+        "name": "Burning",
+        "self_description": "You are being burned to ashes.",
+        "enemy_description": "[enemy] is being burned to ashes.",
+        "icon": "ti_flamethrower",
+        "color": [1, 0, 0, 1]
+    },
+    {
+        "id": 7,
+        "negative": true,
+        "name": "Reduced damage",
+        "self_description": "Your damage was reduced.",
+        "enemy_description": "[enemy] damage was reduced.",
+        "icon": "ti_concussion_sphere",
+        "color": [1, 0, 0, 1]
+    },
+    {
+        "id": 3,
+        "negative": true,
+        "name": "Reduced armor",
+        "self_description": "Your armor was reduced.",
+        "enemy_description": "[enemy] armor was reduced.",
+        "icon": "ti2_pen_armor",
+        "color": [1, 0, 0, 1]
     }
 ]

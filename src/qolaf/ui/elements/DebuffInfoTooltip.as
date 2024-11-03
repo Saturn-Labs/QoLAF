@@ -50,8 +50,7 @@ package qolaf.ui.elements {
 			_time = new TextField(MAX_WIDTH * 0.25, 15, "0h 0m 0s", new TextFormat("DAIDRR", 12, 0xffffff, Align.RIGHT, Align.TOP));
 			titleAndTimeGroup.addChild(_time);
 			addChild(titleAndTimeGroup);
-			_description = new TextField(MAX_WIDTH, MAX_HEIGHT - _time.x, "", new TextFormat("DAIDRR", 12, 0xffffff, Align.LEFT, Align.TOP));
-			_description.wordWrap = true;
+			_description = new TextField(MAX_WIDTH, 0, "", new TextFormat("DAIDRR", 12, 0xffffff, Align.LEFT, Align.TOP));
 			_description.isHtmlText = true;
 			_description.autoSize = TextFieldAutoSize.VERTICAL;
 			addChild(_description);
@@ -72,6 +71,11 @@ package qolaf.ui.elements {
 		
 		public function get description():TextField {
 			return _description;
+		}
+		
+		public function set descriptionText(text:String):void {
+			_description.text = text;
+			readjustLayout();
 		}
 	}
 }

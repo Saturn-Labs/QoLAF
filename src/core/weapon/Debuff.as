@@ -3,27 +3,16 @@ package core.weapon {
 	
 	public class Debuff {
 		public static const TOTALTYPES:int = 11;
-		
 		public static const DOT:int = 0;
-		
 		public static const DOT_STACKING:int = 1;
-		
 		public static const BOMB:int = 2;
-		
 		public static const REDUCE_ARMOR:int = 3;
-		
 		public static const BURN:int = 4;
-		
 		public static const DISABLE_REGEN:int = 5;
-		
 		public static const DISABLE_HEAL:int = 6;
-		
 		public static const REDUCED_DAMAGE:int = 7;
-		
 		public static const REDUCED_KINETIC_RESIST:int = 8;
-		
 		public static const REDUCED_ENERGY_RESIST:int = 9;
-		
 		public static const REDUCED_CORROSIVE_RESIST:int = 10;
 		
 		public function Debuff() {
@@ -32,7 +21,12 @@ package core.weapon {
 		
 		// QoLAF
 		public static function canStack(debuff:int):Boolean {
-			return debuff == DOT_STACKING || debuff == REDUCE_ARMOR;
+			return debuff == DOT_STACKING || debuff == REDUCE_ARMOR || debuff == BOMB;
+		}
+		
+		// QoLAF
+		public static function stacksDontResetTime(debuff:int):Boolean {
+			return debuff == BOMB;
 		}
 		
 		public static function debuffText(param1:int, param2:int, param3:Damage):String {
