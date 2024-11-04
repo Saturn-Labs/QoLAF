@@ -21,6 +21,7 @@ package qolaf.ui
 	import qolaf.events.ModifierRemovedEvent;
 	import qolaf.events.ModifierStackedEvent;
 	import qolaf.events.TargetUpdatedEvent;
+	import qolaf.target.ITarget;
 	import qolaf.ui.modifiers.IModifierDisplay;
 	import qolaf.ui.modifiers.TargetModifierDisplay;
 	import qolaf.ui.elements.CustomProgressBar;
@@ -141,51 +142,21 @@ package qolaf.ui
 			x = (_game.stage.stageWidth - width) * pos.x;
 			y = (_game.stage.stageHeight - height) * pos.y;
 			
-			var unit:Unit = _game.targetSystem.unit;
-			if (unit == null) {
+			var target:ITarget = _game.targetSystem.target;
+			if (target == null) {
 				if (_modifierDisplay.getTooltip().visible)
 					_modifierDisplay.getTooltip().visible = false;
 				return;
 			}
 				
-			var level:int = unit.level;
-			var name:String = unit.name;
-			var shieldMax:int = unit.shieldHpMax;
-			var shield:int = unit.shieldHp;
-			var hpMax:int = unit.hpMax;
-			var hp:int = unit.hp;
-			var auraColor:int = 0xffffff;
-			var auraAlpha:Number = 0;
-			
-			if (unit is Spawner) {
-				var spawner:Spawner = unit as Spawner;
-				if (spawner.factions.length == 0)
-					name = spawner.spawnerType.charAt(0).toUpperCase() + spawner.spawnerType.substring(1) + " Spawner";
-				else
-					name = spawner.factions[0] + " Spawner";
-			}
-			else if (unit.isBossUnit || unit.parentObj is Boss) {
-				var parentObj:GameObject = unit.parentObj;
-				while (!(parentObj is Boss))
-					parentObj = unit.parentObj;
-				if (parentObj is Boss) {
-					var boss:Boss = parentObj as Boss;
-					shieldMax = 0;
-					shield = 0;
-					hpMax = boss.hpMax;
-					hp = boss.hp;
-					name = boss.name;
-					level = boss.level;
-				}
-			}
-			
-			if (unit is EnemyShip) {
-				var enemyShip:EnemyShip = unit as EnemyShip;
-				if (enemyShip.rareEmitters.length >= 1) {
-					auraColor = enemyShip.rareEmitters[0].startColor;
-					auraAlpha = 2;
-				}
-			}
+			var level:int = target.getLevel();
+			var name:String = target.getTrueName();
+			var shieldMax:int = target.getMaxShield();
+			var shield:int = target.getShield();
+			var hpMax:int = target.getMaxHealth();
+			var hp:int = target.getHealth();
+			var auraColor:int = target.getAuraColor();
+			var auraAlpha:Number = target.hasAura() ? 2 : 0;
 			
 			var willNeedUpdate:Boolean = _shieldBar.visible != shieldMax > 0;
 			_shieldBar.visible = shieldMax > 0;
@@ -200,7 +171,7 @@ package qolaf.ui
 				"[level]": level
 			});
 
-			_targetName.text = getUnitNameWithoutLevel(name);
+			_targetName.text = name;
 			_lockButton.texture = Game.instance.targetSystem._lockedTarget ? _lockIcon : _unlockIcon;
 
 			_auraEffectGlowAnimDeg += 8 * event.passedTime;
@@ -225,36 +196,6 @@ package qolaf.ui
 				return 0x00ddff;
 			else
 				return 0x737373;
-		}
-		
-		public static function getUnitNameWithoutLevel(name:String):String {
-			if (name == null)
-				return "Unknown";
-			return (name.split("lvl")[0] as String).replace(/^\s+|\s+$/g, "");
-		}
-		
-		public static function getUnitTrueName(unit:Unit):String {
-			var name:String = "";
-			if (unit is Spawner) {
-				var spawner:Spawner = unit as Spawner;
-				if (spawner.factions.length == 0)
-					name = spawner.spawnerType.charAt(0).toUpperCase() + spawner.spawnerType.substring(1) + " Spawner";
-				else
-					name = spawner.factions[0] + " Spawner";
-			}
-			else if (unit.isBossUnit || unit.parentObj is Boss) {
-				var parentObj:GameObject = unit.parentObj;
-				while (!(parentObj is Boss))
-					parentObj = unit.parentObj;
-				if (parentObj is Boss) {
-					var boss:Boss = parentObj as Boss;
-					name = boss.name;
-				}
-			}
-			else {
-				name = getUnitNameWithoutLevel(unit.name);
-			}
-			return name;
 		}
 	}
 }

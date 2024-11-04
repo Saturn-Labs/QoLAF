@@ -25,8 +25,8 @@ package qolaf.target
 		
 		private var _game:Game;
 		
-		private var _currentUnit:Unit = null;
-		private var _oldUnit:Unit = null;
+		private var _currentTarget:ITarget = null;
+		private var _oldTarget:ITarget = null;
 		private var _targetIndicator:TargetAimIndicator;
 		private var _targetTimeout:Number = 0.0;
 		public var _lockedTarget:Boolean = false;
@@ -38,26 +38,26 @@ package qolaf.target
 			game.canvas.addChild(_targetIndicator);
 		}
 		
-		public function set unit(value:Unit): void {
+		public function set target(target:ITarget): void {
 			if (_targetTimeout > 0 || _lockedTarget)
 				return;
-			_oldUnit = _currentUnit;
-			_currentUnit = value;
-			dispatchEvent(new TargetUpdatedEvent(TargetUpdatedEvent.EVENT, value));
+			_oldTarget = _currentTarget;
+			_currentTarget = target;
+			dispatchEvent(new TargetUpdatedEvent(TargetUpdatedEvent.EVENT, target));
 			_targetTimeout = 0.5;
 		}
 		
-		public function get unit(): Unit {
-			return _currentUnit;
+		public function get target():ITarget {
+			return _currentTarget;
 		}
 		
-		public function get oldUnit(): Unit {
-			return _oldUnit;
+		public function get oldTarget():ITarget {
+			return _oldTarget;
 		}
 		
 		private function reset(): void {
-			_oldUnit = _currentUnit;
-			_currentUnit = null;
+			_oldTarget = _currentTarget;
+			_currentTarget = null;
 			dispatchEvent(new TargetUpdatedEvent(TargetUpdatedEvent.EVENT, null));
 			_targetTimeout = 0.0;
 			_lockedTarget = false;
@@ -66,35 +66,35 @@ package qolaf.target
 		public function update(): void 
 		{
 			var targetInfoElement:TargetInfoElement = _game.hud.getTargetInfoElement();
-			if (!TargetSystem.canTargetUnit(_currentUnit))
+			if (!TargetSystem.canTarget(_currentTarget))
 				reset();
-			if (!_lockedTarget && !TargetSystem.isInRange(_currentUnit))
+			if (!_lockedTarget && !TargetSystem.isTargetInRange(_currentTarget))
 				reset();
 				
-			_targetIndicator.visible = _currentUnit != null;
-			targetInfoElement.visible = _currentUnit != null;
+			_targetIndicator.visible = _currentTarget != null;
+			targetInfoElement.visible = _currentTarget != null;
 			if (_targetTimeout > 0)
 				_targetTimeout -= _game.deltaTime;
 		}
 		
 		public function isTargetValid(): Boolean {
-			return TargetSystem.canTargetUnit(_currentUnit);
+			return TargetSystem.canTarget(_currentTarget);
 		}
 		
-		public static function canTargetUnit(unit:Unit): Boolean {
+		public static function canTarget(target:ITarget): Boolean {
 			if (Game.instance.playerManager.me == null || Game.instance.playerManager.me.ship == null)
 				return false;
-			return unit != null && unit.alive && (unit is PlayerShip ? !(unit as PlayerShip).landed && !(unit as PlayerShip).player.isMe : true);
+			return target != null && target.isAlive() && (target is PlayerShip ? !(target as PlayerShip).landed && !(target as PlayerShip).player.isMe : true);
 		}
 		
-		public static function isInRange(unit:Unit): Boolean {
-			if (Game.instance.playerManager.me == null || Game.instance.playerManager.me.ship == null || unit == null)
+		public static function isTargetInRange(target:ITarget): Boolean {
+			if (Game.instance.playerManager.me == null || Game.instance.playerManager.me.ship == null || target == null)
 				return false;
-			return getDistance(Game.instance.playerManager.me.ship, unit) < TARGET_MAX_DISTANCE;
+			return getDistance(Game.instance.playerManager.me.ship, target) < TARGET_MAX_DISTANCE;
 		}
 		
-		public static function getDistance(lhs:Unit, rhs:Unit):Number {
-			return Util.distance(lhs.pos, rhs.pos);
+		public static function getDistance(lhs:ITarget, rhs:ITarget):Number {
+			return Util.distance(lhs.getPosition(), rhs.getPosition());
 		}
 	}
 }

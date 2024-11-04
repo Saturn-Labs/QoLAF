@@ -24,10 +24,12 @@ package core.unit
 	import qolaf.events.ModifierStackedEvent;
 	import qolaf.target.ITarget;
 	import qolaf.utils.Query;
+	import qolaf.utils.TargetUtils;
 	import sound.ISound;
 	import sound.SoundLocator;
 	import starling.display.Image;
 	import starling.filters.ColorMatrixFilter;
+	import starling.textures.Texture;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
@@ -199,6 +201,110 @@ package core.unit
 			Query.removeEquals(_modifiers, modifier);
 			dispatchEvent(new ModifierRemovedEvent(ModifierRemovedEvent.EVENT, modifier));
 			return true;
+		}
+		
+		// QoLAF
+		public function getName():String {
+			return name;
+		}
+		
+		// QoLAF
+		public function getTrueName():String {
+			return TargetUtils.getTargetTrueName(this);
+		}
+		
+		// QoLAF
+		public function getLevel():int {
+			if (isBoss())
+				return getBoss().level;
+			else
+				return level;
+		}
+		
+		// QoLAF
+		public function getParent():GameObject {
+			return parentObj;
+		}
+		
+		// QoLAF
+		public function isBoss():Boolean {
+			return isBossUnit || parentObj is Boss;
+		}
+		
+		// QoLAF
+		public function getBoss():Boss {
+			if (!isBoss())
+				return null;
+			
+			var obj:GameObject = parentObj;
+			var depth:int = 0;
+			var maxDepth:int = 10;
+			while (!(obj is Boss) && depth < maxDepth) {
+				depth++;
+				obj = parentObj;
+			}
+			return obj as Boss;
+		}
+		
+		// QoLAF
+		public function isAlive():Boolean {
+			return alive;
+		}
+		
+		// QoLAF
+		public function getPosition():Point {
+			return pos;
+		}
+		
+		// QoLAF
+		public function getTexture():Texture {
+			return texture;
+		}
+		
+		// QoLAF
+		public function getMaxHealth():int {
+			if (isBoss())
+				return getBoss().hpMax;
+			return hpMax;
+		}
+		
+		// QoLAF
+		public function getHealth():int {
+			if (isBoss())
+				return getBoss().hp;
+			return hp;
+		}
+		
+		// QoLAF
+		public function getMaxShield():int {
+			return shieldHpMax;
+		}
+		
+		// QoLAF
+		public function getShield():int {
+			return shieldHp;
+		}
+		
+		// QoLAF
+		public function hasAura():Boolean {
+			if (isBoss())
+				return true;
+			else if (this is EnemyShip) {
+				var s:EnemyShip = this as EnemyShip;
+				return s.rareEmitters.length >= 1;
+			}
+			return false;
+		}
+		
+		// QoLAF
+		public function getAuraColor():uint {
+			if (isBoss())
+				return 0xff0000;
+			else if (this is EnemyShip) {
+				var s:EnemyShip = this as EnemyShip;
+				return s.rareEmitters.length >= 1 ? s.rareEmitters[0].startColor : 0xffffff;
+			}
+			return 0xffffff;
 		}
 		
 		override public function update():void

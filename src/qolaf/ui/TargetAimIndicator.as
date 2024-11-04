@@ -2,6 +2,7 @@ package qolaf.ui
 {
 	import core.unit.Unit;
 	import embeds.qolaf.TargetIconBitmap;
+	import qolaf.target.ITarget;
 	import qolaf.target.TargetSystem;
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
@@ -39,18 +40,18 @@ package qolaf.ui
 		}
 		
 		public function onEnterFrame(e:EnterFrameEvent): void {
-			if (!TargetSystem.canTargetUnit(_targetSystem.unit))
+			if (!TargetSystem.canTarget(_targetSystem.target))
 				return;
-			var unit:Unit = _targetSystem.unit;
+			var target:ITarget = _targetSystem.target;
 			var angle:Number = _angleRotation;
-			var radius:Number = (unit.texture.width / 2 + 25) + Math.sin(_radiusAnim) * 4;
+			var radius:Number = (target.getTexture().width / 2 + 25) + Math.sin(_radiusAnim) * 4;
 			for (var i:Number = 0; i < _arrowAmount; i++) {
-				var x:Number = radius * Math.cos(angle * (Math.PI / 180)) + unit.x;
-				var y:Number = radius * Math.sin(angle * (Math.PI / 180)) + unit.y;
+				var x:Number = radius * Math.cos(angle * (Math.PI / 180)) + target.getPosition().x;
+				var y:Number = radius * Math.sin(angle * (Math.PI / 180)) + target.getPosition().y;
 				angle += _angleOffseter;
 				_arrowImages[i].x = x;
 				_arrowImages[i].y = y;
-				var arrowRotAngle:Number = Math.atan2(unit.y - _arrowImages[i].y, unit.x - _arrowImages[i].x);
+				var arrowRotAngle:Number = Math.atan2(target.getPosition().y - _arrowImages[i].y, target.getPosition().x - _arrowImages[i].x);
 				_arrowImages[i].rotation = arrowRotAngle;
 			}
 			_angleRotation += 32 * e.passedTime;

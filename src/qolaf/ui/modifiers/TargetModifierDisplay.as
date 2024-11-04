@@ -108,7 +108,7 @@ package qolaf.ui.modifiers {
 			_modifierTooltip.time.format.color = _selectedModifier.indeterminate ? 0xffffff : _selectedModifier.currentDuration <= 10000 ? 0xff0000 : 0xffffff;
 			
 			_modifierTooltip.descriptionText = StringUtils.substitute(description, {
-				"[enemy]": _target is Unit ? TargetInfoElement.getUnitTrueName(_target as Unit) : "Unknown"
+				"[enemy]": _target.getTrueName()
 			});
 		}
 		
