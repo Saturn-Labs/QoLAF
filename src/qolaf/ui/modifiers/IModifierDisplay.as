@@ -12,6 +12,5 @@ package qolaf.ui.modifiers {
 		function addModifier(modifier:Modifier):void;
 		function removeModifier(modifier:Modifier):void;
 		function setTarget(target:IModifierTarget):void;
-		function getTooltip():ModifierTooltip;
 	}
 }

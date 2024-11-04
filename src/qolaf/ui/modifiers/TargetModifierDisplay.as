@@ -10,6 +10,7 @@ package qolaf.ui.modifiers {
 	import qolaf.events.ModifierRemovedEvent;
 	import qolaf.modifiers.IModifierTarget;
 	import qolaf.ui.TargetInfoElement;
+	import qolaf.ui.elements.ModifierIcon;
 	import qolaf.ui.elements.ModifierTooltip;
 	import qolaf.utils.ColorUtils;
 	import starling.events.EnterFrameEvent;
@@ -34,18 +35,19 @@ package qolaf.ui.modifiers {
 	/**
 	 * @author rydev
 	 */
-	// I really need to rewrite this code lmao...
+	// Wonderful code of my life....
 	public class TargetModifierDisplay extends LayoutGroup implements IModifierDisplay {
+		private var _game:Game;
 		private var _target:IModifierTarget;
 		private var _currentModifiers:Vector.<Modifier> = new Vector.<Modifier>();
 		private var _selectedModifier:Modifier;
 		private var _textureManager:ITextureManager;
 		
-		private var _imagePool:ObjectPool;
+		private var _iconPool:ObjectPool;
 		private var _modifierDefaultIcon:Texture;
-		private var _modifierTooltip:ModifierTooltip;
 		
-		public function TargetModifierDisplay() {	
+		public function TargetModifierDisplay() {
+			this._game = Game.instance;
 			setupLayout();
 			createPools();
 			createElements();
@@ -67,62 +69,34 @@ package qolaf.ui.modifiers {
 		}
 		
 		private function createPools():void {
-			_imagePool = new ObjectPool(function():Image {
-				var image:Image = new Image(_modifierDefaultIcon);
-				image.width = image.height = 21.2;
-				return image;
+			_iconPool = new ObjectPool(function():ModifierIcon {
+				var icon:ModifierIcon = new ModifierIcon(null);
+				return icon;
 			}, function(obj:Object):void {
-				if (!(obj is Image))
+				if (!(obj is ModifierIcon))
 					return;
-				var image:Image = obj as Image;
-				image.texture = _modifierDefaultIcon;
-				image.removeEventListeners(TouchEvent.TOUCH);
-				image.removeEventListeners(Event.ADDED_TO_STAGE);
+				var icon:ModifierIcon = obj as ModifierIcon;
+				icon.modifier = null;
+				icon.removeEventListeners(TouchEvent.TOUCH);
+				icon.removeEventListeners(Event.ADDED_TO_STAGE);
 			});
 		}
 		
 		private function createElements():void {
-			_modifierTooltip = new ModifierTooltip();
-			Game.instance.stage.addChild(_modifierTooltip);
-			_modifierTooltip.visible = false;
+			
 		}
 		
 		private function onEnterFrame(e:EnterFrameEvent):void {
-			if (_selectedModifier != null && _selectedModifier.hasEnded)
-				_selectedModifier = null;
-			
-			_modifierTooltip.visible = _selectedModifier != null;
-			if (_selectedModifier == null)
-				return;
-				
-			var debuffInfo:Object = ModifierInfo.getModifier(_selectedModifier.id);
-			var name:String = debuffInfo != null ? debuffInfo.name : "Unknown Debuff";
-			var description:String = debuffInfo != null ? debuffInfo["enemy_description"] : "Unknown Debuff Description";
-			
-			_modifierTooltip.title.text = StringUtils.substitute(ModifierTooltip.MODIFIER_NAME_TEMPLATE, {
-				"[name]": name,
-				"[stacks]": Debuff.canStack(_selectedModifier.id) ? ("x" + _selectedModifier.stacks) : ""
-			});
-			
-			_modifierTooltip.time.text = _selectedModifier.indeterminate ? "Ind.." : StringUtils.formatTime(_selectedModifier.currentDuration);
-			_modifierTooltip.time.format.color = _selectedModifier.indeterminate ? 0xffffff : _selectedModifier.currentDuration <= 10000 ? 0xff0000 : 0xffffff;
-			
-			_modifierTooltip.descriptionText = StringUtils.substitute(description, {
-				"[enemy]": _target.getTrueName()
-			});
+
 		}
 		
 		private function recycleChildrenImages():void {
 			for (var i:int = 0; i < numChildren; i++) {
 				var child:DisplayObject = getChildAt(i);
-				if (child is Image) {
-					_imagePool.recycleOne(child);
+				if (child is ModifierIcon) {
+					_iconPool.recycleOne(child);
 				}
 			}
-		}
-		
-		public function getTooltip():ModifierTooltip {
-			return _modifierTooltip;
 		}
 		
 		public function clearModifiers():void {
@@ -134,32 +108,33 @@ package qolaf.ui.modifiers {
 		
 		public function addModifier(modifier:Modifier):void {
 			_currentModifiers.push(modifier);
-			var image:Image = _imagePool.getOne() as Image;
-			var modifierInfo:Object = ModifierInfo.getModifier(modifier.id);
-			if (modifierInfo != null) {
-				image.texture = _textureManager.getTextureByTextureName(modifierInfo.icon, "texture_gui1_test.png");
-			}
+			var icon:ModifierIcon = _iconPool.getOne() as ModifierIcon;
+			icon.modifier = modifier;
 			
-			image.addEventListener(TouchEvent.TOUCH, function(e:TouchEvent):void {
+			icon.addEventListener(TouchEvent.TOUCH, function(e:TouchEvent):void {
 				var touch:Touch = e.getTouch(e.currentTarget as Image);
 				if (touch != null && touch.phase == TouchPhase.BEGAN && _selectedModifier == null) {
 					_selectedModifier = modifier;
+					_game.modifierTooltip.setModifier(_target, modifier);
 				}
 				else if (touch != null && touch.phase == TouchPhase.ENDED && _selectedModifier == modifier) {
 					_selectedModifier = null;
+					_game.modifierTooltip.setModifier(null, null);
 				}
 			});
-			addChild(image);
+			addChild(icon);
 		}
 		
 		public function removeModifier(modifier:Modifier):void {
 			var idx:int = _currentModifiers.indexOf(modifier);
 			if (idx == -1)
 				return;
-			var image:Image = getChildAt(idx) as Image;
-			if (_selectedModifier == modifier)
+			var icon:ModifierIcon = getChildAt(idx) as ModifierIcon;
+			if (_selectedModifier == modifier) {
 				_selectedModifier = null;
-			_imagePool.recycleOne(image);
+				_game.modifierTooltip.setModifier(null, null);
+			}
+			_iconPool.recycleOne(icon);
 			removeChildAt(idx);
 			_currentModifiers.removeAt(idx);
 		}

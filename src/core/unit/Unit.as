@@ -307,6 +307,16 @@ package core.unit
 			return 0xffffff;
 		}
 		
+		// QoLAF
+		public function isPlayer():Boolean {
+			return this is PlayerShip;
+		}
+		
+		// QoLAF
+		public function isLocalPlayer():Boolean {
+			return isPlayer() ? (this as PlayerShip).player.isMe : false;
+		}
+		
 		override public function update():void
 		{
 			// QoLAF

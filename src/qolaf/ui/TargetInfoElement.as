@@ -22,6 +22,7 @@ package qolaf.ui
 	import qolaf.events.ModifierStackedEvent;
 	import qolaf.events.TargetUpdatedEvent;
 	import qolaf.target.ITarget;
+	import qolaf.ui.elements.ModifierIcon;
 	import qolaf.ui.modifiers.IModifierDisplay;
 	import qolaf.ui.modifiers.TargetModifierDisplay;
 	import qolaf.ui.elements.CustomProgressBar;
@@ -144,8 +145,6 @@ package qolaf.ui
 			
 			var target:ITarget = _game.targetSystem.target;
 			if (target == null) {
-				if (_modifierDisplay.getTooltip().visible)
-					_modifierDisplay.getTooltip().visible = false;
 				return;
 			}
 				

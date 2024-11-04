@@ -24,5 +24,7 @@ package qolaf.target {
 		function getShield():int;
 		function hasAura():Boolean;
 		function getAuraColor():uint;
+		function isPlayer():Boolean;
+		function isLocalPlayer():Boolean;
 	}
 }

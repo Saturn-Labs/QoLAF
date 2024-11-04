@@ -1,7 +1,12 @@
 package qolaf.ui.elements {
 	import core.scene.Game;
+	import core.weapon.Debuff;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.VerticalLayout;
+	import qolaf.data.ModifierInfo;
+	import qolaf.modifiers.IModifierTarget;
+	import qolaf.modifiers.Modifier;
+	import qolaf.utils.StringUtils;
 	import starling.core.Starling;
 	import starling.display.Quad;
 	import starling.events.EnterFrameEvent;
@@ -20,6 +25,8 @@ package qolaf.ui.elements {
 		public static const MAX_HEIGHT:int = 210;
 		public static const MODIFIER_NAME_TEMPLATE:String = "[name] [stacks]";
 		
+		private var _target:IModifierTarget;
+		private var _modifier:Modifier;
 		private var _title:TextField;
 		private var _time:TextField;
 		private var _description:TextField;
@@ -33,7 +40,6 @@ package qolaf.ui.elements {
 			layout = verticalLayout;
 			backgroundSkin = new Quad(1, 1, 0x0);
 			createComponents();
-			
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 		
@@ -59,6 +65,44 @@ package qolaf.ui.elements {
 		private function onEnterFrame(e:EnterFrameEvent):void {
 			x = Starling.current.nativeOverlay.mouseX + 5;
 			y = Starling.current.nativeOverlay.mouseY + 5;
+			
+			if (_modifier != null && _target != null) {
+				_time.text = modifier.indeterminate ? "Ind.." : StringUtils.formatTime(modifier.currentDuration);
+				_time.format.color = modifier.indeterminate ? 0xffffff : modifier.currentDuration <= 10000 ? 0xff0000 : 0xffffff;
+			}
+		}
+		
+		public function get modifier():Modifier {
+			return _modifier;
+		}
+		
+		public function get target():IModifierTarget {
+			return _target;
+		}
+		
+		public function setModifier(target:IModifierTarget, modifier:Modifier):void {
+			_modifier = modifier;
+			_target = target;
+			
+			if (modifier != null && target != null) {
+				var debuffInfo:Object = ModifierInfo.getModifier(modifier.id);
+				var name:String = debuffInfo != null ? debuffInfo.name : "Unknown Debuff";
+				var description:String = debuffInfo != null ? (target.isLocalPlayer() ? debuffInfo["self_description"] : debuffInfo["enemy_description"]) : "Unknown Debuff Description";
+				
+				_title.text = StringUtils.substitute(ModifierTooltip.MODIFIER_NAME_TEMPLATE, {
+					"[name]": name,
+					"[stacks]": Debuff.canStack(modifier.id) ? ("x" + modifier.stacks) : ""
+				});
+				
+				_time.text = modifier.indeterminate ? "Ind.." : StringUtils.formatTime(modifier.currentDuration);
+				_time.format.color = modifier.indeterminate ? 0xffffff : modifier.currentDuration <= 10000 ? 0xff0000 : 0xffffff;
+				
+				_description.text = StringUtils.substitute(description, {
+					"[enemy]": _target.getTrueName()
+				});
+				readjustLayout();
+			}
+			visible = modifier != null;
 		}
 		
 		public function get title():TextField {
