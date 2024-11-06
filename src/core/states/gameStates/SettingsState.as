@@ -9,7 +9,7 @@ package core.states.gameStates
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import qolaf.states.SettingsQoLAF;
-	
+
 	public class SettingsState extends PlayState
 	{
 		private var goTo:String;
@@ -19,13 +19,10 @@ package core.states.gameStates
 		private var generalButton:ButtonExpandableHud;
 		private var bindingsButton:ButtonExpandableHud;
 		private var chatButton:ButtonExpandableHud;
-		
 		// QoLAF
 		private var clientButton:ButtonExpandableHud;
-		
 		private var activeButton:ButtonExpandableHud;
 		private var activePage:Sprite;
-		
 		public function SettingsState(param1:Game, param2:String = "")
 		{
 			var g:Game = param1;
@@ -35,26 +32,27 @@ package core.states.gameStates
 			this.settings = SceneBase.settings;
 			bg = new Image(textureManager.getTextureGUIByTextureName("map_bgr.png"));
 			generalButton = new ButtonExpandableHud(function():void
-			{
-				show(SettingsGeneral, generalButton);
-			}, "General");
+				{
+					show(SettingsGeneral, generalButton);
+				}, "General");
 			bindingsButton = new ButtonExpandableHud(function():void
-			{
-				show(SettingsBindings, bindingsButton);
-			}, "Key bindings");
+				{
+					show(SettingsBindings, bindingsButton);
+				}, "Key bindings");
 			chatButton = new ButtonExpandableHud(function():void
-			{
-				show(SettingsChat, chatButton);
-			}, "Chat");
-			
+				{
+					show(SettingsChat, chatButton);
+				}, "Chat");
+
 			// QoLAF
-			clientButton = new ButtonExpandableHud(function(): void {
-				show(SettingsQoLAF, clientButton);
-			}, "QoLAF");
-			
+			clientButton = new ButtonExpandableHud(function():void
+				{
+					show(SettingsQoLAF, clientButton);
+				}, "QoLAF");
+
 			closeButton = new ButtonExpandableHud(close, Localize.t("close"));
 		}
-		
+
 		override public function enter():void
 		{
 			super.enter();
@@ -64,15 +62,15 @@ package core.states.gameStates
 			g.addChildToMenu(generalButton);
 			g.addChildToMenu(bindingsButton);
 			g.addChildToMenu(chatButton);
-			
+
 			// QoLAF
 			g.addChildToMenu(clientButton);
-			
+
 			g.addChildToMenu(closeButton);
 			resize();
 			show(SettingsGeneral, generalButton);
 		}
-		
+
 		override public function resize(param1:Event = null):void
 		{
 			super.resize();
@@ -84,21 +82,21 @@ package core.states.gameStates
 			bindingsButton.y = generalButton.y;
 			chatButton.x = bindingsButton.x + bindingsButton.width + 5;
 			chatButton.y = bindingsButton.y;
-			
+
 			// QoLAF
 			clientButton.x = chatButton.x + chatButton.width + 5;
 			clientButton.y = bindingsButton.y;
-			
+
 			closeButton.y = container.y;
 			closeButton.x = container.x + 760 - 46 - closeButton.width;
 		}
-		
+
 		override public function execute():void
 		{
 			updateInput();
 			super.execute();
 		}
-		
+
 		private function updateInput():void
 		{
 			if (!loaded)
@@ -111,7 +109,7 @@ package core.states.gameStates
 				close();
 			}
 		}
-		
+
 		private function show(param1:Class, param2:ButtonExpandableHud):void
 		{
 			if (activeButton == param2)
@@ -127,29 +125,29 @@ package core.states.gameStates
 			container.addChild(activePage);
 			updateButtons(param2);
 		}
-		
+
 		private function updateButtons(button:ButtonExpandableHud):void
 		{
 			generalButton.select = button == generalButton;
 			bindingsButton.select = button == bindingsButton;
 			chatButton.select = button == chatButton;
-			
+
 			// QoLAF
 			clientButton.select = button == clientButton;
-			
+
 			activeButton = button;
 			activeButton.enabled = true;
 		}
-		
+
 		private function close():void
 		{
 			g.removeChildFromMenu(generalButton);
 			g.removeChildFromMenu(bindingsButton);
 			g.removeChildFromMenu(chatButton);
-			
+
 			// QoLAF
 			g.removeChildFromMenu(clientButton);
-			
+
 			g.removeChildFromMenu(closeButton);
 			if (activePage)
 			{
@@ -158,10 +156,10 @@ package core.states.gameStates
 			clearBackground();
 			g.me.rotationSpeedMod = settings.rotationSpeed;
 			SceneBase.settings.save();
-			
+
 			// QoLAF
 			SceneBase.clientSettings.save();
-			
+
 			sm.revertState();
 		}
 	}

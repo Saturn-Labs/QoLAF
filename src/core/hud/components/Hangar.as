@@ -16,29 +16,21 @@ package core.hud.components
 	import starling.filters.ColorMatrixFilter;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-	
+
 	public class Hangar extends Sprite
 	{
 		private var textureManager:ITextureManager;
-		
 		private var selectedItemContainer:ScrollContainer;
-		
 		private var g:Game;
-		
 		private var body:Body;
-		
 		private var mode:int;
-		
 		private const MODE_SHOP:int = 1;
-		
+
 		private const MODE_SWITCH_SKIN:int = 2;
-		
+
 		private var skins:Array;
-		
 		private var skinsItems:Array;
-		
 		private var list:List;
-		
 		public function Hangar(param1:Game, param2:Body = null)
 		{
 			selectedItemContainer = new ScrollContainer();
@@ -69,7 +61,7 @@ package core.hud.components
 			addChild(selectedItemContainer);
 			drawMenu();
 		}
-		
+
 		private function drawMenu():void
 		{
 			var s:Object;
@@ -92,13 +84,13 @@ package core.hud.components
 			else if (mode == 2)
 			{
 				g.me.fleet.sort(function(param1:FleetObj, param2:FleetObj):int
-				{
-					if (param1.lastUsed > param2.lastUsed)
 					{
-						return 1;
-					}
-					return -1;
-				});
+						if (param1.lastUsed > param2.lastUsed)
+						{
+							return 1;
+						}
+						return -1;
+					});
 				for each (f in g.me.fleet)
 				{
 					skins.push(f.skin);
@@ -147,7 +139,7 @@ package core.hud.components
 				drawList();
 			}
 		}
-		
+
 		private function drawList():void
 		{
 			var _loc11_:int = 0;
@@ -202,7 +194,7 @@ package core.hud.components
 			list.addEventListener("change", onSelect);
 			setSelectedItem();
 		}
-		
+
 		private function setSelectedItem():void
 		{
 			var _loc1_:* = null;
@@ -226,7 +218,7 @@ package core.hud.components
 				list.selectedItem = _loc1_;
 			}
 		}
-		
+
 		private function onSelect(param1:Event):void
 		{
 			var _loc3_:Sprite = null;

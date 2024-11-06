@@ -11,31 +11,20 @@ package core.hud.components
 	import starling.textures.Texture;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-	
+
 	public class ButtonExpandableHud extends DisplayObjectContainer
 	{
 		private static var bgrLeftTexture:Texture;
-		
 		private static var bgrMidTexture:Texture;
-		
 		private static var bgrRightTexture:Texture;
-		
 		private static var hoverLeftTexture:Texture;
-		
 		private static var hoverMidTexture:Texture;
-		
 		private static var hoverRightTexture:Texture;
-		
 		private var captionText:TextBitmap;
-		
 		private var padding:Number = 8;
-		
 		private var hoverContainer:Sprite;
-		
 		private var callback:Function;
-		
 		private var _enabled:Boolean = true;
-		
 		public function ButtonExpandableHud(param1:Function, param2:String)
 		{
 			hoverContainer = new Sprite();
@@ -47,12 +36,12 @@ package core.hud.components
 			addEventListener("removedFromStage", clean);
 			load();
 		}
-		
+
 		public function set text(param1:String):void
 		{
 			captionText.text = param1;
 		}
-		
+
 		public function load():void
 		{
 			var _loc1_:ITextureManager = TextureLocator.getService();
@@ -93,17 +82,17 @@ package core.hud.components
 			addEventListener("touch", onTouch);
 			addChild(captionText);
 		}
-		
+
 		private function onMouseOver(param1:TouchEvent):void
 		{
 			hoverContainer.visible = true;
 		}
-		
+
 		private function onMouseOut(param1:TouchEvent):void
 		{
 			hoverContainer.visible = false;
 		}
-		
+
 		private function onClick(param1:TouchEvent):void
 		{
 			var _loc2_:ISound = SoundLocator.getService();
@@ -119,7 +108,7 @@ package core.hud.components
 			}
 			callback();
 		}
-		
+
 		public function set enabled(param1:Boolean):void
 		{
 			_enabled = param1;
@@ -132,12 +121,12 @@ package core.hud.components
 				alpha = 0.5;
 			}
 		}
-		
+
 		public function get enabled():Boolean
 		{
 			return _enabled;
 		}
-		
+
 		public function set select(param1:Boolean):void
 		{
 			if (param1)
@@ -149,7 +138,7 @@ package core.hud.components
 				captionText.format.color = Style.COLOR_HIGHLIGHT;
 			}
 		}
-		
+
 		private function onTouch(param1:TouchEvent):void
 		{
 			if (!_enabled)
@@ -169,7 +158,7 @@ package core.hud.components
 				onMouseOut(param1);
 			}
 		}
-		
+
 		private function clean(param1:Event = null):void
 		{
 			removeEventListener("touch", onTouch);

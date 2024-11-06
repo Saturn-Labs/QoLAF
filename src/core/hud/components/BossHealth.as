@@ -6,34 +6,28 @@ package core.hud.components
 	import starling.display.Sprite;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-	
+
 	public class BossHealth extends Sprite
 	{
 		private static const HP_WIDTH:Number = 600;
-		
+
 		private static const BOSS_DISPLAY_RANGE:Number = 1440000;
-		
+
 		private static const BOSS_HIDE_RANGE:Number = 5760000;
-		
+
 		private var bossHPBarBgr:ScaleImage;
-		
 		private var bossHPBar:ScaleImage;
-		
 		private var bossHPText:TextBitmap;
-		
 		private var bossNameText:TextBitmap;
-		
 		private var textureManager:ITextureManager;
-		
 		private var g:Game;
-		
 		public function BossHealth(param1:Game)
 		{
 			super();
 			this.g = param1;
 			textureManager = TextureLocator.getService();
 		}
-		
+
 		public function load():void
 		{
 			bossHPBar = new ScaleImage();
@@ -68,7 +62,7 @@ package core.hud.components
 			bossHPText.alpha = 1;
 			bossNameText.alpha = 1;
 		}
-		
+
 		public function update():void
 		{
 			var _loc5_:Point = null;

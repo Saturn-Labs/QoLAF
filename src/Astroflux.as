@@ -12,12 +12,12 @@ package
 	import flash.utils.getTimer;
 	import metadata.BuildData;
 	import qolaf.utils.Query;
-	
+
 	public class Astroflux extends Sprite
 	{
 		public static const VERSION_NAME:String = "QoLAF";
 		public static const VERSION_NUMBER:String = "v0.1." + BuildData.BUILD_NUMBER;
-		
+
 		public function Astroflux(info:Object = null)
 		{
 			super();

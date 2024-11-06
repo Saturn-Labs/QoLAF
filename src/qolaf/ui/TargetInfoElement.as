@@ -1,4 +1,4 @@
-package qolaf.ui 
+package qolaf.ui
 {
 	import core.GameObject;
 	import core.boss.Boss;
@@ -46,19 +46,18 @@ package qolaf.ui
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
-	
+
 	/**
 	 * @author rydev
 	 */
-	public class TargetInfoElement extends LayoutGroup 
+	public class TargetInfoElement extends LayoutGroup
 	{
-		private static const TARGET_LEVEL_TEXT_TEMPLATE:String = "Lv. [level]"
+		private static const TARGET_LEVEL_TEXT_TEMPLATE:String = "Lv. [level]";
 		private static const TARGET_INFO_TEXT_HEIGHT:Number = 20;
 		private static const SH_AND_HP_BAR_HEIGHT:Number = 14;
 		private static const SH_AND_HP_BAR_WIDTH:Number = 300;
-		
+
 		private var _game:Game;
-		
 		private var _lockAndInfoLayout:LayoutGroup;
 		private var _targetLevel:TextField;
 		private var _targetName:TextField;
@@ -67,12 +66,10 @@ package qolaf.ui
 		private var _healthBar:CustomProgressBar;
 		private var _lockButton:Image;
 		private var _modifierDisplay:IModifierDisplay;
-		
 		private var _lockIcon:Texture;
 		private var _unlockIcon:Texture;
 		private var _auraEffectGlowAnimDeg:Number = 0.0;
-		
-		public function TargetInfoElement(game:Game) 
+		public function TargetInfoElement(game:Game)
 		{
 			this._game = game;
 			var verticalLayout:VerticalLayout = new VerticalLayout();
@@ -85,8 +82,9 @@ package qolaf.ui
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			game.targetSystem.addEventListener(TargetUpdatedEvent.EVENT, onTargetUpdated);
 		}
-		
-		private function createLockAndInfoLabel():void {
+
+		private function createLockAndInfoLabel():void
+		{
 			_lockAndInfoLayout = new LayoutGroup();
 			var horizontalLayout:HorizontalLayout = new HorizontalLayout();
 			horizontalLayout.horizontalAlign = HorizontalAlign.JUSTIFY;
@@ -95,59 +93,64 @@ package qolaf.ui
 			_lockAndInfoLayout.layout = horizontalLayout;
 			_lockAndInfoLayout.width = SH_AND_HP_BAR_WIDTH;
 			_lockAndInfoLayout.height = 24.5;
-			
+
 			var manager:ITextureManager = TextureLocator.getService();
 			_lockIcon = manager.getTextureByTextureName("ti_cargo_protection", "texture_gui1_test.png");
 			_unlockIcon = manager.getTextureByTextureName("ti_cargo_protection_inactive", "texture_gui1_test.png");
-			
+
 			_lockButton = new Image(_unlockIcon);
 			_lockButton.scale = 0.5;
 			_lockButton.touchable = true;
 			_lockButton.addEventListener(TouchEvent.TOUCH, onClickLock);
 			_lockAndInfoLayout.addChild(_lockButton);
-			
+
 			_targetName = new TextField(SH_AND_HP_BAR_WIDTH - 30, SH_AND_HP_BAR_HEIGHT, "", new TextFormat("DAIDRR", 14, 0xffffff, Align.LEFT, Align.CENTER));
 			_targetName.isHtmlText = true;
 			_targetNameAuraEffect = new GlowFilter(0x000000, 0, 10, 1);
-			_targetName.addEventListener(Event.ADDED_TO_STAGE, function(e:Event):void {
-				_targetName.filter = _targetNameAuraEffect;
-			});
-			
+			_targetName.addEventListener(Event.ADDED_TO_STAGE, function(e:Event):void
+				{
+					_targetName.filter = _targetNameAuraEffect;
+				});
+
 			_targetLevel = new TextField(55, SH_AND_HP_BAR_HEIGHT, "", new TextFormat("DAIDRR", 14, 0xffffff, Align.LEFT, Align.CENTER));
 			_targetLevel.autoSize = TextFieldAutoSize.HORIZONTAL;
-			
+
 			_lockAndInfoLayout.addChild(_targetLevel);
 			_lockAndInfoLayout.addChild(_targetName);
 			addChild(_lockAndInfoLayout);
 		}
-		
-		private function onTargetUpdated(e:TargetUpdatedEvent):void {
+
+		private function onTargetUpdated(e:TargetUpdatedEvent):void
+		{
 			_modifierDisplay.setTarget(e.updatedTarget as IModifierTarget);
 		}
-		
-		private function createShieldAndHealthBar():void {
+
+		private function createShieldAndHealthBar():void
+		{
 			_shieldBar = new CustomProgressBar(SH_AND_HP_BAR_WIDTH, SH_AND_HP_BAR_HEIGHT, 0x3377ff);
 			addChild(_shieldBar);
 			_healthBar = new CustomProgressBar(SH_AND_HP_BAR_WIDTH, SH_AND_HP_BAR_HEIGHT, 0xff0022);
 			addChild(_healthBar);
 		}
-		
-		private function createDebuffDisplay():void {
+
+		private function createDebuffDisplay():void
+		{
 			_modifierDisplay = new TargetModifierDisplay();
 			addChild(_modifierDisplay as TargetModifierDisplay);
 		}
-		
-		public function onEnterFrame(event:EnterFrameEvent):void {
+
+		public function onEnterFrame(event:EnterFrameEvent):void
+		{
 			var pos:Point = SceneBase.clientSettings.targetInfoPosition;
-			
 			x = (_game.stage.stageWidth - width) * pos.x;
 			y = (_game.stage.stageHeight - height) * pos.y;
-			
+
 			var target:ITarget = _game.targetSystem.target;
-			if (target == null) {
+			if (target == null)
+			{
 				return;
 			}
-				
+
 			var level:int = target.getLevel();
 			var name:String = target.getTrueName();
 			var shieldMax:int = target.getMaxShield();
@@ -156,7 +159,6 @@ package qolaf.ui
 			var hp:int = target.getHealth();
 			var auraColor:int = target.getAuraColor();
 			var auraAlpha:Number = target.hasAura() ? 2 : 0;
-			
 			var willNeedUpdate:Boolean = _shieldBar.visible != shieldMax > 0;
 			_shieldBar.visible = shieldMax > 0;
 			_shieldBar.maxValue = shieldMax;
@@ -167,8 +169,8 @@ package qolaf.ui
 			_targetNameAuraEffect.alpha = auraAlpha + Math.sin(_auraEffectGlowAnimDeg) / 2.0;
 			_targetLevel.format.color = getColorForLevel(level);
 			_targetLevel.text = StringUtils.substitute(TARGET_LEVEL_TEXT_TEMPLATE, {
-				"[level]": level
-			});
+						"[level]": level
+					});
 
 			_targetName.text = name;
 			_lockButton.texture = Game.instance.targetSystem._lockedTarget ? _lockIcon : _unlockIcon;
@@ -176,17 +178,18 @@ package qolaf.ui
 			_auraEffectGlowAnimDeg += 8 * event.passedTime;
 			_lockAndInfoLayout.readjustLayout();
 		}
-		
-		public function onClickLock(event:TouchEvent):void 
+
+		public function onClickLock(event:TouchEvent):void
 		{
 			var touch:Touch = event.getTouch(_lockButton);
 			if (touch == null || touch.phase != TouchPhase.BEGAN || Game.instance.targetSystem == null || !Game.instance.targetSystem.isTargetValid())
 				return;
-				
+
 			Game.instance.targetSystem._lockedTarget = !Game.instance.targetSystem._lockedTarget;
 		}
-		
-		public static function getColorForLevel(level:int):int {
+
+		public static function getColorForLevel(level:int):int
+		{
 			if (level >= 100)
 				return 0xff0033;
 			else if (level >= 75)

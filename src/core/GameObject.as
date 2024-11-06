@@ -12,7 +12,7 @@ package core
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	import textures.TextureManager;
-	
+
 	// QoLAF
 	public class GameObject extends EventDispatcher
 	{
@@ -36,108 +36,107 @@ package core
 		private var _id:int;
 		protected var imgObj:Object;
 		public var textureWidth:int = 0;
-		
 		public function GameObject()
 		{
 			super();
 			_pos = new Point();
 		}
-		
+
 		public function get radius():Number
 		{
 			return _mc.width * 0.5;
 		}
-		
+
 		public function set alpha(param1:Number):void
 		{
 			_mc.alpha = param1;
 		}
-		
+
 		public function get alpha():Number
 		{
 			return _mc.alpha;
 		}
-		
+
 		public function set color(param1:uint):void
 		{
 			_mc.color = param1;
 		}
-		
+
 		public function get color():uint
 		{
 			return _mc.color;
 		}
-		
+
 		public function set x(param1:Number):void
 		{
 			_pos.x = param1;
 		}
-		
+
 		public function set y(param1:Number):void
 		{
 			_pos.y = param1;
 		}
-		
+
 		public function get x():Number
 		{
 			return _pos.x;
 		}
-		
+
 		public function get y():Number
 		{
 			return _pos.y;
 		}
-		
+
 		public function get pivotX():Number
 		{
 			return _mc.pivotX;
 		}
-		
+
 		public function get pivotY():Number
 		{
 			return _mc.pivotY;
 		}
-		
+
 		public function get scaleX():Number
 		{
 			return _mc.scaleX;
 		}
-		
+
 		public function get scaleY():Number
 		{
 			return _mc.scaleY;
 		}
-		
+
 		public function set scaleX(param1:Number):void
 		{
 			_mc.scaleX = param1;
 		}
-		
+
 		public function set scaleY(param1:Number):void
 		{
 			_mc.scaleY = param1;
 		}
-		
+
 		public function set blendMode(param1:String):void
 		{
 			_mc.blendMode = param1;
 		}
-		
+
 		public function get texture():Texture
 		{
 			return _mc.texture;
 		}
-		
+
 		public function set visible(param1:Boolean):void
 		{
 			_mc.visible = param1;
 		}
-		
+
 		public function get visible():Boolean
 		{
 			return _mc.visible;
 		}
-		
+
 		public function switchTexturesByObj(param1:Object, param2:String = "texture_main_NEW.png"):void
 		{
 			var _loc3_:ITextureManager = TextureLocator.getService();
@@ -194,7 +193,7 @@ package core
 				scaleY = -scaleY;
 			}
 		}
-		
+
 		public function swapFrames(param1:MovieClip, param2:Vector.<Texture>):void
 		{
 			while (param1.numFrames > 1)
@@ -208,7 +207,7 @@ package core
 			param1.removeFrameAt(0);
 			param1.currentFrame = 0;
 		}
-		
+
 		public function update():void
 		{
 			if (forcedRotation)
@@ -217,7 +216,7 @@ package core
 				_rotation = forcedRotationAngle;
 			}
 		}
-		
+
 		public function draw():void
 		{
 			if (imgObj == null)
@@ -235,37 +234,37 @@ package core
 				_mc.rotation = rotation;
 			}
 		}
-		
+
 		public function set pos(param1:Point):void
 		{
 			_pos = param1;
 		}
-		
+
 		public function get pos():Point
 		{
 			return _pos;
 		}
-		
+
 		public function set rotation(param1:Number):void
 		{
 			_rotation = param1;
 		}
-		
+
 		public function get rotation():Number
 		{
 			return _rotation;
 		}
-		
+
 		public function set name(param1:String):void
 		{
 			_name = param1;
 		}
-		
+
 		public function get name():String
 		{
 			return _name;
 		}
-		
+
 		public function reset():void
 		{
 			_pos.x = 0;
@@ -302,7 +301,7 @@ package core
 			nextDistanceCalculation = -1;
 			isAddedToCanvas = false;
 		}
-		
+
 		public function addToCanvas():void
 		{
 			isAddedToCanvas = true;
@@ -312,7 +311,7 @@ package core
 			}
 			canvas.addChild(_mc);
 		}
-		
+
 		public function removeFromCanvas():void
 		{
 			isAddedToCanvas = false;
@@ -322,7 +321,7 @@ package core
 			}
 			canvas.removeChild(_mc);
 		}
-		
+
 		public function get hasImage():Boolean
 		{
 			if (imgObj == null)
@@ -331,22 +330,22 @@ package core
 			}
 			return true;
 		}
-		
+
 		public function get movieClip():MovieClip
 		{
 			return _mc;
 		}
-		
+
 		public function get id():int
 		{
 			return _id;
 		}
-		
+
 		public function set id(param1:int):void
 		{
 			_id = param1;
 		}
-		
+
 		public function getGlobalPos(param1:Point = null):Point
 		{
 			if (param1 == null)

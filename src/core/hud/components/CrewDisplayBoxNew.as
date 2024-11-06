@@ -16,69 +16,48 @@ package core.hud.components
 	import starling.events.TouchEvent;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-	
+
 	public class CrewDisplayBoxNew extends Sprite
 	{
 		private static const HEIGHT:int = 58;
-		
+
 		private static const WIDTH:int = 52;
-		
+
 		private static const textX1:int = 60;
-		
+
 		private static const textX2:int = 175;
-		
+
 		private static const textY1:int = 7;
-		
+
 		private static const textY2:int = 30;
-		
+
 		public static const MODE_SHIP:int = 0;
-		
+
 		public static const MODE_CANTINA:int = 1;
-		
+
 		public static const MODE_UPGRADE_ARTIFACT:int = 2;
-		
+
 		private var exploreTimer:HudTimer;
-		
 		private var trainingTimer:HudTimer;
-		
 		private var trainInstantButton:Button;
-		
 		private var upgradeArtifactBox:ArtifactCargoBox;
-		
 		private var upgradeInstantButton:Button;
-		
 		private var upgradeArtifactTimer:HudTimer;
-		
 		private var img:Image;
-		
 		public var crewMember:CrewMember;
-		
 		private var injuryTimer:HudTimer;
-		
 		private var injuryStatus:Text;
-		
 		private var box:Quad;
-		
 		private var g:Game;
-		
 		private var bgColor:uint = 1717572;
-		
 		public var mode:int;
-		
 		private var isSelected:Boolean = false;
-		
 		private var selectButton:Button;
-		
 		private var waitingTween:TweenMax;
-		
 		private var trainingCompleteText:Text;
-		
 		private var onBoardShipText:Text;
-		
 		private var hovering:Boolean = false;
-		
 		private var doUpdate:Boolean = true;
-		
 		public function CrewDisplayBoxNew(param1:Game, param2:CrewMember, param3:int = 0)
 		{
 			this.crewMember = param2;
@@ -110,12 +89,12 @@ package core.hud.components
 			addEventListener("removedFromStage", clean);
 			update();
 		}
-		
+
 		public function get key():String
 		{
 			return crewMember.key;
 		}
-		
+
 		public function setSelected(param1:Boolean):void
 		{
 			param1 ? (box.alpha = 1) : (box.alpha = 0);
@@ -126,12 +105,12 @@ package core.hud.components
 			}
 			dispatchEventWith("crewSelected", true);
 		}
-		
+
 		public function getLevel(param1:int):int
 		{
 			return crewMember.skills[param1];
 		}
-		
+
 		public function update():void
 		{
 			if (exploreTimer != null)
@@ -185,7 +164,7 @@ package core.hud.components
 			}
 			TweenMax.delayedCall(1, update);
 		}
-		
+
 		private function upgradeArtifactComplete():void
 		{
 			removeChild(upgradeArtifactTimer);
@@ -200,7 +179,7 @@ package core.hud.components
 			onBoardShipText.text = Localize.t("Onboard ship");
 			dispatchEventWith("upgradeArtifactComplete", true);
 		}
-		
+
 		private function updateTraining():void
 		{
 			if (trainingTimer != null)
@@ -229,7 +208,7 @@ package core.hud.components
 				onBoardShipText.text = Localize.t("Onboard ship");
 			}
 		}
-		
+
 		private function reloadDetails():void
 		{
 			if (!isSelected)
@@ -238,7 +217,7 @@ package core.hud.components
 			}
 			dispatchEventWith("reloadDetails", true);
 		}
-		
+
 		private function addTrainingTimer():void
 		{
 			if (crewMember.trainingEnd == 0)
@@ -261,31 +240,31 @@ package core.hud.components
 			onBoardShipText.text = Localize.t("Training");
 			addChild(trainingTimer);
 			trainInstantButton = new Button(function():void
-			{
-				g.creditManager.refresh(function():void
 				{
-					var confirmBuyWithFlux:CreditBuyBox = new CreditBuyBox(g, CreditManager.getCostCrewTraining(), Localize.t("Are you sure you want to buy instant crew training?"));
-					g.addChildToOverlay(confirmBuyWithFlux);
-					confirmBuyWithFlux.addEventListener("accept", function():void
-					{
-						g.rpc("buyInstantCrewTraining", instantCrewTraining, crewMember.key);
-						confirmBuyWithFlux.removeEventListeners();
-						g.removeChildFromOverlay(confirmBuyWithFlux, true);
-					});
-					confirmBuyWithFlux.addEventListener("close", function():void
-					{
-						trainInstantButton.enabled = true;
-						confirmBuyWithFlux.removeEventListeners();
-						g.removeChildFromOverlay(confirmBuyWithFlux, true);
-					});
-				});
-			}, Localize.t("Speed up"), "buy");
+					g.creditManager.refresh(function():void
+						{
+							var confirmBuyWithFlux:CreditBuyBox = new CreditBuyBox(g, CreditManager.getCostCrewTraining(), Localize.t("Are you sure you want to buy instant crew training?"));
+							g.addChildToOverlay(confirmBuyWithFlux);
+							confirmBuyWithFlux.addEventListener("accept", function():void
+								{
+									g.rpc("buyInstantCrewTraining", instantCrewTraining, crewMember.key);
+									confirmBuyWithFlux.removeEventListeners();
+									g.removeChildFromOverlay(confirmBuyWithFlux, true);
+								});
+							confirmBuyWithFlux.addEventListener("close", function():void
+								{
+									trainInstantButton.enabled = true;
+									confirmBuyWithFlux.removeEventListeners();
+									g.removeChildFromOverlay(confirmBuyWithFlux, true);
+								});
+						});
+				}, Localize.t("Speed up"), "buy");
 			trainInstantButton.scaleX = trainInstantButton.scaleY = 0.9;
 			trainInstantButton.x = 180;
 			trainInstantButton.y = 30 + 1 - 25;
 			addChild(trainInstantButton);
 		}
-		
+
 		private function instantCrewTraining(param1:Message):void
 		{
 			var _loc2_:int = 0;
@@ -307,7 +286,7 @@ package core.hud.components
 				g.showErrorDialog(param1.getString(1), false);
 			}
 		}
-		
+
 		private function addUpgradeTimer():void
 		{
 			if (crewMember.artifactEnd == 0)
@@ -334,35 +313,35 @@ package core.hud.components
 			upgradeArtifactBox.y = onBoardShipText.y;
 			addChild(upgradeArtifactBox);
 			upgradeInstantButton = new Button(function():void
-			{
-				g.showModalLoadingScreen(Localize.t("Hang on..."));
-				g.creditManager.refresh(function():void
 				{
-					var confirmBuyWithFlux:CreditBuyBox;
-					g.hideModalLoadingScreen();
-					confirmBuyWithFlux = new CreditBuyBox(g, CreditManager.getCostArtifactUpgrade(g, crewMember.artifactEnd), Localize.t("Are you sure you want to buy instant artifact upgrade?"));
-					g.addChildToOverlay(confirmBuyWithFlux);
-					confirmBuyWithFlux.addEventListener("accept", function():void
-					{
-						g.showModalLoadingScreen(Localize.t("Upgrading..."));
-						g.rpc("buyInstantArtifactUpgrade", instantArtifactUpgrade, crewMember.key);
-						confirmBuyWithFlux.removeEventListeners();
-						g.removeChildFromOverlay(confirmBuyWithFlux, true);
-					});
-					confirmBuyWithFlux.addEventListener("close", function():void
-					{
-						upgradeInstantButton.enabled = true;
-						confirmBuyWithFlux.removeEventListeners();
-						g.removeChildFromOverlay(confirmBuyWithFlux, true);
-					});
-				});
-			}, Localize.t("Speed Up"), "buy");
+					g.showModalLoadingScreen(Localize.t("Hang on..."));
+					g.creditManager.refresh(function():void
+						{
+							var confirmBuyWithFlux:CreditBuyBox;
+							g.hideModalLoadingScreen();
+							confirmBuyWithFlux = new CreditBuyBox(g, CreditManager.getCostArtifactUpgrade(g, crewMember.artifactEnd), Localize.t("Are you sure you want to buy instant artifact upgrade?"));
+							g.addChildToOverlay(confirmBuyWithFlux);
+							confirmBuyWithFlux.addEventListener("accept", function():void
+								{
+									g.showModalLoadingScreen(Localize.t("Upgrading..."));
+									g.rpc("buyInstantArtifactUpgrade", instantArtifactUpgrade, crewMember.key);
+									confirmBuyWithFlux.removeEventListeners();
+									g.removeChildFromOverlay(confirmBuyWithFlux, true);
+								});
+							confirmBuyWithFlux.addEventListener("close", function():void
+								{
+									upgradeInstantButton.enabled = true;
+									confirmBuyWithFlux.removeEventListeners();
+									g.removeChildFromOverlay(confirmBuyWithFlux, true);
+								});
+						});
+				}, Localize.t("Speed Up"), "buy");
 			upgradeInstantButton.scaleX = upgradeInstantButton.scaleY = 0.9;
 			upgradeInstantButton.x = 180;
 			upgradeInstantButton.y = 30 + 1 - 25;
 			addChild(upgradeInstantButton);
 		}
-		
+
 		private function instantArtifactUpgrade(param1:Message):void
 		{
 			g.hideModalLoadingScreen();
@@ -377,7 +356,7 @@ package core.hud.components
 				g.showErrorDialog(param1.getString(1), false);
 			}
 		}
-		
+
 		private function addLocation():void
 		{
 			if (crewMember.isDeployed)
@@ -420,16 +399,17 @@ package core.hud.components
 				addOnboardShip();
 			}
 		}
-		
+
 		private function addWaitingForPickup():void
 		{
 			var t:Text = addText(175 + 3, 30, Localize.t("Awaiting pickup"), 16623682);
 			waitingTween = TweenMax.to(t, 1, {"repeat": -1, "yoyo": true, "alpha": 0.5, "onComplete": function():void
-			{
-				t.alpha = 1;
-			}});
+					{
+						t.alpha = 1;
+					}
+				});
 		}
-		
+
 		private function addTrainingComplete():void
 		{
 			removeChild(trainingTimer);
@@ -447,7 +427,7 @@ package core.hud.components
 			onBoardShipText.text = Localize.t("Onboard ship");
 			waitingTween = TweenMax.to(trainingCompleteText, 1, {"repeat": -1, "yoyo": true, "alpha": 0.5});
 		}
-		
+
 		private function addOnboardShip():void
 		{
 			if (mode == 1)
@@ -456,7 +436,7 @@ package core.hud.components
 			}
 			onBoardShipText = addText(60, 30, Localize.t("Onboard ship"), 16777215);
 		}
-		
+
 		private function addText(param1:int, param2:int, param3:String, param4:uint):Text
 		{
 			var _loc5_:Text = new Text(param1, param2);
@@ -467,7 +447,7 @@ package core.hud.components
 			addChild(_loc5_);
 			return _loc5_;
 		}
-		
+
 		private function onClick(param1:TouchEvent = null):void
 		{
 			var _loc2_:int = 0;
@@ -486,7 +466,7 @@ package core.hud.components
 			}
 			setSelected(true);
 		}
-		
+
 		public function mOver(param1:TouchEvent):void
 		{
 			if (hovering)
@@ -500,7 +480,7 @@ package core.hud.components
 			}
 			box.alpha = 0.6;
 		}
-		
+
 		public function mOut(param1:TouchEvent):void
 		{
 			if (!hovering)
@@ -515,7 +495,7 @@ package core.hud.components
 			}
 			box.alpha = 0;
 		}
-		
+
 		private function onTouch(param1:TouchEvent):void
 		{
 			if (mode == 2 && (crewMember.isDeployed || crewMember.isInjured || crewMember.isTraining || crewMember.isUpgrading))
@@ -537,7 +517,7 @@ package core.hud.components
 				mOut(param1);
 			}
 		}
-		
+
 		public function clean(param1:Event = null):void
 		{
 			doUpdate = false;

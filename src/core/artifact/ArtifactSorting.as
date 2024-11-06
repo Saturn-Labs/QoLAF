@@ -12,27 +12,19 @@ package core.artifact
 	import starling.text.TextField;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-	
+
 	public class ArtifactSorting extends Sprite
 	{
 		private var nextX:int = 20;
-		
 		private var nextY:int = 0;
-		
 		private var padding:int = 10;
-		
 		private var g:Game;
-		
 		private var types:Vector.<Object>;
-		
+
 		private var callback:Function;
-		
 		private var drawCount:int = 0;
-		
 		private var scrollArea:ScrollContainer;
-		
 		private var mainBody:Sprite;
-		
 		public function ArtifactSorting(param1:Game, param2:Function)
 		{
 			var q:Quad;
@@ -94,41 +86,41 @@ package core.artifact
 			scrollArea.addChild(mainBody);
 			addChild(scrollArea);
 			sortLevelHigh = new Button(function():void
-			{
-				closeAndSort("levelhigh");
-			}, "Strength high");
+				{
+					closeAndSort("levelhigh");
+				}, "Strength high");
 			sortLevelHigh.x = nextX;
 			sortLevelHigh.y = 480;
 			addChild(sortLevelHigh);
 			sortLevelLow = new Button(function():void
-			{
-				closeAndSort("levellow");
-			}, "Strength low");
+				{
+					closeAndSort("levellow");
+				}, "Strength low");
 			sortLevelLow.x = sortLevelHigh.x + sortLevelHigh.width + 20;
 			sortLevelLow.y = 480;
 			addChild(sortLevelLow);
 			sortCountAsc = new Button(function():void
-			{
-				closeAndSort("statcountasc");
-			}, "Modifiers high");
+				{
+					closeAndSort("statcountasc");
+				}, "Modifiers high");
 			sortCountAsc.x = sortLevelLow.x + sortLevelLow.width + 20;
 			sortCountAsc.y = 480;
 			addChild(sortCountAsc);
 			sortCountDesc = new Button(function():void
-			{
-				closeAndSort("statcountdesc");
-			}, "Modifiers low");
+				{
+					closeAndSort("statcountdesc");
+				}, "Modifiers low");
 			sortCountDesc.x = sortCountAsc.x + sortCountAsc.width + 20;
 			sortCountDesc.y = 480;
 			addChild(sortCountDesc);
 		}
-		
+
 		private function newRow():void
 		{
 			nextX = 20;
 			nextY += 60;
 		}
-		
+
 		private function drawOfSubset(param1:String):void
 		{
 			var _loc4_:int = 0;
@@ -146,7 +138,7 @@ package core.artifact
 				_loc4_++;
 			}
 		}
-		
+
 		private function addButton(param1:Object):void
 		{
 			var _loc2_:ITextureManager = TextureLocator.getService();
@@ -162,7 +154,7 @@ package core.artifact
 			_loc4_.addEventListener("touch", onTouch);
 			_loc4_.useHandCursor = true;
 		}
-		
+
 		private function onTouch(param1:TouchEvent):void
 		{
 			var _loc2_:Image = param1.currentTarget as Image;
@@ -180,7 +172,7 @@ package core.artifact
 				_loc2_.alpha = 1;
 			}
 		}
-		
+
 		private function closeAndSort(param1:String):void
 		{
 			callback(param1);

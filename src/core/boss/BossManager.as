@@ -11,17 +11,16 @@ package core.boss
 	import playerio.Message;
 	import qolaf.target.TargetSystem;
 	import sound.SoundLocator;
-	
+
 	public class BossManager
 	{
 		private var g:Game;
-		
 		public var bosses:Vector.<Boss>;
-		
+
 		public var callbackMessages:Vector.<Message>;
-		
+
 		public var callbackFunctions:Vector.<Function>;
-		
+
 		public function BossManager(param1:Game)
 		{
 			super();
@@ -30,7 +29,7 @@ package core.boss
 			callbackMessages = new Vector.<Message>();
 			callbackFunctions = new Vector.<Function>();
 		}
-		
+
 		public function update():void
 		{
 			var _loc1_:Boss = null;
@@ -43,7 +42,7 @@ package core.boss
 				_loc2_--;
 			}
 		}
-		
+
 		public function forceUpdate():void
 		{
 			var _loc1_:Boss = null;
@@ -56,7 +55,7 @@ package core.boss
 				_loc2_--;
 			}
 		}
-		
+
 		public function addMessageHandlers():void
 		{
 			g.addMessageHandler("aiBossTargetChanged", aiBossTargetChanged);
@@ -66,7 +65,7 @@ package core.boss
 			g.addMessageHandler("bossKilled", bossKilled);
 			g.addMessageHandler("spawnBoss", spawnBoss);
 		}
-		
+
 		public function initBosses(param1:Message, param2:int, param3:int):void
 		{
 			var _loc6_:String = null;
@@ -90,7 +89,7 @@ package core.boss
 				param2 += 4;
 			}
 		}
-		
+
 		public function spawnBoss(param1:Message):void
 		{
 			var _loc2_:String = null;
@@ -109,7 +108,7 @@ package core.boss
 				_loc6_ += 4;
 			}
 		}
-		
+
 		public function createBoss(param1:String, param2:String, param3:Number, param4:Number):void
 		{
 			var _loc5_:Body = g.bodyManager.getBodyByKey(param2);
@@ -129,7 +128,7 @@ package core.boss
 				SoundLocator.getService().play("q0CoOEzFYk2yFBRYQtfYvw");
 			}
 		}
-		
+
 		private function bossKilled(param1:Message):void
 		{
 			var _loc2_:Boss = getBossFromKey(param1.getString(0));
@@ -138,7 +137,7 @@ package core.boss
 				killBoss(_loc2_);
 			}
 		}
-		
+
 		private function killBoss(param1:Boss):void
 		{
 			param1.destroy();
@@ -147,7 +146,7 @@ package core.boss
 			bosses.splice(bosses.indexOf(param1), 1);
 			Console.write("BOSS killed!");
 		}
-		
+
 		public function aiTeleport(param1:Message, param2:int):void
 		{
 			var _loc3_:Boss = g.bossManager.getBossFromKey(param1.getString(param2));
@@ -159,7 +158,7 @@ package core.boss
 			_loc3_.teleportExitTime = param1.getNumber(param2 + 3);
 			_loc3_.startTeleportEffect();
 		}
-		
+
 		public function aiBossFireAtBody(param1:Message):void
 		{
 			var _loc2_:Boss = g.bossManager.getBossFromKey(param1.getString(0));
@@ -173,7 +172,7 @@ package core.boss
 			_loc2_.bodyDestroyStart = param1.getNumber(2);
 			_loc2_.bodyDestroyEnd = param1.getNumber(3);
 		}
-		
+
 		public function aiBossCourse(param1:Message):void
 		{
 			var _loc5_:int = 0;
@@ -205,7 +204,7 @@ package core.boss
 			_loc7_.parseMessage(param1, 3);
 			_loc2_.setConvergeTarget(_loc7_);
 		}
-		
+
 		public function aiBossTargetChanged(param1:Message):void
 		{
 			var _loc3_:Boss = g.bossManager.getBossFromKey(param1.getString(0));
@@ -218,7 +217,7 @@ package core.boss
 			}
 			_loc3_.target = _loc2_;
 		}
-		
+
 		public function getBossFromKey(param1:String):Boss
 		{
 			for each (var _loc2_:* in bosses)
@@ -230,7 +229,7 @@ package core.boss
 			}
 			return null;
 		}
-		
+
 		public function getComponentById(param1:int):Unit
 		{
 			for each (var _loc3_:* in bosses)
@@ -245,7 +244,7 @@ package core.boss
 			}
 			return null;
 		}
-		
+
 		public function add(param1:Boss):void
 		{
 			var _loc4_:int = 0;
@@ -274,7 +273,7 @@ package core.boss
 				_loc4_--;
 			}
 		}
-		
+
 		public function killed(param1:Message, param2:int):void
 		{
 			var _loc3_:int = param1.getInt(param2);
@@ -286,7 +285,7 @@ package core.boss
 			}
 			_loc4_.destroy();
 		}
-		
+
 		public function damaged(message:Message, pointer:int):void
 		{
 			var componentId:int = message.getInt(pointer + 1);
@@ -296,11 +295,10 @@ package core.boss
 				return;
 			}
 			var damage:int = message.getInt(pointer + 2);
-			
 			// QoLAF
 			if (Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.getDistance(Game.instance.playerManager.me.ship, component) < 600 && SceneBase.clientSettings.autoTarget)
 				Game.instance.targetSystem.target = component;
-				
+
 			component.takeDamage(damage);
 			component.shieldHp = message.getInt(pointer + 3);
 			component.hp = message.getInt(pointer + 4);
@@ -309,7 +307,7 @@ package core.boss
 				component.doDOTEffect(message.getInt(pointer + 6), message.getString(pointer + 7));
 			}
 		}
-		
+
 		public function initSyncBoss(param1:Message):void
 		{
 			var _loc6_:int = 0;

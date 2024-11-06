@@ -5,15 +5,12 @@ package core.hud.components
 	import starling.events.TouchEvent;
 	import starling.text.TextField;
 	import starling.text.TextFormat;
-	
+
 	public class LoginButton extends Sprite
 	{
 		private var displayText:TextField;
-		
 		private var callback:Function;
-		
 		private var _enabled:Boolean = true;
-		
 		public function LoginButton(param1:String, param2:Function, param3:uint = 16777215, param4:int = 0)
 		{
 			super();
@@ -30,7 +27,7 @@ package core.hud.components
 			useHandCursor = true;
 			addEventListener("touch", onTouch);
 		}
-		
+
 		private function onTouch(param1:TouchEvent):void
 		{
 			if (param1.getTouch(this, "ended"))
@@ -38,22 +35,22 @@ package core.hud.components
 				callback();
 			}
 		}
-		
+
 		public function get text():String
 		{
 			return displayText.text;
 		}
-		
+
 		public function set text(param1:String):void
 		{
 			displayText.text = param1.toUpperCase();
 		}
-		
+
 		public function set enabled(param1:Boolean):void
 		{
 			_enabled = param1;
 		}
-		
+
 		public function get enabled():Boolean
 		{
 			return _enabled;

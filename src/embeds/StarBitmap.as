@@ -1,8 +1,8 @@
 package embeds
 {
 	import flash.display.Bitmap;
-	
-	[Embed(source = "/images/star.png")]
+
+	[Embed(source="/images/star.png")]
 	public class StarBitmap extends Bitmap
 	{
 		public function StarBitmap()

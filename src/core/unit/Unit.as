@@ -32,7 +32,7 @@ package core.unit
 	import starling.textures.Texture;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-	
+
 	// QoLAF
 	public class Unit extends GameObject implements IModifierTarget
 	{
@@ -116,10 +116,9 @@ package core.unit
 		public var owner:PlayerShip = null;
 		public var isInjured:Boolean = false;
 		private var miniBarsAreAddedToCanvas:Boolean = false;
-		
 		// QoLAF
 		private var _modifiers:Vector.<Modifier> = new Vector.<Modifier>();
-		
+
 		public function Unit(param1:Game)
 		{
 			var _loc3_:int = 0;
@@ -160,172 +159,202 @@ package core.unit
 			}
 			super();
 		}
-		
+
 		// QoLAF
-		public function getModifiers():Vector.<Modifier> {
+		public function getModifiers():Vector.<Modifier>
+		{
 			return _modifiers;
 		}
-		
+
 		// QoLAF
-		public function addModifier(modifier:Modifier):void {
-			var found:Modifier = Query.first(_modifiers, function(obj:Modifier):Boolean {
-				return obj.id == modifier.id;
-			});
-			
-			if (found != null) {
+		public function addModifier(modifier:Modifier):void
+		{
+			var found:Modifier = Query.first(_modifiers, function(obj:Modifier):Boolean
+				{
+					return obj.id == modifier.id;
+				});
+
+			if (found != null)
+			{
 				found.stackAndReset();
 				dispatchEvent(new ModifierStackedEvent(ModifierStackedEvent.EVENT, found));
 			}
-			else {
+			else
+			{
 				found = modifier;
 				_modifiers.push(found);
 				dispatchEvent(new ModifierAddedEvent(ModifierAddedEvent.EVENT, found));
 			}
 		}
-		
+
 		// QoLAF
-		public function removeModifier(modifier:Modifier):Boolean {
+		public function removeModifier(modifier:Modifier):Boolean
+		{
 			if (!Query.removeEquals(_modifiers, modifier))
 				return false;
 			dispatchEvent(new ModifierRemovedEvent(ModifierRemovedEvent.EVENT, modifier));
 			return true;
 		}
-		
+
 		// QoLAF
-		public function removeModifierById(modifierId:int):Boolean {
-			var modifier:Modifier = Query.first(_modifiers, function(obj:Modifier):Boolean {
-				return obj.id == modifierId;
-			});
+		public function removeModifierById(modifierId:int):Boolean
+		{
+			var modifier:Modifier = Query.first(_modifiers, function(obj:Modifier):Boolean
+				{
+					return obj.id == modifierId;
+				});
 			if (modifier == null)
 				return false;
 			Query.removeEquals(_modifiers, modifier);
 			dispatchEvent(new ModifierRemovedEvent(ModifierRemovedEvent.EVENT, modifier));
 			return true;
 		}
-		
+
 		// QoLAF
-		public function getName():String {
+		public function getName():String
+		{
 			return name;
 		}
-		
+
 		// QoLAF
-		public function getTrueName():String {
+		public function getTrueName():String
+		{
 			return TargetUtils.getTargetTrueName(this);
 		}
-		
+
 		// QoLAF
-		public function getLevel():int {
+		public function getLevel():int
+		{
 			if (isBoss())
 				return getBoss().level;
 			else
 				return level;
 		}
-		
+
 		// QoLAF
-		public function getParent():GameObject {
+		public function getParent():GameObject
+		{
 			return parentObj;
 		}
-		
+
 		// QoLAF
-		public function isBoss():Boolean {
+		public function isBoss():Boolean
+		{
 			return isBossUnit || parentObj is Boss;
 		}
-		
+
 		// QoLAF
-		public function getBoss():Boss {
+		public function getBoss():Boss
+		{
 			if (!isBoss())
 				return null;
-			
+
 			var obj:GameObject = parentObj;
 			var depth:int = 0;
 			var maxDepth:int = 10;
-			while (!(obj is Boss) && depth < maxDepth) {
+			while (!(obj is Boss) && depth < maxDepth)
+			{
 				depth++;
 				obj = parentObj;
 			}
 			return obj as Boss;
 		}
-		
+
 		// QoLAF
-		public function isAlive():Boolean {
+		public function isAlive():Boolean
+		{
 			return alive;
 		}
-		
+
 		// QoLAF
-		public function getPosition():Point {
+		public function getPosition():Point
+		{
 			return pos;
 		}
-		
+
 		// QoLAF
-		public function getTexture():Texture {
+		public function getTexture():Texture
+		{
 			return texture;
 		}
-		
+
 		// QoLAF
-		public function getMaxHealth():int {
+		public function getMaxHealth():int
+		{
 			if (isBoss())
 				return getBoss().hpMax;
 			return hpMax;
 		}
-		
+
 		// QoLAF
-		public function getHealth():int {
+		public function getHealth():int
+		{
 			if (isBoss())
 				return getBoss().hp;
 			return hp;
 		}
-		
+
 		// QoLAF
-		public function getMaxShield():int {
+		public function getMaxShield():int
+		{
 			return shieldHpMax;
 		}
-		
+
 		// QoLAF
-		public function getShield():int {
+		public function getShield():int
+		{
 			return shieldHp;
 		}
-		
+
 		// QoLAF
-		public function hasAura():Boolean {
+		public function hasAura():Boolean
+		{
 			if (isBoss())
 				return true;
-			else if (this is EnemyShip) {
+			else if (this is EnemyShip)
+			{
 				var s:EnemyShip = this as EnemyShip;
 				return s.rareEmitters.length >= 1;
 			}
 			return false;
 		}
-		
+
 		// QoLAF
-		public function getAuraColor():uint {
+		public function getAuraColor():uint
+		{
 			if (isBoss())
 				return 0xff0000;
-			else if (this is EnemyShip) {
+			else if (this is EnemyShip)
+			{
 				var s:EnemyShip = this as EnemyShip;
 				return s.rareEmitters.length >= 1 ? s.rareEmitters[0].startColor : 0xffffff;
 			}
 			return 0xffffff;
 		}
-		
+
 		// QoLAF
-		public function isPlayer():Boolean {
+		public function isPlayer():Boolean
+		{
 			return this is PlayerShip;
 		}
-		
+
 		// QoLAF
-		public function isLocalPlayer():Boolean {
+		public function isLocalPlayer():Boolean
+		{
 			return isPlayer() ? (this as PlayerShip).player.isMe : false;
 		}
-		
+
 		override public function update():void
 		{
 			// QoLAF
-			for (var i:int = _modifiers.length - 1; i >= 0; i--) {
-				if (_modifiers[i].hasEnded) {
+			for (var i:int = _modifiers.length - 1; i >= 0; i--)
+			{
+				if (_modifiers[i].hasEnded)
+				{
 					removeModifier(_modifiers[i]);
 				}
 			}
-			
+
 			if (nextDistanceCalculation <= 0)
 			{
 				updateIsNear();
@@ -336,7 +365,7 @@ package core.unit
 			}
 			super.update();
 		}
-		
+
 		private function updateIsNear():void
 		{
 			if (g.me.ship == null || g.me.ship == this || isBossUnit && !(this is EnemyShip))
@@ -373,7 +402,7 @@ package core.unit
 				removeFromCanvas();
 			}
 		}
-		
+
 		public function updateHealthBars():void
 		{
 			if (miniBarsAreAddedToCanvas)
@@ -402,7 +431,7 @@ package core.unit
 				isInjured = false;
 			}
 		}
-		
+
 		public function set shieldHpMax(param1:int):void
 		{
 			_shieldHpMax = param1;
@@ -412,7 +441,7 @@ package core.unit
 			}
 			adjustMiniHealthBar();
 		}
-		
+
 		public function set hpMax(param1:int):void
 		{
 			_hpMax = param1;
@@ -422,7 +451,7 @@ package core.unit
 			}
 			adjustMiniHealthBar();
 		}
-		
+
 		private function adjustMiniHealthBar():void
 		{
 			if (g.solarSystem.isPvpSystemInEditor)
@@ -438,17 +467,17 @@ package core.unit
 				}
 			}
 		}
-		
+
 		public function get hpMax():int
 		{
 			return _hpMax;
 		}
-		
+
 		public function get shieldHpMax():int
 		{
 			return _shieldHpMax;
 		}
-		
+
 		public function regenerateShield():void
 		{
 			if (alive && shieldHp < _shieldHpMax)
@@ -465,7 +494,7 @@ package core.unit
 				shieldRegenCounter += 33;
 			}
 		}
-		
+
 		public function regenerateHP():void
 		{
 			if (alive && hp < _hpMax)
@@ -482,7 +511,7 @@ package core.unit
 				hpRegenCounter += 33;
 			}
 		}
-		
+
 		public function canBeDamage(param1:Unit, param2:Projectile):Boolean
 		{
 			var _loc4_:int = 0;
@@ -601,7 +630,7 @@ package core.unit
 			}
 			return true;
 		}
-		
+
 		public function takeDamage(param1:int):void
 		{
 			if (!isAddedToCanvas)
@@ -627,7 +656,7 @@ package core.unit
 			}
 			g.textManager.createDmgText(param1, this);
 		}
-		
+
 		private function damageFlash(param1:int, param2:Boolean = true, param3:Boolean = false):void
 		{
 			var dmg:int = param1;
@@ -652,16 +681,16 @@ package core.unit
 			}
 			_mc.filter.cache();
 			TweenMax.delayedCall(0.08, function():void
-			{
-				isFlashing = false;
-				_mc.filter = originalFilter == null ? null : originalFilter;
-				if (_mc.filter)
 				{
-					_mc.filter.cache();
-				}
-			});
+					isFlashing = false;
+					_mc.filter = originalFilter == null ? null : originalFilter;
+					if (_mc.filter)
+					{
+						_mc.filter.cache();
+					}
+				});
 		}
-		
+
 		public function doDOTEffect(duration:int, param2:String, modifierId:int = -1, param4:String = ""):void
 		{
 			var _loc9_:* = undefined;
@@ -695,11 +724,12 @@ package core.unit
 					shieldRegenCounter = -duration * 1000;
 				}
 			}
-			
-			if (modifierId != -1 && modifierId != 11) {
+
+			if (modifierId != -1 && modifierId != 11)
+			{
 				addModifier(new Modifier(modifierId, duration * 1000));
 			}
-			
+
 			if (dotTimers.length > 0 && dotTimers[0]._active && this.dotEffect == param2)
 			{
 				for each (var _loc8_:* in dotTimers)
@@ -717,7 +747,7 @@ package core.unit
 				_loc9_ = EmitterFactory.create(param2, g, pos.x, pos.y, this, true);
 				for each (var _loc7_:* in _loc9_)
 				{
-					_loc5_ = TweenMax.to(_loc7_, duration, {"startAlpha": 0.1, "onComplete": removeDot(_loc7_)});
+					_loc5_ = TweenMax.to(_loc7_, duration, {"startAlpha":0.1, "onComplete":removeDot(_loc7_)});
 					dotTimers.push(_loc5_);
 				}
 				this.dotEffect = param2;
@@ -727,12 +757,12 @@ package core.unit
 				g.textManager.createDebuffText(param4, this);
 			}
 		}
-		
+
 		override public function switchTexturesByObj(param1:Object, param2:String = "texture_main_NEW.png"):void
 		{
 			super.switchTexturesByObj(param1);
 		}
-		
+
 		private function removeDot(param1:Emitter):Function
 		{
 			var e:Emitter = param1;
@@ -741,7 +771,7 @@ package core.unit
 				e.killEmitter();
 			};
 		}
-		
+
 		public function activate():void
 		{
 			active = true;
@@ -753,7 +783,7 @@ package core.unit
 				_loc1_.reEnable();
 			}
 		}
-		
+
 		public function destroy(param1:Boolean = true):void
 		{
 			var _loc4_:ISound = null;
@@ -786,7 +816,7 @@ package core.unit
 			}
 			g.emitterManager.clean(this);
 		}
-		
+
 		override public function draw():void
 		{
 			var _loc2_:Number = pos.x;
@@ -831,17 +861,17 @@ package core.unit
 			}
 			super.draw();
 		}
-		
+
 		public function get speed():Point
 		{
 			return _speed;
 		}
-		
+
 		public function set speed(param1:Point):void
 		{
 			_speed = param1;
 		}
-		
+
 		override public function reset():void
 		{
 			var _loc1_:int = 0;
@@ -931,32 +961,32 @@ package core.unit
 			triggers.splice(0, -1);
 			triggersToActivte = 1;
 		}
-		
+
 		public function get type():String
 		{
 			return "Unit, unidentified type!";
 		}
-		
+
 		override public function toString():String
 		{
 			return "[ Name: " + _name + " Body name: " + _bodyName + " Type: " + type + " ]";
 		}
-		
+
 		public function set bodyName(param1:String):void
 		{
 			_bodyName = param1;
 		}
-		
+
 		public function get bodyName():String
 		{
 			return _bodyName;
 		}
-		
+
 		public function addToCanvasForReal():void
 		{
 			super.addToCanvas();
 		}
-		
+
 		override public function removeFromCanvas():void
 		{
 			if (!isAddedToCanvas)
@@ -971,7 +1001,7 @@ package core.unit
 				miniBarsAreAddedToCanvas = false;
 			}
 		}
-		
+
 		public function hasFaction(param1:String):Boolean
 		{
 			for each (var _loc2_:* in factions)

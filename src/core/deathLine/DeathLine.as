@@ -3,17 +3,13 @@ package core.deathLine
 	import core.hud.components.Line;
 	import core.scene.Game;
 	import flash.geom.Point;
-	
+
 	public class DeathLine extends Line
 	{
 		private var g:Game;
-		
 		public var nextDistanceCalculation:Number = -1;
-		
 		private var distanceToCamera:Number = 0;
-		
 		public var id:String = "";
-		
 		public function DeathLine(param1:Game, param2:uint = 16777215, param3:Number = 1)
 		{
 			super("line2");
@@ -21,7 +17,7 @@ package core.deathLine
 			this.g = param1;
 			this.visible = false;
 		}
-		
+
 		public function update():void
 		{
 			if (nextDistanceCalculation <= 0)
@@ -33,7 +29,7 @@ package core.deathLine
 				nextDistanceCalculation -= 33;
 			}
 		}
-		
+
 		public function updateIsNear():void
 		{
 			if (g.me.ship == null)
@@ -51,7 +47,7 @@ package core.deathLine
 			nextDistanceCalculation = _loc1_ / 600 * 1000;
 			visible = distanceToCamera < _loc3_;
 		}
-		
+
 		public function lineIntersection(param1:Number, param2:Number, param3:Number, param4:Number, param5:Number):Boolean
 		{
 			var _loc7_:Number = toY - y;
@@ -85,7 +81,7 @@ package core.deathLine
 			}
 			return true;
 		}
-		
+
 		public function lineIntersection2(param1:Number, param2:Number, param3:Number, param4:Number, param5:Number):Boolean
 		{
 			var _loc13_:Number = Math.min(x, toX);

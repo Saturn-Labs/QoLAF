@@ -1,4 +1,5 @@
-package qolaf.ui.elements {
+package qolaf.ui.elements
+{
 	import feathers.controls.Label;
 	import generics.Util;
 	import starling.display.BlendMode;
@@ -10,11 +11,12 @@ package qolaf.ui.elements {
 	import starling.filters.GlowFilter;
 	import starling.text.TextField;
 	import starling.text.TextFormat;
-	
+
 	/**
 	 * @author rydev
 	 */
-	public class CustomProgressBar extends Sprite {
+	public class CustomProgressBar extends Sprite
+	{
 		private var _width:int = 95;
 		private var _height:int = 15;
 		private var _color:int = 0xffffff;
@@ -22,75 +24,87 @@ package qolaf.ui.elements {
 		private var _maxValue:Number = 100;
 		private var _value:Number = 100;
 		private var _lerp:Number = 100;
-		
 		private var _overlay:Quad;
 		private var _trail:Quad;
 		private var _back:Quad;
 		private var _valueText:TextField;
-		
-		public function CustomProgressBar(width:int = 95, height:int = 15, color:int = 0xffffff) {
+		public function CustomProgressBar(width:int = 95, height:int = 15, color:int = 0xffffff)
+		{
 			this._width = width;
 			this._height = height;
 			this._color = color;
 			createElements();
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
-		
-		public function get trailAlpha():Number {
+
+		public function get trailAlpha():Number
+		{
 			return _trail.alpha;
 		}
-		
-		public function set trailAlpha(value:Number):void {
+
+		public function set trailAlpha(value:Number):void
+		{
 			_trail.alpha = value;
 		}
-		
-		public function get lerpSpeed():Number {
+
+		public function get lerpSpeed():Number
+		{
 			return _lerpSpeed;
 		}
-		
-		public function set lerpSpeed(value:Number):void {
+
+		public function set lerpSpeed(value:Number):void
+		{
 			_lerpSpeed = value;
 		}
-		
-		public function get maxValue():Number {
+
+		public function get maxValue():Number
+		{
 			return _maxValue;
 		}
-		
-		public function set maxValue(value:Number):void {
+
+		public function set maxValue(value:Number):void
+		{
 			_maxValue = value;
 			if (value < this.value)
 				this.value = value;
 			if (_lerp > _maxValue)
 				_lerp = _maxValue;
 		}
-		
-		public function get value():Number {
+
+		public function get value():Number
+		{
 			return _value;
 		}
-		
-		public function set value(value:Number):void {
+
+		public function set value(value:Number):void
+		{
 			_value = value;
 			if (_lerp < value)
 				_lerp = value;
 		}
-		
-		override public function get width():Number {
+
+		override public function get width():Number
+		{
 			return _width;
 		}
-		
-		override public function set width(value:Number):void {
+
+		override public function set width(value:Number):void
+		{
 			_width = value;
 		}
-		
-		override public function get height():Number {
+
+		override public function get height():Number
+		{
 			return _height;
 		}
-		
-		override public function set height(value:Number):void {
+
+		override public function set height(value:Number):void
+		{
 			_height = value;
 		}
-		
-		public function createElements():void {
+
+		public function createElements():void
+		{
 			_overlay = new Quad(_width, _height, _color);
 			_trail = new Quad(_width, _height, _color);
 			_back = new Quad(_width, _height, 0x0);
@@ -102,8 +116,9 @@ package qolaf.ui.elements {
 			addChild(_overlay);
 			addChild(_valueText);
 		}
-		
-		public function onEnterFrame(e:EnterFrameEvent):void {
+
+		public function onEnterFrame(e:EnterFrameEvent):void
+		{
 			_overlay.width = _width;
 			_overlay.height = _height;
 			_trail.width = _width;
@@ -111,7 +126,7 @@ package qolaf.ui.elements {
 			_back.width = _width;
 			_back.height = _height;
 			_valueText.width = _width;
-			_valueText.height = _height;	
+			_valueText.height = _height;
 			_lerp = Util.lerp(_lerp, _value, _lerpSpeed * e.passedTime);
 			var overlayScale:Number = Util.clamp(_value / _maxValue, 0, 1);
 			var trailScale:Number = Util.clamp(_lerp / _maxValue, 0, 1);

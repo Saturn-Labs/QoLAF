@@ -4,24 +4,20 @@ package core.friend
 	import core.player.Player;
 	import core.scene.Game;
 	import playerio.Message;
-	
+
 	public class FriendManager
 	{
 		private var g:Game;
-		
 		private var me:Player;
-		
 		private var requests:Array;
-		
 		private var onlineFriendsCallback:Function;
-		
 		public function FriendManager(param1:Game)
 		{
 			requests = [];
 			super();
 			this.g = param1;
 		}
-		
+
 		public function addMessageHandlers():void
 		{
 			g.addMessageHandler("friendRequest", friendRequest);
@@ -29,7 +25,7 @@ package core.friend
 			g.addMessageHandler("removeFriend", removeFriendRecieved);
 			g.addServiceMessageHandler("onlineFriends", onOnlineFriends);
 		}
-		
+
 		public function init(param1:Player, param2:Boolean = false):void
 		{
 			var me:Player = param1;
@@ -41,26 +37,26 @@ package core.friend
 			}
 			Player.friends = new Vector.<Friend>();
 			g.rpc("getFriends", function(param1:Message):void
-			{
-				var _loc3_:int = 0;
-				var _loc2_:Friend = null;
-				_loc3_ = 0;
-				while (_loc3_ < param1.length)
 				{
-					_loc2_ = new Friend();
-					_loc2_.id = param1.getString(_loc3_);
-					Player.friends.push(_loc2_);
-					_loc3_++;
-				}
-			});
+					var _loc3_:int = 0;
+					var _loc2_:Friend = null;
+					_loc3_ = 0;
+					while (_loc3_ < param1.length)
+					{
+						_loc2_ = new Friend();
+						_loc2_.id = param1.getString(_loc3_);
+						Player.friends.push(_loc2_);
+						_loc3_++;
+					}
+				});
 		}
-		
+
 		public function updateOnlineFriends(param1:Function):void
 		{
 			onlineFriendsCallback = param1;
 			g.sendToServiceRoom("getOnlineFriends");
 		}
-		
+
 		private function onOnlineFriends(param1:Message):void
 		{
 			var _loc2_:Friend = null;
@@ -79,12 +75,12 @@ package core.friend
 			}
 			onlineFriendsCallback();
 		}
-		
+
 		public function sendFriendRequest(param1:Player):void
 		{
 			g.send("sendFriendRequest", param1.id);
 		}
-		
+
 		public function friendRequest(param1:Message):void
 		{
 			var _loc3_:String = param1.getString(0);
@@ -105,7 +101,7 @@ package core.friend
 			MessageLog.write("<FONT COLOR='#88ff88'>" + _loc2_.name + " wants to add you as a friend.</FONT>");
 			g.hud.playerListButton.hintNew();
 		}
-		
+
 		public function sendFriendConfirm(param1:Player):void
 		{
 			var _loc2_:int = 0;
@@ -121,7 +117,7 @@ package core.friend
 			}
 			g.send("friendConfirm", param1.id);
 		}
-		
+
 		public function addFriend(param1:Message):void
 		{
 			var _loc2_:Friend = new Friend();
@@ -130,7 +126,7 @@ package core.friend
 			MessageLog.write("<FONT COLOR='#88ff88'>You are now friends with " + _loc2_.name + "</FONT>");
 			g.sendToServiceRoom("addFriend", _loc2_.id);
 		}
-		
+
 		public function removeFriend(param1:String):void
 		{
 			var _loc2_:int = 0;
@@ -145,24 +141,24 @@ package core.friend
 				_loc2_++;
 			}
 		}
-		
+
 		public function sendRemoveFriend(param1:Player):void
 		{
 			removeFriend(param1.id);
 			g.send("removeFriend", param1.id);
 		}
-		
+
 		public function sendRemoveFriendById(param1:String):void
 		{
 			removeFriend(param1);
 			g.send("removeFriend", param1);
 		}
-		
+
 		public function removeFriendRecieved(param1:Message):void
 		{
 			removeFriend(param1.getString(0));
 		}
-		
+
 		public function pendingRequest(param1:Player):Boolean
 		{
 			return requests.indexOf(param1.id) != -1;

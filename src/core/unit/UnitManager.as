@@ -11,20 +11,19 @@ package core.unit
 	import starling.events.TouchPhase;
 	import starling.filters.GlowFilter;
 	import qolaf.target.TargetSystem;
-	
+
 	public class UnitManager
 	{
 		private var g:Game;
-		
 		public var units:Vector.<Unit>;
-		
+
 		public function UnitManager(param1:Game)
 		{
 			units = new Vector.<Unit>();
 			super();
 			this.g = param1;
 		}
-		
+
 		public function add(unit:Unit, canvas:Sprite, param3:Boolean = true):void
 		{
 			units.push(unit);
@@ -32,21 +31,22 @@ package core.unit
 			{
 				g.hud.radar.add(unit);
 			}
-			
+
 			unit.canvas = canvas;
-			
+
 			// QoLAF
 			unit.movieClip.touchable = true;
-			unit.movieClip.addEventListener(TouchEvent.TOUCH, function(event:TouchEvent):void {
-				if (!TargetSystem.canTarget(unit) || !TargetSystem.isTargetInRange(unit))
-					return;
-				var touch:Touch = event.getTouch(unit.movieClip);
-				if (touch && touch.phase == TouchPhase.BEGAN) {
-					Game.instance.targetSystem.target = unit;
-				}
-			});
-			
-			
+			unit.movieClip.addEventListener(TouchEvent.TOUCH, function(event:TouchEvent):void
+				{
+					if (!TargetSystem.canTarget(unit) || !TargetSystem.isTargetInRange(unit))
+						return;
+					var touch:Touch = event.getTouch(unit.movieClip);
+					if (touch && touch.phase == TouchPhase.BEGAN)
+					{
+						Game.instance.targetSystem.target = unit;
+					}
+				});
+
 			if (unit.isBossUnit)
 			{
 				unit.addToCanvas();
@@ -56,7 +56,7 @@ package core.unit
 				unit.addToCanvas();
 			}
 		}
-		
+
 		public function remove(param1:Unit):void
 		{
 			units.splice(units.indexOf(param1), 1);
@@ -64,7 +64,7 @@ package core.unit
 			param1.removeFromCanvas();
 			param1.reset();
 		}
-		
+
 		public function forceUpdate():void
 		{
 			var _loc1_:Unit = null;
@@ -77,7 +77,7 @@ package core.unit
 				_loc2_++;
 			}
 		}
-		
+
 		public function getTarget(param1:int):Unit
 		{
 			for each (var _loc2_:* in units)

@@ -11,45 +11,30 @@ package core.artifact
 	import starling.events.TouchEvent;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-	
+
 	public class ArtifactCargoBox extends Sprite
 	{
 		private static const COLOR_ACTIVE:uint = 16777215;
-		
+
 		private static const COLOR_SELECTED_RECYCLE:uint = 12203572;
-		
+
 		private static const COLOR_SELECTED_UPGRADE:uint = 8978312;
-		
+
 		private var p:Player;
-		
 		private var g:Game;
-		
 		public var hint:Boolean = false;
-		
 		public var a:Artifact;
-		
 		private var recycleMode:Boolean;
-		
 		private var upgradeMode:Boolean;
-		
 		private var isInSetup:Boolean;
-		
 		private var textureManager:ITextureManager;
-		
 		private var frame:Image;
-		
 		private var toolTip:ToolTip;
-		
 		private var COLOR_NORMAL:uint = 6513507;
-		
 		protected var hintNewContainer:Image;
-		
 		private var lock:Image;
-		
 		private var artifactImage:Image;
-		
 		private var upgradingImage:Image;
-		
 		public function ArtifactCargoBox(param1:Game, param2:Artifact)
 		{
 			super();
@@ -60,7 +45,7 @@ package core.artifact
 			textureManager = TextureLocator.getService();
 			update();
 		}
-		
+
 		public function update():void
 		{
 			removeChildren();
@@ -77,7 +62,7 @@ package core.artifact
 				addHint();
 			}
 		}
-		
+
 		private function addImages():void
 		{
 			if (!a.revealed)
@@ -96,7 +81,7 @@ package core.artifact
 				addChild(artifactImage);
 			}
 		}
-		
+
 		private function addHint():void
 		{
 			if (hint)
@@ -108,7 +93,7 @@ package core.artifact
 				addChild(hintNewContainer);
 			}
 		}
-		
+
 		private function addUpgradeIcon():void
 		{
 			if (a.upgrading)
@@ -137,19 +122,19 @@ package core.artifact
 				addChild(upgradingImage);
 			}
 		}
-		
+
 		public function showHint():void
 		{
 			hint = true;
 			update();
 		}
-		
+
 		public function hideHint():void
 		{
 			hint = false;
 			update();
 		}
-		
+
 		private function drawFrame():void
 		{
 			frame = new Image(textureManager.getTextureGUIByTextureName("artifact_box_small"));
@@ -165,7 +150,7 @@ package core.artifact
 				setFrameColor(16777215);
 			}
 		}
-		
+
 		private function addToolTip():void
 		{
 			var _loc4_:int = 0;
@@ -215,7 +200,7 @@ package core.artifact
 			toolTip.text = _loc2_;
 			toolTip.color = a.getColor();
 		}
-		
+
 		private function addTouch():void
 		{
 			if (a.revealed && a.isRestricted && !recycleMode && !upgradeMode)
@@ -237,7 +222,7 @@ package core.artifact
 			useHandCursor = true;
 			addEventListener("touch", onTouch);
 		}
-		
+
 		private function removeTouch():void
 		{
 			if (hasEventListener("touch", onTouch))
@@ -258,7 +243,7 @@ package core.artifact
 				hintNewContainer.alpha = 1;
 			}
 		}
-		
+
 		private function onTouch(param1:TouchEvent):void
 		{
 			if (param1.getTouch(this, "ended"))
@@ -274,7 +259,7 @@ package core.artifact
 				}
 			}
 		}
-		
+
 		private function onClick(param1:TouchEvent):void
 		{
 			if (!a.revealed && !recycleMode)
@@ -320,12 +305,12 @@ package core.artifact
 			toggleRecycle();
 			dispatchEventWith("artifactRecycleSelected", true);
 		}
-		
+
 		public function isUsedInSetup():Boolean
 		{
 			return isInSetup;
 		}
-		
+
 		public function setSelectedForRecycle():void
 		{
 			if (a == null)
@@ -334,7 +319,7 @@ package core.artifact
 			}
 			setFrameColor(12203572);
 		}
-		
+
 		public function setNotSelected():void
 		{
 			if (a == null)
@@ -350,7 +335,7 @@ package core.artifact
 				setFrameColor(COLOR_NORMAL);
 			}
 		}
-		
+
 		public function toggleUpgrade():void
 		{
 			if (a == null)
@@ -374,7 +359,7 @@ package core.artifact
 				setFrameColor(COLOR_NORMAL);
 			}
 		}
-		
+
 		public function toggleRecycle():void
 		{
 			if (a == null)
@@ -390,7 +375,7 @@ package core.artifact
 				setFrameColor(COLOR_NORMAL);
 			}
 		}
-		
+
 		public function setUpgradeState():void
 		{
 			upgradeMode = true;
@@ -411,7 +396,7 @@ package core.artifact
 			addTouch();
 			update();
 		}
-		
+
 		public function removeUpgradeState():void
 		{
 			upgradeMode = false;
@@ -433,7 +418,7 @@ package core.artifact
 			addTouch();
 			update();
 		}
-		
+
 		public function setRecycleState():void
 		{
 			recycleMode = true;
@@ -454,7 +439,7 @@ package core.artifact
 			addTouch();
 			update();
 		}
-		
+
 		public function removeRecycleState():void
 		{
 			recycleMode = false;
@@ -476,12 +461,12 @@ package core.artifact
 			addTouch();
 			update();
 		}
-		
+
 		public function stateNormal():void
 		{
 			setFrameColor(COLOR_NORMAL);
 		}
-		
+
 		public function updateSetupChange():void
 		{
 			frame.color = COLOR_NORMAL;
@@ -495,7 +480,7 @@ package core.artifact
 				setFrameColor(16777215);
 			}
 		}
-		
+
 		private function setFrameColor(param1:uint):void
 		{
 			if (frame.color === param1)
@@ -504,7 +489,7 @@ package core.artifact
 			}
 			frame.color = param1;
 		}
-		
+
 		public function setEmpty():void
 		{
 			a = null;

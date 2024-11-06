@@ -6,33 +6,22 @@ package
 	import playerio.Message;
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
-	
+
 	public class Clock extends EventDispatcher
 	{
 		public static const CLOCK_READY:String = "clockReady";
-		
+
 		private var connection:Connection;
-		
 		private var client:Client;
-		
 		private var deltas:Array;
-		
 		private var responsePending:Boolean;
-		
 		private var lockedInServerTime:Boolean;
-		
 		private var timeRequestSent:Number;
-		
 		private var syncTimeDelta:Number = 0;
-		
 		private var maxDeltas:Number;
-		
 		private var latencyError:Number;
-		
 		public var latency:Number;
-		
 		private var beginning:Number;
-		
 		public function Clock(param1:Connection, param2:Client)
 		{
 			super();
@@ -41,7 +30,7 @@ package
 			maxDeltas = 10;
 			beginning = getTimer();
 		}
-		
+
 		public function start():void
 		{
 			deltas = [];
@@ -50,7 +39,7 @@ package
 			connection.addMessageHandler("serverTime", onServerTime);
 			requestServerTime();
 		}
-		
+
 		private function requestServerTime():void
 		{
 			if (!responsePending)
@@ -60,7 +49,7 @@ package
 				timeRequestSent = getTimer();
 			}
 		}
-		
+
 		private function onServerTime(param1:Message):void
 		{
 			responsePending = false;
@@ -76,13 +65,13 @@ package
 				requestServerTime();
 			}
 		}
-		
+
 		public function getServerTime():Number
 		{
 			var _loc1_:Number = getTimer();
 			return _loc1_ + syncTimeDelta;
 		}
-		
+
 		public function addTimeDelta(param1:Number, param2:Number, param3:Number):void
 		{
 			var _loc5_:Number = (param2 - param1) / 2;
@@ -96,7 +85,7 @@ package
 			}
 			recalculate();
 		}
-		
+
 		private function recalculate():void
 		{
 			var _loc2_:Number = NaN;
@@ -112,7 +101,7 @@ package
 				lockedInServerTime = deltas.length == maxDeltas;
 			}
 		}
-		
+
 		private function determineAverage(param1:Array):Number
 		{
 			var _loc4_:Number = NaN;
@@ -127,7 +116,7 @@ package
 			}
 			return _loc2_ / param1.length;
 		}
-		
+
 		private function determineAverageLatency(param1:Array):Number
 		{
 			var _loc5_:Number = NaN;
@@ -144,7 +133,7 @@ package
 			latencyError = Math.abs(TimeDelta(param1[param1.length - 1]).latency - _loc4_);
 			return _loc4_;
 		}
-		
+
 		private function pruneOutliers(param1:Array, param2:Number, param3:Number):void
 		{
 			var _loc5_:Number = NaN;
@@ -162,7 +151,7 @@ package
 				_loc5_--;
 			}
 		}
-		
+
 		private function determineMedian(param1:Array):Number
 		{
 			var _loc2_:Number = NaN;
@@ -174,7 +163,7 @@ package
 			_loc2_ = Math.floor(param1.length / 2);
 			return param1[_loc2_].latency;
 		}
-		
+
 		private function compare(param1:TimeDelta, param2:TimeDelta):Number
 		{
 			if (param1.latency < param2.latency)
@@ -187,13 +176,13 @@ package
 			}
 			return 0;
 		}
-		
+
 		public function get time():Number
 		{
 			var _loc1_:Number = getTimer();
 			return _loc1_ + syncTimeDelta;
 		}
-		
+
 		public function get elapsedTime():Number
 		{
 			return getTimer() - beginning;

@@ -8,37 +8,23 @@ package core.hud.components
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	import textures.TextureManager;
-	
+
 	public class GradientBox extends starling.display.Sprite
 	{
 		protected var radius:Number;
-		
 		protected var _color:uint;
-		
 		protected var colorAlpha:Number;
-		
 		public var padding:Number;
-		
 		protected var w:Number;
-		
 		protected var h:Number;
-		
 		private var background:Image;
-		
 		private var backgroundTexture:Texture;
-		
 		protected var borderWidth:Number = 0;
-		
 		protected var borderColor:uint = 0;
-		
 		protected var borderAlpha:Number = 0;
-		
 		private var headerBmp:Image;
-		
 		private var headerTint:uint;
-		
 		private var headerBitmapData:Texture;
-		
 		public function GradientBox(param1:Number, param2:Number, param3:uint = 0, param4:Number = 1, param5:Number = 15, param6:uint = 16777215)
 		{
 			super();
@@ -51,7 +37,7 @@ package core.hud.components
 			addBorder(1842204, 1, 2);
 			addEventListener("removedFromStage", clean);
 		}
-		
+
 		public function load():void
 		{
 			var _loc1_:ITextureManager = TextureLocator.getService();
@@ -63,7 +49,7 @@ package core.hud.components
 			headerBmp.color = headerTint;
 			addChild(headerBmp);
 		}
-		
+
 		public function addBorder(param1:uint, param2:Number, param3:Number):void
 		{
 			this.borderWidth = param3;
@@ -71,30 +57,30 @@ package core.hud.components
 			this.borderAlpha = param2;
 			draw();
 		}
-		
+
 		override public function set width(param1:Number):void
 		{
 			w = param1;
 			draw();
 		}
-		
+
 		override public function set height(param1:Number):void
 		{
 			h = param1;
 			draw();
 		}
-		
+
 		public function set color(param1:uint):void
 		{
 			_color = param1;
 			draw();
 		}
-		
+
 		protected function draw():void
 		{
 			drawBox();
 		}
-		
+
 		private function drawBox():void
 		{
 			if (background != null)
@@ -120,7 +106,7 @@ package core.hud.components
 			background.x = -padding;
 			addChildAt(background, 0);
 		}
-		
+
 		private function clean(param1:Event = null):void
 		{
 			removeEventListeners();

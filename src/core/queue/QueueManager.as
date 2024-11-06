@@ -4,27 +4,26 @@ package core.queue
 	import core.scene.Game;
 	import playerio.Message;
 	import starling.events.Event;
-	
+
 	public class QueueManager
 	{
 		public static const TYPE_PVP:String = "pvp";
-		
+
 		public static const TYPE_PVP_DM:String = "pvp dm";
-		
+
 		public static const TYPE_PVP_DOMINATION:String = "pvp dom";
-		
+
 		public static const TYPE_PVP_ARENA:String = "pvp arena";
-		
+
 		public static const TYPE_PVP_ARENA_RANKED:String = "pvp arena ranked";
-		
+
 		public static const TYPE_PVP_RANDOM:String = "pvp random";
-		
+
 		public static const TYPE_INSTANCE:String = "instance";
-		
+
 		public var g:Game;
-		
 		public var queues:Vector.<QueueInfoHolder>;
-		
+
 		public function QueueManager(param1:Game)
 		{
 			super();
@@ -40,7 +39,7 @@ package core.queue
 			param1.addServiceMessageHandler("QueueRemoved", removedFromQueue);
 			param1.rpcServiceRoom("RequestQueueInfo", handleQueueInfo);
 		}
-		
+
 		public function handleQueueInfo(param1:Message):void
 		{
 			var _loc6_:int = 0;
@@ -66,7 +65,7 @@ package core.queue
 				_loc6_ += 3;
 			}
 		}
-		
+
 		public function removedFromAllQueues():void
 		{
 			for each (var _loc1_:* in queues)
@@ -76,7 +75,7 @@ package core.queue
 				_loc1_.isReady = false;
 			}
 		}
-		
+
 		public function removedFromQueue(param1:Message):void
 		{
 			var _loc3_:String = param1.getString(0);
@@ -90,7 +89,7 @@ package core.queue
 				}
 			}
 		}
-		
+
 		public function queueReady(param1:Message):void
 		{
 			var _loc2_:int = 0;
@@ -113,7 +112,7 @@ package core.queue
 				}
 			}
 		}
-		
+
 		public function joinMatch(param1:Message):void
 		{
 			var _loc3_:String = param1.getString(0);
@@ -121,7 +120,7 @@ package core.queue
 			var _loc4_:String = param1.getString(2);
 			g.tryJoinMatch(_loc2_, _loc4_);
 		}
-		
+
 		public function joinedQueue(param1:Message):void
 		{
 			var errorPopup:PopupMessage;
@@ -135,11 +134,11 @@ package core.queue
 				errorPopup = new PopupMessage();
 				errorPopup.text = reason;
 				g.addChildToOverlay(errorPopup);
-				errorPopup.addEventListener("close", function(event:Event): void
-				{
-					g.removeChildFromOverlay(errorPopup);
-					errorPopup.removeEventListeners();
-				});
+				errorPopup.addEventListener("close", function(event:Event):void
+					{
+						g.removeChildFromOverlay(errorPopup);
+						errorPopup.removeEventListeners();
+					});
 			}
 			for each (qi in queues)
 			{
@@ -154,7 +153,7 @@ package core.queue
 				}
 			}
 		}
-		
+
 		public function joinFailed(param1:Message):void
 		{
 			var errorPopup:PopupMessage;
@@ -167,11 +166,11 @@ package core.queue
 				errorPopup = new PopupMessage();
 				errorPopup.text = reason;
 				g.addChildToOverlay(errorPopup);
-				errorPopup.addEventListener("close", function(event:Event): void
-				{
-					g.removeChildFromOverlay(errorPopup);
-					errorPopup.removeEventListeners();
-				});
+				errorPopup.addEventListener("close", function(event:Event):void
+					{
+						g.removeChildFromOverlay(errorPopup);
+						errorPopup.removeEventListeners();
+					});
 			}
 			for each (qi in queues)
 			{
@@ -185,7 +184,7 @@ package core.queue
 				}
 			}
 		}
-		
+
 		public function update():void
 		{
 			for each (var _loc1_:* in queues)
@@ -193,7 +192,7 @@ package core.queue
 				_loc1_.update();
 			}
 		}
-		
+
 		public function leftQueue(param1:Message):void
 		{
 			var _loc3_:String = param1.getString(0);
@@ -207,7 +206,7 @@ package core.queue
 				}
 			}
 		}
-		
+
 		public function leaveFailed(param1:Message):void
 		{
 			var _loc3_:String = param1.getString(0);
@@ -221,7 +220,7 @@ package core.queue
 				}
 			}
 		}
-		
+
 		public function getQueue(param1:String):QueueInfoHolder
 		{
 			for each (var _loc2_:* in queues)
@@ -233,7 +232,7 @@ package core.queue
 			}
 			return null;
 		}
-		
+
 		private function containsQueue(param1:String):Boolean
 		{
 			for each (var _loc2_:* in queues)

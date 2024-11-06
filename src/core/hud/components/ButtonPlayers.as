@@ -2,11 +2,10 @@ package core.hud.components
 {
 	import starling.text.TextField;
 	import starling.text.TextFormat;
-	
+
 	public class ButtonPlayers extends ButtonHud
 	{
 		private var captionText:TextField;
-		
 		public function ButtonPlayers(param1:Function)
 		{
 			super(param1, "button_players.png");
@@ -17,7 +16,7 @@ package core.hud.components
 			captionText.batchable = true;
 			addChild(captionText);
 		}
-		
+
 		public function set text(param1:String):void
 		{
 			captionText.text = param1;
