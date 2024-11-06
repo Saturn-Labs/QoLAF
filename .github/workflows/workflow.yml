@@ -32,4 +32,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: QoLAF Release Artifact
-          path: $HOME\QoLAF.zip
+          path: ~\QoLAF.zip
