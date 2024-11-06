@@ -23,6 +23,5 @@ jobs:
           Invoke-WebRequest -Uri "https://www.dropbox.com/scl/fi/r13v8uvjk7bbt1sfzy9tq/fdbuild.exe?rlkey=3drlcoylqa74b7oa3lvmpyyhf&st=o3t3ddt9&dl=1" -OutFile "$HOME\fdbuild.exe"
           echo "FDBUILD=$HOME\fdbuild.exe" >> $GITHUB_ENV
       - name: Generate .xml configuration
-        shell: "cmd"
         run: |
-          echo $env:FDBUILD
+          Write-Output $env:HOME\fdbuild.exe
