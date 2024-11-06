@@ -22,4 +22,4 @@ jobs:
           Invoke-WebRequest -Uri "https://www.dropbox.com/scl/fi/r13v8uvjk7bbt1sfzy9tq/fdbuild.exe?rlkey=3drlcoylqa74b7oa3lvmpyyhf&st=o3t3ddt9&dl=1" -OutFile "$HOME\fdbuild.exe"
       - name: Generate .xml configuration
         run: |
-          echo $GITHUB_WORKSPACE
+          $HOME\fdbuild.exe "$GITHUB_WORKSPACE\QoLAF.as3proj" -version "4.16.1" -compiler "$HOME\Flex_4.16.1_AIR_32.0"
