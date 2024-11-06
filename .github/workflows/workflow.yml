@@ -20,9 +20,16 @@ jobs:
       - name: Download fdbuild.exe
         run: |
           Invoke-WebRequest -Uri "https://www.dropbox.com/scl/fi/r13v8uvjk7bbt1sfzy9tq/fdbuild.exe?rlkey=3drlcoylqa74b7oa3lvmpyyhf&st=o3t3ddt9&dl=1" -OutFile "$HOME\fdbuild.exe"
-      - name: Generate .xml configuration
+      - name: Compile QoLAF
         run: |
           Write-Output "Repo path: $env:GITHUB_WORKSPACE"
           Write-Output "FlexSDK path: $HOME\flexsdk"
-          Get-ChildItem -Path "$HOME\flexsdk"
           & "$HOME\fdbuild.exe" $env:GITHUB_WORKSPACE\QoLAF.as3proj -version "4.16.1" -compiler $HOME\flexsdk
+      - name: Compress artifact
+        run: |
+          Compress-Archive -Path "$env:GITHUB_WORKSPACE\bin\*" -DestinationPath "$HOME\QoLAF.zip"
+      - name: Publish artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: QoLAF Release Artifact
+          path: $HOME\QoLAF.zip
