@@ -11,6 +11,7 @@ jobs:
       - name: Install OpenJDK
         run: |
           choco install openjdk
+          refreshenv
           java -version
       - name: Download FlexSDK 4.16.1 on AIR 32.0
         run: |
@@ -23,4 +24,4 @@ jobs:
           echo "FDBUILD=$HOME\fdbuild.exe" >> $GITHUB_ENV
       - name: Generate .xml configuration
         run: |
-          & $FDBUILD $GITHUB_WORKSPACE\QoLAF.as3proj -version "4.16.1" -compiler $FLEX_HOME
+          & $env:FDBUILD $env:GITHUB_WORKSPACE\QoLAF.as3proj -version "4.16.1" -compiler $env:FLEX_HOME
