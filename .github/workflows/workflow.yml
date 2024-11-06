@@ -23,4 +23,4 @@ jobs:
           echo "FDBUILD=$HOME\fdbuild.exe" >> $GITHUB_ENV
       - name: Generate .xml configuration
         run: |
-          Write-Output $HOME\fdbuild.exe
+          Start-Program $HOME\fdbuild.exe
