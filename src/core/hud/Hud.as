@@ -2,6 +2,10 @@ package core.hud
 {
 	import com.greensock.TweenMax;
 	import flash.system.Capabilities;
+	import qolaf.ui.elements.ModifierTooltip;
+	import qolaf.ui.modifiers.IModifierDisplay;
+	import qolaf.ui.modifiers.SelfModifierDisplay;
+	import starling.utils.Align;
 	//import core.hud.components.BossHealth;
 	import core.hud.components.Button;
 	import core.hud.components.ButtonCargo;
@@ -112,10 +116,16 @@ package core.hud
 		private var fullScreenHintImage:Image;
 		private var artifactTween:TweenMax;
 		private var showUtilityTexts:Boolean = true;
+		
+		// QoLAF
 		private var targetInfoElement:TargetInfoElement;
+		private var selfModifierDisplay:SelfModifierDisplay;
+		private var modifierTooltip:ModifierTooltip;
 		
 		public function Hud(game:Game)
 		{
+			this.g = game;
+			g.hud = this;
 			container = new Sprite();
 			bgr = new MeshBatch();
 			landText = new TextBitmap();
@@ -123,8 +133,6 @@ package core.hud
 			repairText = new TextBitmap();
 			artifactLimitText = new TextBitmap();
 			fullScreenButton = new FullScreenButton();
-			super();
-			this.g = game;
 			healthAndShield = new HealthAndShield(game);
 			powerBar = new PowerBar(game);
 			
@@ -141,7 +149,10 @@ package core.hud
 			uberStats = new UberStats(game);
 			
 			// QoLAF
+			modifierTooltip = new ModifierTooltip();
 			targetInfoElement = new TargetInfoElement(game);
+			selfModifierDisplay = new SelfModifierDisplay();
+			selfModifierDisplay.y = 286;
 			
 			textureManager = TextureLocator.getService();
 		}
@@ -149,6 +160,11 @@ package core.hud
 		// QoLAF
 		public function getTargetInfoElement(): TargetInfoElement {
 			return targetInfoElement;
+		}
+		
+		// QoLAF
+		public function getSelfModifierDisplay():IModifierDisplay {
+			return selfModifierDisplay;
 		}
 		
 		public function load():void
@@ -390,6 +406,8 @@ package core.hud
 			
 			// QoLAF
 			container.addChild(targetInfoElement);
+			container.addChild(selfModifierDisplay);
+			container.addChild(modifierTooltip);
 			
 			if (showUtilityTexts)
 			{
@@ -496,6 +514,11 @@ package core.hud
 			newMissionsButton.hide();
 		}
 		
+		// QoLAF
+		public function getModifierTooltip():ModifierTooltip {
+			return modifierTooltip;
+		}
+		
 		public function set show(param1:Boolean):void
 		{
 			if (!SceneBase.settings.showHud)
@@ -542,6 +565,7 @@ package core.hud
 			compas.update();
 			experience.update();
 			shopIcons.update();
+			selfModifierDisplay.x = g.stage.stageWidth;
 			
 			if (hintMapText != null)
 			{

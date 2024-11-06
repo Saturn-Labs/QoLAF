@@ -41,221 +41,113 @@ package core.player
 	public class Player
 	{
 		public static const SLOT_WEAPON_COST_TYPE:String = "flpbTKautkC1QzjWT28gkw";
-		
 		public static const SLOT_ARTIFACT_COST_TYPE:String = "flpbTKautkC1QzjWT28gkw";
-		
 		public static const SLOT_CREW_COST_TYPE:String = "flpbTKautkC1QzjWT28gkw";
-		
 		public static const SLOT_WEAPON:String = "slotWeapon";
-		
 		public static const SLOT_ARTIFACT:String = "slotArtifact";
-		
 		public static const SLOT_CREW:String = "slotCrew";
-		
 		public static const RESPAWN_TIME:Number = 10000;
-		
 		public static const RESPAWN_TIME_PVP:Number = 3000;
-		
 		public static const SUPPORTER_ICON_ASCII:String = "<font color='#ffff66'>&#9733;</font>";
-		
 		public static const EXPBOOSTBONUS_MISSION:Number = 0.3;
-		
 		public static var friends:Vector.<Friend>;
-		
 		public static var onlineFriends:Vector.<Friend>;
-		
 		public static const SLOT_WEAPON_UNLOCK_COST:Array = [0, 0, 200, 1000, 5000];
-		
 		public static const SLOT_ARTIFACT_UNLOCK_COST:Array = [0, 1000, 2000, 10000, 25000];
-		
 		public static const SLOT_CREW_UNLOCK_COST:Array = [0, 0, 250, 5000, 25000];
-		
 		public static const ARTIFACT_CAPACITY:Array = [250, 400, 600, 800];
-		
 		private var _name:String;
-		
 		public var isMe:Boolean = false;
-		
 		public var id:String;
-		
 		public var inviter_id:String = "";
-		
-		public var ship:PlayerShip;
-		
+		private var _ship:PlayerShip;
 		public var mirror:PlayerShip;
-		
 		public var stateMachine:StateMachine;
-		
 		public var currentBody:Body;
-		
 		public var lastBody:Body;
-		
 		public var xp:int = 0;
-		
 		public var reputation:int = 0;
-		
 		public var split:String = "";
-		
 		private var _team:int = -1;
-		
 		public var respawnNextReady:Number = 0;
-		
 		public var spree:int = 0;
-		
 		public var techPoints:int = 0;
-		
 		public var clanId:String = "";
-		
 		public var clanApplicationId:String = "";
-		
 		public var troons:int = 0;
-		
 		public var rating:int = 0;
-		
 		public var ranking:int = 0;
-		
 		private var activeWeapon:String;
-		
 		public var techSkills:Vector.<TechSkill>;
-		
 		public var weapons:Array;
-		
 		public var weaponsState:Array;
-		
 		public var weaponsHotkeys:Array;
-		
 		public var weaponData:Vector.<WeaponDataHolder>;
-		
 		public var selectedWeaponIndex:int = 0;
-		
 		public var unlockedWeaponSlots:int;
-		
 		public var artifactCount:int = 0;
-		
 		public var compressorLevel:int = 0;
-		
 		public var artifactCapacityLevel:int = 0;
-		
 		public var artifactAutoRecycleLevel:int = 0;
-		
 		public var activeSkin:String = "";
-		
 		public var unlockedArtifactSlots:int;
-		
 		public var artifacts:Vector.<Artifact>;
-		
 		public var activeArtifactSetup:int;
-		
 		public var artifactSetups:Array;
-		
 		public var unlockedCrewSlots:int;
-		
 		public var rotationSpeedMod:Number = 1;
-		
 		public var KOTSIsReady:Boolean = false;
-		
 		public var fleet:Vector.<FleetObj>;
-		
 		public var nrOfUpgrades:Vector.<int>;
-		
 		private var _level:int = 1;
-		
 		private var _inSafeZone:Boolean = false;
-		
 		private var _isWarpJumping:Boolean = false;
-		
 		public var playerKills:int = 0;
-		
 		public var enemyKills:int = 0;
-		
 		public var playerDeaths:int = 0;
-		
 		public var expBoost:Number = 0;
-		
 		public var tractorBeam:Number = 0;
-		
 		private var tractorBeamActive:Boolean = true;
-		
 		public var xpProtection:Number = 0;
-		
 		public var cargoProtection:Number = 0;
-		
 		private var cargoProtectionActive:Boolean = true;
-		
 		public var supporter:Number = 0;
-		
 		public var beginnerPackage:Boolean = false;
-		
 		public var powerPackage:Boolean = false;
-		
 		public var megaPackage:Boolean = false;
-		
 		public var explores:Vector.<Explore>;
-		
 		public var missions:Vector.<Mission>;
-		
 		public var dailyMissions:Array;
-		
 		public var crewMembers:Vector.<CrewMember>;
-		
 		public var encounters:Vector.<String>;
-		
 		public var triggeredMissions:Vector.<String>;
-		
 		public var completedMissions:Object;
-		
 		public var warpPathLicenses:Array;
-		
 		public var solarSystemLicenses:Array;
-		
 		public var guest:Boolean = false;
-		
 		public var fbLike:Boolean = false;
-		
 		public var showIntro:Boolean = true;
-		
 		public var kongRated:Boolean = false;
-		
 		public var isDeveloper:Boolean = false;
-		
 		public var isTester:Boolean = false;
-		
 		public var isModerator:Boolean = false;
-		
 		public var isTranslator:Boolean = false;
-		
 		private var _group:Group = null;
-		
 		private var _isHostile:Boolean = false;
-		
 		public var pickUpLog:Vector.<TextParticle>;
-		
 		public var disableLeave:Boolean;
-		
 		private var isTakingOff:Boolean = false;
-		
 		public var clanLogo:Image;
-		
 		public var clanName:String;
-		
 		public var clanRankName:String;
-		
 		public var clanLogoColor:uint;
-		
 		public var freeResets:int;
-		
 		public var freePaintJobs:int;
-		
 		public var factions:Vector.<String>;
-		
 		public var landedBodies:Vector.<LandedBody>;
-		
 		public var tosVersion:int;
-		
 		private var g:Game;
-		
 		private var updateInterval:int;
-		
 		public var isLanded:Boolean = false;
 		
 		public function Player(param1:Game, param2:String)
@@ -283,6 +175,19 @@ package core.player
 			this.g = param1;
 			this.id = param2;
 			disableLeave = false;
+		}
+		
+		public function get ship():PlayerShip {
+			return _ship;
+		}
+		
+		public function set ship(ship:PlayerShip):void {
+			_ship = ship;
+			
+			if (isMe) {
+				// QoLAF
+				g.hud.getSelfModifierDisplay().setTarget(ship);
+			}
 		}
 		
 		public static function getSkinTechLevel(param1:String, param2:String):int

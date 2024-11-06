@@ -13,6 +13,7 @@ package qolaf.ui.modifiers {
 	import qolaf.ui.elements.ModifierIcon;
 	import qolaf.ui.elements.ModifierTooltip;
 	import qolaf.utils.ColorUtils;
+	import qolaf.utils.Query;
 	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -39,23 +40,20 @@ package qolaf.ui.modifiers {
 	public class TargetModifierDisplay extends LayoutGroup implements IModifierDisplay {
 		private var _game:Game;
 		private var _target:IModifierTarget;
-		private var _currentModifiers:Vector.<Modifier> = new Vector.<Modifier>();
-		private var _selectedModifier:Modifier;
 		private var _textureManager:ITextureManager;
 		
 		private var _iconPool:ObjectPool;
 		private var _modifierDefaultIcon:Texture;
 		
+		private var _modifierTooltip:ModifierTooltip;
+		
 		public function TargetModifierDisplay() {
 			this._game = Game.instance;
+			this._modifierTooltip = _game.hud.getModifierTooltip();
+			this._textureManager = TextureLocator.getService();
+			this._modifierDefaultIcon = ModifierInfo.getIcon(_textureManager, "ti_astro_lance_levels");
 			setupLayout();
 			createPools();
-			createElements();
-			
-			_textureManager = TextureLocator.getService();
-			_modifierDefaultIcon = _textureManager.getTextureByTextureName("ti_astro_lance_levels", "texture_gui1_test.png");
-			
-			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 		
 		private function setupLayout():void {
@@ -82,15 +80,7 @@ package qolaf.ui.modifiers {
 			});
 		}
 		
-		private function createElements():void {
-			
-		}
-		
-		private function onEnterFrame(e:EnterFrameEvent):void {
-
-		}
-		
-		private function recycleChildrenImages():void {
+		private function recycleIcons():void {
 			for (var i:int = 0; i < numChildren; i++) {
 				var child:DisplayObject = getChildAt(i);
 				if (child is ModifierIcon) {
@@ -100,43 +90,48 @@ package qolaf.ui.modifiers {
 		}
 		
 		public function clearModifiers():void {
-			_selectedModifier = null;
-			_currentModifiers.splice(0, _currentModifiers.length);
-			recycleChildrenImages();
+			_modifierTooltip.setModifier(null, null);
+			recycleIcons();
 			removeChildren();
 		}
 		
 		public function addModifier(modifier:Modifier):void {
-			_currentModifiers.push(modifier);
 			var icon:ModifierIcon = _iconPool.getOne() as ModifierIcon;
 			icon.modifier = modifier;
 			
 			icon.addEventListener(TouchEvent.TOUCH, function(e:TouchEvent):void {
 				var touch:Touch = e.getTouch(e.currentTarget as Image);
-				if (touch != null && touch.phase == TouchPhase.BEGAN && _selectedModifier == null) {
-					_selectedModifier = modifier;
-					_game.modifierTooltip.setModifier(_target, modifier);
+				if (touch != null && touch.phase == TouchPhase.BEGAN && _modifierTooltip.modifier == null) {
+					_modifierTooltip.setModifier(_target, modifier);
 				}
-				else if (touch != null && touch.phase == TouchPhase.ENDED && _selectedModifier == modifier) {
-					_selectedModifier = null;
-					_game.modifierTooltip.setModifier(null, null);
+				else if (touch != null && touch.phase == TouchPhase.ENDED && _modifierTooltip.modifier == modifier) {
+					_modifierTooltip.setModifier(null, null);
 				}
 			});
 			addChild(icon);
 		}
 		
 		public function removeModifier(modifier:Modifier):void {
-			var idx:int = _currentModifiers.indexOf(modifier);
-			if (idx == -1)
+			if (modifier == null)
 				return;
-			var icon:ModifierIcon = getChildAt(idx) as ModifierIcon;
-			if (_selectedModifier == modifier) {
-				_selectedModifier = null;
-				_game.modifierTooltip.setModifier(null, null);
+				
+			var icon:ModifierIcon = Query.findChild(this, function(child:DisplayObject):Boolean {
+				if (child is ModifierIcon) {
+					var modifierIcon:ModifierIcon = child as ModifierIcon;
+					return modifierIcon.modifier != null && modifierIcon.modifier.id == modifier.id;
+				}
+				return false;
+			}) as ModifierIcon;
+			
+			if (icon == null)
+				return;
+			
+			if (_modifierTooltip.modifier != null && _modifierTooltip.modifier.id == modifier.id) {
+				_modifierTooltip.setModifier(null, null);
 			}
+			
 			_iconPool.recycleOne(icon);
-			removeChildAt(idx);
-			_currentModifiers.removeAt(idx);
+			removeChild(icon);
 		}
 		
 		private function onTargetModifierAdded(e:ModifierAddedEvent):void {

@@ -271,7 +271,7 @@ package core.player
 				_loc2_.ship.addToCanvasForReal();
 				
 				// QoLAF
-				_loc2_.ship.removeModifier(new Modifier(Debuff.CLOAKED, 0, true));
+				_loc2_.ship.removeModifierById(Debuff.CLOAKED);
 			}
 		}
 		

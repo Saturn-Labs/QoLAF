@@ -181,7 +181,6 @@ package core.scene
 		
 		// QoLAF
 		public var targetSystem:TargetSystem;
-		public var modifierTooltip:ModifierTooltip;
 		
 		public function Game(param1:Client, param2:Connection, param3:Connection, param4:Room)
 		{
@@ -203,7 +202,6 @@ package core.scene
 			
 			// QoLAF
 			targetSystem = new TargetSystem(this);
-			modifierTooltip = new ModifierTooltip();
 		}
 		
 		public static function trackPageView(param1:String):void

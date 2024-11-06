@@ -25,6 +25,7 @@ package qolaf.ui.elements {
 		public static const MAX_HEIGHT:int = 210;
 		public static const MODIFIER_NAME_TEMPLATE:String = "[name] [stacks]";
 		
+		private var _game:Game;
 		private var _target:IModifierTarget;
 		private var _modifier:Modifier;
 		private var _title:TextField;
@@ -32,6 +33,7 @@ package qolaf.ui.elements {
 		private var _description:TextField;
 		
 		public function ModifierTooltip() {
+			this._game = Game.instance;
 			var verticalLayout:VerticalLayout = new VerticalLayout();
 			verticalLayout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_LEFT;
 			verticalLayout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
@@ -41,6 +43,7 @@ package qolaf.ui.elements {
 			backgroundSkin = new Quad(1, 1, 0x0);
 			createComponents();
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			setModifier(null, null);
 		}
 		
 		private function createComponents():void {
@@ -62,9 +65,17 @@ package qolaf.ui.elements {
 			addChild(_description);
 		}
 		
-		private function onEnterFrame(e:EnterFrameEvent):void {
-			x = Starling.current.nativeOverlay.mouseX + 5;
-			y = Starling.current.nativeOverlay.mouseY + 5;
+		private function onEnterFrame(e:EnterFrameEvent):void {	
+			x = Starling.current.nativeOverlay.mouseX + 10;
+            y = Starling.current.nativeOverlay.mouseY + 14;
+            if (x + width + 5 > _game.stage.stageWidth)
+            {
+               x = _game.stage.stageWidth - width - 5;
+            }
+            if (y + height + 5 > _game.stage.stageHeight)
+            {
+               y = _game.stage.stageHeight - height - 35;
+            }
 			
 			if (_modifier != null && _target != null) {
 				_time.text = modifier.indeterminate ? "Ind.." : StringUtils.formatTime(modifier.currentDuration);
@@ -102,7 +113,7 @@ package qolaf.ui.elements {
 				});
 				readjustLayout();
 			}
-			visible = modifier != null;
+			this.visible = modifier != null;
 		}
 		
 		public function get title():TextField {
