@@ -16,12 +16,11 @@ jobs:
         run: |
           Invoke-WebRequest -Uri "https://www.dropbox.com/scl/fi/mxfuqz4gkiqh0zh71jpwt/Flex_4.16.1_AIR_32.0.zip?rlkey=r2pk9ha9m0kmdh1yox4qmq1oq&st=f4k5kao8&dl=1" -OutFile "$HOME\Flex_4.16.1_AIR_32.0.zip"
           Expand-Archive -Path "$HOME\Flex_4.16.1_AIR_32.0.zip" -DestinationPath "$HOME\Flex_4.16.1_AIR_32.0"
+          echo "FLEX_HOME=$HOME\Flex_4.16.1_AIR_32.0" >> $GITHUB_ENV
       - name: Download fdbuild.exe
         run: |
           Invoke-WebRequest -Uri "https://www.dropbox.com/scl/fi/r13v8uvjk7bbt1sfzy9tq/fdbuild.exe?rlkey=3drlcoylqa74b7oa3lvmpyyhf&st=o3t3ddt9&dl=1" -OutFile "$HOME\fdbuild.exe"
+          echo "FDBUILD=$HOME\fdbuild.exe" >> $GITHUB_ENV
       - name: Generate .xml configuration
         run: |
-          $fdb = $HOME\fdbuild.exe
-          $proj = $GITHUB_WORKSPACE\QoLAF.as3proj
-          $comp = $HOME\Flex_4.16.1_AIR_32.0
-          & $fdb $proj -version "4.16.1" -compiler $comp
+          & $FDBUILD $GITHUB_WORKSPACE\QoLAF.as3proj -version "4.16.1" -compiler $FLEX_HOME
