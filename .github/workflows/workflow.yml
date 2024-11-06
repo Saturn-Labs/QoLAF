@@ -23,5 +23,5 @@ jobs:
         run: |
           Write-Output "Repo path: $env:GITHUB_WORKSPACE"
           Write-Output "FlexSDK path: $HOME\Flex_4.16.1_AIR_32.0"
-          Get-ChildItem -Path "$HOME\Flex_4.16.1_AIR_32.0\lib"
+          Get-ChildItem -Path "$HOME"
           & "$HOME\fdbuild.exe" $env:GITHUB_WORKSPACE\QoLAF.as3proj -version "4.16.1" -compiler $HOME\Flex_4.16.1_AIR_32.0
