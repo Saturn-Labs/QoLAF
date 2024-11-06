@@ -24,12 +24,9 @@ jobs:
         run: |
           Write-Output "Repo path: $env:GITHUB_WORKSPACE"
           Write-Output "FlexSDK path: $HOME\flexsdk"
-          & "$HOME\fdbuild.exe" $env:GITHUB_WORKSPACE\QoLAF.as3proj -version "4.16.1" -compiler $HOME\flexsdk
-      - name: Compress artifact
-        run: |
-          Compress-Archive -Path "$env:GITHUB_WORKSPACE\bin\*" -DestinationPath "$HOME\QoLAF.zip"
+          & "$HOME\fdbuild.exe" $env:GITHUB_WORKSPACE\QoLAF.as3proj -version "4.16.1" -compiler $HOME\flexsdk -target ""
       - name: Publish artifact
         uses: actions/upload-artifact@v3
         with:
           name: QoLAF Release Artifact
-          path: ~\QoLAF.zip
+          path: ${{ github.workspace }}\bin\*
