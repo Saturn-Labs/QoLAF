@@ -9,17 +9,13 @@ package core.login
 	import playerio.PlayerIOError;
 	import starling.display.Sprite;
 	import starling.events.Event;
-	
+
 	public class RecoverDialog extends Sprite
 	{
 		private var recoverEmail:LoginInput;
-		
 		private var recoverButton:LoginButton;
-		
 		private var cancelButton:LoginButton;
-		
 		private var login:Login;
-		
 		public function RecoverDialog(param1:Login)
 		{
 			var login:Login = param1;
@@ -31,14 +27,14 @@ package core.login
 			recoverButton.y = recoverEmail.y + 70;
 			addChild(recoverButton);
 			cancelButton = new LoginButton(Localize.t("Cancel"), function():void
-			{
-				login.setState("site");
-			});
+				{
+					login.setState("site");
+				});
 			cancelButton.x = recoverEmail.width - cancelButton.width;
 			cancelButton.y = recoverButton.y;
 			addChild(cancelButton);
 		}
-		
+
 		public function onRecover():void
 		{
 			var user:String = Util.trimUsername(recoverEmail.text);
@@ -50,20 +46,21 @@ package core.login
 			recoverButton.enabled = false;
 			recoverEmail.error = "";
 			PlayerIO.quickConnect.simpleRecoverPassword(Login.gameId, user, function():void
-			{
-				var recoverPopup:PopupMessage = new PopupMessage();
-				recoverPopup.text = Localize.t("Email with instruction has been sent.");
-				login.addChild(recoverPopup);
-				recoverPopup.addEventListener("close", function(event:Event): void {
-					login.removeChild(recoverPopup, true);
-					login.setState("site");
+				{
+					var recoverPopup:PopupMessage = new PopupMessage();
+					recoverPopup.text = Localize.t("Email with instruction has been sent.");
+					login.addChild(recoverPopup);
+					recoverPopup.addEventListener("close", function(event:Event):void
+						{
+							login.removeChild(recoverPopup, true);
+							login.setState("site");
+							recoverButton.enabled = true;
+						});
+				}, function(param1:PlayerIOError):void
+				{
+					recoverEmail.error = param1.message;
 					recoverButton.enabled = true;
 				});
-			}, function(param1:PlayerIOError):void
-			{
-				recoverEmail.error = param1.message;
-				recoverButton.enabled = true;
-			});
 		}
 	}
 }

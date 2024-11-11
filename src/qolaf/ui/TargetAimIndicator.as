@@ -1,55 +1,63 @@
-package qolaf.ui 
+package qolaf.ui
 {
+	import core.unit.Unit;
 	import embeds.qolaf.TargetIconBitmap;
+	import qolaf.target.ITarget;
 	import qolaf.target.TargetSystem;
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.textures.Texture;
+	import starling.events.Event;
+	import starling.events.EnterFrameEvent;
 	import core.scene.Game;
-	
+
 	/**
 	 * @author rydev
 	 */
-	public class TargetAimIndicator extends DisplayObjectContainer 
+	public class TargetAimIndicator extends DisplayObjectContainer
 	{
-		private var targetSystem:TargetSystem;
-		private var arrowAmount:Number;
-		private var angleOffseter:Number;
-		private var arrowImages:Vector.<Image> = new Vector.<Image>;
-		private var angleRotation:Number = 0;
-		private var radiusAnim:Number = 0;
-		
-		public function TargetAimIndicator(targetSystem:TargetSystem, arrows:Number = 3, color:Number = 0xFFFFFF) 
+		private var _targetSystem:TargetSystem;
+		private var _arrowAmount:Number;
+		private var _angleOffseter:Number;
+		private var _arrowImages:Vector.<Image> = new Vector.<Image>;
+		private var _angleRotation:Number = 0;
+		private var _radiusAnim:Number = 0;
+		public function TargetAimIndicator(targetSystem:TargetSystem, arrows:Number = 3, color:Number = 0xFFFFFF)
 		{
-			this.targetSystem = targetSystem;
-			arrowAmount = arrows;
-			angleOffseter = 360.0 / arrows;
+			this._targetSystem = targetSystem;
+			_arrowAmount = arrows;
+			_angleOffseter = 360.0 / arrows;
 			var arrowTexture:Texture = Texture.fromBitmap(new TargetIconBitmap(), true);
-			for (var i:Number = 0; i < arrows; i++) {
+			for (var i:Number = 0; i < arrows; i++)
+			{
 				var arrowImage:Image = new Image(arrowTexture);
 				arrowImage.color = color;
 				arrowImage.alignPivot();
 				addChild(arrowImage);
-				arrowImages.push(arrowImage);
+				_arrowImages.push(arrowImage);
 			}
+			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
-		
-		public function Update(): void {
-			if (!TargetSystem.CanTargetUnit(targetSystem.GetCurrentUnit()))
+
+		public function onEnterFrame(e:EnterFrameEvent):void
+		{
+			if (!TargetSystem.canTarget(_targetSystem.target))
 				return;
-			var angle:Number = angleRotation;
-			var radius:Number = (targetSystem.GetCurrentUnit().texture.width / 2 + 25) + Math.sin(radiusAnim) * 4;
-			for (var i:Number = 0; i < arrowAmount; i++) {
-				var x:Number = radius * Math.cos(angle * (Math.PI / 180)) + targetSystem.GetCurrentUnit().x;
-				var y:Number = radius * Math.sin(angle * (Math.PI / 180)) + targetSystem.GetCurrentUnit().y;
-				angle += angleOffseter;
-				arrowImages[i].x = x;
-				arrowImages[i].y = y;
-				var arrowRotAngle:Number = Math.atan2(targetSystem.GetCurrentUnit().y - arrowImages[i].y, targetSystem.GetCurrentUnit().x - arrowImages[i].x);
-				arrowImages[i].rotation = arrowRotAngle;
+			var target:ITarget = _targetSystem.target;
+			var angle:Number = _angleRotation;
+			var radius:Number = (target.getTexture().width / 2 + 25) + Math.sin(_radiusAnim) * 4;
+			for (var i:Number = 0; i < _arrowAmount; i++)
+			{
+				var x:Number = radius * Math.cos(angle * (Math.PI / 180)) + target.getPosition().x;
+				var y:Number = radius * Math.sin(angle * (Math.PI / 180)) + target.getPosition().y;
+				angle += _angleOffseter;
+				_arrowImages[i].x = x;
+				_arrowImages[i].y = y;
+				var arrowRotAngle:Number = Math.atan2(target.getPosition().y - _arrowImages[i].y, target.getPosition().x - _arrowImages[i].x);
+				_arrowImages[i].rotation = arrowRotAngle;
 			}
-			angleRotation += 32 * Game.instance.deltaTime;
-			radiusAnim += 6 * Game.instance.deltaTime;
+			_angleRotation += 32 * e.passedTime;
+			_radiusAnim += 6 * e.passedTime;
 		}
 	}
 

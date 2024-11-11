@@ -37,227 +37,118 @@ package core.player
 	import sound.SoundLocator;
 	import starling.core.Starling;
 	import starling.display.Image;
-	
+
 	public class Player
 	{
 		public static const SLOT_WEAPON_COST_TYPE:String = "flpbTKautkC1QzjWT28gkw";
-		
 		public static const SLOT_ARTIFACT_COST_TYPE:String = "flpbTKautkC1QzjWT28gkw";
-		
 		public static const SLOT_CREW_COST_TYPE:String = "flpbTKautkC1QzjWT28gkw";
-		
 		public static const SLOT_WEAPON:String = "slotWeapon";
-		
 		public static const SLOT_ARTIFACT:String = "slotArtifact";
-		
 		public static const SLOT_CREW:String = "slotCrew";
-		
 		public static const RESPAWN_TIME:Number = 10000;
-		
 		public static const RESPAWN_TIME_PVP:Number = 3000;
-		
 		public static const SUPPORTER_ICON_ASCII:String = "<font color='#ffff66'>&#9733;</font>";
-		
 		public static const EXPBOOSTBONUS_MISSION:Number = 0.3;
-		
 		public static var friends:Vector.<Friend>;
-		
 		public static var onlineFriends:Vector.<Friend>;
-		
 		public static const SLOT_WEAPON_UNLOCK_COST:Array = [0, 0, 200, 1000, 5000];
-		
 		public static const SLOT_ARTIFACT_UNLOCK_COST:Array = [0, 1000, 2000, 10000, 25000];
-		
 		public static const SLOT_CREW_UNLOCK_COST:Array = [0, 0, 250, 5000, 25000];
-		
 		public static const ARTIFACT_CAPACITY:Array = [250, 400, 600, 800];
-		
 		private var _name:String;
-		
 		public var isMe:Boolean = false;
-		
 		public var id:String;
-		
 		public var inviter_id:String = "";
-		
-		public var ship:PlayerShip;
-		
+		private var _ship:PlayerShip;
 		public var mirror:PlayerShip;
-		
 		public var stateMachine:StateMachine;
-		
 		public var currentBody:Body;
-		
 		public var lastBody:Body;
-		
 		public var xp:int = 0;
-		
 		public var reputation:int = 0;
-		
 		public var split:String = "";
-		
 		private var _team:int = -1;
-		
 		public var respawnNextReady:Number = 0;
-		
 		public var spree:int = 0;
-		
 		public var techPoints:int = 0;
-		
 		public var clanId:String = "";
-		
 		public var clanApplicationId:String = "";
-		
 		public var troons:int = 0;
-		
 		public var rating:int = 0;
-		
 		public var ranking:int = 0;
-		
 		private var activeWeapon:String;
-		
 		public var techSkills:Vector.<TechSkill>;
-		
 		public var weapons:Array;
-		
 		public var weaponsState:Array;
-		
 		public var weaponsHotkeys:Array;
-		
 		public var weaponData:Vector.<WeaponDataHolder>;
-		
 		public var selectedWeaponIndex:int = 0;
-		
 		public var unlockedWeaponSlots:int;
-		
 		public var artifactCount:int = 0;
-		
 		public var compressorLevel:int = 0;
-		
 		public var artifactCapacityLevel:int = 0;
-		
 		public var artifactAutoRecycleLevel:int = 0;
-		
 		public var activeSkin:String = "";
-		
 		public var unlockedArtifactSlots:int;
-		
 		public var artifacts:Vector.<Artifact>;
-		
 		public var activeArtifactSetup:int;
-		
 		public var artifactSetups:Array;
-		
 		public var unlockedCrewSlots:int;
-		
 		public var rotationSpeedMod:Number = 1;
-		
 		public var KOTSIsReady:Boolean = false;
-		
 		public var fleet:Vector.<FleetObj>;
-		
 		public var nrOfUpgrades:Vector.<int>;
-		
 		private var _level:int = 1;
-		
 		private var _inSafeZone:Boolean = false;
-		
 		private var _isWarpJumping:Boolean = false;
-		
 		public var playerKills:int = 0;
-		
 		public var enemyKills:int = 0;
-		
 		public var playerDeaths:int = 0;
-		
 		public var expBoost:Number = 0;
-		
 		public var tractorBeam:Number = 0;
-		
 		private var tractorBeamActive:Boolean = true;
-		
 		public var xpProtection:Number = 0;
-		
 		public var cargoProtection:Number = 0;
-		
 		private var cargoProtectionActive:Boolean = true;
-		
 		public var supporter:Number = 0;
-		
 		public var beginnerPackage:Boolean = false;
-		
 		public var powerPackage:Boolean = false;
-		
 		public var megaPackage:Boolean = false;
-		
 		public var explores:Vector.<Explore>;
-		
 		public var missions:Vector.<Mission>;
-		
 		public var dailyMissions:Array;
-		
 		public var crewMembers:Vector.<CrewMember>;
-		
 		public var encounters:Vector.<String>;
-		
 		public var triggeredMissions:Vector.<String>;
-		
 		public var completedMissions:Object;
-		
 		public var warpPathLicenses:Array;
-		
 		public var solarSystemLicenses:Array;
-		
 		public var guest:Boolean = false;
-		
 		public var fbLike:Boolean = false;
-		
 		public var showIntro:Boolean = true;
-		
 		public var kongRated:Boolean = false;
-		
 		public var isDeveloper:Boolean = false;
-		
 		public var isTester:Boolean = false;
-		
 		public var isModerator:Boolean = false;
-		
 		public var isTranslator:Boolean = false;
-		
 		private var _group:Group = null;
-		
 		private var _isHostile:Boolean = false;
-		
 		public var pickUpLog:Vector.<TextParticle>;
-		
 		public var disableLeave:Boolean;
-		
 		private var isTakingOff:Boolean = false;
-		
 		public var clanLogo:Image;
-		
 		public var clanName:String;
-		
 		public var clanRankName:String;
-		
 		public var clanLogoColor:uint;
-		
 		public var freeResets:int;
-		
 		public var freePaintJobs:int;
-		
 		public var factions:Vector.<String>;
-		
 		public var landedBodies:Vector.<LandedBody>;
-		
 		public var tosVersion:int;
-		
 		private var g:Game;
-		
 		private var updateInterval:int;
-		
 		public var isLanded:Boolean = false;
-		
 		public function Player(param1:Game, param2:String)
 		{
 			stateMachine = new StateMachine();
@@ -284,7 +175,23 @@ package core.player
 			this.id = param2;
 			disableLeave = false;
 		}
-		
+
+		public function get ship():PlayerShip
+		{
+			return _ship;
+		}
+
+		public function set ship(ship:PlayerShip):void
+		{
+			_ship = ship;
+
+			if (isMe)
+			{
+				// QoLAF
+				g.hud.getSelfModifierDisplay().setTarget(ship);
+			}
+		}
+
 		public static function getSkinTechLevel(param1:String, param2:String):int
 		{
 			var _loc5_:IDataManager = DataLocator.getService();
@@ -298,22 +205,22 @@ package core.player
 			}
 			return 0;
 		}
-		
+
 		public function get artifactLimit():int
 		{
 			return ARTIFACT_CAPACITY[artifactCapacityLevel];
 		}
-		
+
 		public function get activeArtifacts():Array
 		{
 			return artifactSetups[activeArtifactSetup] as Array;
 		}
-		
+
 		public function get group():Group
 		{
 			return _group;
 		}
-		
+
 		public function set group(param1:Group):void
 		{
 			_group = param1;
@@ -322,12 +229,12 @@ package core.player
 				ship.group = param1;
 			}
 		}
-		
+
 		public function get isHostile():Boolean
 		{
 			return _isHostile;
 		}
-		
+
 		public function get hasCorrectTOSVersion():Boolean
 		{
 			if (Login.currentState === "steam")
@@ -336,7 +243,7 @@ package core.player
 			}
 			return tosVersion == 3;
 		}
-		
+
 		public function set hasCorrectTOSVersion(param1:Boolean):void
 		{
 			if (param1)
@@ -348,7 +255,7 @@ package core.player
 				tosVersion = -1;
 			}
 		}
-		
+
 		public function set isHostile(param1:Boolean):void
 		{
 			_isHostile = param1;
@@ -357,29 +264,29 @@ package core.player
 				ship.isHostile = param1;
 			}
 		}
-		
+
 		public function init(param1:Message, param2:int):int
 		{
 			var _loc12_:Heading = null;
 			var _loc11_:int = 0;
-			_name = param1.getString(param2++);
-			inviter_id = param1.getString(param2++);
-			tosVersion = param1.getInt(param2++);
-			isDeveloper = param1.getBoolean(param2++);
-			isTester = param1.getBoolean(param2++);
-			isModerator = param1.getBoolean(param2++);
-			isTranslator = param1.getBoolean(param2++);
-			level = param1.getInt(param2++);
-			xp = param1.getInt(param2++);
-			techPoints = param1.getInt(param2++);
-			isHostile = param1.getBoolean(param2++);
-			rotationSpeedMod = param1.getNumber(param2++);
-			reputation = param1.getInt(param2++);
-			var _loc13_:String = param1.getString(param2++);
-			split = param1.getString(param2++);
-			var _loc4_:String = param1.getString(param2++);
-			spree = param1.getInt(param2++);
-			var _loc3_:int = param1.getInt(param2++);
+			_name = param1.getString(param2++ );
+			inviter_id = param1.getString(param2++ );
+			tosVersion = param1.getInt(param2++ );
+			isDeveloper = param1.getBoolean(param2++ );
+			isTester = param1.getBoolean(param2++ );
+			isModerator = param1.getBoolean(param2++ );
+			isTranslator = param1.getBoolean(param2++ );
+			level = param1.getInt(param2++ );
+			xp = param1.getInt(param2++ );
+			techPoints = param1.getInt(param2++ );
+			isHostile = param1.getBoolean(param2++ );
+			rotationSpeedMod = param1.getNumber(param2++ );
+			reputation = param1.getInt(param2++ );
+			var _loc13_:String = param1.getString(param2++ );
+			split = param1.getString(param2++ );
+			var _loc4_:String = param1.getString(param2++ );
+			spree = param1.getInt(param2++ );
+			var _loc3_:int = param1.getInt(param2++ );
 			var _loc5_:int = 0;
 			var _loc14_:int = 0;
 			var _loc9_:int = 0;
@@ -388,45 +295,45 @@ package core.player
 			var _loc10_:Number = 0;
 			if (_loc3_ != -1)
 			{
-				_loc14_ = param1.getInt(param2++);
-				_loc5_ = param1.getInt(param2++);
-				_loc9_ = param1.getInt(param2++);
-				_loc8_ = param1.getInt(param2++);
-				_loc7_ = param1.getNumber(param2++);
-				_loc10_ = param1.getNumber(param2++);
+				_loc14_ = param1.getInt(param2++ );
+				_loc5_ = param1.getInt(param2++ );
+				_loc9_ = param1.getInt(param2++ );
+				_loc8_ = param1.getInt(param2++ );
+				_loc7_ = param1.getNumber(param2++ );
+				_loc10_ = param1.getNumber(param2++ );
 				_loc12_ = new Heading();
 				param2 = _loc12_.parseMessage(param1, param2);
 			}
-			unlockedWeaponSlots = param1.getInt(param2++);
-			unlockedArtifactSlots = param1.getInt(param2++);
-			unlockedCrewSlots = param1.getInt(param2++);
-			compressorLevel = param1.getInt(param2++);
-			artifactCapacityLevel = param1.getInt(param2++);
-			artifactAutoRecycleLevel = param1.getInt(param2++);
-			playerKills = param1.getInt(param2++);
-			playerDeaths = param1.getInt(param2++);
-			enemyKills = param1.getInt(param2++);
-			showIntro = param1.getBoolean(param2++);
-			expBoost = param1.getNumber(param2++);
-			tractorBeam = param1.getNumber(param2++);
-			xpProtection = param1.getNumber(param2++);
-			cargoProtection = param1.getNumber(param2++);
-			supporter = param1.getNumber(param2++);
-			beginnerPackage = param1.getBoolean(param2++);
-			powerPackage = param1.getBoolean(param2++);
-			megaPackage = param1.getBoolean(param2++);
-			guest = param1.getBoolean(param2++);
-			clanId = param1.getString(param2++);
-			clanApplicationId = param1.getString(param2++);
-			troons = param1.getNumber(param2++);
-			freeResets = param1.getInt(param2++);
-			freePaintJobs = param1.getInt(param2++);
-			artifactCount = param1.getInt(param2++);
-			var _loc15_:int = param1.getInt(param2++);
+			unlockedWeaponSlots = param1.getInt(param2++ );
+			unlockedArtifactSlots = param1.getInt(param2++ );
+			unlockedCrewSlots = param1.getInt(param2++ );
+			compressorLevel = param1.getInt(param2++ );
+			artifactCapacityLevel = param1.getInt(param2++ );
+			artifactAutoRecycleLevel = param1.getInt(param2++ );
+			playerKills = param1.getInt(param2++ );
+			playerDeaths = param1.getInt(param2++ );
+			enemyKills = param1.getInt(param2++ );
+			showIntro = param1.getBoolean(param2++ );
+			expBoost = param1.getNumber(param2++ );
+			tractorBeam = param1.getNumber(param2++ );
+			xpProtection = param1.getNumber(param2++ );
+			cargoProtection = param1.getNumber(param2++ );
+			supporter = param1.getNumber(param2++ );
+			beginnerPackage = param1.getBoolean(param2++ );
+			powerPackage = param1.getBoolean(param2++ );
+			megaPackage = param1.getBoolean(param2++ );
+			guest = param1.getBoolean(param2++ );
+			clanId = param1.getString(param2++ );
+			clanApplicationId = param1.getString(param2++ );
+			troons = param1.getNumber(param2++ );
+			freeResets = param1.getInt(param2++ );
+			freePaintJobs = param1.getInt(param2++ );
+			artifactCount = param1.getInt(param2++ );
+			var _loc15_:int = param1.getInt(param2++ );
 			_loc11_ = 0;
 			while (_loc11_ < _loc15_)
 			{
-				factions.push(param1.getString(param2++));
+				factions.push(param1.getString(param2++ ));
 				_loc11_++;
 			}
 			param2 = initFleetFromMessage(param1, param2);
@@ -448,8 +355,8 @@ package core.player
 				param2 = g.tutorial.init(param1, param2);
 				param2 = initWarpPathLicensesFromMessage(param1, param2);
 				param2 = initSolarSystemLicensesFromMessage(param1, param2);
-				kongRated = param1.getBoolean(param2++);
-				fbLike = param1.getBoolean(param2++);
+				kongRated = param1.getBoolean(param2++ );
+				fbLike = param1.getBoolean(param2++ );
 				g.friendManager.init(this);
 			}
 			var _loc6_:Body = g.bodyManager.getBodyByKey(_loc4_);
@@ -489,7 +396,7 @@ package core.player
 			g.groupManager.autoJoinOrCreateGroup(this, _loc13_);
 			return param2;
 		}
-		
+
 		public function requestLikeReward():void
 		{
 			if (Login.hasFacebookLiked && !fbLike)
@@ -497,27 +404,27 @@ package core.player
 				g.send("fbLike");
 			}
 		}
-		
+
 		public function requestInviteReward():void
 		{
 			g.send("requestInviteReward");
 		}
-		
+
 		public function requestRewardsOnLogin():void
 		{
 			g.rpc("requestRewardsOnLogin", requestResult);
 		}
-		
+
 		public function sendKongRated():void
 		{
 			kongRated = true;
 			g.send("kongRated");
 		}
-		
+
 		public function requestResult():void
 		{
 		}
-		
+
 		public function getExploreByKey(param1:String):Explore
 		{
 			for each (var _loc2_:* in explores)
@@ -529,7 +436,7 @@ package core.player
 			}
 			return null;
 		}
-		
+
 		public function loadShip(param1:int, param2:int, param3:int, param4:int):void
 		{
 			var _loc5_:int = 0;
@@ -564,7 +471,7 @@ package core.player
 				ship.startKillingSpreeEffect();
 			}
 		}
-		
+
 		private function activateShip():void
 		{
 			g.shipManager.activatePlayerShip(ship);
@@ -576,7 +483,7 @@ package core.player
 			ship.player = this;
 			ship.enterRoaming();
 		}
-		
+
 		public function unloadShip():void
 		{
 			if (ship == null)
@@ -590,7 +497,7 @@ package core.player
 				mirror = null;
 			}
 		}
-		
+
 		public function update():void
 		{
 			if (isMe)
@@ -599,7 +506,7 @@ package core.player
 				if (updateInterval == 1)
 				{
 					// QoLAF
-					//g.hud.bossHealth.update();
+					// g.hud.bossHealth.update();
 				}
 				else if (updateInterval == 2)
 				{
@@ -609,7 +516,7 @@ package core.player
 			}
 			stateMachine.update();
 		}
-		
+
 		public function setSpree(param1:int):void
 		{
 			if (spree != param1)
@@ -633,7 +540,7 @@ package core.player
 				}
 			}
 		}
-		
+
 		public function getExploredAreas(param1:Body, param2:Function):void
 		{
 			var body:Body = param1;
@@ -646,16 +553,16 @@ package core.player
 			try
 			{
 				g.client.bigDB.loadRange("Explores", "ByPlayerAndBodyAndArea", [id, body.key], null, null, 100, function(param1:Array):void
-				{
-					callback(param1);
-				});
+					{
+						callback(param1);
+					});
 			}
 			catch (e:Error)
 			{
 				g.client.errorLog.writeError(e.toString(), "Something went wrong when loading explores: pid: " + id + " bid:" + body.key, e.getStackTrace(), {});
 			}
 		}
-		
+
 		public function levelUp():void
 		{
 			var effect:Vector.<Emitter>;
@@ -683,18 +590,18 @@ package core.player
 					}
 					soundManager = SoundLocator.getService();
 					soundManager.preCacheSound("5wAlzsUCPEKqX7tAdCw3UA", function():void
-					{
-						for each (var _loc2_:* in effect)
 						{
-							_loc2_.play();
-						}
-						for each (var _loc1_:* in effect2)
-						{
-							_loc1_.play();
-						}
-						g.textManager.createLevelUpText(level);
-						g.textManager.createLevelUpDetailsText();
-					});
+							for each (var _loc2_:* in effect)
+							{
+								_loc2_.play();
+							}
+							for each (var _loc1_:* in effect2)
+							{
+								_loc1_.play();
+							}
+							g.textManager.createLevelUpText(level);
+							g.textManager.createLevelUpDetailsText();
+						});
 					g.updateServiceRoom();
 					Action.levelUp(level);
 					if (inviter_id != "" && level == 10)
@@ -722,7 +629,7 @@ package core.player
 				}
 			}
 		}
-		
+
 		private function setLevelBonusStats():void
 		{
 			var _loc6_:int = 0;
@@ -775,7 +682,7 @@ package core.player
 				level = _loc6_;
 			}
 		}
-		
+
 		public function increaseXp(param1:int, param2:int):void
 		{
 			xp = param2;
@@ -788,7 +695,7 @@ package core.player
 				g.textManager.createXpText(param1);
 			}
 		}
-		
+
 		public function decreaseXp(param1:int, param2:int):void
 		{
 			xp = param2;
@@ -797,7 +704,7 @@ package core.player
 				g.textManager.createXpText(-param1);
 			}
 		}
-		
+
 		public function updateReputation(param1:int, param2:int):void
 		{
 			reputation = param2;
@@ -811,7 +718,7 @@ package core.player
 				g.textManager.createReputationText(param1, ship);
 			}
 		}
-		
+
 		public function get levelXpMax():int
 		{
 			if (level >= 100)
@@ -820,7 +727,7 @@ package core.player
 			}
 			return (level + 2) * level * 500;
 		}
-		
+
 		public function get levelXpMin():int
 		{
 			if (level >= 100)
@@ -833,7 +740,7 @@ package core.player
 			}
 			return (level + 1) * (level - 1) * 500;
 		}
-		
+
 		public function loadCourse(param1:Heading):void
 		{
 			if (ship != null)
@@ -841,7 +748,7 @@ package core.player
 				ship.course = param1;
 			}
 		}
-		
+
 		public function get hasExpBoost():Boolean
 		{
 			if (isModerator)
@@ -850,7 +757,7 @@ package core.player
 			}
 			return expBoost > g.time;
 		}
-		
+
 		public function set level(param1:int):void
 		{
 			_level = param1;
@@ -860,12 +767,12 @@ package core.player
 				ship.updateLabel();
 			}
 		}
-		
+
 		public function get level():int
 		{
 			return _level;
 		}
-		
+
 		public function initRoaming(param1:Message, param2:int, param3:Boolean = true):int
 		{
 			if (stateMachine.inState(RoamingState))
@@ -873,27 +780,27 @@ package core.player
 				return param2;
 			}
 			unloadShip();
-			level = param1.getInt(param2++);
-			xp = param1.getInt(param2++);
-			techPoints = param1.getInt(param2++);
-			isHostile = param1.getBoolean(param2++);
-			var _loc6_:String = param1.getString(param2++);
-			var _loc5_:int = param1.getInt(param2++);
-			var _loc8_:int = param1.getInt(param2++);
-			var _loc7_:int = param1.getInt(param2++);
-			var _loc12_:int = param1.getInt(param2++);
-			var _loc11_:int = param1.getInt(param2++);
-			var _loc9_:Number = param1.getNumber(param2++);
-			var _loc10_:Number = param1.getNumber(param2++);
+			level = param1.getInt(param2++ );
+			xp = param1.getInt(param2++ );
+			techPoints = param1.getInt(param2++ );
+			isHostile = param1.getBoolean(param2++ );
+			var _loc6_:String = param1.getString(param2++ );
+			var _loc5_:int = param1.getInt(param2++ );
+			var _loc8_:int = param1.getInt(param2++ );
+			var _loc7_:int = param1.getInt(param2++ );
+			var _loc12_:int = param1.getInt(param2++ );
+			var _loc11_:int = param1.getInt(param2++ );
+			var _loc9_:Number = param1.getNumber(param2++ );
+			var _loc10_:Number = param1.getNumber(param2++ );
 			var _loc4_:Heading = new Heading();
 			param2 = _loc4_.parseMessage(param1, param2);
-			playerKills = param1.getInt(param2++);
-			playerDeaths = param1.getInt(param2++);
-			enemyKills = param1.getInt(param2++);
-			showIntro = param1.getBoolean(param2++);
-			clanId = param1.getString(param2++);
-			clanApplicationId = param1.getString(param2++);
-			troons = param1.getNumber(param2++);
+			playerKills = param1.getInt(param2++ );
+			playerDeaths = param1.getInt(param2++ );
+			enemyKills = param1.getInt(param2++ );
+			showIntro = param1.getBoolean(param2++ );
+			clanId = param1.getString(param2++ );
+			clanApplicationId = param1.getString(param2++ );
+			troons = param1.getNumber(param2++ );
 			param2 = initFleetFromMessage(param1, param2);
 			loadShip(_loc8_, _loc7_, _loc12_, _loc11_);
 			ship.id = _loc5_;
@@ -921,7 +828,7 @@ package core.player
 			g.groupManager.autoJoinOrCreateGroup(this, _loc6_);
 			return param2;
 		}
-		
+
 		public function enterRoaming():void
 		{
 			isLanded = false;
@@ -931,7 +838,7 @@ package core.player
 				stateMachine.changeState(new Roaming(this, g));
 			}
 		}
-		
+
 		public function startLanded(param1:Body):void
 		{
 			if (stateMachine.inState(Landed))
@@ -940,7 +847,7 @@ package core.player
 			}
 			stateMachine.changeState(new Landed(this, param1, g));
 		}
-		
+
 		public function land(param1:Body):void
 		{
 			var that:Player;
@@ -961,26 +868,28 @@ package core.player
 			if (!isMe)
 			{
 				TweenMax.to(ship, 1.2, {"x": body.x, "y": body.y, "scaleX": 0.5, "scaleY": 0.5, "rotation": toRot, "onComplete": function():void
-				{
-					stateMachine.changeState(new Landed(that, body, g));
-					ship.removeFromCanvas();
-					ship.land();
-				}});
+						{
+							stateMachine.changeState(new Landed(that, body, g));
+							ship.removeFromCanvas();
+							ship.land();
+						}
+					});
 				return;
 			}
 			g.camera.zoomFocus(3, 25);
 			TweenMax.to(ship, 1.2, {"x": body.x, "y": body.y, "scaleX": 0.5, "scaleY": 0.5, "rotation": toRot, "onComplete": function():void
-			{
-				stateMachine.changeState(new Landed(g.me, body, g));
-				g.enterLandedState();
-				ship.land();
-				TweenMax.delayedCall(0.5, function():void
-				{
-					g.camera.zoomFocus(1, 1);
+					{
+						stateMachine.changeState(new Landed(g.me, body, g));
+						g.enterLandedState();
+						ship.land();
+						TweenMax.delayedCall(0.5, function():void
+							{
+								g.camera.zoomFocus(1, 1);
+							});
+					}
 				});
-			}});
 		}
-		
+
 		public function enterKilled(param1:Message):void
 		{
 			if (g.solarSystem.isPvpSystemInEditor)
@@ -993,7 +902,7 @@ package core.player
 			}
 			stateMachine.changeState(new Killed(this, g, param1));
 		}
-		
+
 		public function hasExploredArea(param1:String):Boolean
 		{
 			for each (var _loc2_:* in explores)
@@ -1005,7 +914,7 @@ package core.player
 			}
 			return false;
 		}
-		
+
 		public function leaveBody():void
 		{
 			if (!isTakingOff)
@@ -1015,7 +924,7 @@ package core.player
 				g.send("leaveBody");
 			}
 		}
-		
+
 		public function initMissionsFromMessage(param1:Message, param2:int):int
 		{
 			Console.write("Init missions");
@@ -1029,24 +938,24 @@ package core.player
 			}
 			return _loc4_;
 		}
-		
+
 		public function addMission(param1:Message, param2:int):int
 		{
 			var _loc3_:Mission = new Mission();
-			_loc3_.id = param1.getString(param2++);
-			_loc3_.missionTypeKey = param1.getString(param2++);
-			_loc3_.type = param1.getString(param2++);
-			_loc3_.majorType = param1.getString(param2++);
-			_loc3_.count = param1.getInt(param2++);
-			_loc3_.viewed = param1.getBoolean(param2++);
-			_loc3_.finished = param1.getBoolean(param2++);
-			_loc3_.claimed = param1.getBoolean(param2++);
-			_loc3_.created = param1.getNumber(param2++);
-			_loc3_.expires = param1.getNumber(param2++);
+			_loc3_.id = param1.getString(param2++ );
+			_loc3_.missionTypeKey = param1.getString(param2++ );
+			_loc3_.type = param1.getString(param2++ );
+			_loc3_.majorType = param1.getString(param2++ );
+			_loc3_.count = param1.getInt(param2++ );
+			_loc3_.viewed = param1.getBoolean(param2++ );
+			_loc3_.finished = param1.getBoolean(param2++ );
+			_loc3_.claimed = param1.getBoolean(param2++ );
+			_loc3_.created = param1.getNumber(param2++ );
+			_loc3_.expires = param1.getNumber(param2++ );
 			missions.push(_loc3_);
 			return param2;
 		}
-		
+
 		public function hasMission(param1:String):Boolean
 		{
 			for each (var _loc2_:* in missions)
@@ -1058,7 +967,7 @@ package core.player
 			}
 			return false;
 		}
-		
+
 		public function removeMission(param1:Mission):void
 		{
 			var _loc2_:int = 0;
@@ -1073,7 +982,7 @@ package core.player
 				_loc2_++;
 			}
 		}
-		
+
 		public function initFinishedExploresFromMessage(param1:Message, param2:int):int
 		{
 			var _loc3_:String = null;
@@ -1085,7 +994,7 @@ package core.player
 			var _loc6_:Object = g.dataManager.loadTable("BodyAreas");
 			while (_loc5_ > 0)
 			{
-				_loc3_ = param1.getString(_loc8_++);
+				_loc3_ = param1.getString(_loc8_++ );
 				_loc7_ = int(_loc6_[_loc3_] != null ? _loc6_[_loc3_].size : 0);
 				_loc7_ = _loc7_ + 4;
 				_loc4_ = new Explore();
@@ -1106,7 +1015,7 @@ package core.player
 			}
 			return _loc8_;
 		}
-		
+
 		public function initExploresFromMessage(param1:Message, param2:int):int
 		{
 			var _loc3_:Explore = null;
@@ -1115,24 +1024,24 @@ package core.player
 			while (_loc4_ > 0)
 			{
 				_loc3_ = new Explore();
-				_loc3_.key = param1.getString(_loc5_++);
-				_loc3_.areaKey = param1.getString(_loc5_++);
-				_loc3_.bodyKey = param1.getString(_loc5_++);
-				_loc3_.failed = param1.getBoolean(_loc5_++);
-				_loc3_.failTime = param1.getNumber(_loc5_++);
-				_loc3_.finished = param1.getBoolean(_loc5_++);
-				_loc3_.finishTime = param1.getNumber(_loc5_++);
-				_loc3_.lootClaimed = param1.getBoolean(_loc5_++);
-				_loc3_.playerKey = param1.getString(_loc5_++);
-				_loc3_.startEvent = param1.getInt(_loc5_++);
-				_loc3_.startTime = param1.getNumber(_loc5_++);
-				_loc3_.successfulEvents = param1.getInt(_loc5_++);
+				_loc3_.key = param1.getString(_loc5_++ );
+				_loc3_.areaKey = param1.getString(_loc5_++ );
+				_loc3_.bodyKey = param1.getString(_loc5_++ );
+				_loc3_.failed = param1.getBoolean(_loc5_++ );
+				_loc3_.failTime = param1.getNumber(_loc5_++ );
+				_loc3_.finished = param1.getBoolean(_loc5_++ );
+				_loc3_.finishTime = param1.getNumber(_loc5_++ );
+				_loc3_.lootClaimed = param1.getBoolean(_loc5_++ );
+				_loc3_.playerKey = param1.getString(_loc5_++ );
+				_loc3_.startEvent = param1.getInt(_loc5_++ );
+				_loc3_.startTime = param1.getNumber(_loc5_++ );
+				_loc3_.successfulEvents = param1.getInt(_loc5_++ );
 				explores.push(_loc3_);
 				_loc4_--;
 			}
 			return _loc5_;
 		}
-		
+
 		public function initLandedBodiesFromMessage(param1:Message, param2:int):int
 		{
 			var _loc4_:int = 0;
@@ -1146,7 +1055,7 @@ package core.player
 			}
 			return _loc4_;
 		}
-		
+
 		public function initEncountersFromMessage(param1:Message, param2:int):int
 		{
 			var _loc4_:int = 0;
@@ -1160,7 +1069,7 @@ package core.player
 			}
 			return _loc4_;
 		}
-		
+
 		public function initCompletedMissionsFromMessage(param1:Message, param2:int):int
 		{
 			var _loc4_:int = 0;
@@ -1174,7 +1083,7 @@ package core.player
 			}
 			return _loc4_;
 		}
-		
+
 		public function initTriggeredMissionsFromMessage(param1:Message, param2:int):int
 		{
 			var _loc4_:int = 0;
@@ -1188,7 +1097,7 @@ package core.player
 			}
 			return _loc4_;
 		}
-		
+
 		public function initCrewFromMessage(param1:Message, param2:int):int
 		{
 			var _loc7_:int = 0;
@@ -1201,53 +1110,53 @@ package core.player
 			while (_loc7_ < param2 + _loc4_ * 30 + 1)
 			{
 				_loc5_ = new CrewMember(g);
-				_loc5_.seed = param1.getInt(_loc7_++);
-				_loc5_.key = param1.getString(_loc7_++);
-				_loc5_.name = param1.getString(_loc7_++);
-				_loc5_.solarSystem = param1.getString(_loc7_++);
-				_loc5_.area = param1.getString(_loc7_++);
-				_loc5_.body = param1.getString(_loc7_++);
-				_loc5_.imageKey = param1.getString(_loc7_++);
-				_loc5_.injuryEnd = param1.getNumber(_loc7_++);
-				_loc5_.injuryStart = param1.getNumber(_loc7_++);
-				_loc5_.trainingEnd = param1.getNumber(_loc7_++);
-				_loc5_.trainingType = param1.getInt(_loc7_++);
-				_loc5_.artifactEnd = param1.getNumber(_loc7_++);
-				_loc5_.artifact = param1.getString(_loc7_++);
-				_loc5_.missions = param1.getInt(_loc7_++);
-				_loc5_.successMissions = param1.getInt(_loc7_++);
-				_loc5_.rank = param1.getInt(_loc7_++);
-				_loc5_.fullLocation = param1.getString(_loc7_++);
-				_loc5_.skillPoints = param1.getInt(_loc7_++);
+				_loc5_.seed = param1.getInt(_loc7_++ );
+				_loc5_.key = param1.getString(_loc7_++ );
+				_loc5_.name = param1.getString(_loc7_++ );
+				_loc5_.solarSystem = param1.getString(_loc7_++ );
+				_loc5_.area = param1.getString(_loc7_++ );
+				_loc5_.body = param1.getString(_loc7_++ );
+				_loc5_.imageKey = param1.getString(_loc7_++ );
+				_loc5_.injuryEnd = param1.getNumber(_loc7_++ );
+				_loc5_.injuryStart = param1.getNumber(_loc7_++ );
+				_loc5_.trainingEnd = param1.getNumber(_loc7_++ );
+				_loc5_.trainingType = param1.getInt(_loc7_++ );
+				_loc5_.artifactEnd = param1.getNumber(_loc7_++ );
+				_loc5_.artifact = param1.getString(_loc7_++ );
+				_loc5_.missions = param1.getInt(_loc7_++ );
+				_loc5_.successMissions = param1.getInt(_loc7_++ );
+				_loc5_.rank = param1.getInt(_loc7_++ );
+				_loc5_.fullLocation = param1.getString(_loc7_++ );
+				_loc5_.skillPoints = param1.getInt(_loc7_++ );
 				_loc3_ = [];
-				_loc3_.push(param1.getNumber(_loc7_++));
-				_loc3_.push(param1.getNumber(_loc7_++));
-				_loc3_.push(param1.getNumber(_loc7_++));
+				_loc3_.push(param1.getNumber(_loc7_++ ));
+				_loc3_.push(param1.getNumber(_loc7_++ ));
+				_loc3_.push(param1.getNumber(_loc7_++ ));
 				_loc5_.skills = _loc3_;
 				_loc6_ = [];
-				_loc6_.push(param1.getNumber(_loc7_++));
-				_loc6_.push(param1.getNumber(_loc7_++));
-				_loc6_.push(param1.getNumber(_loc7_++));
-				_loc6_.push(param1.getNumber(_loc7_++));
-				_loc6_.push(param1.getNumber(_loc7_++));
-				_loc6_.push(param1.getNumber(_loc7_++));
-				_loc6_.push(param1.getNumber(_loc7_++));
-				_loc6_.push(param1.getNumber(_loc7_++));
-				_loc6_.push(param1.getNumber(_loc7_++));
+				_loc6_.push(param1.getNumber(_loc7_++ ));
+				_loc6_.push(param1.getNumber(_loc7_++ ));
+				_loc6_.push(param1.getNumber(_loc7_++ ));
+				_loc6_.push(param1.getNumber(_loc7_++ ));
+				_loc6_.push(param1.getNumber(_loc7_++ ));
+				_loc6_.push(param1.getNumber(_loc7_++ ));
+				_loc6_.push(param1.getNumber(_loc7_++ ));
+				_loc6_.push(param1.getNumber(_loc7_++ ));
+				_loc6_.push(param1.getNumber(_loc7_++ ));
 				_loc5_.specials = _loc6_;
 				crewMembers.push(_loc5_);
 				_loc7_ += 0;
 			}
 			return _loc7_;
 		}
-		
+
 		public function initFleetFromMessage(param1:Message, param2:int):int
 		{
 			var _loc6_:int = 0;
 			var _loc4_:FleetObj = null;
 			fleet.length = 0;
-			activeSkin = param1.getString(param2++);
-			var _loc5_:int = param1.getInt(param2++);
+			activeSkin = param1.getString(param2++ );
+			var _loc5_:int = param1.getInt(param2++ );
 			var _loc3_:* = param2;
 			_loc6_ = 0;
 			while (_loc6_ < _loc5_)
@@ -1269,7 +1178,7 @@ package core.player
 			}
 			return _loc3_;
 		}
-		
+
 		public function addNewSkin(param1:String):void
 		{
 			if (hasSkin(param1))
@@ -1280,35 +1189,35 @@ package core.player
 			_loc2_.initFromSkin(param1);
 			fleet.push(_loc2_);
 		}
-		
+
 		private function initWarpPathLicensesFromMessage(param1:Message, param2:int):int
 		{
 			var _loc4_:int = 0;
-			var _loc3_:int = param1.getInt(param2++);
+			var _loc3_:int = param1.getInt(param2++ );
 			warpPathLicenses = [];
 			_loc4_ = 0;
 			while (_loc4_ < _loc3_)
 			{
-				warpPathLicenses.push(param1.getString(param2++));
+				warpPathLicenses.push(param1.getString(param2++ ));
 				_loc4_++;
 			}
 			return param2;
 		}
-		
+
 		private function initSolarSystemLicensesFromMessage(param1:Message, param2:int):int
 		{
 			var _loc4_:int = 0;
-			var _loc3_:int = param1.getInt(param2++);
+			var _loc3_:int = param1.getInt(param2++ );
 			solarSystemLicenses = [];
 			_loc4_ = 0;
 			while (_loc4_ < _loc3_)
 			{
-				solarSystemLicenses.push(param1.getString(param2++));
+				solarSystemLicenses.push(param1.getString(param2++ ));
 				_loc4_++;
 			}
 			return param2;
 		}
-		
+
 		private function initArtifactsFromMessage(param1:Message, param2:int):int
 		{
 			var setups:int;
@@ -1320,15 +1229,15 @@ package core.player
 			var startIndex:int = param2;
 			artifacts = g.dataManager.getArtifacts();
 			artifactSetups.length = 0;
-			setups = m.getInt(startIndex++);
+			setups = m.getInt(startIndex++ );
 			keysToLoad = [];
 			while (setups > 0)
 			{
 				setup = [];
-				count = m.getInt(startIndex++);
+				count = m.getInt(startIndex++ );
 				while (count > 0)
 				{
-					artifactId = m.getString(startIndex++);
+					artifactId = m.getString(startIndex++ );
 					setup.push(artifactId);
 					if (keysToLoad.indexOf(artifactId) == -1 && getArtifactById(artifactId) == null)
 					{
@@ -1342,9 +1251,9 @@ package core.player
 			if (keysToLoad.length != 0)
 			{
 				ArtifactFactory.createArtifacts(keysToLoad, g, this, function():void
-				{
-					applyArtifactStats();
-				});
+					{
+						applyArtifactStats();
+					});
 			}
 			else
 			{
@@ -1352,13 +1261,13 @@ package core.player
 			}
 			return startIndex;
 		}
-		
+
 		private function applySkinArtifact():void
 		{
 			var _loc1_:Object = DataLocator.getService().loadKey("Skins", activeSkin);
 			addArtifactStat(ArtifactFactory.createArtifactFromSkin(_loc1_), false);
 		}
-		
+
 		private function applyArtifactStats():void
 		{
 			var _loc1_:Artifact = null;
@@ -1378,7 +1287,7 @@ package core.player
 			ship.hp = ship.hpMax;
 			ship.shieldHp = ship.shieldHpMax;
 		}
-		
+
 		public function changeArtifactSetup(param1:int):void
 		{
 			var _loc4_:* = null;
@@ -1414,43 +1323,43 @@ package core.player
 				}
 			}
 		}
-		
+
 		private function loadArtifactsFromMessage(param1:Message, param2:int, param3:Boolean = false):int
 		{
 			var id:String;
 			var m:Message = param1;
 			var startIndex:int = param2;
 			var isLoot:Boolean = param3;
-			var nrOfArtifacts:int = m.getInt(startIndex++);
+			var nrOfArtifacts:int = m.getInt(startIndex++ );
 			var i:int = 0;
 			while (i < nrOfArtifacts)
 			{
-				id = m.getString(startIndex++);
+				id = m.getString(startIndex++ );
 				ArtifactFactory.createArtifact(id, g, this, function(param1:Artifact):void
-				{
-					if (param1 == null)
 					{
-						return;
-					}
-					if (isLoot)
-					{
-						MessageLog.writeChatMsg("loot", "<FONT COLOR='#4488ff'>You found a new artifact: " + param1.name + ".</FONT>");
-						g.textManager.createDropText("You found a new Artifact!", 1, 20, 5000, 4491519);
-					}
-					artifacts.push(param1);
-				});
+						if (param1 == null)
+						{
+							return;
+						}
+						if (isLoot)
+						{
+							MessageLog.writeChatMsg("loot", "<FONT COLOR='#4488ff'>You found a new artifact: " + param1.name + ".</FONT>");
+							g.textManager.createDropText("You found a new Artifact!", 1, 20, 5000, 4491519);
+						}
+						artifacts.push(param1);
+					});
 				i++;
 			}
 			return startIndex;
 		}
-		
+
 		public function addWeapon(param1:String):void
 		{
-			weapons.push({"weapon": param1});
+			weapons.push( {"weapon": param1});
 			addTechSkill(name, "Weapons", param1);
 			refreshWeapons();
 		}
-		
+
 		public function pickupArtifacts(param1:Message):void
 		{
 			g.hud.artifactsButton.hintNew();
@@ -1461,7 +1370,7 @@ package core.player
 				g.hud.showArtifactLimitText();
 			}
 		}
-		
+
 		public function pickupArtifact(param1:Message):void
 		{
 			g.hud.artifactsButton.hintNew();
@@ -1472,7 +1381,7 @@ package core.player
 				g.hud.showArtifactLimitText();
 			}
 		}
-		
+
 		public function checkPickupMessage(param1:Message, param2:int):void
 		{
 			var _loc6_:String = null;
@@ -1507,7 +1416,7 @@ package core.player
 			{
 				MessageLog.writeChatMsg("loot", "<FONT COLOR='#ffcc44'>Auto recycled artifact</FONT>");
 			}
-			var _loc11_:int = param1.getInt(param2++);
+			var _loc11_:int = param1.getInt(param2++ );
 			var _loc8_:int = param2 + _loc11_ * 6;
 			param2;
 			while (param2 < _loc8_)
@@ -1544,7 +1453,7 @@ package core.player
 				g.hud.cargoButton.flash();
 				if (_loc13_)
 				{
-					weapons.push({"weapon": _loc7_});
+					weapons.push( {"weapon": _loc7_});
 					refreshWeapons();
 				}
 				if (_loc10_)
@@ -1554,12 +1463,12 @@ package core.player
 				param2 += 6;
 			}
 		}
-		
+
 		public function addTechSkill(param1:String, param2:String, param3:String):void
 		{
 			techSkills.push(new TechSkill(param1, param3, param2, 0));
 		}
-		
+
 		private function refreshWeapons(param1:Boolean = true):void
 		{
 			if (ship != null)
@@ -1577,7 +1486,7 @@ package core.player
 				ship.weaponIsChanging = false;
 			}
 		}
-		
+
 		private function autoSetHotkeysForWeapons():void
 		{
 			var _loc2_:Vector.<Weapon> = ship.weapons;
@@ -1589,12 +1498,12 @@ package core.player
 				}
 			}
 		}
-		
+
 		public function nrOfActiveArtifacts():int
 		{
 			return activeArtifacts.length;
 		}
-		
+
 		public function getArtifactById(param1:String):Artifact
 		{
 			var _loc2_:int = 0;
@@ -1609,12 +1518,12 @@ package core.player
 			}
 			return null;
 		}
-		
+
 		public function isActiveArtifact(param1:Artifact):Boolean
 		{
 			return activeArtifacts.indexOf(param1.id) != -1;
 		}
-		
+
 		public function isArtifactInSetup(param1:Artifact):Boolean
 		{
 			for each (var _loc2_:* in artifactSetups)
@@ -1626,17 +1535,17 @@ package core.player
 			}
 			return false;
 		}
-		
+
 		public function addArtifactStat(param1:Artifact, param2:Boolean = true):void
 		{
 			addRemoveArtifactStat(param1, true, param2);
 		}
-		
+
 		public function removeArtifactStat(param1:Artifact, param2:Boolean = true):void
 		{
 			addRemoveArtifactStat(param1, false, param2);
 		}
-		
+
 		public function toggleArtifact(param1:Artifact, param2:Boolean = true):void
 		{
 			var _loc3_:int = int(activeArtifacts.indexOf(param1.id));
@@ -1651,7 +1560,7 @@ package core.player
 				addArtifactStat(param1, param2);
 			}
 		}
-		
+
 		private function addRemoveArtifactStat(param1:Artifact, param2:Boolean, param3:Boolean = true):void
 		{
 			var _loc6_:Number = NaN;
@@ -1955,7 +1864,7 @@ package core.player
 				g.hud.abilities.refresh();
 			}
 		}
-		
+
 		public function hasTechSkill(param1:String, param2:String):Boolean
 		{
 			for each (var _loc3_:* in techSkills)
@@ -1967,7 +1876,7 @@ package core.player
 			}
 			return false;
 		}
-		
+
 		public function changeWeapon(param1:Message, param2:int):void
 		{
 			var _loc8_:int = 0;
@@ -2009,7 +1918,7 @@ package core.player
 				g.hud.weaponHotkeys.highlightWeapon(ship.weapons[_loc4_].hotkey);
 			}
 		}
-		
+
 		public function sendChangeWeapon(param1:int):void
 		{
 			var _loc3_:int = 0;
@@ -2033,7 +1942,7 @@ package core.player
 				}
 			}
 		}
-		
+
 		public function tryUnlockSlot(param1:String, param2:int, param3:Function):void
 		{
 			var type:String = param1;
@@ -2044,43 +1953,43 @@ package core.player
 				return;
 			}
 			g.rpc("tryUnlockSlot", function(param1:Message):void
-			{
-				var _loc4_:String = param1.getString(0);
-				var _loc2_:int = param1.getInt(1);
-				var _loc5_:int = 0;
-				var _loc3_:String = "";
-				if (_loc4_ == "slotWeapon")
 				{
-					_loc5_ = int(SLOT_WEAPON_UNLOCK_COST[_loc2_ - 1]);
-					_loc3_ = "flpbTKautkC1QzjWT28gkw";
-					unlockedWeaponSlots = _loc2_;
-					if (ship != null)
+					var _loc4_:String = param1.getString(0);
+					var _loc2_:int = param1.getInt(1);
+					var _loc5_:int = 0;
+					var _loc3_:String = "";
+					if (_loc4_ == "slotWeapon")
 					{
-						ship.unlockedWeaponSlots = _loc2_;
+						_loc5_ = int(SLOT_WEAPON_UNLOCK_COST[_loc2_ - 1]);
+						_loc3_ = "flpbTKautkC1QzjWT28gkw";
+						unlockedWeaponSlots = _loc2_;
+						if (ship != null)
+						{
+							ship.unlockedWeaponSlots = _loc2_;
+						}
 					}
-				}
-				else if (_loc4_ == "slotArtifact")
-				{
-					_loc5_ = int(SLOT_ARTIFACT_UNLOCK_COST[_loc2_ - 1]);
-					_loc3_ = "flpbTKautkC1QzjWT28gkw";
-					unlockedArtifactSlots = _loc2_;
-				}
-				else if (_loc4_ == "slotCrew")
-				{
-					_loc5_ = int(SLOT_CREW_UNLOCK_COST[_loc2_ - 1]);
-					_loc3_ = "flpbTKautkC1QzjWT28gkw";
-					unlockedCrewSlots = _loc2_;
-				}
-				g.myCargo.removeMinerals(_loc3_, _loc5_);
-				callback();
-			}, type, index);
+					else if (_loc4_ == "slotArtifact")
+					{
+						_loc5_ = int(SLOT_ARTIFACT_UNLOCK_COST[_loc2_ - 1]);
+						_loc3_ = "flpbTKautkC1QzjWT28gkw";
+						unlockedArtifactSlots = _loc2_;
+					}
+					else if (_loc4_ == "slotCrew")
+					{
+						_loc5_ = int(SLOT_CREW_UNLOCK_COST[_loc2_ - 1]);
+						_loc3_ = "flpbTKautkC1QzjWT28gkw";
+						unlockedCrewSlots = _loc2_;
+					}
+					g.myCargo.removeMinerals(_loc3_, _loc5_);
+					callback();
+				}, type, index);
 		}
-		
+
 		public function get team():int
 		{
 			return _team;
 		}
-		
+
 		public function set team(param1:int):void
 		{
 			_team = param1;
@@ -2090,37 +1999,37 @@ package core.player
 				ship.updateLabel();
 			}
 		}
-		
+
 		public function get name():String
 		{
 			return _name;
 		}
-		
+
 		public function set name(param1:String):void
 		{
 			_name = param1;
 		}
-		
+
 		public function get inSafeZone():Boolean
 		{
 			return _inSafeZone;
 		}
-		
+
 		public function set inSafeZone(param1:Boolean):void
 		{
 			_inSafeZone = param1;
 		}
-		
+
 		public function set isWarpJumping(param1:Boolean):void
 		{
 			_isWarpJumping = param1;
 		}
-		
+
 		public function get isWarpJumping():Boolean
 		{
 			return _isWarpJumping;
 		}
-		
+
 		public function get invulnarable():Boolean
 		{
 			if (_inSafeZone || _isWarpJumping)
@@ -2129,7 +2038,7 @@ package core.player
 			}
 			return false;
 		}
-		
+
 		public function saveWeaponData(param1:Vector.<Weapon>):void
 		{
 			var _loc4_:WeaponDataHolder = null;
@@ -2142,7 +2051,7 @@ package core.player
 				weaponData.push(_loc4_);
 			}
 		}
-		
+
 		public function get commandable():Boolean
 		{
 			if (ship == null || !ship.alive || isLanded || isWarpJumping)
@@ -2151,7 +2060,7 @@ package core.player
 			}
 			return true;
 		}
-		
+
 		public function getWeaponByHotkey(param1:int):Weapon
 		{
 			if (ship == null)
@@ -2167,7 +2076,7 @@ package core.player
 			}
 			return null;
 		}
-		
+
 		public function getCrewMember(param1:String):CrewMember
 		{
 			for each (var _loc2_:* in crewMembers)
@@ -2179,7 +2088,7 @@ package core.player
 			}
 			return null;
 		}
-		
+
 		public function getCrewMembersBySolarSystem(param1:String):Vector.<CrewMember>
 		{
 			var _loc3_:Vector.<CrewMember> = new Vector.<CrewMember>();
@@ -2192,7 +2101,7 @@ package core.player
 			}
 			return _loc3_;
 		}
-		
+
 		public function isFriendWith(param1:Player):Boolean
 		{
 			for each (var _loc2_:* in friends)
@@ -2204,7 +2113,7 @@ package core.player
 			}
 			return false;
 		}
-		
+
 		public function removeMissionById(param1:String):void
 		{
 			var _loc2_:Mission = getMissionById(param1);
@@ -2213,7 +2122,7 @@ package core.player
 				removeMission(_loc2_);
 			}
 		}
-		
+
 		private function getMissionById(param1:String):Mission
 		{
 			for each (var _loc2_:* in missions)
@@ -2225,7 +2134,7 @@ package core.player
 			}
 			return null;
 		}
-		
+
 		public function updateMission(param1:Message, param2:int):void
 		{
 			var missionType:Object;
@@ -2242,28 +2151,28 @@ package core.player
 			{
 				g.hud.compas.clear();
 				TweenMax.delayedCall(1.5, function():void
-				{
-					var _loc1_:Boolean = false;
-					for each (var _loc3_:* in g.bodyManager.bodies)
 					{
-						if (_loc3_.key == "SWqDETtcD0i6Wc3s81yccQ" || _loc3_.key == "U8PYtFoC5U6c2A_gar9j2A" || _loc3_.key == "TLYpHghGOU6FaZtxDiVXBA")
+						var _loc1_:Boolean = false;
+						for each (var _loc3_:* in g.bodyManager.bodies)
 						{
-							for each (var _loc2_:* in _loc3_.spawners)
+							if (_loc3_.key == "SWqDETtcD0i6Wc3s81yccQ" || _loc3_.key == "U8PYtFoC5U6c2A_gar9j2A" || _loc3_.key == "TLYpHghGOU6FaZtxDiVXBA")
 							{
-								if (_loc2_.alive)
+								for each (var _loc2_:* in _loc3_.spawners)
 								{
-									_loc1_ = true;
-									g.hud.compas.addHintArrowByKey(_loc3_.key);
+									if (_loc2_.alive)
+									{
+										_loc1_ = true;
+										g.hud.compas.addHintArrowByKey(_loc3_.key);
+										break;
+									}
+								}
+								if (_loc1_)
+								{
 									break;
 								}
 							}
-							if (_loc1_)
-							{
-								break;
-							}
 						}
-					}
-				});
+					});
 			}
 			if (missionTypeKey == "s1l0zM-6lkq9l1jlGDBy4w")
 			{
@@ -2291,12 +2200,12 @@ package core.player
 				g.hud.compas.clear();
 			}
 		}
-		
+
 		public function toggleTractorBeam():void
 		{
 			tractorBeamActive = !tractorBeamActive;
 		}
-		
+
 		public function isTractorBeamActive():Boolean
 		{
 			if (!hasTractorBeam())
@@ -2305,7 +2214,7 @@ package core.player
 			}
 			return tractorBeamActive;
 		}
-		
+
 		public function hasTractorBeam():Boolean
 		{
 			if (g.time == 0)
@@ -2318,7 +2227,7 @@ package core.player
 			}
 			return tractorBeam > g.time;
 		}
-		
+
 		public function hasXpProtection():Boolean
 		{
 			if (g.time == 0)
@@ -2335,12 +2244,12 @@ package core.player
 			}
 			return xpProtection > g.time;
 		}
-		
+
 		public function toggleCargoProtection():void
 		{
 			cargoProtectionActive = !cargoProtectionActive;
 		}
-		
+
 		public function isCargoProtectionActive():Boolean
 		{
 			if (!hasCargoProtection())
@@ -2349,7 +2258,7 @@ package core.player
 			}
 			return cargoProtectionActive;
 		}
-		
+
 		public function hasCargoProtection():Boolean
 		{
 			if (g.time == 0)
@@ -2362,7 +2271,7 @@ package core.player
 			}
 			return cargoProtection > g.time;
 		}
-		
+
 		public function hasSupporter():Boolean
 		{
 			if (g.time == 0)
@@ -2375,7 +2284,7 @@ package core.player
 			}
 			return supporter > g.time;
 		}
-		
+
 		public function changeSkin(param1:String):void
 		{
 			var _loc3_:int = 0;
@@ -2405,12 +2314,12 @@ package core.player
 				_loc3_++;
 			}
 		}
-		
+
 		public function respawnReady():Boolean
 		{
 			return respawnNextReady < g.time && respawnNextReady > 0;
 		}
-		
+
 		public function hasSkin(param1:String):Boolean
 		{
 			for each (var _loc2_:* in fleet)
@@ -2422,7 +2331,7 @@ package core.player
 			}
 			return false;
 		}
-		
+
 		public function addEncounter(param1:Message):void
 		{
 			var _loc3_:Object = null;
@@ -2450,7 +2359,7 @@ package core.player
 			g.hud.encountersButton.hintNew();
 			g.textManager.createBonusXpText(_loc2_);
 		}
-		
+
 		public function getFleetObj(param1:String):FleetObj
 		{
 			for each (var _loc2_:* in fleet)
@@ -2462,23 +2371,23 @@ package core.player
 			}
 			return null;
 		}
-		
+
 		public function getActiveFleetObj():FleetObj
 		{
 			return getFleetObj(activeSkin);
 		}
-		
+
 		public function addCompletedMission(param1:String, param2:Number):void
 		{
 			completedMissions[param1] = param2;
 			g.textManager.createMissionBestTimeText();
 		}
-		
+
 		public function addTriggeredMission(param1:String):void
 		{
 			triggeredMissions.push(param1);
 		}
-		
+
 		public function hasTriggeredMission(param1:String):Boolean
 		{
 			for each (var _loc2_:* in triggeredMissions)
@@ -2490,7 +2399,7 @@ package core.player
 			}
 			return false;
 		}
-		
+
 		public function dispose():void
 		{
 			g = null;

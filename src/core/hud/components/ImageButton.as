@@ -3,15 +3,12 @@ package core.hud.components
 	import starling.events.TouchEvent;
 	import starling.filters.ColorMatrixFilter;
 	import starling.textures.Texture;
-	
+
 	public class ImageButton extends InteractiveImage
 	{
 		private var callback:Function;
-		
 		protected var disabledSource:Texture;
-		
 		protected var toggleSource:Texture;
-		
 		public function ImageButton(param1:Function, param2:Texture = null, param3:Texture = null, param4:Texture = null, param5:Texture = null, param6:String = null, param7:Boolean = false)
 		{
 			disabledSource = param4;
@@ -20,7 +17,7 @@ package core.hud.components
 			captionPosition = Position.INNER_RIGHT;
 			this.callback = param1;
 		}
-		
+
 		override public function set texture(param1:Texture):void
 		{
 			if (disabledSource == null)
@@ -33,12 +30,12 @@ package core.hud.components
 			}
 			super.texture = param1;
 		}
-		
+
 		public function set disabledBitmapData(param1:Texture):void
 		{
 			disabledSource = param1;
 		}
-		
+
 		override public function set enabled(param1:Boolean):void
 		{
 			var _loc2_:ColorMatrixFilter = null;
@@ -69,7 +66,7 @@ package core.hud.components
 			}
 			super.enabled = param1;
 		}
-		
+
 		override protected function onClick(param1:TouchEvent):void
 		{
 			layer.texture = toggleSource;

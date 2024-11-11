@@ -12,7 +12,7 @@ package core.hud.components.map
 	import starling.textures.TextureSmoothing;
 	import starling.filters.GlowFilter;
 	import starling.events.Event;
-	
+
 	public class MapBoss
 	{
 		private var boss:Boss;
@@ -20,7 +20,6 @@ package core.hud.components.map
 		private var bossImage:Image;
 		private var pivotMarker:Quad;
 		private var hasIcon:Boolean;
-		
 		public function MapBoss(parent:Sprite, boss:Boss)
 		{
 			super();
@@ -35,8 +34,9 @@ package core.hud.components.map
 			parent.addChild(bossImage);
 			parent.setChildIndex(bossImage, parent.numChildren - 1);
 		}
-		
-		private function iconAddedToStage(event: Event): void {
+
+		private function iconAddedToStage(event:Event):void
+		{
 			bossImage.removeEventListener(Event.ADDED_TO_STAGE, iconAddedToStage);
 			var glowFilter:GlowFilter = new GlowFilter();
 			glowFilter.color = 0xFF0000;
@@ -45,11 +45,12 @@ package core.hud.components.map
 
 			bossImage.filter = glowFilter;
 		}
-		
+
 		public function update():void
 		{
 			bossImage.visible = boss.alive;
-			if (hasIcon) {
+			if (hasIcon)
+			{
 				bossImage.rotation = boss.rotation;
 			}
 			bossImage.x = boss.pos.x * Map.SCALE;

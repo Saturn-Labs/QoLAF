@@ -5,19 +5,14 @@ package core.hud.components
 	import generics.Localize;
 	import starling.display.Image;
 	import starling.filters.GlowFilter;
-	
+
 	public class ButtonCargo extends ButtonHud
 	{
 		public static var serverSaysCargoIsFull:Boolean = false;
-		
 		private var capacityBar:Image;
-		
 		private var g:Game;
-		
 		private var fadeTween:TweenMax;
-		
 		private var text:TextBitmap;
-		
 		public function ButtonCargo(param1:Game, param2:Function)
 		{
 			super(param2, "button_cargo.png", null);
@@ -34,7 +29,7 @@ package core.hud.components
 			text.x = 0;
 			update();
 		}
-		
+
 		public function update():void
 		{
 			var perc:Number = g.myCargo.spaceJunkCount / g.myCargo.compressorCapacities[g.me.compressorLevel];
@@ -62,9 +57,10 @@ package core.hud.components
 					capacityBar.filter.cache();
 				}
 				fadeTween = TweenMax.fromTo(capacityBar, 0.5, {"alpha": 1}, {"alpha": 0.5, "repeat": -1, "yoyo": true, "onUpdate": function():void
-				{
-					text.alpha = capacityBar.alpha;
-				}});
+						{
+							text.alpha = capacityBar.alpha;
+						}
+					});
 				if (!contains(text))
 				{
 					addChild(text);

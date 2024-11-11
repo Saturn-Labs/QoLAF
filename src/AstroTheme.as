@@ -23,11 +23,10 @@ package
 	import starling.textures.TextureAtlas;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-	
+
 	public class AstroTheme extends AeonDesktopTheme
 	{
 		protected static var chatTabTextFormat:TextFormat = new TextFormat("DAIDRR", 12, 16777215);
-		
 		protected var scrollBarThumbSkinTextures:Texture;
 		protected var inputFormat:TextFormat;
 		protected var toolTipFormat:TextFormat;
@@ -35,10 +34,8 @@ package
 		protected var shopListFormat:TextFormat;
 		protected var artifactSetupDefaultFormat:TextFormat;
 		protected var artifactSetupSelectedFormat:TextFormat;
-		
 		// QoLAF
 		protected var targetInfoFormat:TextFormat;
-		
 		public function AstroTheme()
 		{
 			inputFormat = new TextFormat("Verdana", 12, 16777215);
@@ -52,17 +49,17 @@ package
 			Starling.current.stage.color = 0;
 			Starling.current.nativeStage.color = 0;
 		}
-		
+
 		protected static function simpleScrollBarFactory():IScrollBar
 		{
 			return new SimpleScrollBar();
 		}
-		
+
 		override protected function initializeStage():void
 		{
 			super.initializeStage();
 		}
-		
+
 		override protected function initializeTextures():void
 		{
 			super.initializeTextures();
@@ -70,7 +67,7 @@ package
 			var _loc2_:TextureAtlas = _loc1_.getTextureAtlas("texture_gui1_test.png");
 			scrollBarThumbSkinTextures = _loc2_.getTexture("simple-scroll-bar-thumb-skin");
 		}
-		
+
 		override protected function initializeStyleProviders():void
 		{
 			super.initializeStyleProviders();
@@ -85,9 +82,9 @@ package
 			this.getStyleProviderForClass(TabBar).setFunctionForStyleName("chat_tabs", chatTabs);
 			this.getStyleProviderForClass(Label).setFunctionForStyleName("target_info", targetInfoLabel);
 		}
-		
+
 		// QoLAF
-		protected function targetInfoLabel(label:Label): void 
+		protected function targetInfoLabel(label:Label):void
 		{
 			label.textRendererFactory = textRendererFactory;
 			var format:TextFormat = targetInfoFormat;
@@ -96,7 +93,7 @@ package
 			label.textRendererProperties.isHTML = true;
 			label.touchable = false;
 		}
-		
+
 		override protected function setScrollerStyles(param1:Scroller):void
 		{
 			super.setScrollerStyles(param1);
@@ -106,7 +103,7 @@ package
 			param1.scrollBarDisplayMode = "fixed";
 			param1.verticalScrollStep = 30;
 		}
-		
+
 		override protected function setVerticalSimpleScrollBarThumbStyles(param1:Button):void
 		{
 			var _loc2_:ImageSkin = new ImageSkin(this.scrollBarThumbSkinTextures);
@@ -119,13 +116,13 @@ package
 			param1.hasLabelTextRenderer = false;
 			param1.useHandCursor = true;
 		}
-		
+
 		protected function inputTextInitializer(param1:InputText):void
 		{
 			param1.textEditorProperties.textFormat = inputFormat;
 			param1.textEditorProperties.wordWrap = true;
 		}
-		
+
 		protected function labelTooltip(param1:Label):void
 		{
 			param1.textRendererFactory = textRendererFactory;
@@ -134,7 +131,7 @@ package
 			param1.textRendererProperties.wordWrap = true;
 			param1.textRendererProperties.isHTML = true;
 		}
-		
+
 		protected function labelChat(param1:Label):void
 		{
 			param1.textRendererFactory = textRendererFactory;
@@ -144,7 +141,7 @@ package
 			param1.textRendererProperties.alpha = 0.7;
 			param1.touchable = false;
 		}
-		
+
 		private function shopList(param1:List):void
 		{
 			super.setListStyles(param1);
@@ -152,7 +149,7 @@ package
 			param1.customItemRendererStyleName = "shop";
 			param1.backgroundSkin = null;
 		}
-		
+
 		protected function shopItemRendererInitializer(param1:BaseDefaultItemRenderer):void
 		{
 			var _loc2_:ImageSkin = new ImageSkin();
@@ -175,12 +172,12 @@ package
 			param1.accessoryLoaderFactory = this.shopImageLoaderFactory;
 			param1.iconLoaderFactory = this.shopImageLoaderFactory;
 		}
-		
+
 		protected function shopImageLoaderFactory():ImageLoader
 		{
 			return new ImageLoader();
 		}
-		
+
 		protected function artifactSetupButton(param1:ToggleButton):void
 		{
 			var _loc2_:ITextureManager = TextureLocator.getService();
@@ -200,7 +197,7 @@ package
 			param1.paddingLeft = param1.paddingRight = 8;
 			param1.gap = 0;
 		}
-		
+
 		protected function chatTabs(param1:TabBar):void
 		{
 			param1.distributeTabSizes = false;
@@ -210,7 +207,7 @@ package
 			param1.customTabStyleName = "chat_tab";
 			param1.height = 24;
 		}
-		
+
 		protected function chatTab(param1:ToggleButton):void
 		{
 			var _loc2_:ImageSkin = new ImageSkin();
@@ -227,7 +224,7 @@ package
 			param1.gap = 0;
 			param1.useHandCursor = true;
 		}
-		
+
 		protected function chatInput(param1:TextInput):void
 		{
 			param1.maxChars = 150;

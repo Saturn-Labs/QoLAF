@@ -23,6 +23,7 @@ package core.player
 	import core.states.gameStates.missions.MissionsList;
 	import core.unit.Unit;
 	import core.weapon.Beam;
+	import core.weapon.Debuff;
 	import core.weapon.Heat;
 	import core.weapon.Teleport;
 	import core.weapon.Weapon;
@@ -36,26 +37,22 @@ package core.player
 	import joinRoom.JoinRoomLocator;
 	import movement.Heading;
 	import playerio.Message;
+	import qolaf.modifiers.Modifier;
 	import qolaf.target.TargetSystem;
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
-	
+
 	public class PlayerManager extends EventDispatcher
 	{
 		public static var banMinutes:int = 0;
-		
 		public static var isAllChannels:Boolean = false;
-		
 		private var _me:Player;
-		
 		private var _playersById:Dictionary;
-		
 		private var _players:Vector.<Player>;
-		
+
 		private var _enemyPlayers:Vector.<Player>;
-		
+
 		private var g:Game;
-		
 		public function PlayerManager(param1:Game)
 		{
 			super();
@@ -64,7 +61,7 @@ package core.player
 			_enemyPlayers = new Vector.<Player>();
 			_playersById = new Dictionary();
 		}
-		
+
 		public function addMessageHandlers():void
 		{
 			g.addMessageHandler("reputationChange", reputationChange);
@@ -117,7 +114,7 @@ package core.player
 			g.addMessageHandler("updateCredits", m_updateCredits);
 			g.addMessageHandler("softDisconnect", m_softDisconnect);
 		}
-		
+
 		private function handleChatBan(param1:Message):void
 		{
 			var _loc2_:int = param1.getInt(0);
@@ -125,13 +122,13 @@ package core.player
 			banMinutes = _loc2_;
 			TweenMax.delayedCall(60, reduceBanMinutes);
 		}
-		
+
 		private function handleKicked(param1:Message):void
 		{
 			g.showMessageDialog("You were kicked out of the game by a moderator");
 			g.disconnect();
 		}
-		
+
 		private function showInvitePopup():void
 		{
 			var invButton:FBInvite;
@@ -156,13 +153,13 @@ package core.player
 			}
 			g.addChildToOverlay(popup);
 			g.creditManager.refresh();
-			popup.addEventListener("close", function(event:Event): void
-			{
-				g.removeChildFromOverlay(popup);
-				popup.removeEventListeners();
-			});
+			popup.addEventListener("close", function(event:Event):void
+				{
+					g.removeChildFromOverlay(popup);
+					popup.removeEventListeners();
+				});
 		}
-		
+
 		private function m_GiftFlux(param1:Message):void
 		{
 			var type:String;
@@ -181,19 +178,20 @@ package core.player
 					popup.text = "Congratulations Captain! \n\nWell done reaching " + value2 + "! Have " + value + " Flux for free! \nGet yourself something nice! :)";
 					g.addChildToOverlay(popup);
 					g.creditManager.refresh();
-					popup.addEventListener("close", function(event:Event): void {
-						g.removeChildFromOverlay(popup);
-						popup.removeEventListeners();
-						if (Login.currentState == "facebook" || Login.currentState == "kongregate")
+					popup.addEventListener("close", function(event:Event):void
 						{
-							TweenMax.delayedCall(5, showInvitePopup);
-						}
-					});
+							g.removeChildFromOverlay(popup);
+							popup.removeEventListeners();
+							if (Login.currentState == "facebook" || Login.currentState == "kongregate")
+							{
+								TweenMax.delayedCall(5, showInvitePopup);
+							}
+						});
 				}
 			}
 			g.creditManager.refresh();
 		}
-		
+
 		private function m_receivedFlux(param1:Message):void
 		{
 			var popup:PopupMessage;
@@ -206,13 +204,14 @@ package core.player
 				popup.text = Localize.t("You have received your " + value + " bonus flux!");
 				g.addChildToOverlay(popup);
 				g.creditManager.refresh();
-				popup.addEventListener("close", function(event:Event): void {
-					g.removeChildFromOverlay(popup);
-					popup.removeEventListeners();
-				});
+				popup.addEventListener("close", function(event:Event):void
+					{
+						g.removeChildFromOverlay(popup);
+						popup.removeEventListeners();
+					});
 			}
 		}
-		
+
 		private function reduceBanMinutes():void
 		{
 			banMinutes--;
@@ -222,7 +221,7 @@ package core.player
 			}
 			TweenMax.delayedCall(60, reduceBanMinutes);
 		}
-		
+
 		private function heatLockout(param1:Message):void
 		{
 			var _loc3_:Heat = null;
@@ -234,7 +233,7 @@ package core.player
 				_loc3_.setHeat(param1.getNumber(1));
 			}
 		}
-		
+
 		private function m_startCloak(param1:Message):void
 		{
 			var _loc3_:Heading = null;
@@ -248,9 +247,12 @@ package core.player
 				_loc2_.ship.course = _loc3_;
 				_loc2_.ship.x = 824124;
 				_loc2_.ship.y = -725215;
+
+				// QoLAF
+				_loc2_.ship.addModifier(new Modifier(Debuff.CLOAKED, 0, true));
 			}
 		}
-		
+
 		private function m_endCloak(param1:Message):void
 		{
 			var _loc3_:Heading = null;
@@ -264,9 +266,12 @@ package core.player
 				_loc2_.ship.x = _loc3_.pos.x;
 				_loc2_.ship.y = _loc3_.pos.y;
 				_loc2_.ship.addToCanvasForReal();
+
+				// QoLAF
+				_loc2_.ship.removeModifierById(Debuff.CLOAKED);
 			}
 		}
-		
+
 		private function m_startCloakSelf(param1:Message):void
 		{
 			var _loc3_:Heat = null;
@@ -278,7 +283,7 @@ package core.player
 				_loc2_.ship.alpha = 0.1;
 			}
 		}
-		
+
 		private function m_endCloakSelf(param1:Message):void
 		{
 			var _loc2_:Player = g.me;
@@ -287,7 +292,7 @@ package core.player
 				_loc2_.ship.alpha = 1;
 			}
 		}
-		
+
 		public function update():void
 		{
 			for each (var _loc2_:* in _players)
@@ -309,17 +314,17 @@ package core.player
 				}
 			}
 		}
-		
+
 		private function m_requestUpdateInviteReward(param1:Message):void
 		{
 			g.send("requestInviteReward");
 		}
-		
+
 		private function m_pickupArtifact(param1:Message):void
 		{
 			g.me.pickupArtifact(param1);
 		}
-		
+
 		public function listAll():void
 		{
 			for each (var _loc1_:* in _players)
@@ -330,7 +335,7 @@ package core.player
 				}
 			}
 		}
-		
+
 		private function addMe(param1:String):Player
 		{
 			_me = new Player(g, param1);
@@ -341,7 +346,7 @@ package core.player
 			_players.push(_me);
 			return _me;
 		}
-		
+
 		private function addPlayer(param1:String):Player
 		{
 			var _loc2_:Player = new Player(g, param1);
@@ -350,11 +355,11 @@ package core.player
 			_enemyPlayers.push(_loc2_);
 			return _loc2_;
 		}
-		
+
 		public function initPlayer(param1:Message, param2:int = 0):int
 		{
 			var _loc4_:Player = null;
-			var _loc3_:String = param1.getString(param2++);
+			var _loc3_:String = param1.getString(param2++ );
 			if (_loc3_ == g.client.connectUserId)
 			{
 				_loc4_ = addMe(_loc3_);
@@ -365,20 +370,20 @@ package core.player
 			}
 			return _loc4_.init(param1, param2);
 		}
-		
+
 		public function m_pvpTimeout(param1:Message):void
 		{
 			var _loc2_:Number = param1.getNumber(0);
 			g.textManager.createPvpText("Not enough players", 0, 30);
 			g.textManager.createPvpText("Match ending in " + int(_loc2_) + " seconds", -35, 30);
 		}
-		
+
 		public function m_newWeapon(param1:Message):void
 		{
 			var _loc2_:String = param1.getString(0);
 			Action.unlockWeapon(_loc2_);
 		}
-		
+
 		public function removePlayer(param1:Message):void
 		{
 			var _loc5_:int = 0;
@@ -416,13 +421,13 @@ package core.player
 				_loc3_.dispose();
 			}
 		}
-		
+
 		private function tooManyKillsNotify(param1:Message):void
 		{
 			var _loc2_:String = param1.getString(0);
 			MessageLog.writeChatMsg("death", "You have killed " + _loc2_ + " more than four times in a row, " + _loc2_ + " can not give more experince untill you kill someone else.");
 		}
-		
+
 		private function setRotationSpeed(param1:Message):void
 		{
 			var _loc2_:String = param1.getString(0);
@@ -436,7 +441,7 @@ package core.player
 				}
 			}
 		}
-		
+
 		private function setSpeed(param1:Message):void
 		{
 			var _loc2_:String = param1.getString(0);
@@ -446,7 +451,7 @@ package core.player
 				_loc3_.ship.engine.speed = param1.getNumber(1);
 			}
 		}
-		
+
 		private function addWeapon(param1:Message):void
 		{
 			var _loc2_:String = param1.getString(0);
@@ -457,7 +462,7 @@ package core.player
 				_loc3_.addWeapon(_loc4_);
 			}
 		}
-		
+
 		private function addSkin(param1:Message):void
 		{
 			var _loc2_:String = param1.getString(0);
@@ -468,7 +473,7 @@ package core.player
 				_loc3_.addNewSkin(_loc4_);
 			}
 		}
-		
+
 		private function spawnDrop(param1:Message):void
 		{
 			if (g.dropManager != null)
@@ -476,7 +481,7 @@ package core.player
 				g.dropManager.spawn(param1, 0);
 			}
 		}
-		
+
 		private function killed(param1:Message):void
 		{
 			if (param1 == null)
@@ -520,7 +525,7 @@ package core.player
 			}
 			_loc4_.enterKilled(param1);
 		}
-		
+
 		public function xpGain(param1:Message, param2:int):void
 		{
 			var _loc8_:int = 0;
@@ -558,7 +563,7 @@ package core.player
 				}
 			}
 		}
-		
+
 		private function reputationChange(param1:Message):void
 		{
 			var _loc4_:int = 0;
@@ -572,7 +577,7 @@ package core.player
 				_loc3_.updateReputation(_loc4_, _loc5_);
 			}
 		}
-		
+
 		public function xpLoss(param1:Message, param2:int):void
 		{
 			var _loc6_:int = 0;
@@ -586,7 +591,7 @@ package core.player
 				_loc4_.decreaseXp(_loc6_, _loc5_);
 			}
 		}
-		
+
 		private function payVaultCreditGain(param1:Message):void
 		{
 			var creditBox:CreditGainBox;
@@ -612,9 +617,9 @@ package core.player
 					{
 						g.removeChildFromOverlay(creditBox);
 						g.rpc("getPodCount", function(param1:Message):void
-						{
-							g.hud.updatePodCount(param1.getInt(0));
-						});
+							{
+								g.hud.updatePodCount(param1.getInt(0));
+							});
 					};
 				}
 			}
@@ -632,13 +637,14 @@ package core.player
 			{
 				g.me.fbLike = true;
 			}
-			creditBox.addEventListener("close", function(event:Event): void {
-				g.creditManager.refresh();
-				g.hud.buyFluxButton.flash();
-				g.removeChildFromOverlay(creditBox);
-			});
+			creditBox.addEventListener("close", function(event:Event):void
+				{
+					g.creditManager.refresh();
+					g.hud.buyFluxButton.flash();
+					g.removeChildFromOverlay(creditBox);
+				});
 		}
-		
+
 		private function modWarpToUser(param1:Message):void
 		{
 			var _loc4_:IJoinRoomManager = null;
@@ -654,7 +660,7 @@ package core.player
 				g.send("modWarp", "Hyperion");
 			}
 		}
-		
+
 		private function printMsg(param1:Message):void
 		{
 			var _loc2_:String = "system";
@@ -664,7 +670,7 @@ package core.player
 			}
 			MessageLog.write(param1.getString(0), _loc2_);
 		}
-		
+
 		private function chatMsg(param1:Message):void
 		{
 			if (param1.length <= 2)
@@ -672,19 +678,19 @@ package core.player
 				return printMsg(param1);
 			}
 			var _loc8_:int = 0;
-			var _loc6_:String = param1.getString(_loc8_++);
-			var _loc7_:String = param1.getString(_loc8_++);
-			var _loc5_:String = param1.getString(_loc8_++);
-			var _loc3_:String = param1.getString(_loc8_++);
-			var _loc4_:String = param1.getString(_loc8_++);
-			var _loc2_:Boolean = param1.getBoolean(_loc8_++);
+			var _loc6_:String = param1.getString(_loc8_++ );
+			var _loc7_:String = param1.getString(_loc8_++ );
+			var _loc5_:String = param1.getString(_loc8_++ );
+			var _loc3_:String = param1.getString(_loc8_++ );
+			var _loc4_:String = param1.getString(_loc8_++ );
+			var _loc2_:Boolean = param1.getBoolean(_loc8_++ );
 			MessageLog.writeChatMsg(_loc6_, _loc7_, _loc5_, _loc3_, _loc4_, _loc2_);
 			if (_loc6_ == "private" && _loc5_ != me.id)
 			{
 				g.chatInput.lastPrivateReceived = _loc3_;
 			}
 		}
-		
+
 		public function dmgBoost(param1:Message, param2:int):void
 		{
 			var _loc3_:String = param1.getString(param2);
@@ -693,16 +699,19 @@ package core.player
 			{
 				return;
 			}
-			var _loc5_:PlayerShip = _loc4_.ship;
-			if (_loc5_ == null)
+			var ship:PlayerShip = _loc4_.ship;
+			if (ship == null)
 			{
 				return;
 			}
-			_loc5_.usingDmgBoost = true;
-			_loc5_.dmgBoostEndTime = g.time + _loc5_.dmgBoostDuration;
-			_loc5_.damageBoostEffect();
+			ship.usingDmgBoost = true;
+			ship.dmgBoostEndTime = g.time + ship.dmgBoostDuration;
+			ship.damageBoostEffect();
+
+			// QoLAF
+			ship.addModifier(new Modifier(Debuff.POWER_BOOST, ship.dmgBoostDuration));
 		}
-		
+
 		public function hardenShield(param1:Message, param2:int):void
 		{
 			var _loc3_:String = param1.getString(param2);
@@ -711,16 +720,19 @@ package core.player
 			{
 				return;
 			}
-			var _loc5_:PlayerShip = _loc4_.ship;
-			if (_loc5_ == null)
+			var ship:PlayerShip = _loc4_.ship;
+			if (ship == null)
 			{
 				return;
 			}
-			_loc5_.usingHardenedShield = true;
-			_loc5_.hardenEndTimer = g.time + _loc5_.hardenDuration;
-			_loc5_.hardenShieldEffect();
+			ship.usingHardenedShield = true;
+			ship.hardenEndTimer = g.time + ship.hardenDuration;
+			ship.hardenShieldEffect();
+
+			// QoLAF
+			ship.addModifier(new Modifier(Debuff.HARD_SHIELD, ship.hardenDuration));
 		}
-		
+
 		public function convShield(param1:Message, param2:int):void
 		{
 			var _loc3_:String = param1.getString(param2);
@@ -731,40 +743,43 @@ package core.player
 			{
 				return;
 			}
-			var _loc5_:PlayerShip = _loc4_.ship;
-			if (_loc5_ == null)
+			var ship:PlayerShip = _loc4_.ship;
+			if (ship == null)
 			{
 				return;
 			}
-			_loc5_.shieldHp -= _loc6_;
-			_loc5_.hp += _loc7_;
-			if (_loc4_.ship.hp > _loc5_.hpMax)
+			ship.shieldHp -= _loc6_;
+			ship.hp += _loc7_;
+			if (_loc4_.ship.hp > ship.hpMax)
 			{
-				_loc7_ -= _loc5_.hp - _loc5_.hpMax;
-				_loc5_.hp = _loc5_.hpMax;
+				_loc7_ -= ship.hp - ship.hpMax;
+				ship.hp = ship.hpMax;
 			}
-			_loc5_.converShieldEffect();
-			g.textManager.createDmgText(-_loc7_, _loc5_);
+			ship.converShieldEffect();
+			g.textManager.createDmgText(-_loc7_, ship);
 			if (_loc4_.isMe && g.hud != null)
 			{
 				g.hud.healthAndShield.update();
 			}
+
+			// QoLAF
+			ship.addModifier(new Modifier(Debuff.HEALING, 2000));
 		}
-		
+
 		public function powerUpHeal(param1:Message, param2:int):void
 		{
 			var _loc7_:String = null;
 			var _loc5_:int = 0;
 			var _loc3_:int = 0;
-			var _loc4_:String = param1.getString(param2++);
+			var _loc4_:String = param1.getString(param2++ );
 			var _loc6_:Player = _playersById[_loc4_];
 			if (_loc6_ != null && _loc6_.ship != null)
 			{
-				_loc7_ = param1.getString(param2++);
-				_loc5_ = param1.getInt(param2++);
-				_loc3_ = param1.getInt(param2++);
-				_loc6_.ship.hp = param1.getInt(param2++);
-				_loc6_.ship.shieldHp = param1.getInt(param2++);
+				_loc7_ = param1.getString(param2++ );
+				_loc5_ = param1.getInt(param2++ );
+				_loc3_ = param1.getInt(param2++ );
+				_loc6_.ship.hp = param1.getInt(param2++ );
+				_loc6_.ship.shieldHp = param1.getInt(param2++ );
 				if (_loc7_ == "health" || _loc7_ == "healthSmall")
 				{
 					g.textManager.createDmgText(-_loc5_, _loc6_.ship, false);
@@ -779,7 +794,7 @@ package core.player
 				}
 			}
 		}
-		
+
 		public function damaged(message:Message, pointer:int):void
 		{
 			var _loc6_:int = 0;
@@ -792,11 +807,11 @@ package core.player
 				damage = message.getInt(pointer + 2);
 				player.ship.shieldHp = message.getInt(pointer + 3);
 				player.ship.hp = message.getInt(pointer + 4);
-				
+
 				// QoLAF
-				if (!player.isMe && Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.GetDistance(Game.instance.playerManager.me.ship, player.ship) < 600 && SceneBase.clientSettings.autoTarget)
-					Game.instance.targetSystem.SetCurrentUnit(player.ship);
-				
+				if (!player.isMe && Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.getDistance(Game.instance.playerManager.me.ship, player.ship) < 600 && SceneBase.clientSettings.autoTarget)
+					Game.instance.targetSystem.target = player.ship;
+
 				player.ship.takeDamage(damage);
 				if (message.getBoolean(pointer + 5))
 				{
@@ -808,7 +823,7 @@ package core.player
 				}
 			}
 		}
-		
+
 		private function landed(param1:Message):void
 		{
 			var _loc2_:String = param1.getString(0);
@@ -837,7 +852,7 @@ package core.player
 			}
 			_loc4_.land(_loc3_);
 		}
-		
+
 		private function initRoaming(param1:Message):void
 		{
 			var _loc2_:String = param1.getString(0);
@@ -851,7 +866,7 @@ package core.player
 				Console.write("No player on initRoaming!");
 			}
 		}
-		
+
 		private function landFailed(param1:Message):void
 		{
 			var _loc3_:String = param1.getString(0);
@@ -861,27 +876,27 @@ package core.player
 			_loc4_.loadCourse(_loc2_);
 			_loc4_.enterRoaming();
 		}
-		
+
 		public function get me():Player
 		{
 			return _me;
 		}
-		
+
 		public function get players():Vector.<Player>
 		{
 			return _players;
 		}
-		
+
 		public function get enemyPlayers():Vector.<Player>
 		{
 			return _enemyPlayers;
 		}
-		
+
 		public function get playersById():Dictionary
 		{
 			return _playersById;
 		}
-		
+
 		public function weaponChanged(param1:Message, param2:int):void
 		{
 			var _loc4_:Dictionary = g.playerManager.playersById;
@@ -893,7 +908,7 @@ package core.player
 			}
 			_loc5_.changeWeapon(param1, param2);
 		}
-		
+
 		private function weaponChangeFailed(param1:Message):void
 		{
 			var _loc3_:Dictionary = g.playerManager.playersById;
@@ -905,7 +920,7 @@ package core.player
 			}
 			_loc4_.ship.weaponIsChanging = false;
 		}
-		
+
 		public function trySetActiveWeapons(param1:Player, param2:int, param3:String):void
 		{
 			var _loc5_:Weapon = null;
@@ -1000,7 +1015,7 @@ package core.player
 			_loc10_.add(true);
 			g.sendMessage(_loc10_);
 		}
-		
+
 		public function fire(param1:Message, param2:int = 0, param3:int = 0):void
 		{
 			var _loc7_:int = 0;
@@ -1072,7 +1087,7 @@ package core.player
 				_loc12_.reloadTime = param1.getNumber(param2 + 5);
 			}
 		}
-		
+
 		private function initWarpJump(param1:Message):void
 		{
 			var _loc3_:String = param1.getString(0);
@@ -1098,7 +1113,7 @@ package core.player
 				_loc4_.ship.enterWarpJump();
 			}
 		}
-		
+
 		public function updateMission(param1:Message, param2:int):void
 		{
 			var _loc3_:String = param1.getString(param2);
@@ -1108,7 +1123,7 @@ package core.player
 				_loc4_.updateMission(param1, param2 + 1);
 			}
 		}
-		
+
 		public function updatePlayerStats(param1:Message, param2:int):void
 		{
 			var _loc4_:PlayerShip = null;
@@ -1127,7 +1142,7 @@ package core.player
 				_loc4_.armorThreshold = param1.getInt(param2 + 4);
 			}
 		}
-		
+
 		private function syncHeat(param1:Message):void
 		{
 			var _loc2_:String = param1.getString(0);
@@ -1143,7 +1158,7 @@ package core.player
 			}
 			_loc4_.weaponHeat.setHeat(param1.getNumber(1));
 		}
-		
+
 		private function crewJoinOffer(param1:Message):void
 		{
 			var _loc3_:int = 0;
@@ -1163,7 +1178,7 @@ package core.player
 			_loc2_.specials = _loc4_;
 			new CrewJoinOffer(g, _loc2_, null, param1.getString(3));
 		}
-		
+
 		private function addNewMission(param1:Message):void
 		{
 			var _loc2_:Boolean = false;
@@ -1227,13 +1242,13 @@ package core.player
 			g.hud.showNewMissionsButton();
 			MissionsList.reload();
 		}
-		
+
 		private function removeMission(param1:Message):void
 		{
 			var _loc2_:String = param1.getString(0);
 			me.removeMissionById(_loc2_);
 		}
-		
+
 		private function changeSkin(param1:Message):void
 		{
 			var _loc3_:String = param1.getString(0);
@@ -1244,12 +1259,12 @@ package core.player
 			}
 			_loc2_.activeSkin = param1.getString(1);
 		}
-		
+
 		private function newEncounter(param1:Message):void
 		{
 			g.me.addEncounter(param1);
 		}
-		
+
 		private function onPlayerUpdate(param1:Message):void
 		{
 			var _loc7_:Unit = null;
@@ -1257,7 +1272,7 @@ package core.player
 			var _loc10_:int = 0;
 			var _loc6_:Weapon = null;
 			var _loc12_:int = 0;
-			var _loc3_:String = param1.getString(_loc12_++);
+			var _loc3_:String = param1.getString(_loc12_++ );
 			var _loc4_:Player = playersById[_loc3_];
 			if (_loc4_ == null)
 			{
@@ -1268,8 +1283,8 @@ package core.player
 			{
 				return;
 			}
-			_loc5_.hp = param1.getInt(_loc12_++);
-			_loc5_.shieldHp = param1.getInt(_loc12_++);
+			_loc5_.hp = param1.getInt(_loc12_++ );
+			_loc5_.shieldHp = param1.getInt(_loc12_++ );
 			if (_loc5_.hp < _loc5_.hpMax || _loc5_.shieldHp < _loc5_.shieldHpMax)
 			{
 				_loc5_.isInjured = true;
@@ -1288,14 +1303,14 @@ package core.player
 				_loc2_.fire = false;
 				_loc2_.target = null;
 			}
-			var _loc8_:int = param1.getInt(_loc12_++);
+			var _loc8_:int = param1.getInt(_loc12_++ );
 			if (_loc8_ > -1 && _loc8_ < _loc9_.length)
 			{
 				_loc4_.selectedWeaponIndex = _loc8_;
-				_loc5_.weaponHeat.setHeat(param1.getNumber(_loc12_++));
+				_loc5_.weaponHeat.setHeat(param1.getNumber(_loc12_++ ));
 				_loc7_ = null;
-				_loc11_ = param1.getBoolean(_loc12_++);
-				_loc10_ = param1.getInt(_loc12_++);
+				_loc11_ = param1.getBoolean(_loc12_++ );
+				_loc10_ = param1.getInt(_loc12_++ );
 				if (_loc10_ != -1)
 				{
 					_loc7_ = g.unitManager.getTarget(_loc10_);
@@ -1305,7 +1320,7 @@ package core.player
 				_loc6_.target = _loc7_;
 			}
 		}
-		
+
 		private function m_teleportToPosition(param1:Message):void
 		{
 			var line:int;
@@ -1373,44 +1388,48 @@ package core.player
 				EmitterFactory.create("UZ3AiNHAEUmBD4ev0Itu0A", g, ship.pos.x, ship.pos.y, ship, true);
 				line++;
 				emitters = EmitterFactory.create("5BSaDIEYj0mEuVkMVp1JGw", g, heading.pos.x, heading.pos.y, null, true);
+
+				// QoLAF
+				ship.addModifier(new Modifier(Debuff.TELEPORTING, (channelingEnd - g.time)));
+
 				TweenMax.delayedCall(timeDiff, function():void
-				{
-					g.emitterManager.clean(ship);
-					line++;
-					EmitterFactory.create("CBZIObPQ40uaMZGvEcHvjw", g, ship.pos.x, ship.pos.y, ship, true);
-					TweenMax.delayedCall(0.24000000000000002, function():void
 					{
+						g.emitterManager.clean(ship);
 						line++;
-						for each (var _loc1_:* in emitters)
-						{
-							_loc1_.killEmitter();
-						}
-						line++;
-						ship.course = heading;
-						ship.isTeleporting = false;
-						line++;
-						if (ship == g.me.ship)
-						{
-							g.focusGameObject(g.me.ship, true);
-							EmitterFactory.create("CBZIObPQ40uaMZGvEcHvjw", g, ship.pos.x, ship.pos.y, ship, true);
-						}
-						line++;
+						EmitterFactory.create("CBZIObPQ40uaMZGvEcHvjw", g, ship.pos.x, ship.pos.y, ship, true);
+						TweenMax.delayedCall(0.24000000000000002, function():void
+							{
+								line++;
+								for each (var _loc1_:* in emitters)
+								{
+									_loc1_.killEmitter();
+								}
+								line++;
+								ship.course = heading;
+								ship.isTeleporting = false;
+								line++;
+								if (ship == g.me.ship)
+								{
+									g.focusGameObject(g.me.ship, true);
+									EmitterFactory.create("CBZIObPQ40uaMZGvEcHvjw", g, ship.pos.x, ship.pos.y, ship, true);
+								}
+								line++;
+							});
 					});
-				});
 			}
 			catch (e:Error)
 			{
 				g.client.errorLog.writeError(e.toString(), "teleport failed", e.getStackTrace(), {"line": line});
 			}
 		}
-		
+
 		private function m_AddCompletedMission(param1:Message):void
 		{
 			var _loc2_:String = param1.getString(0);
 			var _loc3_:int = param1.getNumber(1);
 			g.me.addCompletedMission(_loc2_, _loc3_);
 		}
-		
+
 		private function m_AddFaction(param1:Message):void
 		{
 			if (g.me != null)
@@ -1418,7 +1437,7 @@ package core.player
 				g.me.factions.push(param1.getString(0));
 			}
 		}
-		
+
 		private function m_RemoveFaction(param1:Message):void
 		{
 			var _loc3_:Player = null;
@@ -1440,7 +1459,7 @@ package core.player
 				}
 			}
 		}
-		
+
 		private function m_TriggerMission(param1:Message):void
 		{
 			var _loc3_:String = param1.getString(0);
@@ -1455,45 +1474,45 @@ package core.player
 				g.tutorial.showFoundNewStaticMission(_loc2_);
 			}
 		}
-		
+
 		public function troonGain(param1:Message, param2:int):void
 		{
 			var m:Message = param1;
 			var i:int = param2;
-			var playerKey:String = m.getString(i++);
+			var playerKey:String = m.getString(i++ );
 			var player:Player = playersById[playerKey];
-			var troons:Number = m.getNumber(i++);
+			var troons:Number = m.getNumber(i++ );
 			player.troons += troons;
 			if (!player.isMe)
 			{
 				return;
 			}
 			TweenMax.delayedCall(1.2, function():void
-			{
-				g.textManager.createTroonsText(troons);
-			});
+				{
+					g.textManager.createTroonsText(troons);
+				});
 		}
-		
+
 		private function m_MissionArtifacts(param1:Message):void
 		{
 			me.pickupArtifacts(param1);
 		}
-		
+
 		private function m_DropJunk(param1:Message):void
 		{
 			g.dropManager.spawn(param1);
 		}
-		
+
 		private function m_UberUpdate(param1:Message):void
 		{
 			g.hud.uberStats.update(param1);
 		}
-		
+
 		private function m_updateCredits(param1:Message):void
 		{
 			g.creditManager.refresh();
 		}
-		
+
 		private function m_softDisconnect(param1:Message):void
 		{
 			g.softDisconnect(param1.getString(0));

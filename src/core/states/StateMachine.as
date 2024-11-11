@@ -2,20 +2,18 @@ package core.states
 {
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
-	
+
 	public class StateMachine
 	{
 		private var previousState:IState;
-		
 		private var currentState:IState;
-		
 		public function StateMachine()
 		{
 			super();
 			previousState = null;
 			currentState = null;
 		}
-		
+
 		public function changeState(param1:IState):void
 		{
 			if (currentState != null)
@@ -31,7 +29,7 @@ package core.states
 			currentState.stateMachine = this;
 			currentState.enter();
 		}
-		
+
 		public function exitCurrent():void
 		{
 			if (currentState != null)
@@ -39,12 +37,12 @@ package core.states
 				currentState.exit();
 			}
 		}
-		
+
 		public function revertState():void
 		{
 			changeState(previousState);
 		}
-		
+
 		public function update(param1:Number = 0):void
 		{
 			if (currentState != null)
@@ -52,8 +50,8 @@ package core.states
 				currentState.execute();
 			}
 		}
-		
-		public function inState(... rest):Boolean
+
+		public function inState(...rest):Boolean
 		{
 			if (currentState == null)
 			{

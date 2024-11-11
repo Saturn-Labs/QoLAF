@@ -16,67 +16,47 @@ package core.parallax
 	import starling.textures.Texture;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-	
+
 	public class ParallaxManager
 	{
 		private static const SIZE:Number = 1.8;
-		
+
 		private static const MINI_STARS:int = 70;
-		
+
 		private static const STARS:int = 40;
-		
+
 		private static const MINI_DUSTS:int = 25;
-		
+
 		private static const NEBULAS:int = 8;
-		
+
 		private var g:SceneBase;
-		
 		public var stars:Vector.<Quad>;
-		
+
 		public var miniStars:Vector.<Quad>;
-		
+
 		public var miniDusts:Vector.<Quad>;
-		
+
 		public var nebulas:Vector.<Quad>;
-		
+
 		private var nebulaType:String = "";
-		
 		private var width:Number;
-		
 		private var height:Number;
-		
 		private var halfWidth:Number;
-		
 		private var halfHeight:Number;
-		
 		private var isIntro:Boolean;
-		
 		private var random:Random;
-		
 		private var target:DisplayObjectContainer;
-		
 		private var starBatch:MeshBatch;
-		
 		private var nebulaContainer:Sprite;
-		
 		private var starTxt:Texture;
-		
 		private var nebulaTxt:Texture;
-		
 		private var initialized:Boolean = false;
-		
 		public var cx:Number = -3;
-		
 		public var cy:Number = -2;
-		
 		private var nebulaUpdateCount:int;
-		
 		private var NEBULA_UPDATE_INTERVAL:int = 200;
-		
 		public var visible:Boolean = true;
-		
 		private var lastAdjustment:Number = 0;
-		
 		public function ParallaxManager(param1:SceneBase, param2:DisplayObjectContainer, param3:Boolean = false)
 		{
 			stars = new Vector.<Quad>();
@@ -96,27 +76,27 @@ package core.parallax
 			}
 			param1.addResizeListener(resize);
 		}
-		
+
 		public function load(param1:Object, param2:Function):void
 		{
 			var solarSystemObj:Object = param1;
 			var callback:Function = param2;
 			var textureManager:ITextureManager = TextureLocator.getService();
 			loadData(solarSystemObj, function(param1:Event):void
-			{
-				starTxt = textureManager.getTextureMainByTextureName("star.png");
-				var _loc2_:Object = DataLocator.getService().loadKey("Images", solarSystemObj.background);
-				nebulaType = _loc2_.textureName;
-				random = new Random(solarSystemObj.x * solarSystemObj.y + solarSystemObj.x + solarSystemObj.y);
-				nebulaTxt = textureManager.getTextureByTextureName(_loc2_.textureName, _loc2_.fileName);
-				resize();
-				if (callback != null)
 				{
-					callback();
-				}
-			});
+					starTxt = textureManager.getTextureMainByTextureName("star.png");
+					var _loc2_:Object = DataLocator.getService().loadKey("Images", solarSystemObj.background);
+					nebulaType = _loc2_.textureName;
+					random = new Random(solarSystemObj.x * solarSystemObj.y + solarSystemObj.x + solarSystemObj.y);
+					nebulaTxt = textureManager.getTextureByTextureName(_loc2_.textureName, _loc2_.fileName);
+					resize();
+					if (callback != null)
+					{
+						callback();
+					}
+				});
 		}
-		
+
 		private function loadData(param1:Object, param2:Function):void
 		{
 			var _loc4_:Object = DataLocator.getService().loadKey("Images", param1.background);
@@ -125,21 +105,21 @@ package core.parallax
 			_loc3_.loadTextures([_loc5_ + ".xml", _loc5_ + ".jpg"]);
 			_loc3_.addEventListener("preloadComplete", createLoadComplete(param2));
 		}
-		
+
 		private function createLoadComplete(param1:Function):Function
 		{
 			var callback:Function = param1;
 			return (function():Function
-			{
-				var lc:Function;
-				return lc = function(param1:Event):void
 				{
-					callback(param1);
-					TextureLocator.getService().removeEventListener("preloadComplete", lc);
-				};
-			})();
+					var lc:Function;
+					return lc = function(param1:Event):void
+					{
+						callback(param1);
+						TextureLocator.getService().removeEventListener("preloadComplete", lc);
+					};
+				})();
 		}
-		
+
 		public function refresh():void
 		{
 			var _loc3_:int = 0;
@@ -208,7 +188,7 @@ package core.parallax
 			initialized = true;
 			resize();
 		}
-		
+
 		private function clear():void
 		{
 			if (!initialized)
@@ -221,7 +201,7 @@ package core.parallax
 			miniStars.length = 0;
 			miniDusts.length = 0;
 		}
-		
+
 		public function randomize():void
 		{
 			var _loc1_:Quad = null;
@@ -298,7 +278,7 @@ package core.parallax
 				_loc2_++;
 			}
 		}
-		
+
 		public function update():void
 		{
 			var _loc11_:int = 0;
@@ -366,7 +346,7 @@ package core.parallax
 				_loc11_++;
 			}
 		}
-		
+
 		public function draw():void
 		{
 			var _loc3_:int = 0;
@@ -403,7 +383,7 @@ package core.parallax
 				_loc3_++;
 			}
 		}
-		
+
 		private function adjustPosition(param1:DisplayObject):void
 		{
 			var _loc2_:Number = param1.x;
@@ -445,7 +425,7 @@ package core.parallax
 				param1.y = _loc3_ + height;
 			}
 		}
-		
+
 		public function glow():void
 		{
 			var _loc2_:int = 0;
@@ -483,7 +463,7 @@ package core.parallax
 				_loc2_++;
 			}
 		}
-		
+
 		public function removeGlow():void
 		{
 			var _loc2_:int = 0;
@@ -521,7 +501,7 @@ package core.parallax
 				_loc2_++;
 			}
 		}
-		
+
 		private function resize(param1:Event = null):void
 		{
 			width = Starling.current.stage.stageWidth * 1.8;

@@ -11,15 +11,12 @@ package core.hud.components
 	import starling.text.TextFormat;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-	
+
 	public class BuyFluxButton extends ButtonHud
 	{
 		private var g:Game;
-		
 		private var creditText:TextField;
-		
 		private var fluxIcon:Image;
-		
 		public function BuyFluxButton(param1:Game)
 		{
 			var textureManager:ITextureManager;
@@ -35,8 +32,8 @@ package core.hud.components
 			fluxIcon.y = 5;
 			addChild(fluxIcon);
 			payButton = new ButtonHud(function():void
-			{
-			}, "button_pay.png");
+				{
+				}, "button_pay.png");
 			payButton.x = 66;
 			payButton.y = 4;
 			addChild(payButton);
@@ -48,27 +45,27 @@ package core.hud.components
 			creditText.batchable = true;
 			addChild(creditText);
 			g.creditManager.refresh(function():void
-			{
-				updateCredits();
-			});
+				{
+					updateCredits();
+				});
 		}
-		
+
 		private function openBuyFlux(param1:Event = null):void
 		{
 			var e:Event = param1;
 			var buyFlux:BuyFlux = new BuyFlux(g);
 			buyFlux.addEventListener("buyFluxClose", function():void
-			{
-				buyFlux.removeEventListeners();
-				g.removeChildFromOverlay(buyFlux);
-				g.creditManager.refresh(function():void
 				{
-					updateCredits();
+					buyFlux.removeEventListeners();
+					g.removeChildFromOverlay(buyFlux);
+					g.creditManager.refresh(function():void
+						{
+							updateCredits();
+						});
 				});
-			});
 			g.addChildToOverlay(buyFlux);
 		}
-		
+
 		public function updateCredits():void
 		{
 			creditText.text = Util.formatAmount(CreditManager.FLUX);

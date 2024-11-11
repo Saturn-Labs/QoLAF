@@ -22,37 +22,23 @@ package joinRoom
 	import starling.events.Event;
 	import starling.events.EventDispatcher;
 	import startSetup.StartSetup;
-	
+
 	public class JoinRoomManager extends EventDispatcher implements IJoinRoomManager
 	{
 		private var stage:Stage;
-		
 		private var client:Client;
-		
 		private var serviceConnection:Connection;
-		
 		private var connection:Connection;
-		
 		private var room:Room;
-		
 		private var roomStateMachine:SceneStateMachine;
-		
 		private var dataManager:IDataManager;
-		
 		private var joinData:Object;
-		
 		private var playerInfo:Object;
-		
 		private var _desiredRoomId:String = null;
-		
 		private var _desiredSystemType:String = "friendly";
-		
 		private var inited:Boolean = false;
-		
 		private var session:String;
-		
 		private var login:Login;
-		
 		public function JoinRoomManager(param1:Client, param2:Stage, param3:Object, param4:Login)
 		{
 			playerInfo = {};
@@ -65,12 +51,12 @@ package joinRoom
 			dataManager = DataLocator.getService();
 			roomStateMachine = new SceneStateMachine(param2);
 		}
-		
+
 		public static function getServiceRoomID(param1:int):String
 		{
 			return "Service-1379_" + param1;
 		}
-		
+
 		public function init():void
 		{
 			if (inited)
@@ -82,11 +68,11 @@ package joinRoom
 			inited = true;
 			StartSetup.showProgressText(Localize.t("List service room"));
 			client.multiplayer.listRooms("service", null, 1000, 0, handleServiceRooms, function(param1:PlayerIOError):void
-			{
-				showErrorDialog("Listing of service room failed.", true);
-			});
+				{
+					showErrorDialog("Listing of service room failed.", true);
+				});
 		}
-		
+
 		private function handleServiceRooms(param1:Array):void
 		{
 			var _loc6_:String = null;
@@ -118,20 +104,20 @@ package joinRoom
 			}
 			login.selectServiceRoom(_loc2_, joinServiceRoom);
 		}
-		
+
 		public function joinServiceRoom(param1:String):void
 		{
 			var id:String = param1;
 			login.removeEffects();
 			client.multiplayer.createJoinRoom(id, "service", true, {}, {"client_version": 1379}, handleJoinServiceRoom, function(param1:PlayerIOError):void
-			{
-				if (param1.errorID != 2)
 				{
-					showErrorDialog("Join service room failed, please try again later. Contact us on forum.astroflux.org for support.", true, param1);
-				}
-			});
+					if (param1.errorID != 2)
+					{
+						showErrorDialog("Join service room failed, please try again later. Contact us on forum.astroflux.org for support.", true, param1);
+					}
+				});
 		}
-		
+
 		private function handleJoinServiceRoom(param1:Connection):void
 		{
 			var serviceConnection:Connection = param1;
@@ -139,36 +125,36 @@ package joinRoom
 			FocusManager.setEnabledForStage(stage, false);
 			this.serviceConnection = serviceConnection;
 			serviceConnection.addMessageHandler("error", function(param1:Message):void
-			{
-				showErrorDialog(param1.getString(0));
-			});
+				{
+					showErrorDialog(param1.getString(0));
+				});
 			serviceConnection.addMessageHandler("joined", onJoinedServiceRoom);
 		}
-		
+
 		private function onJoinedServiceRoom(param1:Message):void
 		{
 			serviceConnection.removeMessageHandler("joined", onJoinedServiceRoom);
 			var _loc2_:int = 0;
 			playerInfo = {};
-			playerInfo.key = param1.getString(_loc2_++);
-			playerInfo.level = param1.getInt(_loc2_++);
-			playerInfo.split = param1.getString(_loc2_++);
-			playerInfo.musicVolume = param1.getNumber(_loc2_++);
-			playerInfo.effectVolume = param1.getNumber(_loc2_++);
-			playerInfo.xp = param1.getInt(_loc2_++);
-			playerInfo.enemyKills = param1.getInt(_loc2_++);
-			playerInfo.bossKills = param1.getInt(_loc2_++);
-			playerInfo.suicides = param1.getInt(_loc2_++);
-			playerInfo.troons = param1.getNumber(_loc2_++);
-			playerInfo.enemyEncounters = param1.getInt(_loc2_++);
-			playerInfo.bossEncounters = param1.getInt(_loc2_++);
-			playerInfo.exploredPlanets = param1.getInt(_loc2_++);
-			playerInfo.systemType = param1.getString(_loc2_++);
-			playerInfo.currentRoom = param1.getString(_loc2_++);
-			playerInfo.currentRoomId = param1.getString(_loc2_++);
-			playerInfo.currentSolarSystem = param1.getString(_loc2_++);
-			playerInfo.systemType = param1.getString(_loc2_++);
-			playerInfo.clan = param1.getString(_loc2_++);
+			playerInfo.key = param1.getString(_loc2_++ );
+			playerInfo.level = param1.getInt(_loc2_++ );
+			playerInfo.split = param1.getString(_loc2_++ );
+			playerInfo.musicVolume = param1.getNumber(_loc2_++ );
+			playerInfo.effectVolume = param1.getNumber(_loc2_++ );
+			playerInfo.xp = param1.getInt(_loc2_++ );
+			playerInfo.enemyKills = param1.getInt(_loc2_++ );
+			playerInfo.bossKills = param1.getInt(_loc2_++ );
+			playerInfo.suicides = param1.getInt(_loc2_++ );
+			playerInfo.troons = param1.getNumber(_loc2_++ );
+			playerInfo.enemyEncounters = param1.getInt(_loc2_++ );
+			playerInfo.bossEncounters = param1.getInt(_loc2_++ );
+			playerInfo.exploredPlanets = param1.getInt(_loc2_++ );
+			playerInfo.systemType = param1.getString(_loc2_++ );
+			playerInfo.currentRoom = param1.getString(_loc2_++ );
+			playerInfo.currentRoomId = param1.getString(_loc2_++ );
+			playerInfo.currentSolarSystem = param1.getString(_loc2_++ );
+			playerInfo.systemType = param1.getString(_loc2_++ );
+			playerInfo.clan = param1.getString(_loc2_++ );
 			joinData["client_version"] = 1379;
 			joinData["session"] = session;
 			joinData["warpJump"] = false;
@@ -177,8 +163,8 @@ package joinRoom
 			_desiredRoomId = playerInfo.currentRoomId != "" ? playerInfo.currentRoomId : null;
 			dispatchEventWith("joinedServiceRoom", true, playerInfo);
 		}
-		
-		public function rpcServiceRoom(param1:String, param2:Function, ... rest):void
+
+		public function rpcServiceRoom(param1:String, param2:Function, ...rest):void
 		{
 			var m:Message;
 			var i:int;
@@ -186,14 +172,14 @@ package joinRoom
 			var handler:Function = param2;
 			var args:Array = rest;
 			serviceConnection.addMessageHandler(type, (function():Function
-			{
-				var rpcHandler:Function;
-				return rpcHandler = function(param1:Message):void
-				{
-					serviceConnection.removeMessageHandler(type, rpcHandler);
-					handler(param1);
-				};
-			})());
+					{
+						var rpcHandler:Function;
+						return rpcHandler = function(param1:Message):void
+						{
+							serviceConnection.removeMessageHandler(type, rpcHandler);
+							handler(param1);
+						};
+					})());
 			m = serviceConnection.createMessage(type);
 			i = 0;
 			while (i < args.length)
@@ -203,7 +189,7 @@ package joinRoom
 			}
 			serviceConnection.sendMessage(m);
 		}
-		
+
 		public function joinCurrentSolarSystem():void
 		{
 			var _loc1_:String = "HrAjOBivt0SHPYtxKyiB_Q";
@@ -239,7 +225,7 @@ package joinRoom
 			}
 			joinGame(_loc1_, joinData);
 		}
-		
+
 		public function joinGame(param1:String, param2:Object):void
 		{
 			var roomType:String;
@@ -271,9 +257,9 @@ package joinRoom
 				searchCriteria = {"solarSystemKey": solarSystemKey, "service": serviceConnection.roomId};
 				StartSetup.showProgressText("Getting game rooms");
 				client.multiplayer.listRooms(room.roomType, searchCriteria, 1000, 0, handleRooms, function(param1:PlayerIOError):void
-				{
-					Console.write("Error: " + param1);
-				});
+					{
+						Console.write("Error: " + param1);
+					});
 			}
 			else
 			{
@@ -281,7 +267,7 @@ package joinRoom
 				createJoin();
 			}
 		}
-		
+
 		private function handleRooms(param1:Array):void
 		{
 			var _loc2_:* = false;
@@ -328,16 +314,16 @@ package joinRoom
 			}
 			createJoin();
 		}
-		
+
 		private function createJoin():void
 		{
 			Console.write("Attempting to create/join room.");
 			StartSetup.showProgressText("Joining game room");
 			client.multiplayer.createJoinRoom(room.id, room.roomType, false, room.data, room.joinData, handleJoin, function(param1:PlayerIOError):void
-			{
-			});
+				{
+				});
 		}
-		
+
 		private function handleJoin(param1:Connection):void
 		{
 			StartSetup.showProgressText("Joining game room");
@@ -345,7 +331,7 @@ package joinRoom
 			roomStateMachine.changeRoom(new Game(client, serviceConnection, param1, room));
 			Console.write("Sucessfully connected to the multiplayer server");
 		}
-		
+
 		public function tryWarpJumpToFriend(param1:Player, param2:String, param3:Function, param4:Function):void
 		{
 			var searchCriteria:Object;
@@ -359,61 +345,64 @@ package joinRoom
 				return;
 			}
 			searchCriteria = {"solarSystemKey": destination};
-			client.multiplayer.listRooms("game", searchCriteria, 100, 0, function(rooms:Array): void {
-				var _loc3_:RoomInfo = null;
-				var _loc6_:int = 0;
-				_loc6_ = 0;
-				while (_loc6_ < rooms.length)
+			client.multiplayer.listRooms("game", searchCriteria, 100, 0, function(rooms:Array):void
 				{
-					if (rooms[_loc6_].id == _desiredRoomId)
+					var _loc3_:RoomInfo = null;
+					var _loc6_:int = 0;
+					_loc6_ = 0;
+					while (_loc6_ < rooms.length)
 					{
-						_loc3_ = rooms[_loc6_];
-						break;
+						if (rooms[_loc6_].id == _desiredRoomId)
+						{
+							_loc3_ = rooms[_loc6_];
+							break;
+						}
+						_loc6_++;
 					}
-					_loc6_++;
-				}
-				if (_loc3_ == null)
-				{
-					failedCallback("Friend instance not found");
-					return;
-				}
-				if (_loc3_.data.systemType == "clan" && _loc3_.id != MD5.hash(_loc3_.data.solarSystemKey + player.clanId))
-				{
-					failedCallback("Your friend is in a private clan instance.");
-					return;
-				}
-				var _loc2_:* = _loc3_.data.systemType == "hostile";
-				if (!_loc2_)
-				{
-					successCallback();
-					return;
-				}
-				if (StarMap.selectedSolarSystem.pvpLvlCap == 0)
-				{
-					_desiredSystemType = "hostile";
-					successCallback();
-					return;
-				}
-				var _loc5_:* = _loc3_.data.pvpAboveCap == "true";
-				var _loc4_:* = player.level > StarMap.selectedSolarSystem.pvpLvlCap;
-				if (_loc5_ == _loc4_)
-				{
-					_desiredSystemType = "hostile";
-					successCallback();
-					return;
-				}
-				if (_loc5_)
-				{
-					failedCallback("This room only allows players over level " + (StarMap.selectedSolarSystem.pvpLvlCap + 1));
-				}
-				else
-				{
-					failedCallback("This room only allows players under level " + StarMap.selectedSolarSystem.pvpLvlCap);
-				}
-			}, 
-			function(param1:PlayerIOError): void {});
+					if (_loc3_ == null)
+					{
+						failedCallback("Friend instance not found");
+						return;
+					}
+					if (_loc3_.data.systemType == "clan" && _loc3_.id != MD5.hash(_loc3_.data.solarSystemKey + player.clanId))
+					{
+						failedCallback("Your friend is in a private clan instance.");
+						return;
+					}
+					var _loc2_:* = _loc3_.data.systemType == "hostile";
+					if (!_loc2_)
+					{
+						successCallback();
+						return;
+					}
+					if (StarMap.selectedSolarSystem.pvpLvlCap == 0)
+					{
+						_desiredSystemType = "hostile";
+						successCallback();
+						return;
+					}
+					var _loc5_:* = _loc3_.data.pvpAboveCap == "true";
+					var _loc4_:* = player.level > StarMap.selectedSolarSystem.pvpLvlCap;
+					if (_loc5_ == _loc4_)
+					{
+						_desiredSystemType = "hostile";
+						successCallback();
+						return;
+					}
+					if (_loc5_)
+					{
+						failedCallback("This room only allows players over level " + (StarMap.selectedSolarSystem.pvpLvlCap + 1));
+					}
+					else
+					{
+						failedCallback("This room only allows players under level " + StarMap.selectedSolarSystem.pvpLvlCap);
+					}
+				},
+					function(param1:PlayerIOError):void
+					{
+					});
 		}
-		
+
 		private function showErrorDialog(param1:String, param2:Boolean = false, param3:PlayerIOError = null, param4:Function = null, param5:Boolean = false):void
 		{
 			var s:String;
@@ -431,13 +420,13 @@ package joinRoom
 			dialog.text = m;
 			stage.addChild(dialog);
 			dialog.addEventListener("close", function(param1:Event):void
-			{
-				dialogClose(param1);
-				if (closeCallback != null)
 				{
-					closeCallback();
-				}
-			});
+					dialogClose(param1);
+					if (closeCallback != null)
+					{
+						closeCallback();
+					}
+				});
 			s = "";
 			if (e != null && e.message != null)
 			{
@@ -452,7 +441,7 @@ package joinRoom
 				client.errorLog.writeError(m, s, "", {});
 			}
 		}
-		
+
 		private function dialogClose(param1:Event):void
 		{
 			var _loc2_:Sprite = param1.target as Sprite;
@@ -461,22 +450,22 @@ package joinRoom
 				stage.removeChild(_loc2_);
 			}
 		}
-		
+
 		public function set desiredRoomId(param1:String):void
 		{
 			_desiredRoomId = param1;
 		}
-		
+
 		public function get desiredRoomId():String
 		{
 			return _desiredRoomId;
 		}
-		
+
 		public function set desiredSystemType(param1:String):void
 		{
 			_desiredSystemType = param1;
 		}
-		
+
 		public function get desiredSystemType():String
 		{
 			return _desiredSystemType;

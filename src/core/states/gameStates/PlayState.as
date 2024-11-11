@@ -95,11 +95,6 @@ package core.states.gameStates
 			param1();
 		}
 		
-		override public function tickUpdate():void
-		{
-			super.tickUpdate();
-		}
-		
 		protected function addChild(param1:DisplayObject):void
 		{
 			container.addChild(param1);

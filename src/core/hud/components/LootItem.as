@@ -8,19 +8,14 @@ package core.hud.components
 	import starling.display.Sprite;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-	
+
 	public class LootItem extends Sprite
 	{
 		private var dataManager:IDataManager;
-		
 		private var textureManager:ITextureManager;
-		
 		private var obj:DatabaseObject;
-		
 		private var image:Image;
-		
 		private var bgr:Quad;
-		
 		public function LootItem(param1:String, param2:String, param3:int, param4:int = 12)
 		{
 			var _loc6_:TextBitmap = null;

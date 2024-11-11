@@ -36,79 +36,50 @@ package core.artifact
 	import starling.text.TextFormat;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-	
+
 	public class ArtifactOverview extends Sprite
 	{
 		private static var artifactsLoaded:Boolean;
-		
 		private static var textureManager:ITextureManager;
-		
 		private static const MAX_RECYCLE:int = 40;
-		
+
 		private var g:Game;
-		
 		private var p:Player;
-		
 		private var activeSlots:Vector.<ArtifactBox>;
-		
+
 		private var cargoBoxes:Vector.<ArtifactCargoBox>;
-		
+
 		private var statisticSummary:TextField;
-		
 		private var recycleMode:Boolean;
-		
 		private var upgradeMode:Boolean;
-		
 		private var statsContainer:Sprite;
-		
 		private var toggleRecycleButton:Button;
-		
 		private var toggleUpgradeButton:Button;
-		
 		private var upgradeButton:Button;
-		
 		private var cancelUpgradeButton:Button;
-		
 		private var chooseSortingButton:Button;
-		
 		private var selectAllRecycleButton:Button;
-		
 		private var recycleButton:Button;
-		
 		private var cancelRecycleButton:Button;
-		
 		private var recycleText:TextField;
-		
 		private var recycleTextInfo:TextField;
-		
 		private var autoRecycleButton:Button;
-		
 		private var buySupporter:Button;
-		
 		private var autoRecycleInput:InputText;
-		
 		private var autoRecycleText:TextField;
-		
 		private var autoRecycleTextInfo:TextField;
-		
 		private var markedForRecycle:Vector.<Artifact>;
-		
+
 		private var setups:Array;
-		
 		private var cargoContainer:ScrollContainer;
-		
 		private const artifactSetupButtonHeight:int = 24;
-		
+
 		private const artifactSetupY:int = 70;
-		
+
 		private var crewContainer:Sprite;
-		
 		private var labelSelectCrew:TextBitmap;
-		
 		private var selectedUpgradeBox:ArtifactCargoBox;
-		
 		private var selectedCrewMember:CrewDisplayBoxNew;
-		
 		public function ArtifactOverview(param1:Game)
 		{
 			activeSlots = new Vector.<ArtifactBox>();
@@ -126,7 +97,7 @@ package core.artifact
 			addEventListener("crewSelected", onCrewSelected);
 			addEventListener("upgradeArtifactComplete", onUpgradeArtifactComplete);
 		}
-		
+
 		public function load():void
 		{
 			var loadingText:TextField;
@@ -142,53 +113,53 @@ package core.artifact
 			addChild(loadingText);
 			TweenMax.fromTo(loadingText, 1, {"alpha": 1}, {"alpha": 0.5, "yoyo": true, "repeat": 15});
 			g.dataManager.loadRangeFromBigDB("Artifacts", "ByPlayer", [p.id], function(param1:Array):void
-			{
-				var _loc2_:Artifact = null;
-				var _loc4_:Artifact = null;
-				var _loc6_:int = 0;
-				var _loc3_:CrewMember = null;
-				if (param1.length >= p.artifactLimit)
 				{
-					g.hud.showArtifactLimitText();
-					g.tutorial.showArtifactLimitAdvice();
-				}
-				p.artifactCount = param1.length;
-				g.send("artifactCount", param1.length);
-				for each (var _loc5_:* in param1)
-				{
-					if (_loc5_ != null)
+					var _loc2_:Artifact = null;
+					var _loc4_:Artifact = null;
+					var _loc6_:int = 0;
+					var _loc3_:CrewMember = null;
+					if (param1.length >= p.artifactLimit)
 					{
-						_loc2_ = new Artifact(_loc5_);
-						_loc4_ = p.getArtifactById(_loc2_.id);
-						_loc6_ = 0;
-						while (_loc6_ < p.crewMembers.length)
+						g.hud.showArtifactLimitText();
+						g.tutorial.showArtifactLimitAdvice();
+					}
+					p.artifactCount = param1.length;
+					g.send("artifactCount", param1.length);
+					for each (var _loc5_:* in param1)
+					{
+						if (_loc5_ != null)
 						{
-							_loc3_ = p.crewMembers[_loc6_];
-							if (_loc3_.artifact == _loc2_.id)
+							_loc2_ = new Artifact(_loc5_);
+							_loc4_ = p.getArtifactById(_loc2_.id);
+							_loc6_ = 0;
+							while (_loc6_ < p.crewMembers.length)
 							{
-								if (_loc4_ != null)
+								_loc3_ = p.crewMembers[_loc6_];
+								if (_loc3_.artifact == _loc2_.id)
 								{
-									_loc4_.upgrading = true;
+									if (_loc4_ != null)
+									{
+										_loc4_.upgrading = true;
+									}
+									else
+									{
+										_loc2_.upgrading = true;
+									}
 								}
-								else
-								{
-									_loc2_.upgrading = true;
-								}
+								_loc6_++;
 							}
-							_loc6_++;
-						}
-						if (_loc4_ == null)
-						{
-							p.artifacts.push(_loc2_);
+							if (_loc4_ == null)
+							{
+								p.artifacts.push(_loc2_);
+							}
 						}
 					}
-				}
-				artifactsLoaded = true;
-				removeChild(loadingText);
-				drawComponents();
-			}, 1000);
+					artifactsLoaded = true;
+					removeChild(loadingText);
+					drawComponents();
+				}, 1000);
 		}
-		
+
 		public function drawComponents():void
 		{
 			var q:Quad;
@@ -313,17 +284,17 @@ package core.artifact
 			autoRecycleTextInfo.x = recycleText.x;
 			addChild(autoRecycleTextInfo);
 			buySupporter = new Button(function():void
-			{
-				if (g.me.isLanded)
 				{
-					g.me.leaveBody();
-				}
-				else
-				{
-					g.enterState(new RoamingState(g));
-					g.enterState(new ShopState(g, "supporterPackage"));
-				}
-			}, Localize.t("Buy Supporter"), "buy");
+					if (g.me.isLanded)
+					{
+						g.me.leaveBody();
+					}
+					else
+					{
+						g.enterState(new RoamingState(g));
+						g.enterState(new ShopState(g, "supporterPackage"));
+					}
+				}, Localize.t("Buy Supporter"), "buy");
 			buySupporter.y = autoRecycleTextInfo.y + autoRecycleTextInfo.height + 10;
 			buySupporter.x = recycleText.x;
 			buySupporter.visible = false;
@@ -349,7 +320,7 @@ package core.artifact
 			autoRecycleInput.visible = false;
 			addChild(autoRecycleInput);
 		}
-		
+
 		private function initActiveSlots():void
 		{
 			var _loc1_:ArtifactBox = null;
@@ -374,7 +345,7 @@ package core.artifact
 				_loc2_++;
 			}
 		}
-		
+
 		private function setActiveArtifacts():void
 		{
 			var _loc1_:Artifact = null;
@@ -385,13 +356,13 @@ package core.artifact
 				_loc1_ = p.getArtifactById(_loc2_);
 				if (_loc1_ != null)
 				{
-					_loc3_ = activeSlots[_loc4_++];
+					_loc3_ = activeSlots[_loc4_++ ];
 					_loc3_.setActive(_loc1_);
 					_loc3_.update();
 				}
 			}
 		}
-		
+
 		private function drawArtifactSetups():void
 		{
 			var _loc5_:int = 0;
@@ -440,7 +411,7 @@ package core.artifact
 				_loc5_++;
 			}
 		}
-		
+
 		private function drawArtifactsInCargo():void
 		{
 			var _loc5_:int = 0;
@@ -493,7 +464,7 @@ package core.artifact
 				cargoContainer.addChild(_loc3_);
 			}
 		}
-		
+
 		private function onSelect(param1:Event):void
 		{
 			var _loc5_:* = null;
@@ -534,7 +505,7 @@ package core.artifact
 				}
 			}
 		}
-		
+
 		private function onRecycleSelect(param1:Event):void
 		{
 			var _loc5_:int = 0;
@@ -560,7 +531,7 @@ package core.artifact
 			}
 			markedForRecycle.push(_loc2_);
 		}
-		
+
 		private function onAutoRecycle(param1:Event):void
 		{
 			autoRecycleButton.enabled = true;
@@ -569,7 +540,7 @@ package core.artifact
 			g.send("setAutoRecycle", _loc2_);
 			g.showMessageDialog("Auto recycle level has been set to: <font color='#FFFF88'>" + _loc2_ + "</font>");
 		}
-		
+
 		private function onUpgradeSelect(param1:Event):void
 		{
 			var _loc3_:ArtifactCargoBox = param1.target as ArtifactCargoBox;
@@ -590,7 +561,7 @@ package core.artifact
 			}
 			selectedUpgradeBox = _loc3_;
 		}
-		
+
 		private function onUnlock(param1:Event):void
 		{
 			var e:Event = param1;
@@ -603,28 +574,28 @@ package core.artifact
 			buyBox.addCost(new PriceCommodities(g, "flpbTKautkC1QzjWT28gkw", unlockCost));
 			buyBox.addBuyForFluxButton(fluxCost, number, "buyArtifactSlotWithFlux", Localize.t("Are you sure you want to buy an artifact slot?"));
 			buyBox.addEventListener("fluxBuy", function(param1:Event):void
-			{
-				p.unlockedArtifactSlots = number;
-				g.removeChildFromOverlay(buyBox, true);
-				onSlotUnlock(box);
-				Game.trackEvent("used flux", "bought artifact slot", "number " + number, fluxCost);
-			});
-			buyBox.addEventListener("accept", function(param1:Event):void
-			{
-				var e:Event = param1;
-				g.me.tryUnlockSlot("slotArtifact", box.slot + 1, function():void
 				{
+					p.unlockedArtifactSlots = number;
 					g.removeChildFromOverlay(buyBox, true);
 					onSlotUnlock(box);
+					Game.trackEvent("used flux", "bought artifact slot", "number " + number, fluxCost);
 				});
-			});
+			buyBox.addEventListener("accept", function(param1:Event):void
+				{
+					var e:Event = param1;
+					g.me.tryUnlockSlot("slotArtifact", box.slot + 1, function():void
+						{
+							g.removeChildFromOverlay(buyBox, true);
+							onSlotUnlock(box);
+						});
+				});
 			buyBox.addEventListener("close", function(param1:Event):void
-			{
-				g.removeChildFromOverlay(buyBox, true);
-			});
+				{
+					g.removeChildFromOverlay(buyBox, true);
+				});
 			g.addChildToOverlay(buyBox);
 		}
-		
+
 		private function onUpgradeCapacity(param1:Event):void
 		{
 			var e:Event = param1;
@@ -632,16 +603,16 @@ package core.artifact
 			var creditBuyBox:CreditBuyBox = new CreditBuyBox(g, cost, Localize.t("Increases artifact capacity to") + " " + Player.ARTIFACT_CAPACITY[p.artifactCapacityLevel + 1]);
 			g.addChildToOverlay(creditBuyBox);
 			creditBuyBox.addEventListener("accept", function(param1:Event):void
-			{
-				g.removeChildFromOverlay(creditBuyBox, true);
-				g.rpc("upgradeArtifactCapacity", onBuyArtifactConfirm);
-			});
+				{
+					g.removeChildFromOverlay(creditBuyBox, true);
+					g.rpc("upgradeArtifactCapacity", onBuyArtifactConfirm);
+				});
 			creditBuyBox.addEventListener("close", function(param1:Event):void
-			{
-				g.removeChildFromOverlay(creditBuyBox, true);
-			});
+				{
+					g.removeChildFromOverlay(creditBuyBox, true);
+				});
 		}
-		
+
 		private function onBuyArtifactConfirm(param1:Message):void
 		{
 			var _loc2_:Boolean = param1.getBoolean(0);
@@ -655,7 +626,7 @@ package core.artifact
 			drawArtifactsInCargo();
 			g.creditManager.refresh();
 		}
-		
+
 		private function onSlotUnlock(param1:ArtifactBox):void
 		{
 			param1.locked = false;
@@ -668,7 +639,7 @@ package core.artifact
 				activeSlots[_loc2_].update();
 			}
 		}
-		
+
 		private function onSetupChange(param1:Event):void
 		{
 			if (!g.me.isLanded && !g.me.inSafeZone)
@@ -712,7 +683,7 @@ package core.artifact
 			}
 			reloadStats();
 		}
-		
+
 		private function onSetupBuy(param1:Event):void
 		{
 			var button:ToggleButton;
@@ -721,18 +692,18 @@ package core.artifact
 			var creditBuyBox:CreditBuyBox = new CreditBuyBox(g, cost, Localize.t("Unlocks one more artifact setup."));
 			g.addChildToOverlay(creditBuyBox);
 			creditBuyBox.addEventListener("accept", function(param1:Event):void
-			{
-				g.removeChildFromOverlay(creditBuyBox, true);
-				g.rpc("buyArtifactSetup", onSetupBuyConfirm);
-			});
+				{
+					g.removeChildFromOverlay(creditBuyBox, true);
+					g.rpc("buyArtifactSetup", onSetupBuyConfirm);
+				});
 			creditBuyBox.addEventListener("close", function(param1:Event):void
-			{
-				g.removeChildFromOverlay(creditBuyBox, true);
-			});
+				{
+					g.removeChildFromOverlay(creditBuyBox, true);
+				});
 			button = e.target as ToggleButton;
 			button.isSelected = true;
 		}
-		
+
 		private function onSetupBuyConfirm(param1:Message):void
 		{
 			var _loc2_:Boolean = param1.getBoolean(0);
@@ -746,13 +717,13 @@ package core.artifact
 			g.creditManager.refresh();
 			drawArtifactSetups();
 		}
-		
+
 		private function reloadStats(param1:Event = null):void
 		{
 			reloadArtifactStats();
 			reloadShipStats();
 		}
-		
+
 		private function reloadArtifactStats():void
 		{
 			if (p.artifacts.length == 0)
@@ -768,7 +739,7 @@ package core.artifact
 			var _loc1_:Object = sortStatsForSummary();
 			addStatsToSummary(_loc1_);
 		}
-		
+
 		private function sortStatsForSummary():Object
 		{
 			var _loc3_:Artifact = null;
@@ -861,7 +832,7 @@ package core.artifact
 			}
 			return _loc1_;
 		}
-		
+
 		private function addStatsToSummary(param1:Object):void
 		{
 			var _loc3_:String = "";
@@ -932,11 +903,11 @@ package core.artifact
 				}
 			}
 		}
-		
+
 		private function reloadShipStats():void
 		{
 		}
-		
+
 		private function chooseSorting(param1:TouchEvent = null):void
 		{
 			var _loc2_:ArtifactSorting = new ArtifactSorting(g, onSort);
@@ -944,7 +915,7 @@ package core.artifact
 			_loc2_.y = 0;
 			addChild(_loc2_);
 		}
-		
+
 		private function toggleRecycle(param1:TouchEvent = null):void
 		{
 			recycleMode = !recycleMode;
@@ -978,7 +949,7 @@ package core.artifact
 				}
 			}
 		}
-		
+
 		private function toggleUpgrade(param1:TouchEvent = null):void
 		{
 			upgradeMode = !upgradeMode;
@@ -1015,7 +986,7 @@ package core.artifact
 			}
 			g.tutorial.showArtifactUpgradeAdvice();
 		}
-		
+
 		private function selectAllForRecycle(param1:TouchEvent = null):void
 		{
 			var _loc3_:int = 0;
@@ -1048,7 +1019,7 @@ package core.artifact
 			cargoContainer.scrollToPosition(0, 0);
 			selectAllRecycleButton.enabled = true;
 		}
-		
+
 		private function onSort(param1:String):void
 		{
 			chooseSortingButton.enabled = true;
@@ -1077,7 +1048,7 @@ package core.artifact
 			cargoBoxes.length = 0;
 			drawArtifactsInCargo();
 		}
-		
+
 		private function onRecycle(param1:TouchEvent):void
 		{
 			if (markedForRecycle.length == 0)
@@ -1098,7 +1069,7 @@ package core.artifact
 			g.rpcMessage(_loc3_, onRecycleMessage);
 			g.showModalLoadingScreen("Recycling, please wait... \n\n <font size='12'>This might take a couple of minutes</font>");
 		}
-		
+
 		private function onRecycleMessage(param1:Message):void
 		{
 			var success:Boolean;
@@ -1166,13 +1137,13 @@ package core.artifact
 				j++;
 			}
 			recycleBox.addEventListener("close", function(param1:Event):void
-			{
-				g.removeChildFromOverlay(recycleBox, true);
-				toggleRecycle();
-			});
+				{
+					g.removeChildFromOverlay(recycleBox, true);
+					toggleRecycle();
+				});
 			markedForRecycle.splice(0, markedForRecycle.length);
 		}
-		
+
 		private function onActiveRemoved(param1:Event):void
 		{
 			var _loc4_:ArtifactBox = param1.target as ArtifactBox;
@@ -1198,7 +1169,7 @@ package core.artifact
 				}
 			}
 		}
-		
+
 		private function onCrewSelected(param1:Event):void
 		{
 			selectedCrewMember = param1.target as CrewDisplayBoxNew;
@@ -1207,7 +1178,7 @@ package core.artifact
 				upgradeButton.enabled = true;
 			}
 		}
-		
+
 		private function onUpgradeArtifact(param1:Event):void
 		{
 			var _loc3_:Artifact = selectedUpgradeBox.a;
@@ -1238,7 +1209,7 @@ package core.artifact
 			g.showConfirmDialog(Localize.t("The upgrade will be finished in") + ": \n\n<font color='#ffaa88'>" + Util.getFormattedTime(_loc4_) + "</font>", confirmUpgrade);
 			upgradeButton.enabled = true;
 		}
-		
+
 		private function confirmUpgrade():void
 		{
 			if (selectedUpgradeBox == null)
@@ -1257,7 +1228,7 @@ package core.artifact
 			g.rpcMessage(_loc1_, startedUpgrade);
 			upgradeButton.enabled = false;
 		}
-		
+
 		private function startedUpgrade(param1:Message):void
 		{
 			var _loc2_:CrewMember = null;
@@ -1281,13 +1252,13 @@ package core.artifact
 			selectedUpgradeBox = null;
 			g.hideModalLoadingScreen();
 		}
-		
+
 		private function onUpgradeArtifactComplete(param1:Event = null):void
 		{
 			var _loc2_:CrewDisplayBoxNew = param1.target as CrewDisplayBoxNew;
 			sendArtifactComplete(_loc2_.crewMember);
 		}
-		
+
 		private function onLoadUpgradeArtifactComplete(param1:Vector.<CrewMember>, param2:int = 0):void
 		{
 			var crewMembersThatCompletedUpgrade:Vector.<CrewMember> = param1;
@@ -1297,11 +1268,11 @@ package core.artifact
 				return;
 			}
 			sendArtifactComplete(crewMembersThatCompletedUpgrade[i], function():void
-			{
-				onLoadUpgradeArtifactComplete(crewMembersThatCompletedUpgrade, i + 1);
-			});
+				{
+					onLoadUpgradeArtifactComplete(crewMembersThatCompletedUpgrade, i + 1);
+				});
 		}
-		
+
 		private function sendArtifactComplete(param1:CrewMember, param2:Function = null):void
 		{
 			var crewMember:CrewMember = param1;
@@ -1312,12 +1283,12 @@ package core.artifact
 			m.add(artifactKey, crewKey);
 			g.showModalLoadingScreen("Waiting for result...");
 			g.rpcMessage(m, function(param1:Message):void
-			{
-				g.hideModalLoadingScreen();
-				artifactUpgradeComplete(param1, finishedCallback);
-			});
+				{
+					g.hideModalLoadingScreen();
+					artifactUpgradeComplete(param1, finishedCallback);
+				});
 		}
-		
+
 		private function artifactUpgradeComplete(param1:Message, param2:Function = null):void
 		{
 			var soundManager:ISound;
@@ -1327,135 +1298,135 @@ package core.artifact
 			{
 				soundManager = SoundLocator.getService();
 				soundManager.play("7zeIcPFb-UWzgtR_3nrZ8Q", null, function():void
-				{
-					var isActive:Boolean;
-					var newLevel:int;
-					var diffLevel:int;
-					var container:Sprite;
-					var overlay:Quad;
-					var artBox:ArtifactBox;
-					var box:Box;
-					var upgradeText:TextBitmap;
-					var crewSkillText:TextBitmap;
-					var levelText:TextBitmap;
-					var hh:Number;
-					var i:int;
-					var statText:TextField;
-					var stat:ArtifactStat;
-					var newValue:Number;
-					var diff:Number;
-					var closeButton:Button;
-					var acBox:ArtifactCargoBox;
-					var aBox:ArtifactBox;
-					var cm:CrewMember = p.getCrewMember(m.getString(1));
-					var newSkillPoints:int = m.getInt(2);
-					var a:Artifact = p.getArtifactById(m.getString(3));
-					cm.skillPoints += newSkillPoints;
-					isActive = p.isActiveArtifact(a);
-					if (isActive)
 					{
-						p.toggleArtifact(a, false);
-					}
-					newLevel = m.getInt(4);
-					diffLevel = newLevel - a.level;
-					diffLevel = int(diffLevel <= 0 ? 1 : diffLevel);
-					a.level = newLevel;
-					a.upgraded += 1;
-					a.upgrading = false;
-					container = new Sprite();
-					g.addChildToOverlay(container);
-					overlay = new Quad(g.stage.stageWidth, g.stage.stageHeight, 0);
-					overlay.alpha = 0.4;
-					container.addChild(overlay);
-					artBox = new ArtifactBox(g, a);
-					artBox.update();
-					box = new Box(180, 80 + a.stats.length * 25 + artBox.height + 60, "highlight");
-					box.x = g.stage.stageWidth / 2 - box.width / 2;
-					box.y = g.stage.stageHeight / 2 - box.height / 2;
-					container.addChild(box);
-					artBox.x = box.width / 2 - artBox.width / 2 - 20;
-					box.addChild(artBox);
-					upgradeText = new TextBitmap();
-					upgradeText.format.color = 11184810;
-					upgradeText.y = artBox.height + 20;
-					upgradeText.text = Localize.t("Upgrade Result");
-					upgradeText.x = 90;
-					upgradeText.center();
-					box.addChild(upgradeText);
-					crewSkillText = new TextBitmap();
-					crewSkillText.format.color = 16777215;
-					crewSkillText.text = Localize.t("Crew Skill") + " +" + newSkillPoints;
-					crewSkillText.size = 14;
-					crewSkillText.x = 90;
-					crewSkillText.y = upgradeText.y + upgradeText.height + 10;
-					crewSkillText.center();
-					box.addChild(crewSkillText);
-					levelText = new TextBitmap();
-					levelText.format.color = 16777215;
-					levelText.text = Localize.t("strength") + " +" + diffLevel;
-					levelText.size = 18;
-					levelText.x = 90;
-					levelText.y = crewSkillText.y + crewSkillText.height + 10;
-					levelText.center();
-					levelText.visible = false;
-					box.addChild(levelText);
-					TweenMax.delayedCall(1, function():void
-					{
-						soundManager.play("F3RA7-UJ6EKLT6WeJyKq-w");
-						levelText.visible = true;
-						TweenMax.from(levelText, 1, {"scaleX": 2, "scaleY": 2, "alpha": 0});
+						var isActive:Boolean;
+						var newLevel:int;
+						var diffLevel:int;
+						var container:Sprite;
+						var overlay:Quad;
+						var artBox:ArtifactBox;
+						var box:Box;
+						var upgradeText:TextBitmap;
+						var crewSkillText:TextBitmap;
+						var levelText:TextBitmap;
+						var hh:Number;
+						var i:int;
+						var statText:TextField;
+						var stat:ArtifactStat;
+						var newValue:Number;
+						var diff:Number;
+						var closeButton:Button;
+						var acBox:ArtifactCargoBox;
+						var aBox:ArtifactBox;
+						var cm:CrewMember = p.getCrewMember(m.getString(1));
+						var newSkillPoints:int = m.getInt(2);
+						var a:Artifact = p.getArtifactById(m.getString(3));
+						cm.skillPoints += newSkillPoints;
+						isActive = p.isActiveArtifact(a);
+						if (isActive)
+						{
+							p.toggleArtifact(a, false);
+						}
+						newLevel = m.getInt(4);
+						diffLevel = newLevel - a.level;
+						diffLevel = int(diffLevel <= 0 ? 1 : diffLevel);
+						a.level = newLevel;
+						a.upgraded += 1;
+						a.upgrading = false;
+						container = new Sprite();
+						g.addChildToOverlay(container);
+						overlay = new Quad(g.stage.stageWidth, g.stage.stageHeight, 0);
+						overlay.alpha = 0.4;
+						container.addChild(overlay);
+						artBox = new ArtifactBox(g, a);
+						artBox.update();
+						box = new Box(180, 80 + a.stats.length * 25 + artBox.height + 60, "highlight");
+						box.x = g.stage.stageWidth / 2 - box.width / 2;
+						box.y = g.stage.stageHeight / 2 - box.height / 2;
+						container.addChild(box);
+						artBox.x = box.width / 2 - artBox.width / 2 - 20;
+						box.addChild(artBox);
+						upgradeText = new TextBitmap();
+						upgradeText.format.color = 11184810;
+						upgradeText.y = artBox.height + 20;
+						upgradeText.text = Localize.t("Upgrade Result");
+						upgradeText.x = 90;
+						upgradeText.center();
+						box.addChild(upgradeText);
+						crewSkillText = new TextBitmap();
+						crewSkillText.format.color = 16777215;
+						crewSkillText.text = Localize.t("Crew Skill") + " +" + newSkillPoints;
+						crewSkillText.size = 14;
+						crewSkillText.x = 90;
+						crewSkillText.y = upgradeText.y + upgradeText.height + 10;
+						crewSkillText.center();
+						box.addChild(crewSkillText);
+						levelText = new TextBitmap();
+						levelText.format.color = 16777215;
+						levelText.text = Localize.t("strength") + " +" + diffLevel;
+						levelText.size = 18;
+						levelText.x = 90;
+						levelText.y = crewSkillText.y + crewSkillText.height + 10;
+						levelText.center();
+						levelText.visible = false;
+						box.addChild(levelText);
+						TweenMax.delayedCall(1, function():void
+							{
+								soundManager.play("F3RA7-UJ6EKLT6WeJyKq-w");
+								levelText.visible = true;
+								TweenMax.from(levelText, 1, {"scaleX": 2, "scaleY": 2, "alpha": 0});
+							});
+						hh = levelText.y + levelText.height + 10;
+						i = 0;
+						while (i < a.stats.length)
+						{
+							statText = new TextField(box.width, 16, "", new TextFormat("DAIDRR", 13, a.getColor()));
+							stat = a.stats[i];
+							newValue = m.getNumber(5 + i);
+							diff = newValue - stat.value;
+							stat.value = newValue;
+							statText.text = ArtifactStat.parseTextFromStatType(stat.type, diff);
+							statText.isHtmlText = true;
+							statText.x = -20;
+							statText.y = i * 25 + hh;
+							box.addChild(statText);
+							TweenMax.from(statText, 1, {"scaleX": 0.5, "scaleY": 0.5, "alpha": 0});
+							i++;
+						}
+						closeButton = new Button(function():void
+							{
+								g.removeChildFromOverlay(container, true);
+								if (finishedCallback != null)
+								{
+									finishedCallback();
+								}
+							}, Localize.t("close"));
+						closeButton.x = 90 - closeButton.width / 2;
+						closeButton.y = box.height - 60;
+						box.addChild(closeButton);
+						cm.artifact = "";
+						cm.artifactEnd = 0;
+						if (isActive)
+						{
+							p.toggleArtifact(a, false);
+						}
+						for each (acBox in cargoBoxes)
+						{
+							if (acBox.a == a)
+							{
+								acBox.showHint();
+							}
+							acBox.setNotSelected();
+						}
+						for each (aBox in activeSlots)
+						{
+							if (aBox.a == a)
+							{
+								aBox.update();
+							}
+						}
+						reloadStats();
 					});
-					hh = levelText.y + levelText.height + 10;
-					i = 0;
-					while (i < a.stats.length)
-					{
-						statText = new TextField(box.width, 16, "", new TextFormat("DAIDRR", 13, a.getColor()));
-						stat = a.stats[i];
-						newValue = m.getNumber(5 + i);
-						diff = newValue - stat.value;
-						stat.value = newValue;
-						statText.text = ArtifactStat.parseTextFromStatType(stat.type, diff);
-						statText.isHtmlText = true;
-						statText.x = -20;
-						statText.y = i * 25 + hh;
-						box.addChild(statText);
-						TweenMax.from(statText, 1, {"scaleX": 0.5, "scaleY": 0.5, "alpha": 0});
-						i++;
-					}
-					closeButton = new Button(function():void
-					{
-						g.removeChildFromOverlay(container, true);
-						if (finishedCallback != null)
-						{
-							finishedCallback();
-						}
-					}, Localize.t("close"));
-					closeButton.x = 90 - closeButton.width / 2;
-					closeButton.y = box.height - 60;
-					box.addChild(closeButton);
-					cm.artifact = "";
-					cm.artifactEnd = 0;
-					if (isActive)
-					{
-						p.toggleArtifact(a, false);
-					}
-					for each (acBox in cargoBoxes)
-					{
-						if (acBox.a == a)
-						{
-							acBox.showHint();
-						}
-						acBox.setNotSelected();
-					}
-					for each (aBox in activeSlots)
-					{
-						if (aBox.a == a)
-						{
-							aBox.update();
-						}
-					}
-					reloadStats();
-				});
 			}
 			else
 			{

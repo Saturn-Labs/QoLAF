@@ -6,61 +6,35 @@ package core.boss
 	import sound.ISound;
 	import sound.SoundLocator;
 	import starling.core.Starling;
-	
+
 	public class Trigger
 	{
 		public var id:int;
-		
 		public var target:int;
-		
 		public var delay:Number;
-		
 		public var activate:Boolean;
-		
 		public var inactivate:Boolean;
-		
 		public var vulnerable:Boolean;
-		
 		public var invulnerable:Boolean;
-		
 		public var kill:Boolean;
-		
 		public var threshhold:Number;
-		
 		public var inactivateSelf:Boolean;
-		
 		public var editBase:Boolean;
-		
 		public var speed:int;
-		
 		public var rotationSpeed:Number;
-		
 		public var targetRange:int;
-		
 		public var rotationForced:Boolean;
-		
 		public var acceleration:Number;
-		
 		public var xpos:int;
-		
 		public var ypos:int;
-		
 		public var radius:int;
-		
 		public var explosionEffect:String;
-		
 		public var soundName:String;
-		
 		private var triggerRdy:Boolean;
-		
 		private var activationTarget:Unit;
-		
 		private var activationTargetBoss:Boss;
-		
 		private var activationOwner:Unit;
-		
 		private var g:Game;
-		
 		public function Trigger(param1:Game)
 		{
 			super();
@@ -70,12 +44,12 @@ package core.boss
 			activationTargetBoss = null;
 			activationOwner = null;
 		}
-		
+
 		public function reEnable():void
 		{
 			triggerRdy = true;
 		}
-		
+
 		public function tryActivateTrigger(param1:Unit, param2:Boss):void
 		{
 			var _loc3_:Number = (param1.hp + param1.shieldHp) / (param1.hpMax + param1.shieldHpMax);
@@ -102,7 +76,7 @@ package core.boss
 				Starling.juggler.delayCall(activateTrigger, delay);
 			}
 		}
-		
+
 		private function activateTrigger():void
 		{
 			var _loc1_:ISound = null;

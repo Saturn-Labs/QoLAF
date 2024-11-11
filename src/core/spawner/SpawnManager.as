@@ -5,33 +5,31 @@ package core.spawner
 	import debug.Console;
 	import playerio.Message;
 	import qolaf.target.TargetSystem;
-	
+
 	public class SpawnManager
 	{
 		public var spawners:Vector.<Spawner>;
-		
+
 		private var g:Game;
-		
 		private var id:int = 0;
-		
 		public function SpawnManager(param1:Game)
 		{
 			super();
 			this.g = param1;
 			spawners = new Vector.<Spawner>();
 		}
-		
+
 		public function addMessageHandlers():void
 		{
 			g.addMessageHandler("spawnerUpdate", onSpawnerUpdate);
 		}
-		
+
 		public function addEarlyMessageHandlers():void
 		{
 			g.addMessageHandler("spawnerKilled", killed);
 			g.addMessageHandler("spawnerRebuild", rebuild);
 		}
-		
+
 		public function syncSpawners(param1:Message, param2:int, param3:int):void
 		{
 			var _loc5_:* = 0;
@@ -62,11 +60,11 @@ package core.spawner
 				_loc5_ += 5;
 			}
 		}
-		
+
 		public function update():void
 		{
 		}
-		
+
 		public function getSpawner(param1:String):Spawner
 		{
 			var _loc2_:Spawner = null;
@@ -81,12 +79,12 @@ package core.spawner
 			spawners.push(_loc2_);
 			return _loc2_;
 		}
-		
+
 		public function removeSpawner(param1:Spawner):void
 		{
 			spawners.splice(spawners.indexOf(param1), 1);
 		}
-		
+
 		public function getSpawnerByKey(param1:String):Spawner
 		{
 			for each (var _loc2_:* in spawners)
@@ -98,7 +96,7 @@ package core.spawner
 			}
 			return null;
 		}
-		
+
 		public function getSpawnerById(param1:int):Spawner
 		{
 			for each (var _loc2_:* in spawners)
@@ -110,7 +108,7 @@ package core.spawner
 			}
 			return null;
 		}
-		
+
 		public function damaged(param1:Message, pointer:int):void
 		{
 			var spawnerKey:String = param1.getString(pointer);
@@ -127,11 +125,11 @@ package core.spawner
 			{
 				spawner.doDOTEffect(param1.getInt(pointer + 6), param1.getString(pointer + 7), param1.getInt(pointer + 8));
 			}
-			
+
 			// QoLAF
-			if (Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.GetDistance(Game.instance.playerManager.me.ship, spawner) < 600 && SceneBase.clientSettings.autoTarget)
-				Game.instance.targetSystem.SetCurrentUnit(spawner);
-			
+			if (Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.getDistance(Game.instance.playerManager.me.ship, spawner) < 600 && SceneBase.clientSettings.autoTarget)
+				Game.instance.targetSystem.target = spawner;
+
 			spawner.takeDamage(damage);
 			spawner.shieldHp = sh;
 			if (spawner.shieldHp == 0)
@@ -143,25 +141,25 @@ package core.spawner
 			}
 			spawner.hp = hp;
 		}
-		
+
 		private function onSpawnerUpdate(param1:Message):void
 		{
 			var _loc4_:int = 0;
-			var _loc3_:String = param1.getString(_loc4_++);
+			var _loc3_:String = param1.getString(_loc4_++ );
 			var _loc2_:Spawner = getSpawnerByKey(_loc3_);
 			if (_loc2_ == null)
 			{
 				Console.write("No spawner to update, key: " + _loc3_);
 				return;
 			}
-			_loc2_.hp = param1.getInt(_loc4_++);
-			_loc2_.shieldHp = param1.getInt(_loc4_++);
+			_loc2_.hp = param1.getInt(_loc4_++ );
+			_loc2_.shieldHp = param1.getInt(_loc4_++ );
 			if (_loc2_.hp < _loc2_.hpMax || _loc2_.shieldHp < _loc2_.shieldHpMax)
 			{
 				_loc2_.isInjured = true;
 			}
 		}
-		
+
 		public function killed(param1:Message, param2:int):void
 		{
 			var _loc4_:String = param1.getString(param2);
@@ -173,7 +171,7 @@ package core.spawner
 			}
 			_loc3_.destroy();
 		}
-		
+
 		public function rebuild(param1:Message):void
 		{
 			var _loc3_:String = param1.getString(0);
@@ -185,7 +183,7 @@ package core.spawner
 			}
 			_loc2_.rebuild();
 		}
-		
+
 		public function dispose():void
 		{
 			for each (var _loc1_:* in spawners)

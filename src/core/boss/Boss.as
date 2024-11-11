@@ -16,109 +16,65 @@ package core.boss
 	import sound.SoundLocator;
 	import starling.display.Image;
 	import textures.TextureLocator;
-	
+
 	public class Boss extends GameObject
 	{
 		public var alive:Boolean;
-		
 		public var isHostile:Boolean;
-		
 		public var key:String;
-		
 		public var xp:int;
-		
 		public var level:int;
-		
 		public var hp:int;
-		
 		public var hpMax:int;
-		
 		public var resetTime:Number;
-		
 		public var respawnTime:Number;
-		
 		public var speed:Number;
-		
 		public var acceleration:Number;
-		
 		public var rotationSpeed:Number;
-		
 		public var rotationForced:Boolean;
-		
 		public var targetRange:int;
-		
 		public var holonomic:Boolean;
-		
 		public var orbitOrign:Point;
-		
 		public var orbitRadius:Point;
-		
 		public var turrets:Vector.<Turret>;
-		
+
 		public var spawners:Vector.<Spawner>;
-		
+
 		public var bossComponents:Vector.<BossComponent>;
-		
+
 		public var allComponents:Vector.<Unit>;
-		
+
 		public var target:Unit;
-		
 		public var angleTargetPos:Point;
-		
 		public var course:Heading;
-		
 		public var parentBody:Body;
-		
 		public var explosionEffect:String;
-		
 		public var explosionSound:String;
-		
 		public var bossRadius:int;
-		
 		public var currentWaypoint:Waypoint = null;
-		
 		public var waypoints:Vector.<Waypoint>;
-		
+
 		public var bodyDestroyStart:Number = 0;
-		
 		public var bodyDestroyEnd:Number = 0;
-		
 		public var bodyTarget:Body;
-		
 		public var awaitingActivation:Boolean;
-		
 		public var stateMachine:StateMachine;
-		
 		protected var g:Game;
-		
 		private var error:Point = null;
-		
 		private var errorAngle:Number;
-		
 		private var convergeTime:Number = 1000;
-		
 		private var convergeStartTime:Number;
-		
 		private var errorOldTime:Number;
-		
 		private var oldAngle:Number;
-		
 		public var teleportExitTime:Number = 0;
-		
 		public var teleportExitPoint:Point;
-		
 		public var hpRegen:int;
-		
 		public var factions:Vector.<String>;
-		
+
 		public var uberDifficulty:Number = 0;
-		
 		public var uberLevelFactor:Number = 0;
-		
 		private var teleportDestinationImage:Image;
-		
 		private var teleportChannelImage:Image;
-		
 		public function Boss(param1:Game)
 		{
 			stateMachine = new StateMachine();
@@ -135,7 +91,7 @@ package core.boss
 			this.g = param1;
 			distanceToCamera = 0;
 		}
-		
+
 		public function startTeleportEffect():void
 		{
 			teleportDestinationImage = new Image(TextureLocator.getService().getTextureMainByTextureName(name.toLowerCase().replace("???", "qqq") + "_mini"));
@@ -157,12 +113,13 @@ package core.boss
 			teleportChannelImage.blendMode = "add";
 			teleportChannelImage.color = 16729156;
 			TweenMax.fromTo(teleportChannelImage, (teleportExitTime - g.time) / 1000 / 3, {"alpha": 0, "scaleX": teleportChannelImage.scaleX, "scaleY": teleportChannelImage.scaleY}, {"alpha": 0.8, "scaleX": teleportChannelImage.scaleX / 1.6, "scaleY": teleportChannelImage.scaleY / 1.6, "repeat": 3, "onComplete": function():void
-			{
-				g.removeChildFromCanvas(teleportChannelImage);
-			}});
+					{
+						g.removeChildFromCanvas(teleportChannelImage);
+					}
+				});
 			g.addChildToCanvas(teleportChannelImage);
 		}
-		
+
 		public function endTeleportEffect():void
 		{
 			var splashImage1:Image;
@@ -180,9 +137,10 @@ package core.boss
 			splashImage1.color = 16729156;
 			g.addChildToCanvas(splashImage1);
 			TweenMax.fromTo(splashImage1, 0.3, {"scaleX": splashImage1.scaleX, "scaleY": splashImage1.scaleY, "alpha": 0.6}, {"scaleX": splashImage1.scaleX * 2, "scaleY": splashImage1.scaleY * 2, "alpha": 0, "onComplete": function():void
-			{
-				g.removeChildFromCanvas(splashImage1);
-			}});
+					{
+						g.removeChildFromCanvas(splashImage1);
+					}
+				});
 			splashImage2 = new Image(TextureLocator.getService().getTextureMainByTextureName(name.toLowerCase().replace("???", "qqq") + "_mini"));
 			splashImage2.scaleX = splashImage2.scaleY = bossRadius * 2 / splashImage2.width;
 			splashImage2.x = teleportExitPoint.x;
@@ -193,9 +151,10 @@ package core.boss
 			splashImage2.color = 16729156;
 			g.addChildToCanvas(splashImage2);
 			TweenMax.fromTo(splashImage2, 0.4, {"scaleX": splashImage2.scaleX, "scaleY": splashImage2.scaleY, "alpha": 0.6}, {"scaleX": splashImage2.scaleX * 2, "scaleY": splashImage2.scaleY * 2, "alpha": 0, "onComplete": function():void
-			{
-				g.removeChildFromCanvas(splashImage2);
-			}});
+					{
+						g.removeChildFromCanvas(splashImage2);
+					}
+				});
 			splashImage3 = new Image(TextureLocator.getService().getTextureMainByTextureName(name.toLowerCase().replace("???", "qqq") + "_mini"));
 			splashImage3.scaleX = splashImage3.scaleY = bossRadius * 2 / splashImage3.width;
 			splashImage3.x = teleportExitPoint.x;
@@ -206,11 +165,12 @@ package core.boss
 			splashImage3.color = 16729156;
 			g.addChildToCanvas(splashImage3);
 			TweenMax.fromTo(splashImage3, 0.6, {"scaleX": splashImage3.scaleX, "scaleY": splashImage3.scaleY, "alpha": 0.6}, {"scaleX": splashImage3.scaleX * 2, "scaleY": splashImage3.scaleY * 2, "alpha": 0, "onComplete": function():void
-			{
-				g.removeChildFromCanvas(splashImage3);
-			}});
+					{
+						g.removeChildFromCanvas(splashImage3);
+					}
+				});
 		}
-		
+
 		override public function update():void
 		{
 			var _loc4_:Point = null;
@@ -252,7 +212,7 @@ package core.boss
 				}
 			}
 		}
-		
+
 		private function updateIsNear():void
 		{
 			var _loc2_:Number = g.stage.stageWidth;
@@ -280,7 +240,7 @@ package core.boss
 				removeFromCanvas();
 			}
 		}
-		
+
 		override public function removeFromCanvas():void
 		{
 			isAddedToCanvas = false;
@@ -289,7 +249,7 @@ package core.boss
 				_loc1_.removeFromCanvas();
 			}
 		}
-		
+
 		override public function addToCanvas():void
 		{
 			isAddedToCanvas = true;
@@ -298,7 +258,7 @@ package core.boss
 				_loc1_.addToCanvas();
 			}
 		}
-		
+
 		public function addFactions():void
 		{
 			for each (var _loc1_:* in allComponents)
@@ -306,7 +266,7 @@ package core.boss
 				_loc1_.factions = factions;
 			}
 		}
-		
+
 		public function updateHeading(param1:Heading):void
 		{
 			var _loc9_:Number = NaN;
@@ -406,7 +366,7 @@ package core.boss
 			}
 			aiAddError(param1);
 		}
-		
+
 		public function calcHpMax():void
 		{
 			hp = 0;
@@ -420,7 +380,7 @@ package core.boss
 				}
 			}
 		}
-		
+
 		private function aiAddError(param1:Heading):void
 		{
 			var _loc2_:Number = NaN;
@@ -445,7 +405,7 @@ package core.boss
 				}
 			}
 		}
-		
+
 		private function aiRemoveError(param1:Heading):void
 		{
 			var _loc2_:Number = NaN;
@@ -459,7 +419,7 @@ package core.boss
 				param1.rotation -= _loc3_ * errorAngle;
 			}
 		}
-		
+
 		public function setConvergeTarget(param1:Heading):void
 		{
 			error = new Point(course.pos.x - param1.pos.x, course.pos.y - param1.pos.y);
@@ -471,7 +431,7 @@ package core.boss
 			course.time = param1.time;
 			aiAddError(course);
 		}
-		
+
 		public function overrideConvergeTarget(param1:Number, param2:Number):void
 		{
 			error = null;
@@ -482,7 +442,7 @@ package core.boss
 			course.pos.y = param2;
 			course.time = g.time;
 		}
-		
+
 		public function destroy():void
 		{
 			var _loc2_:Turret = null;
@@ -526,7 +486,7 @@ package core.boss
 				}
 			}
 		}
-		
+
 		public function getComponent(param1:int):Unit
 		{
 			for each (var _loc2_:* in allComponents)
@@ -538,7 +498,7 @@ package core.boss
 			}
 			return null;
 		}
-		
+
 		override public function draw():void
 		{
 			if (awaitingActivation)

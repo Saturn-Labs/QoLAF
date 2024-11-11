@@ -5,31 +5,30 @@ package core.turret
 	import debug.Console;
 	import playerio.Message;
 	import qolaf.target.TargetSystem;
-	
+
 	public class TurretManager
 	{
 		public var turrets:Vector.<Turret>;
-		
+
 		private var g:Game;
-		
 		public function TurretManager(param1:Game)
 		{
 			super();
 			this.g = param1;
 			turrets = new Vector.<Turret>();
 		}
-		
+
 		public function addMessageHandlers():void
 		{
 			g.addMessageHandler("turretChangedTarget", turretChangedTarget);
 			g.addMessageHandler("turretUpdate", onTurretUpdate);
 		}
-		
+
 		public function addEarlyMessageHandlers():void
 		{
 			g.addMessageHandler("turretKilled", killed);
 		}
-		
+
 		public function syncTurret(param1:Message, param2:int, param3:int):void
 		{
 			var _loc5_:* = 0;
@@ -51,7 +50,7 @@ package core.turret
 				_loc5_ += 5;
 			}
 		}
-		
+
 		public function syncTurretTarget(param1:Message, param2:int, param3:int):void
 		{
 			var _loc5_:* = 0;
@@ -76,7 +75,7 @@ package core.turret
 				_loc5_ += 4;
 			}
 		}
-		
+
 		public function turretChangedTarget(param1:Message):void
 		{
 			var _loc3_:int = 0;
@@ -96,33 +95,33 @@ package core.turret
 				_loc3_ += 2;
 			}
 		}
-		
+
 		private function onTurretUpdate(param1:Message):void
 		{
 			var _loc3_:int = 0;
-			var _loc2_:Turret = getTurretById(param1.getInt(_loc3_++));
+			var _loc2_:Turret = getTurretById(param1.getInt(_loc3_++ ));
 			if (_loc2_ == null)
 			{
 				return;
 			}
-			_loc2_.hp = param1.getInt(_loc3_++);
-			_loc2_.shieldHp = param1.getInt(_loc3_++);
+			_loc2_.hp = param1.getInt(_loc3_++ );
+			_loc2_.shieldHp = param1.getInt(_loc3_++ );
 			if (_loc2_.hp < _loc2_.hpMax || _loc2_.shieldHp < _loc2_.shieldHpMax)
 			{
 				_loc2_.isInjured = true;
 			}
-			_loc2_.target = g.shipManager.getShipFromId(param1.getInt(_loc3_++));
-			_loc2_.rotation = param1.getNumber(_loc3_++);
+			_loc2_.target = g.shipManager.getShipFromId(param1.getInt(_loc3_++ ));
+			_loc2_.rotation = param1.getNumber(_loc3_++ );
 			if (_loc2_.weapon != null)
 			{
-				_loc2_.weapon.fire = param1.getBoolean(_loc3_++);
+				_loc2_.weapon.fire = param1.getBoolean(_loc3_++ );
 			}
 		}
-		
+
 		public function update():void
 		{
 		}
-		
+
 		public function turretFire(param1:Message, param2:int = 0):void
 		{
 			var _loc4_:int = 0;
@@ -140,7 +139,7 @@ package core.turret
 				return;
 			}
 		}
-		
+
 		public function getTurret():Turret
 		{
 			var _loc1_:Turret = new Turret(g);
@@ -148,12 +147,12 @@ package core.turret
 			turrets.push(_loc1_);
 			return _loc1_;
 		}
-		
+
 		public function removeTurret(param1:Turret):void
 		{
 			turrets.splice(turrets.indexOf(param1), 1);
 		}
-		
+
 		public function getTurretById(param1:int):Turret
 		{
 			for each (var _loc2_:* in turrets)
@@ -166,7 +165,7 @@ package core.turret
 			Console.write("Error: missing turret");
 			return null;
 		}
-		
+
 		public function getTurretsByParentAndSyncId(param1:int, param2:int):Turret
 		{
 			for each (var _loc3_:* in turrets)
@@ -179,7 +178,7 @@ package core.turret
 			Console.write("Error: missing turret in sync");
 			return null;
 		}
-		
+
 		public function damaged(message:Message, pointer:int):void
 		{
 			var turretId:int = message.getInt(pointer + 1);
@@ -206,15 +205,15 @@ package core.turret
 			if (turret.isAddedToCanvas)
 			{
 				// QoLAF
-				if (Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.GetDistance(Game.instance.playerManager.me.ship, turret) < 600 && SceneBase.clientSettings.autoTarget)
-					Game.instance.targetSystem.SetCurrentUnit(turret);
-				
+				if (Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.getDistance(Game.instance.playerManager.me.ship, turret) < 600 && SceneBase.clientSettings.autoTarget)
+					Game.instance.targetSystem.target = turret;
+
 				turret.takeDamage(damage);
 			}
 			turret.shieldHp = sh;
 			turret.hp = hp;
 		}
-		
+
 		public function killed(param1:Message, param2:int):void
 		{
 			var _loc3_:int = param1.getInt(param2);

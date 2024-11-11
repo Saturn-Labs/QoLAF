@@ -6,37 +6,24 @@ package core.boss
 	import core.scene.Game;
 	import core.unit.Unit;
 	import flash.geom.Point;
-	
+
 	public class BossComponent extends Unit
 	{
 		public var offset:Point;
-		
 		public var imageOffset:Point;
-		
 		public var imageScale:Number;
-		
 		public var imageAngle:Number;
-		
 		public var imageRotationSpeed:Number;
-		
 		public var imageRotationSpeedCurrent:Number = 0;
-		
 		public var imageRotationMax:Number;
-		
 		public var imageRotationMin:Number;
-		
 		public var imagePivotPoint:Point;
-		
 		private var currentAngleOffset:Number;
-		
 		public var effect:Vector.<Emitter>;
-		
+
 		public var effectX:int = 0;
-		
 		public var effectY:int = 0;
-		
 		public var effectTarget:GameObject;
-		
 		public function BossComponent(param1:Game)
 		{
 			effect = new Vector.<Emitter>();
@@ -46,7 +33,7 @@ package core.boss
 			dotTimers = new Vector.<TweenMax>();
 			super(param1);
 		}
-		
+
 		override public function update():void
 		{
 			if (!active || !alive)
@@ -77,7 +64,7 @@ package core.boss
 			}
 			super.update();
 		}
-		
+
 		override public function destroy(param1:Boolean = true):void
 		{
 			for each (var _loc2_:* in effect)
@@ -86,7 +73,7 @@ package core.boss
 			}
 			super.destroy(param1);
 		}
-		
+
 		override public function reset():void
 		{
 			effect.splice(0, effect.length);

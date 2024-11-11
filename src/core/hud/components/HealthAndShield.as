@@ -14,57 +14,35 @@ package core.hud.components
 	import starling.textures.Texture;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-	
+
 	public class HealthAndShield extends DisplayObjectContainer
 	{
 		private static const HP_WIDTH:Number = 120;
-		
+
 		private static const SHIELD_WIDTH:Number = 120;
-		
+
 		private var playerHPBar:Image;
-		
 		private var colorGreen:uint;
-		
 		private var colorYellow:uint;
-		
 		private var colorRed:uint;
-		
 		private var playerHPText:TextField;
-		
 		private var playerHP:Image;
-		
 		private var playerHPBarBgr:Image;
-		
 		private var playerHPBarBgrGreen:Texture;
-		
 		private var playerHPBarBgrYellow:Texture;
-		
 		private var playerHPBarBgrRed:Texture;
-		
 		private var playerShieldBar:Image;
-		
 		private var playerShieldBarBgr:Image;
-		
 		private var colorBlue:uint;
-		
 		private var playerShieldText:TextField;
-		
 		private var playerShield:Image;
-		
 		private var textureManager:ITextureManager;
-		
 		private var toolTip:ToolTip;
-		
 		private var g:Game;
-		
 		private var warningOverlay:Quad;
-		
 		private var inLowHp:Boolean = false;
-		
 		private var lowHpTween:TweenMax = null;
-		
 		private var oldTotal:Number = 0;
-		
 		public function HealthAndShield(param1:Game)
 		{
 			warningOverlay = new Quad(1, 1);
@@ -72,7 +50,7 @@ package core.hud.components
 			this.g = param1;
 			textureManager = TextureLocator.getService();
 		}
-		
+
 		public function load():void
 		{
 			warningOverlay.color = 16711680;
@@ -131,7 +109,7 @@ package core.hud.components
 			toolTip = new ToolTip(g, this, "", null, "shieldAndHealth");
 			g.addResizeListener(resize);
 		}
-		
+
 		public function update():void
 		{
 			var _loc5_:Player = g.me;
@@ -203,7 +181,7 @@ package core.hud.components
 			_loc2_ += "Armor is good against rapid fire and low impact damage, the damage will be reduced by the amount of armor (max <FONT COLOR='#ffffff'>[armorCapPvP]%</FONT> of damage in PvP and <FONT COLOR='#ffffff'>[armorCapPvE]%</FONT> in PvE).\n";
 			toolTip.text = Localize.t(_loc2_).replace("[regen]", (1.75 * (_loc3_.shieldRegen + _loc3_.shieldRegenBonus)).toFixed(0)).replace("[armor]", _loc3_.armorThreshold).replace("[shieldReduction]", 35).replace("[armorCapPvP]", 75).replace("[armorCapPvE]", 90);
 		}
-		
+
 		public function startLowHpWarningEffect():void
 		{
 			if (inLowHp)
@@ -218,11 +196,12 @@ package core.hud.components
 			}
 			g.addChildToOverlay(warningOverlay);
 			lowHpTween = TweenMax.fromTo(warningOverlay, 1, {"alpha": warningOverlay.alpha}, {"alpha": 0.2, "onComplete": function():void
-			{
-				lowHpTween = TweenMax.fromTo(warningOverlay, 1, {"alpha": 0.2}, {"alpha": 0.3, "yoyo": true, "repeat": -1});
-			}});
+					{
+						lowHpTween = TweenMax.fromTo(warningOverlay, 1, {"alpha": 0.2}, {"alpha": 0.3, "yoyo": true, "repeat": -1});
+					}
+				});
 		}
-		
+
 		public function stopLowHPWarningEffect():void
 		{
 			inLowHp = false;
@@ -232,14 +211,15 @@ package core.hud.components
 				lowHpTween = null;
 			}
 			lowHpTween = TweenMax.fromTo(warningOverlay, 1, {"alpha": warningOverlay.alpha}, {"alpha": 0, "onComplete": function():void
-			{
-				g.removeChildFromOverlay(warningOverlay);
-				lowHpTween.kill();
-				lowHpTween = null;
-			}});
+					{
+						g.removeChildFromOverlay(warningOverlay);
+						lowHpTween.kill();
+						lowHpTween = null;
+					}
+				});
 			lowHpTween.resume();
 		}
-		
+
 		private function resize(param1:Event = null):void
 		{
 			warningOverlay.width = g.stage.stageWidth;

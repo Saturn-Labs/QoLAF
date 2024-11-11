@@ -10,79 +10,48 @@ package core.hud.components
 	import starling.filters.BlurFilter;
 	import starling.filters.GlowFilter;
 	import starling.text.TextField;
-	
+
 	public class ScreenTextField extends TextField
 	{
 		public static const PARAGRAPH_FINISHED:String = "paragraphFinished";
-		
+
 		public static const PAGE_FINISHED:String = "pageFinished";
-		
+
 		public static const ANIMATION_FINISHED:String = "animationFinished";
-		
+
 		public static const BEFORE_FADE_OUT:String = "beforeFadeOut";
-		
+
 		private var CARET_SOUND:String = "jS2TrMck2EOVxw72l0pf9A";
-		
 		private var randomChars:String = "a b c d e f g h i j k l m n o p q r s t u v 1 2 3 4 5 6 7 8 9 0 ! @ # $ % ^ & * ( ) { } < > / ?";
-		
 		private var charArray:Array;
-		
 		private var pageText:String = "";
-		
 		private var currentParagraph:int = 0;
-		
 		private var currentPage:int = 0;
-		
 		private var _textArray:Array = null;
-		
 		private var showCaret:Boolean = true;
-		
 		public var caretDelay:Number = 30;
-		
 		public var caretIncrement:Number = 1;
-		
 		public var paragraphReadTime:Number = 1000;
-		
 		public var pageReadTime:Number = 4000;
-		
 		public var paragraphInitTime:Number = 500;
-		
 		public var randomCharAmount:Number = 0;
-		
 		public var period:Number = 33;
-		
 		public var newRowTime:Number = 720;
-		
 		public var fadeOutDelay:Number = 0;
-		
 		public var glowFilter:GlowFilter;
-		
 		public var glowColor:uint = 16777215;
-		
 		public var glowAlpha:Number = 1;
-		
 		public var glowBlurX:Number = 2;
-		
 		public var glowBlurY:Number = 2;
-		
 		public var fadeOutTime:Number = 500;
-		
 		public var fadeOutBlurX:Number = 100;
-		
 		public var fadeOutBlurStrength:int = 6;
-		
 		public var fadeOutBlurAlpha:Number = 1;
-		
 		private var soundManager:ISound;
-		
 		public var id:String = "";
-		
 		private var stopPlaying:Boolean;
-		
 		public var duration:Number = 0;
-		
 		public var fadeOut:Boolean = true;
-		
 		public function ScreenTextField(param1:int = 450, param2:int = 800, param3:Number = 6000, param4:uint = 16777215, param5:uint = 16777215, param6:Number = 0)
 		{
 			charArray = randomChars.split(" ");
@@ -103,7 +72,7 @@ package core.hud.components
 			}
 			glowFilter = null;
 		}
-		
+
 		public function start(param1:Array = null, param2:Boolean = true):void
 		{
 			var originalTime:Number;
@@ -149,26 +118,26 @@ package core.hud.components
 				newRowTime *= offsetTime;
 			}
 			soundManager.preCacheSound(CARET_SOUND, function():void
-			{
-				addEventListener("paragraphFinished", nextParagraph);
-				addEventListener("pageFinished", nextParagraph);
-				addEventListener("animationFinished", onAnimationFinished);
-				nextParagraph();
-			});
+				{
+					addEventListener("paragraphFinished", nextParagraph);
+					addEventListener("pageFinished", nextParagraph);
+					addEventListener("animationFinished", onAnimationFinished);
+					nextParagraph();
+				});
 		}
-		
+
 		public function onAnimationFinished(param1:starling.events.Event = null):void
 		{
 			removeEventListener("paragraphFinished", nextParagraph);
 			removeEventListener("pageFinished", nextParagraph);
 			removeEventListener("animationFinished", onAnimationFinished);
 		}
-		
+
 		public function set textArray(param1:Array):void
 		{
 			_textArray = param1;
 		}
-		
+
 		private function nextParagraph(param1:starling.events.Event = null):void
 		{
 			var pauseTimer:Timer;
@@ -190,14 +159,14 @@ package core.hud.components
 			{
 				pauseTimer = new Timer(period, paragraphInitTime / period);
 				pauseTimer.addEventListener("timer", function(param1:flash.events.Event):void
-				{
-					toggleCaret(pageText);
-				});
+					{
+						toggleCaret(pageText);
+					});
 				pauseTimer.addEventListener("timerComplete", function(param1:flash.events.Event):void
-				{
-					revealParagraph(_textArray[currentPage][currentParagraph]);
-					currentParagraph++;
-				});
+					{
+						revealParagraph(_textArray[currentPage][currentParagraph]);
+						currentParagraph++;
+					});
 				pauseTimer.start();
 			}
 			else if (currentParagraph < _textArray[currentPage].length)
@@ -209,32 +178,32 @@ package core.hud.components
 				};
 				pauseTimer.addEventListener("timer", onPauseUpdate);
 				pauseTimer.addEventListener("timerComplete", (function():Function
-				{
-					var onPauseComplete:Function;
-					return onPauseComplete = function(param1:flash.events.Event):void
-					{
-						var _loc3_:Array = null;
-						var _loc2_:String = null;
-						if (_textArray != null)
 						{
-							_loc3_ = _textArray[currentPage];
-							if (_loc3_ == null)
+							var onPauseComplete:Function;
+							return onPauseComplete = function(param1:flash.events.Event):void
 							{
-								return;
-							}
-							_loc2_ = _loc3_[currentParagraph];
-							revealParagraph(_loc2_, true);
-						}
-						pauseTimer.removeEventListener("timer", onPauseUpdate);
-						pauseTimer.removeEventListener("timerComplete", onPauseComplete);
-						currentParagraph = 0;
-						currentPage++;
-					};
-				})());
+								var _loc3_:Array = null;
+								var _loc2_:String = null;
+								if (_textArray != null)
+								{
+									_loc3_ = _textArray[currentPage];
+									if (_loc3_ == null)
+									{
+										return;
+									}
+									_loc2_ = _loc3_[currentParagraph];
+									revealParagraph(_loc2_, true);
+								}
+								pauseTimer.removeEventListener("timer", onPauseUpdate);
+								pauseTimer.removeEventListener("timerComplete", onPauseComplete);
+								currentParagraph = 0;
+								currentPage++;
+							};
+						})());
 				pauseTimer.start();
 			}
 		}
-		
+
 		private function revealParagraph(param1:String, param2:Boolean = false):void
 		{
 			var toReveal:String = param1;
@@ -259,54 +228,54 @@ package core.hud.components
 			};
 			fadeInTimer.addEventListener("timer", onFadeInTimerUpdate);
 			fadeInTimer.addEventListener("timerComplete", (function():Function
-			{
-				var onFadeInTimerComplete:Function;
-				return onFadeInTimerComplete = function(param1:flash.events.Event):void
-				{
-					var readTimeSteps:int;
-					var endAction:Function;
-					var readTimer:Timer;
-					var onReadTimerUpdate:Function;
-					var e:flash.events.Event = param1;
-					fadeInTimer.removeEventListener("timer", onFadeInTimerUpdate);
-					fadeInTimer.removeEventListener("timerComplete", onFadeInTimerComplete);
-					if (lastParagraph)
 					{
-						endAction = createFadeOutPage(toReveal);
-						readTimeSteps = pageReadTime / period;
-						dispatchEventWith("beforeFadeOut");
-					}
-					else
-					{
-						endAction = createMoveCaret(toReveal);
-						readTimeSteps = paragraphReadTime / period;
-					}
-					readTimer = new Timer(period, readTimeSteps);
-					onReadTimerUpdate = function(param1:TimerEvent):void
-					{
-						if (stopPlaying)
+						var onFadeInTimerComplete:Function;
+						return onFadeInTimerComplete = function(param1:flash.events.Event):void
 						{
-							readTimer.stop();
-						}
-						toggleCaret(pageText + toReveal + " ");
-					};
-					readTimer.addEventListener("timer", onReadTimerUpdate);
-					readTimer.addEventListener("timerComplete", (function():Function
-					{
-						var onReadTimerComplete:Function;
-						return onReadTimerComplete = function(param1:TimerEvent):void
-						{
-							readTimer.removeEventListener("timer", onReadTimerUpdate);
-							readTimer.removeEventListener("timer", onReadTimerComplete);
-							endAction(param1);
+							var readTimeSteps:int;
+							var endAction:Function;
+							var readTimer:Timer;
+							var onReadTimerUpdate:Function;
+							var e:flash.events.Event = param1;
+							fadeInTimer.removeEventListener("timer", onFadeInTimerUpdate);
+							fadeInTimer.removeEventListener("timerComplete", onFadeInTimerComplete);
+							if (lastParagraph)
+							{
+								endAction = createFadeOutPage(toReveal);
+								readTimeSteps = pageReadTime / period;
+								dispatchEventWith("beforeFadeOut");
+							}
+							else
+							{
+								endAction = createMoveCaret(toReveal);
+								readTimeSteps = paragraphReadTime / period;
+							}
+							readTimer = new Timer(period, readTimeSteps);
+							onReadTimerUpdate = function(param1:TimerEvent):void
+							{
+								if (stopPlaying)
+								{
+									readTimer.stop();
+								}
+								toggleCaret(pageText + toReveal + " ");
+							};
+							readTimer.addEventListener("timer", onReadTimerUpdate);
+							readTimer.addEventListener("timerComplete", (function():Function
+									{
+										var onReadTimerComplete:Function;
+										return onReadTimerComplete = function(param1:TimerEvent):void
+										{
+											readTimer.removeEventListener("timer", onReadTimerUpdate);
+											readTimer.removeEventListener("timer", onReadTimerComplete);
+											endAction(param1);
+										};
+									})());
+							readTimer.start();
 						};
 					})());
-					readTimer.start();
-				};
-			})());
 			fadeInTimer.start();
 		}
-		
+
 		private function createMoveCaret(param1:String):Function
 		{
 			var toReveal:String = param1;
@@ -323,24 +292,24 @@ package core.hud.components
 				pageText = text;
 				pauseTimer = new Timer(period, newRowTime / period);
 				pauseTimer.addEventListener("timer", function(param1:flash.events.Event):void
-				{
-					if (stopPlaying)
 					{
-						pauseTimer.stop();
-					}
-					toggleCaret(pageText);
-				});
+						if (stopPlaying)
+						{
+							pauseTimer.stop();
+						}
+						toggleCaret(pageText);
+					});
 				pauseTimer.addEventListener("timerComplete", function(param1:flash.events.Event):void
-				{
-					soundManager.play(CARET_SOUND);
-					pageText += "\n";
-					text = pageText + "_";
-					dispatchEvent(new starling.events.Event("paragraphFinished"));
-				});
+					{
+						soundManager.play(CARET_SOUND);
+						pageText += "\n";
+						text = pageText + "_";
+						dispatchEvent(new starling.events.Event("paragraphFinished"));
+					});
 				pauseTimer.start();
 			};
 		}
-		
+
 		public function createFadeOutPage(param1:String):Function
 		{
 			var toReveal:String = param1;
@@ -348,29 +317,29 @@ package core.hud.components
 			{
 				var e:flash.events.Event = param1;
 				TweenMax.delayedCall(fadeOutDelay, function():void
-				{
-					text = pageText + toReveal;
-					doFadeOut();
-				});
+					{
+						text = pageText + toReveal;
+						doFadeOut();
+					});
 			};
 		}
-		
+
 		private function resetStyle():void
 		{
 			alpha = 1;
 			filter = glowFilter;
 		}
-		
+
 		public function stop():void
 		{
 			stopPlaying = true;
 		}
-		
+
 		public function play():void
 		{
 			stopPlaying = false;
 		}
-		
+
 		public function doFadeOut():void
 		{
 			var blurFilter:BlurFilter;
@@ -387,24 +356,24 @@ package core.hud.components
 			}
 			fadeOutTimer = new Timer(period, fadeOutSteps);
 			fadeOutTimer.addEventListener("timer", function(param1:TimerEvent):void
-			{
-				alpha = 1 * (fadeOutSteps - currentFadeOutStep) / fadeOutSteps;
-				if (blurFilter)
 				{
-					blurFilter.blurX = 1 + 105 * (1 - alpha);
-				}
-				filter = blurFilter;
-				currentFadeOutStep++;
-			});
+					alpha = 1 * (fadeOutSteps - currentFadeOutStep) / fadeOutSteps;
+					if (blurFilter)
+					{
+						blurFilter.blurX = 1 + 105 * (1 - alpha);
+					}
+					filter = blurFilter;
+					currentFadeOutStep++;
+				});
 			fadeOutTimer.addEventListener("timerComplete", function(param1:TimerEvent):void
-			{
-				pageText = "";
-				text = "";
-				dispatchEventWith("pageFinished");
-			});
+				{
+					pageText = "";
+					text = "";
+					dispatchEventWith("pageFinished");
+				});
 			fadeOutTimer.start();
 		}
-		
+
 		private function toggleCaret(param1:String):void
 		{
 			if (showCaret)
@@ -418,7 +387,7 @@ package core.hud.components
 				showCaret = true;
 			}
 		}
-		
+
 		public function getFullWidth(param1:String, param2:int = 0):Number
 		{
 			var _loc4_:Text = new Text();
@@ -436,7 +405,7 @@ package core.hud.components
 			_loc4_ = null;
 			return _loc3_;
 		}
-		
+
 		private function randText(param1:int = 6):String
 		{
 			var _loc3_:int = 0;

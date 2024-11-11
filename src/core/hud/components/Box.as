@@ -7,39 +7,29 @@ package core.hud.components
 	import starling.textures.Texture;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-	
+
 	public class Box extends Sprite
 	{
 		protected static var normalTexture:Texture;
-		
 		protected static var highlightTexture:Texture;
-		
 		protected static var buyTexture:Texture;
-		
 		protected static var lightTexture:Texture;
-		
 		protected static var themeLoaded:Boolean;
-		
 		public static const STYLE_HIGHLIGHT:String = "highlight";
-		
+
 		public static const STYLE_NORMAL:String = "normal";
-		
+
 		public static const STYLE_BUY:String = "buy";
-		
+
 		public static const STYLE_DARK_GRAY:String = "light";
-		
+
 		protected static const BUTTON_SCALE_9_GRID:Rectangle = new Rectangle(25, 25, 8, 4);
-		
+
 		protected var w:Number;
-		
 		protected var h:Number;
-		
 		protected var styleImage:Image;
-		
 		protected var _style:String;
-		
 		protected var _padding:Number;
-		
 		public function Box(param1:Number, param2:Number, param3:String = "normal", param4:Number = 1, param5:Number = 20)
 		{
 			super();
@@ -55,7 +45,7 @@ package core.hud.components
 			this.width = param1;
 			this.height = param2;
 		}
-		
+
 		public static function loadTheme():void
 		{
 			themeLoaded = true;
@@ -65,18 +55,18 @@ package core.hud.components
 			buyTexture = _loc1_.getTextureGUIByTextureName("box-buy");
 			lightTexture = _loc1_.getTextureGUIByTextureName("box-light");
 		}
-		
+
 		public function set style(param1:String):void
 		{
 			_style = param1;
 			updateStyle();
 		}
-		
+
 		public function get style():String
 		{
 			return _style;
 		}
-		
+
 		public function updateStyle():void
 		{
 			var _loc1_:Texture = null;
@@ -105,29 +95,29 @@ package core.hud.components
 			addChildAt(styleImage, 0);
 			draw();
 		}
-		
+
 		public function get padding():Number
 		{
 			return _padding;
 		}
-		
+
 		override public function set alpha(param1:Number):void
 		{
 			styleImage.alpha = param1;
 		}
-		
+
 		override public function set width(param1:Number):void
 		{
 			w = param1 + padding * 2;
 			draw();
 		}
-		
+
 		override public function set height(param1:Number):void
 		{
 			h = param1 + padding * 2;
 			draw();
 		}
-		
+
 		protected function draw():void
 		{
 			if (padding && w && h)

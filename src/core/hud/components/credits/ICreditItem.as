@@ -1,13 +1,13 @@
 package core.hud.components.credits
 {
-   public interface ICreditItem
-   {
-      function select():void;
+	public interface ICreditItem
+	{
+		function select():void;
 
-      function deselect():void;
+		function deselect():void;
 
-      function update():void;
+		function update():void;
 
-      function exit():void;
-   }
+		function exit():void;
+	}
 }
