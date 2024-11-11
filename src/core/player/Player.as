@@ -33,10 +33,12 @@ package core.player
 	import facebook.Action;
 	import movement.Heading;
 	import playerio.Message;
+	import qolaf.data.ClientSettings;
 	import sound.ISound;
 	import sound.SoundLocator;
 	import starling.core.Starling;
 	import starling.display.Image;
+	import qolaf.data.ClientSettings;
 
 	public class Player
 	{
@@ -149,6 +151,7 @@ package core.player
 		private var g:Game;
 		private var updateInterval:int;
 		public var isLanded:Boolean = false;
+		private var clientSettings:ClientSettings;
 		public function Player(param1:Game, param2:String)
 		{
 			stateMachine = new StateMachine();
@@ -174,6 +177,7 @@ package core.player
 			this.g = param1;
 			this.id = param2;
 			disableLeave = false;
+			this.clientSettings = SceneBase.clientSettings;
 		}
 
 		public function get ship():PlayerShip
@@ -876,7 +880,7 @@ package core.player
 					});
 				return;
 			}
-			g.camera.zoomFocus(3, 25);
+			g.camera.zoomFocus(3 * clientSettings.zoomFactor, 25);
 			TweenMax.to(ship, 1.2, {"x": body.x, "y": body.y, "scaleX": 0.5, "scaleY": 0.5, "rotation": toRot, "onComplete": function():void
 					{
 						stateMachine.changeState(new Landed(g.me, body, g));
@@ -884,7 +888,7 @@ package core.player
 						ship.land();
 						TweenMax.delayedCall(0.5, function():void
 							{
-								g.camera.zoomFocus(1, 1);
+								g.camera.zoomFocus(clientSettings.zoomFactor, 1);
 							});
 					}
 				});

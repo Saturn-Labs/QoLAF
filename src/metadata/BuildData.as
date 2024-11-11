@@ -1,1 +1,1 @@
-package metadata { public class BuildData { public static const BUILD_NUMBER:Number = 583; public static const COMMIT:String = "dc33bc5"; } } 
+package metadata { public class BuildData { public static const BUILD_NUMBER:Number = 596; public static const COMMIT:String = "c6253b1"; } } 

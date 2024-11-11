@@ -193,23 +193,23 @@ package core.states.gameStates
 			{
 				_loc3_.boostEndedLastTick = false;
 				sendCommand(0, true);
-				g.camera.zoomFocus(0.85, 100);
+				g.camera.zoomFocus(0.85 * clientSettings.zoomFactor, 100);
 			}
 			if ((_loc2_.accelerate || _loc3_.boostEndedLastTick) && !_loc3_.usingBoost && keybinds.isInputUp(11) && !autoCruise)
 			{
 				_loc3_.boostEndedLastTick = false;
 				sendCommand(0, false);
-				g.camera.zoomFocus(1, 100);
+				g.camera.zoomFocus(clientSettings.zoomFactor, 100);
 			}
 			if (!_loc2_.accelerate && !_loc2_.deaccelerate && !param1 && !_loc3_.usingBoost && keybinds.isInputDown(12))
 			{
 				sendCommand(8, true);
-				g.camera.zoomFocus(1, 100);
+				g.camera.zoomFocus(clientSettings.zoomFactor, 100);
 			}
 			if (_loc2_.deaccelerate && !_loc3_.usingBoost && keybinds.isInputUp(12))
 			{
 				sendCommand(8, false);
-				g.camera.zoomFocus(1, 100);
+				g.camera.zoomFocus(clientSettings.zoomFactor, 100);
 			}
 		}
 		
@@ -393,7 +393,7 @@ package core.states.gameStates
 				g.commandManager.addBoostCommand();
 				if (me.ship.usingBoost)
 				{
-					g.camera.zoomFocus(0.75, 80);
+					g.camera.zoomFocus(0.75 * clientSettings.zoomFactor, 80);
 				}
 			}
 		}

@@ -21,6 +21,8 @@ package core.states.gameStates
 	import starling.events.Event;
 	import starling.events.TouchEvent;
 	import textures.TextureLocator;
+	import qolaf.data.ClientSettings;
+	import core.scene.SceneBase;
 
 	public class LandedState extends GameState
 	{
@@ -38,11 +40,13 @@ package core.states.gameStates
 		private var crewButton:ButtonExpandableHud;
 		private var bgrOverlay:Quad;
 		private var bgrMenuOverlay:Quad;
+		private var clientSettings:ClientSettings;
 		public function LandedState(param1:Game, param2:Body, param3:String)
 		{
 			var g:Game = param1;
 			var body:Body = param2;
 			var stationName:String = param3;
+			this.clientSettings = SceneBase.clientSettings;
 			container = new Sprite();
 			bgrOverlay = new Quad(100, 100, 0);
 			bgrMenuOverlay = new Quad(100, 100, 0);
@@ -210,7 +214,7 @@ package core.states.gameStates
 			container.removeChildren(0, -1, true);
 			unloadCompleted();
 			Tutorial.clear();
-			g.camera.zoomFocus(1, 1);
+			g.camera.zoomFocus(clientSettings.zoomFactor, 1);
 			g.toggleRoamingCanvases(true);
 			RymdenRunt.s.nativeStage.frameRate = 60;
 			param1();

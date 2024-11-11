@@ -374,6 +374,7 @@ package core.scene
 				playerManager.initPlayer(m, 0);
 				initPlayerComplete = true;
 				camera.focusTarget = me.ship.movieClip;
+				camera.zoomFocus(clientSettings.zoomFactor, 1);
 				controlZoneManager.init();
 				updateServiceRoom();
 				tryRunGameLoop();

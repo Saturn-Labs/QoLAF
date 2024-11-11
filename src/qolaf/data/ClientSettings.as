@@ -2,6 +2,7 @@ package qolaf.data
 {
 	import core.scene.SceneBase;
 	import core.scene.Game;
+	import flash.geom.Point;
 	import flash.net.SharedObject;
 
 	/**
@@ -9,14 +10,14 @@ package qolaf.data
 	 */
 	public class ClientSettings
 	{
-		public static const SETTINGS_FILE:String = "\\qolaf\\local_settings.json";
 		public static const AUTO_TARGET:String = "auto_target";
 		public static const TARGET_INFO_POSITION:String = "target_info_position";
 		public static const ZOOM_FACTOR:String = "zoom_factor";
-
+		
 		private var _sceneBase:SceneBase;
 		private var _sharedObject:SharedObject;
 		private var _settingsObject:Object = {};
+		
 		public function ClientSettings(sceneBase:SceneBase)
 		{
 			this._sceneBase = sceneBase;
@@ -67,7 +68,7 @@ package qolaf.data
 
 			return true;
 		}
-
+		
 		public function get autoTarget():Boolean
 		{
 			var playerId:String = Game.instance.playerManager.me.id;
@@ -78,17 +79,17 @@ package qolaf.data
 
 		public function get zoomFactor(): Number {
 			var playerId:String = Game.instance.playerManager.me.id;
-			if (playerId in settingsObject && ZOOM_FACTOR in settingsObject[playerId])
-				return settingsObject[playerId][ZOOM_FACTOR] as Number;
+			if (playerId in _settingsObject && ZOOM_FACTOR in _settingsObject[playerId])
+				return _settingsObject[playerId][ZOOM_FACTOR] as Number;
 			return 1.0;
 		}
 		
 		public function set zoomFactor(value:Number): void 
 		{
 			var playerId:String = Game.instance.playerManager.me.id;
-			if (!(playerId in settingsObject))
-				settingsObject[playerId] = buildDefaults();
-			settingsObject[playerId][ZOOM_FACTOR] = value;
+			if (!(playerId in _settingsObject))
+				_settingsObject[playerId] = buildDefaults();
+			_settingsObject[playerId][ZOOM_FACTOR] = value;
 		}
 
 		public function set autoTarget(value:Boolean):void
@@ -125,7 +126,7 @@ package qolaf.data
 			var object:Object = {};
 			object[AUTO_TARGET] = autoTarget;
 			object[TARGET_INFO_POSITION] = targetInfoPosition;
-			object[ZOOM_FACTOR] = 1.0;
+			object[ZOOM_FACTOR] = zoomFactor;
 			return object;
 		}
 	}
