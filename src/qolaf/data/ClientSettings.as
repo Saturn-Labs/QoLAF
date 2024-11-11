@@ -4,6 +4,7 @@ package qolaf.data
 	import core.scene.Game;
 	import flash.geom.Point;
 	import flash.net.SharedObject;
+	import qolaf.utils.GeneralUtils;
 
 	/**
 	 * @author rydev
@@ -89,7 +90,7 @@ package qolaf.data
 			var playerId:String = Game.instance.playerManager.me.id;
 			if (!(playerId in _settingsObject))
 				_settingsObject[playerId] = buildDefaults();
-			_settingsObject[playerId][ZOOM_FACTOR] = value;
+			_settingsObject[playerId][ZOOM_FACTOR] = GeneralUtils.clamp(value, 0.35, 10.0);
 		}
 
 		public function set autoTarget(value:Boolean):void
