@@ -8,7 +8,9 @@ package qolaf.states
 	import feathers.controls.Slider;
 	import flash.geom.Point;
 	import generics.Localize;
-	import qolaf.data.ClientSettings;
+	import qolaf.data.IDataHandler;
+	import qolaf.data.ISharedSettings;
+	import qolaf.data.SharedSettings;
 	import starling.display.Sprite;
 	import starling.events.Event;
 
@@ -18,7 +20,7 @@ package qolaf.states
 	public class SettingsQoLAF extends Sprite
 	{
 		private var _game:Game;
-		private var _clientSettings:ClientSettings;
+		private var _sharedSettings:ISharedSettings;
 		private var _currentHeight:Number = 20;
 		private var _currentWidth:Number = 50;
 		private var _scrollArea:ScrollContainer;
@@ -30,7 +32,7 @@ package qolaf.states
 		public function SettingsQoLAF(game:Game)
 		{
 			this._game = game;
-			this._clientSettings = SceneBase.clientSettings;
+			this._sharedSettings = SceneBase.sharedSettings;
 			_scrollArea = new ScrollContainer();
 			_scrollArea.y = 50;
 			_scrollArea.x = 10;
@@ -51,33 +53,51 @@ package qolaf.states
 			_currentHeight += 40;
 
 			_autoTarget = new Check();
-			_autoTarget.isSelected = _clientSettings.autoTarget;
+			
+			var enabledAutoTarget:Boolean = SceneBase.sharedSettings.getValue(function(handler:IDataHandler):Boolean {
+				return handler.getSettingOr("auto_target", false);
+			}) as Boolean;
+			_autoTarget.isSelected = enabledAutoTarget;
 			_autoTarget.addEventListener("change", function(event:Event):void
-				{
-					_clientSettings.autoTarget = _autoTarget.isSelected;
+			{
+				_sharedSettings.modify(function(handler:IDataHandler):void {
+					handler.setSetting("auto_target", _autoTarget.isSelected);
 				});
+			});
 			addCheckbox(_autoTarget, "Enable auto target");
 
+			var currentPos:Point = _sharedSettings.getValue(function(handler:IDataHandler):Point {
+				return handler.getSettingOr("target_info_position", new Point(0.5, 0.1)) as Point;
+			}) as Point;
+			
 			_targetInfoX = new Slider();
-			addSlider(_targetInfoX, _clientSettings.targetInfoPosition.x, "Target info X position");
+			addSlider(_targetInfoX, currentPos.x, "Target info X position");
 			_targetInfoXText = new Text(_targetInfoX.x + 120, _targetInfoX.y + 10);
 			_targetInfoX.addEventListener(Event.CHANGE, function(e:Event):void
-				{
-					_clientSettings.targetInfoPosition = new Point(_targetInfoX.value, _clientSettings.targetInfoPosition.y);
-					_targetInfoXText.text = _clientSettings.targetInfoPosition.x.toFixed(2);
+			{
+				_sharedSettings.modify(function(handler:IDataHandler):void {
+					var position:Point = handler.getSettingOr("target_info_position", new Point(0.5, 0.1)) as Point;
+					position.x = _targetInfoX.value;
+					handler.setSetting("target_info_position", position);
 				});
-			_targetInfoXText.text = _clientSettings.targetInfoPosition.x.toFixed(2);
+				_targetInfoXText.text = _targetInfoX.value.toFixed(2);
+			});
+			_targetInfoXText.text = currentPos.x.toFixed(2);
 			_scrollArea.addChild(_targetInfoXText);
 
 			_targetInfoY = new Slider();
-			addSlider(_targetInfoY, _clientSettings.targetInfoPosition.y, "Target info Y position");
+			addSlider(_targetInfoY, currentPos.y, "Target info Y position");
 			_targetInfoYText = new Text(_targetInfoY.x + 120, _targetInfoY.y + 10);
 			_targetInfoY.addEventListener(Event.CHANGE, function(e:Event):void
-				{
-					_clientSettings.targetInfoPosition = new Point(_clientSettings.targetInfoPosition.x, _targetInfoY.value);
-					_targetInfoYText.text = _clientSettings.targetInfoPosition.y.toFixed(2);
+			{
+				_sharedSettings.modify(function(handler:IDataHandler):void {
+					var position:Point = handler.getSettingOr("target_info_position", new Point(0.5, 0.1)) as Point;
+					position.y = _targetInfoY.value;
+					handler.setSetting("target_info_position", position);
 				});
-			_targetInfoYText.text = _clientSettings.targetInfoPosition.y.toFixed(2);
+				_targetInfoYText.text = _targetInfoY.value.toFixed(2);
+			});
+			_targetInfoYText.text = currentPos.y.toFixed(2);
 			_scrollArea.addChild(_targetInfoYText);
 		}
 

@@ -156,10 +156,6 @@ package core.states.gameStates
 			clearBackground();
 			g.me.rotationSpeedMod = settings.rotationSpeed;
 			SceneBase.settings.save();
-
-			// QoLAF
-			SceneBase.clientSettings.save();
-
 			sm.revertState();
 		}
 	}

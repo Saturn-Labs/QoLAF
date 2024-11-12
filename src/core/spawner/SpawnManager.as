@@ -4,6 +4,7 @@ package core.spawner
 	import core.scene.SceneBase;
 	import debug.Console;
 	import playerio.Message;
+	import qolaf.data.IDataHandler;
 	import qolaf.target.TargetSystem;
 
 	public class SpawnManager
@@ -127,7 +128,10 @@ package core.spawner
 			}
 
 			// QoLAF
-			if (Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.getDistance(Game.instance.playerManager.me.ship, spawner) < 600 && SceneBase.clientSettings.autoTarget)
+			var enabledAutoTarget:Boolean = SceneBase.sharedSettings.getValue(function(handler:IDataHandler):Boolean {
+				return handler.getSettingOr("auto_target", false);
+			}) as Boolean;
+			if (Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.getDistance(Game.instance.playerManager.me.ship, spawner) < 600 && enabledAutoTarget)
 				Game.instance.targetSystem.target = spawner;
 
 			spawner.takeDamage(damage);

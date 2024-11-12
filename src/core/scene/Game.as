@@ -1,7 +1,7 @@
 package core.scene
 {
 	import flash.utils.getTimer;
-	import qolaf.data.ClientSettings;
+	import qolaf.data.SharedSettings;
 	import qolaf.ui.elements.ModifierTooltip;
 	import starling.core.Starling;
 	import com.google.analytics.AnalyticsTracker;
@@ -349,8 +349,8 @@ package core.scene
 			}
 
 			// QoLAF
-			if (clientSettings == null)
-				clientSettings = new ClientSettings(this);
+			if (sharedSettings == null)
+				sharedSettings = new SharedSettings(this);
 
 			settings.sb = this;
 			bodyManager.initSolarSystem(param1);

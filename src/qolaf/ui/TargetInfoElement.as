@@ -15,6 +15,8 @@ package qolaf.ui
 	import feathers.layout.VerticalLayout;
 	import flash.geom.Point;
 	import generics.Util;
+	import qolaf.data.IDataHandler;
+	import qolaf.data.ISharedSettings;
 	import qolaf.modifiers.IModifierTarget;
 	import qolaf.modifiers.Modifier;
 	import qolaf.events.ModifierAddedEvent;
@@ -141,7 +143,14 @@ package qolaf.ui
 
 		public function onEnterFrame(event:EnterFrameEvent):void
 		{
-			var pos:Point = SceneBase.clientSettings.targetInfoPosition;
+			var pos:Point = new Point(0.5, 0.1);
+			if (SceneBase.sharedSettings != null) {
+				pos = SceneBase.sharedSettings.getValue(function(handler:IDataHandler):Point {
+					return handler.getSettingOr("target_info_position", new Point(0.5, 0.1)) as Point;
+				}) as Point;
+			}
+			
+			
 			x = (_game.stage.stageWidth - width) * pos.x;
 			y = (_game.stage.stageHeight - height) * pos.y;
 
@@ -169,8 +178,8 @@ package qolaf.ui
 			_targetNameAuraEffect.alpha = auraAlpha + Math.sin(_auraEffectGlowAnimDeg) / 2.0;
 			_targetLevel.format.color = getColorForLevel(level);
 			_targetLevel.text = StringUtils.substitute(TARGET_LEVEL_TEXT_TEMPLATE, {
-						"[level]": level
-					});
+				"[level]": level
+			});
 
 			_targetName.text = name;
 			_lockButton.texture = Game.instance.targetSystem._lockedTarget ? _lockIcon : _unlockIcon;

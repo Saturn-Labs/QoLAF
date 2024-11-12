@@ -9,6 +9,7 @@ package core.boss
 	import generics.Util;
 	import movement.Heading;
 	import playerio.Message;
+	import qolaf.data.IDataHandler;
 	import qolaf.target.TargetSystem;
 	import sound.SoundLocator;
 
@@ -295,8 +296,12 @@ package core.boss
 				return;
 			}
 			var damage:int = message.getInt(pointer + 2);
+			
 			// QoLAF
-			if (Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.getDistance(Game.instance.playerManager.me.ship, component) < 600 && SceneBase.clientSettings.autoTarget)
+			var enabledAutoTarget:Boolean = SceneBase.sharedSettings.getValue(function(handler:IDataHandler):Boolean {
+				return handler.getSettingOr("auto_target", false);
+			}) as Boolean;
+			if (Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.getDistance(Game.instance.playerManager.me.ship, component) < 600 && enabledAutoTarget)
 				Game.instance.targetSystem.target = component;
 
 			component.takeDamage(damage);

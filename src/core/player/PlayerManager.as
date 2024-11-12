@@ -37,6 +37,7 @@ package core.player
 	import joinRoom.JoinRoomLocator;
 	import movement.Heading;
 	import playerio.Message;
+	import qolaf.data.IDataHandler;
 	import qolaf.modifiers.Modifier;
 	import qolaf.target.TargetSystem;
 	import starling.events.Event;
@@ -809,7 +810,10 @@ package core.player
 				player.ship.hp = message.getInt(pointer + 4);
 
 				// QoLAF
-				if (!player.isMe && Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.getDistance(Game.instance.playerManager.me.ship, player.ship) < 600 && SceneBase.clientSettings.autoTarget)
+				var enabledAutoTarget:Boolean = SceneBase.sharedSettings.getValue(function(handler:IDataHandler):Boolean {
+					return handler.getSettingOr("auto_target", false);
+				}) as Boolean;
+				if (!player.isMe && Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.getDistance(Game.instance.playerManager.me.ship, player.ship) < 600 && enabledAutoTarget)
 					Game.instance.targetSystem.target = player.ship;
 
 				player.ship.takeDamage(damage);

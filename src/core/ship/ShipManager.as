@@ -23,6 +23,7 @@ package core.ship
 	import generics.Random;
 	import movement.Heading;
 	import playerio.Message;
+	import qolaf.data.IDataHandler;
 	import qolaf.target.TargetSystem;
 
 	public class ShipManager
@@ -368,7 +369,10 @@ package core.ship
 				damage = message.getInt(pointer + 2);
 
 				// QoLAF
-				if (Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.getDistance(Game.instance.playerManager.me.ship, ship) < 600 && SceneBase.clientSettings.autoTarget)
+				var enabledAutoTarget:Boolean = SceneBase.sharedSettings.getValue(function(handler:IDataHandler):Boolean {
+					return handler.getSettingOr("auto_target", false);
+				}) as Boolean;
+				if (Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.getDistance(Game.instance.playerManager.me.ship, ship) < 600 && enabledAutoTarget)
 					Game.instance.targetSystem.target = ship;
 
 				ship.takeDamage(damage);

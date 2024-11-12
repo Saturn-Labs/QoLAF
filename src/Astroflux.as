@@ -2,6 +2,7 @@ package
 {
 	import embeds.RussoOneFont;
 	import embeds.VerdanaFont;
+	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
@@ -20,10 +21,13 @@ package
 
 		public function Astroflux(info:Object = null)
 		{
-			super();
+			var parent:DisplayObjectContainer = super.parent;
+			parent.removeChild(this);
+			
 			Font.registerFont(VerdanaFont);
 			Font.registerFont(RussoOneFont);
-			addChild(new RymdenRunt(info));
+			
+			parent.addChild(new RymdenRunt(info));
 		}
 	}
 }
