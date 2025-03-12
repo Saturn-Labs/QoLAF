@@ -6,16 +6,17 @@ package core.hud.components
 	import starling.display.Sprite;
 	import starling.textures.Texture;
 	import textures.TextureManager;
-
+	
 	public class ShopItemBarStats extends starling.display.Sprite
 	{
 		private static const BAR_WIDTH:Number = 18;
-
 		private static const BAR_HEIGHT:Number = 14;
-
 		private var bar:Texture;
+		
 		private var barFull:Texture;
+		
 		private var compact:Boolean;
+		
 		public function ShopItemBarStats(param1:Object, param2:Boolean = false)
 		{
 			super();
@@ -50,7 +51,7 @@ package core.hud.components
 			addBar(param1.descriptionDifficulty, 10 + _loc5_ + 20);
 			addText("Speciality: \n" + param1.description, 10 + _loc5_ + 60);
 		}
-
+		
 		private function addBar(param1:int, param2:Number):void
 		{
 			var _loc3_:Image = null;
@@ -72,7 +73,7 @@ package core.hud.components
 				_loc4_++;
 			}
 		}
-
+		
 		private function addText(param1:String, param2:Number):void
 		{
 			var _loc3_:Text = new Text();

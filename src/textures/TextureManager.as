@@ -23,25 +23,32 @@ package textures
 	import starling.events.Event;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
-
+	
 	public class TextureManager extends starling.display.Sprite implements ITextureManager
 	{
 		public static var BASIC_TEXTURE:Texture;
+		
 		public static var BASIC_TEXTURES:Vector.<Texture>;
-
+		
 		private static const pathToTextures:String = "/textures/";
-
 		private static var xmlDict:Dictionary;
+		
 		private static var textureAtlasDict:Dictionary = new Dictionary();
 		private var pLoaded:int = 0;
 		private var itemsArray:Array;
+		
 		private var totalItems:int;
+		
 		private var currItem:int = 1;
 		private var currentRequest:String = "";
 		private var fs:GameFS;
+		
 		private var _client:Client;
+		
 		private var callbackQueue:Dictionary;
+		
 		private var dataManager:IDataManager;
+		
 		public function TextureManager(param1:Client)
 		{
 			itemsArray = [];
@@ -57,7 +64,7 @@ package textures
 			BASIC_TEXTURES = Vector.<Texture>([BASIC_TEXTURE]);
 			dataManager = DataLocator.getService();
 		}
-
+		
 		public static function imageFromSprite(param1:DisplayObject, param2:String = null):Image
 		{
 			var _loc4_:Rectangle = param1.getBounds(param1);
@@ -66,7 +73,7 @@ package textures
 			_loc3_.y = _loc4_.y;
 			return _loc3_;
 		}
-
+		
 		public static function textureFromDisplayObject(param1:DisplayObject, param2:String = null):Texture
 		{
 			var rect:Rectangle;
@@ -130,7 +137,7 @@ package textures
 			textureAtlasDict[name] = texture;
 			return texture;
 		}
-
+		
 		public static function getCustomTextureFromName(param1:String):Texture
 		{
 			if (textureAtlasDict.hasOwnProperty(param1))
@@ -139,7 +146,7 @@ package textures
 			}
 			return null;
 		}
-
+		
 		public function loadTextures(param1:Array):void
 		{
 			currItem = 1;
@@ -147,14 +154,13 @@ package textures
 			totalItems = param1.length;
 			loadOne(currItem - 1, param1);
 		}
-
+		
 		private function loadOne(param1:int, param2:Array):void
 		{
 			var _loc5_:Loader = null;
 			var _loc3_:LoaderContext = null;
 			var _loc4_:URLLoader = null;
 			currentRequest = param2[param1].toString();
-			trace(fs.getUrl("/textures/" + param2[param1].toString(), Login.useSecure));
 			if (currentRequest.match("png|jpg"))
 			{
 				_loc5_ = new Loader();
@@ -173,7 +179,7 @@ package textures
 				_loc4_.addEventListener("ioError", onIOError);
 			}
 		}
-
+		
 		private function onInternalProgress(param1:flash.events.Event):void
 		{
 			var _loc2_:int = Math.ceil(param1.target.bytesLoaded / param1.target.bytesTotal * 100 * currItem / totalItems);
@@ -183,7 +189,7 @@ package textures
 			}
 			dispatchEvent(new starling.events.Event("preloadProgress"));
 		}
-
+		
 		private function onInternalComplete(param1:flash.events.Event):void
 		{
 			var _loc3_:Bitmap = null;
@@ -212,12 +218,12 @@ package textures
 				loadOne(currItem - 1, itemsArray);
 			}
 		}
-
+		
 		public function get percLoaded():int
 		{
 			return pLoaded;
 		}
-
+		
 		public function getTextureGUIByTextureName(param1:String):Texture
 		{
 			var _loc2_:Texture = getTextureByTextureName(param1, "texture_gui1_test.png");
@@ -227,7 +233,7 @@ package textures
 			}
 			return _loc2_;
 		}
-
+		
 		public function getTextureGUIByKey(param1:String):Texture
 		{
 			var _loc2_:Texture = getTextureByKey(param1, "texture_gui1_test.png");
@@ -237,32 +243,32 @@ package textures
 			}
 			return _loc2_;
 		}
-
+		
 		public function getTextureMainByKey(param1:String):Texture
 		{
 			return getTextureByKey(param1, "texture_main_NEW.png");
 		}
-
+		
 		public function getTexturesMainByKey(param1:String):Vector.<Texture>
 		{
 			return getTexturesByKey(param1, "texture_main_NEW.png");
 		}
-
+		
 		public function getTextureMainByTextureName(param1:String):Texture
 		{
 			return getTextureByTextureName(param1, "texture_main_NEW.png");
 		}
-
+		
 		public function getTexturesMainByTextureName(param1:String):Vector.<Texture>
 		{
 			return getTexturesByTextureName(param1, "texture_main_NEW.png");
 		}
-
+		
 		public function getTextureAtlas(param1:String):TextureAtlas
 		{
 			return textureAtlasDict[param1];
 		}
-
+		
 		public function getTexturesByKey(param1:String, param2:String):Vector.<Texture>
 		{
 			if (param1 == null || param1.length == 0)
@@ -278,7 +284,7 @@ package textures
 			}
 			return getTexturesByTextureName(_loc3_.textureName, param2);
 		}
-
+		
 		private function getTextureByKey(param1:String, param2:String):Texture
 		{
 			if (param1 == null || param1.length == 0)
@@ -292,7 +298,7 @@ package textures
 			}
 			return getTextureByTextureName(_loc3_.textureName, param2);
 		}
-
+		
 		public function getTextureByTextureName(param1:String, param2:String):Texture
 		{
 			if (param1 == null || param1.length == 0)
@@ -317,7 +323,7 @@ package textures
 			}
 			return _loc3_;
 		}
-
+		
 		public function getTexturesByTextureName(param1:String, param2:String):Vector.<Texture>
 		{
 			if (param1 == null || param1.length == 0)
@@ -340,18 +346,18 @@ package textures
 			}
 			return _loc3_;
 		}
-
+		
 		private function onIOError(param1:IOErrorEvent):void
 		{
 			Console.write("Error loading texture: " + param1);
 		}
-
+		
 		public function set client(param1:Client):void
 		{
 			_client = param1;
 			fs = param1.gameFS;
 		}
-
+		
 		public function disposeCustomTextures():void
 		{
 			var _loc4_:Boolean = false;

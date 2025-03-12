@@ -10,16 +10,18 @@ package core.states.gameStates
 	import core.states.menuStates.CargoState;
 	import core.states.menuStates.EncounterState;
 	import core.states.menuStates.HomeState;
-
+	
 	public class RoamingState extends PlayState
 	{
 		private var mayLand:Boolean;
+		
 		private var exitDialog:PopupConfirmMessage;
+		
 		public function RoamingState(param1:Game)
 		{
 			super(param1);
 		}
-
+		
 		override public function enter():void
 		{
 			super.enter();
@@ -33,7 +35,7 @@ package core.states.gameStates
 			loadCompleted();
 			g.deathLineManager.forceUpdate();
 		}
-
+		
 		override public function execute():void
 		{
 			if (loaded)
@@ -42,7 +44,7 @@ package core.states.gameStates
 			}
 			super.execute();
 		}
-
+		
 		private function updateInput():void
 		{
 			var bodies:Vector.<Body>;
@@ -123,15 +125,15 @@ package core.states.gameStates
 					dialog = new PopupConfirmMessage("Exit game", "Keep playing", "positive");
 					g.addChildToOverlay(dialog);
 					dialog.addEventListener("close", function(param1:Object):void
-						{
-							g.removeChildFromOverlay(dialog, true);
-							exitDialog = null;
-						});
+					{
+						g.removeChildFromOverlay(dialog, true);
+						exitDialog = null;
+					});
 					dialog.addEventListener("accept", function(param1:Object):void
-						{
-							g.removeChildFromOverlay(dialog, true);
-							g.exitDesktop();
-						});
+					{
+						g.removeChildFromOverlay(dialog, true);
+						g.exitDesktop();
+					});
 					exitDialog = dialog;
 				}
 			}
@@ -203,7 +205,7 @@ package core.states.gameStates
 			}
 			updateCommands();
 		}
-
+		
 		override public function exit(param1:Function):void
 		{
 			if (g.pvpManager != null)

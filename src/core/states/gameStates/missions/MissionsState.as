@@ -9,18 +9,27 @@ package core.states.gameStates.missions
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
-
+	
 	public class MissionsState extends PlayState
 	{
 		private var goTo:String;
+		
 		private var bg:Image;
+		
 		private var closeButton:ButtonExpandableHud;
+		
 		private var storyButton:ButtonExpandableHud;
+		
 		private var dailyButton:ButtonExpandableHud;
+		
 		private var timedButton:ButtonExpandableHud;
+		
 		private var activeButton:ButtonExpandableHud;
+		
 		private var activePage:Sprite;
+		
 		private var tween:TweenMax;
+		
 		public function MissionsState(param1:Game, param2:String = "")
 		{
 			var g:Game = param1;
@@ -29,20 +38,20 @@ package core.states.gameStates.missions
 			this.goTo = goTo;
 			bg = new Image(textureManager.getTextureGUIByTextureName("map_bgr.png"));
 			timedButton = new ButtonExpandableHud(function():void
-				{
-					show(MissionsTimed, timedButton);
-				}, Localize.t("Timed"));
+			{
+				show(MissionsTimed, timedButton);
+			}, Localize.t("Timed"));
 			dailyButton = new ButtonExpandableHud(function():void
-				{
-					show(MissionsDaily, dailyButton);
-				}, Localize.t("Daily"));
+			{
+				show(MissionsDaily, dailyButton);
+			}, Localize.t("Daily"));
 			storyButton = new ButtonExpandableHud(function():void
-				{
-					show(MissionsStory, storyButton);
-				}, Localize.t("Story"));
+			{
+				show(MissionsStory, storyButton);
+			}, Localize.t("Story"));
 			closeButton = new ButtonExpandableHud(close, Localize.t("close"));
 		}
-
+		
 		override public function enter():void
 		{
 			var daily:Daily;
@@ -94,9 +103,9 @@ package core.states.gameStates.missions
 				}
 			}
 			dailyCount = int(g.me.dailyMissions.filter(function(param1:Daily, param2:int, param3:Array):Boolean
-					{
-						return !param1.complete;
-					}).length);
+			{
+				return !param1.complete;
+			}).length);
 			if (g.me.level <= 10)
 			{
 				show(MissionsStory, storyButton);
@@ -110,7 +119,7 @@ package core.states.gameStates.missions
 				show(MissionsTimed, timedButton);
 			}
 		}
-
+		
 		override public function resize(param1:Event = null):void
 		{
 			super.resize();
@@ -125,13 +134,13 @@ package core.states.gameStates.missions
 			closeButton.y = 0;
 			closeButton.x = 760 - 46 - closeButton.width;
 		}
-
+		
 		override public function execute():void
 		{
 			updateInput();
 			super.execute();
 		}
-
+		
 		private function updateInput():void
 		{
 			if (!loaded)
@@ -145,7 +154,7 @@ package core.states.gameStates.missions
 			}
 			updateCommands();
 		}
-
+		
 		private function show(param1:Class, param2:ButtonExpandableHud):void
 		{
 			if (activeButton == param2)
@@ -163,7 +172,7 @@ package core.states.gameStates.missions
 			updateButtons(param2);
 			loadCompleted();
 		}
-
+		
 		private function updateButtons(param1:ButtonExpandableHud):void
 		{
 			storyButton.select = param1 == storyButton;
@@ -172,20 +181,17 @@ package core.states.gameStates.missions
 			activeButton = param1;
 			activeButton.enabled = true;
 		}
-
+		
 		private function animateCollectReward(param1:Event):void
 		{
 			var e:Event = param1;
 			clearBackground();
-			tween = TweenMax.to(container, 1.5, {
-						"y": -container.height,
-						"onComplete": function():void
-						{
-							close();
-						}
-					});
+			tween = TweenMax.to(container, 1.5, {"y": -container.height, "onComplete": function():void
+			{
+				close();
+			}});
 		}
-
+		
 		private function close():void
 		{
 			if (activePage)

@@ -9,30 +9,35 @@ package core.states.AIStates
 	import core.weapon.Beam;
 	import core.weapon.Weapon;
 	import flash.geom.Point;
-
+	
 	public class AIBoss implements IState
 	{
 		private var b:Boss;
+		
 		private var g:Game;
+		
 		private var courseSendTime:Number;
+		
 		private var courseSendInterval:Number = 3000;
 		private var rotationSpeedCurrent:Number = 0;
 		private var nextRegen:Number;
+		
 		private var sm:StateMachine;
+		
 		public function AIBoss(param1:Game, param2:Boss)
 		{
 			super();
 			this.g = param1;
 			this.b = param2;
 		}
-
+		
 		public function enter():void
 		{
 			b.course.accelerate = true;
 			nextRegen = g.time + 1000;
 			courseSendTime = g.time + courseSendInterval;
 		}
-
+		
 		public function execute():void
 		{
 			var _loc1_:Weapon = null;
@@ -54,8 +59,7 @@ package core.states.AIStates
 						}
 					}
 				}
-				// QoLAF
-				// g.hud.bossHealth.update();
+				g.hud.bossHealth.update();
 				nextRegen = g.time + 1000;
 			}
 			if (b.teleportExitTime != 0)
@@ -120,16 +124,16 @@ package core.states.AIStates
 			b.y = b.course.pos.y;
 			b.rotation = b.course.rotation;
 		}
-
+		
 		public function exit():void
 		{
 		}
-
+		
 		public function set stateMachine(param1:StateMachine):void
 		{
 			this.sm = param1;
 		}
-
+		
 		public function get type():String
 		{
 			return "AIChase";

@@ -9,31 +9,37 @@ package core.sync
 	import flash.geom.Point;
 	import generics.Util;
 	import movement.Heading;
-
+	
 	public class Converger
 	{
 		public static const PI_DIVIDED_BY_8:Number = 0.39269908169872414;
-
 		private const BLIP_OFFSET:Number = 30;
-
 		public var course:Heading;
+		
 		private var target:Heading;
+		
 		private var error:Point;
+		
 		private var errorAngle:Number;
+		
 		private var convergeTime:Number = 1000;
 		private var convergeStartTime:Number;
+		
 		private var errorOldTime:Number;
+		
 		private var ship:Ship;
+		
 		private var g:Game;
+		
 		private var angleTargetPos:Point;
+		
 		private var isFacingTarget:Boolean;
+		
 		private var nextTurnDirection:int;
+		
 		private const RIGHT:int = 1;
-
 		private const LEFT:int = -1;
-
 		private const NONE:int = 0;
-
 		public function Converger(param1:Ship, param2:Game)
 		{
 			course = new Heading();
@@ -44,7 +50,7 @@ package core.sync
 			angleTargetPos = null;
 			nextTurnDirection = 0;
 		}
-
+		
 		public function run():void
 		{
 			if (course == null || course.time > g.time - 33)
@@ -66,7 +72,7 @@ package core.sync
 				}
 			}
 		}
-
+		
 		public function calculateOffset():void
 		{
 			var _loc8_:Number = NaN;
@@ -117,7 +123,7 @@ package core.sync
 			course.rotation += _loc2_ * 0.05;
 			course.rotation = Util.clampRadians(course.rotation);
 		}
-
+		
 		private function aiAddError(param1:Heading):void
 		{
 			if (error.x == 0 && error.y == 0)
@@ -141,7 +147,7 @@ package core.sync
 				errorOldTime = 0;
 			}
 		}
-
+		
 		private function aiRemoveError(param1:Heading):void
 		{
 			if (error.x == 0 && error.y == 0 || errorOldTime == 0)
@@ -154,12 +160,12 @@ package core.sync
 			param1.pos.y -= _loc3_ * error.y;
 			param1.rotation -= _loc3_ * errorAngle;
 		}
-
+		
 		public function setNextTurnDirection(param1:int):void
 		{
 			nextTurnDirection = param1;
 		}
-
+		
 		public function setConvergeTarget(param1:Heading):void
 		{
 			target = param1;
@@ -176,14 +182,14 @@ package core.sync
 				aiAddError(course);
 			}
 		}
-
+		
 		public function clearConvergeTarget():void
 		{
 			target = null;
 			error.x = 0;
 			error.y = 0;
 		}
-
+		
 		public function setCourse(param1:Heading, param2:Boolean = true):void
 		{
 			if (param2)
@@ -193,18 +199,18 @@ package core.sync
 			course = param1;
 			target = null;
 		}
-
+		
 		public function setAngleTargetPos(param1:Point):void
 		{
 			isFacingTarget = false;
 			angleTargetPos = param1;
 		}
-
+		
 		public function isFacingAngleTarget():Boolean
 		{
 			return isFacingTarget;
 		}
-
+		
 		public function fastforwardToServerTime(param1:Heading):void
 		{
 			if (param1 == null)
@@ -216,7 +222,7 @@ package core.sync
 				updateHeading(param1);
 			}
 		}
-
+		
 		public function updateHeading(param1:Heading):void
 		{
 			var _loc8_:Point = null;

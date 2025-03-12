@@ -1,5 +1,6 @@
 package core.hud.components
 {
+	
 	public class Position
 	{
 		public static var LEFT:String = "left";

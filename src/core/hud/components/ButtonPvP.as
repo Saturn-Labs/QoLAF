@@ -1,18 +1,21 @@
 package core.hud.components
 {
-
+	
 	public class ButtonPvP extends ButtonHud
 	{
 		public var text1:Text;
+		
 		public var text2:Text;
+		
 		private var callback:Function;
+		
 		private var maxWidthT1:int = 30;
 		private var maxWidthT2:int = 30;
 		public function ButtonPvP(param1:Function, param2:String)
 		{
 			super(param1, param2);
 		}
-
+		
 		public function setText1(param1:String, param2:int = 18):void
 		{
 			if (text1 != null && text1.text == param1)
@@ -31,7 +34,7 @@ package core.hud.components
 			text1.y = 15 - param2 + 18;
 			addChild(text1);
 		}
-
+		
 		public function setText2(param1:String, param2:int = 26):void
 		{
 			if (text2 != null && text2.text == param1)

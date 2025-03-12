@@ -15,14 +15,14 @@ package core.projectile
 	import sound.ISound;
 	import sound.SoundLocator;
 	import textures.TextureLocator;
-
+	
 	public class ProjectileFactory
 	{
 		public function ProjectileFactory()
 		{
 			super();
 		}
-
+		
 		public static function create(param1:String, param2:Game, param3:Unit, param4:Weapon, param5:Heading = null):Projectile
 		{
 			var _loc7_:Point = null;

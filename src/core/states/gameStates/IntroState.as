@@ -12,16 +12,22 @@ package core.states.gameStates
 	import starling.events.Event;
 	import starling.text.TextField;
 	import starling.text.TextFormat;
-
+	
 	public class IntroState extends PlayState
 	{
 		private var ship:PlayerShip;
+		
 		private var hyperDriveEngaged:Boolean = true;
 		private var overlay:Sprite;
+		
 		private var stf:ScreenTextField;
+		
 		private var box:Box;
+		
 		private var countdownText:TextField;
+		
 		private var countdownTime:Number;
+		
 		private var startX:Number = 0;
 		private var startY:Number = 0;
 		public function IntroState(param1:Game)
@@ -31,7 +37,7 @@ package core.states.gameStates
 			super(param1);
 			param1.canvasBackground.alpha = 0;
 		}
-
+		
 		override public function enter():void
 		{
 			var s:String;
@@ -59,69 +65,64 @@ package core.states.gameStates
 			g.camera.update();
 			g.focusGameObject(ship);
 			soundManager.preCacheSound("_BsBOsabf0WbIWdzrshcNg", function():void
-				{
-					ship.enterIntro(startX, startY);
-					ship.engine.accelerate();
-					stf.x = 100;
-					stf.y = 100;
-					soundManager.stopAll();
-					soundManager.play("_BsBOsabf0WbIWdzrshcNg");
-					TweenMax.to(g.canvasBackground, 5, {"alpha": 1});
-					stf.start([["Initializing...", "Arrival at Antor System", "Sleep stasis deactivated...", "Life support.............................. 100%", "Weapons.................................... 100%", "Shields...................................... 100%", "Coffee is ready."]]);
-					overlay.addChild(stf);
-					g.addChildToOverlay(overlay);
-					var _loc1_:TextField = new TextField(200, 30);
-					_loc1_.x = g.stage.stageWidth / 2 + 10;
-					_loc1_.y = g.stage.stageHeight - 170;
-					_loc1_.format.size = 14;
-					_loc1_.alignPivot();
-					_loc1_.format.color = 6842472;
-					_loc1_.text = "Game starts in:";
-					_loc1_.format.font = "DAIDRR";
-					overlay.addChild(_loc1_);
-					_loc1_ = new TextField(200, 30);
-					_loc1_.x = g.stage.stageWidth - 40;
-					_loc1_.y = 40;
-					_loc1_.format.size = 14;
-					_loc1_.format.font = "DAIDRR";
-					_loc1_.format.color = 13421772;
-					_loc1_.text = "Press ESC to skip";
-					_loc1_.alpha = 0.8;
-					_loc1_.pivotX = _loc1_.width;
-					overlay.addChild(_loc1_);
-					stf.addEventListener("animationFinished", onAnimationFinished);
-					countdownText = new TextField(200, 100, "", new TextFormat("DAIDRR", 80, Style.COLOR_DARK_GREEN));
-					countdownText.blendMode = "screen";
-					countdownText.pivotX = countdownText.width / 2;
-					countdownText.pivotY = countdownText.height / 2;
-					countdownText.x = g.stage.stageWidth / 2;
-					countdownText.y = g.stage.stageHeight - 100;
-					countdownTime = 24;
-					countdownText.alpha = 1;
-					countdownText.scaleX = 1;
-					countdownText.scaleY = 1;
-					overlay.addChild(countdownText);
-					countdown();
-					loadCompleted();
-					Login.hideStartSetup();
-					g.hud.show = false;
-				}, "voice");
+			{
+				ship.enterIntro(startX, startY);
+				ship.engine.accelerate();
+				stf.x = 100;
+				stf.y = 100;
+				soundManager.stopAll();
+				soundManager.play("_BsBOsabf0WbIWdzrshcNg");
+				TweenMax.to(g.canvasBackground, 5, {"alpha": 1});
+				stf.start([["Initializing...", "Arrival at Antor System", "Sleep stasis deactivated...", "Life support.............................. 100%", "Weapons.................................... 100%", "Shields...................................... 100%", "Coffee is ready."]]);
+				overlay.addChild(stf);
+				g.addChildToOverlay(overlay);
+				var _loc1_:TextField = new TextField(200, 30);
+				_loc1_.x = g.stage.stageWidth / 2 + 10;
+				_loc1_.y = g.stage.stageHeight - 170;
+				_loc1_.format.size = 14;
+				_loc1_.alignPivot();
+				_loc1_.format.color = 6842472;
+				_loc1_.text = "Game starts in:";
+				_loc1_.format.font = "DAIDRR";
+				overlay.addChild(_loc1_);
+				_loc1_ = new TextField(200, 30);
+				_loc1_.x = g.stage.stageWidth - 40;
+				_loc1_.y = 40;
+				_loc1_.format.size = 14;
+				_loc1_.format.font = "DAIDRR";
+				_loc1_.format.color = 13421772;
+				_loc1_.text = "Press ESC to skip";
+				_loc1_.alpha = 0.8;
+				_loc1_.pivotX = _loc1_.width;
+				overlay.addChild(_loc1_);
+				stf.addEventListener("animationFinished", onAnimationFinished);
+				countdownText = new TextField(200, 100, "", new TextFormat("DAIDRR", 80, Style.COLOR_DARK_GREEN));
+				countdownText.blendMode = "screen";
+				countdownText.pivotX = countdownText.width / 2;
+				countdownText.pivotY = countdownText.height / 2;
+				countdownText.x = g.stage.stageWidth / 2;
+				countdownText.y = g.stage.stageHeight - 100;
+				countdownTime = 24;
+				countdownText.alpha = 1;
+				countdownText.scaleX = 1;
+				countdownText.scaleY = 1;
+				overlay.addChild(countdownText);
+				countdown();
+				loadCompleted();
+				Login.hideStartSetup();
+				g.hud.show = false;
+			}, "voice");
 		}
-
+		
 		private function countdown():void
 		{
 			if (countdownTime < 0)
 			{
-				TweenMax.to(countdownText, 0.5, {
-							"scaleX": 20,
-							"scaleY": 20,
-							"alpha": 0,
-							"onComplete": function():void
-							{
-								overlay.removeChild(countdownText, true);
-								countdownText = null;
-							}
-						});
+				TweenMax.to(countdownText, 0.5, {"scaleX": 20, "scaleY": 20, "alpha": 0, "onComplete": function():void
+				{
+					overlay.removeChild(countdownText, true);
+					countdownText = null;
+				}});
 				return;
 			}
 			countdownText.alpha = 0;
@@ -132,20 +133,17 @@ package core.states.gameStates
 				soundManager.play("3hVYqbNNSUWoDGk_pK1BdQ");
 				countdownText.text = "" + countdownTime;
 			}
-			TweenMax.to(countdownText, 0.3, {
-						"scaleX": 1,
-						"scaleY": 1
-					});
+			TweenMax.to(countdownText, 0.3, {"scaleX": 1, "scaleY": 1});
 			TweenMax.to(countdownText, 0.9, {"alpha": 1});
 			countdownTime--;
 			TweenMax.delayedCall(1, countdown);
 		}
-
+		
 		private function onAnimationFinished(param1:Event):void
 		{
 			stf.visible = false;
 		}
-
+		
 		override public function execute():void
 		{
 			if (g.isLeaving)
@@ -176,7 +174,7 @@ package core.states.gameStates
 			}
 			super.execute();
 		}
-
+		
 		private function enterRoaming():void
 		{
 			if (g.isLeaving)
@@ -190,13 +188,13 @@ package core.states.gameStates
 			ship.enterRoaming();
 			g.removeChildFromOverlay(overlay, true);
 			TweenMax.delayedCall(2, function():void
-				{
-					g.tutorial.showIntroTutorial();
-				});
+			{
+				g.tutorial.showIntroTutorial();
+			});
 			g.focusGameObject(g.me.ship, g.solarSystem.isPvpSystemInEditor);
 			g.enterState(new RoamingState(g));
 		}
-
+		
 		override public function exit(param1:Function):void
 		{
 			stf.removeEventListener("animationFinished", onAnimationFinished);

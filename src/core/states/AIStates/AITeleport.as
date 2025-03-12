@@ -8,20 +8,27 @@ package core.states.AIStates
 	import core.states.StateMachine;
 	import core.unit.Unit;
 	import generics.Util;
-
+	
 	public class AITeleport implements IState
 	{
 		private var g:Game;
+		
 		private var s:EnemyShip;
+		
 		private var sm:StateMachine;
+		
 		private var target:Unit;
+		
 		private var targetX:Number;
+		
 		private var targetY:Number;
+		
 		private var duration:Number;
+		
 		private var emitters1:Vector.<Emitter>;
-
+		
 		private var emitters2:Vector.<Emitter>;
-
+		
 		public function AITeleport(param1:Game, param2:EnemyShip, param3:Unit, param4:int = 1, param5:Number = 0, param6:Number = 0)
 		{
 			super();
@@ -32,14 +39,14 @@ package core.states.AIStates
 			this.targetY = param6;
 			this.duration = param4;
 		}
-
+		
 		public function enter():void
 		{
 			s.invulnerable = true;
 			emitters1 = EmitterFactory.create("UZ3AiNHAEUmBD4ev0Itu0A", g, s.pos.x, s.pos.y, s, true);
 			emitters2 = EmitterFactory.create("5BSaDIEYj0mEuVkMVp1JGw", g, targetX, targetY, null, true);
 		}
-
+		
 		public function execute():void
 		{
 			if (target == null && s.target == null && g.time > s.orbitStartTime && g.time - 2000 < s.orbitStartTime)
@@ -50,7 +57,7 @@ package core.states.AIStates
 				s.clearConvergeTarget();
 			}
 		}
-
+		
 		public function exit():void
 		{
 			var _loc2_:Number = NaN;
@@ -91,12 +98,12 @@ package core.states.AIStates
 				s.shieldRegenCounter = -3000;
 			}
 		}
-
+		
 		public function set stateMachine(param1:StateMachine):void
 		{
 			this.sm = param1;
 		}
-
+		
 		public function get type():String
 		{
 			return "AITeleport";

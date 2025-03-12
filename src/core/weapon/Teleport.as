@@ -2,14 +2,14 @@ package core.weapon
 {
 	import core.scene.Game;
 	import core.ship.PlayerShip;
-
+	
 	public class Teleport extends Weapon
 	{
 		public function Teleport(param1:Game)
 		{
 			super(param1);
 		}
-
+		
 		override protected function shoot():void
 		{
 			var _loc1_:PlayerShip = null;
@@ -50,7 +50,7 @@ package core.weapon
 				return;
 			}
 		}
-
+		
 		public function updateCooldown():void
 		{
 			if (fireCallback != null && this.hasChargeUp == true && (projectiles.length + 1 < maxProjectiles || maxProjectiles == 0))

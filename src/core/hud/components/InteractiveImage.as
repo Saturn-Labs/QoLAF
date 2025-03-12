@@ -5,14 +5,19 @@ package core.hud.components
 	import starling.display.Image;
 	import starling.events.TouchEvent;
 	import starling.textures.Texture;
-
+	
 	public class InteractiveImage extends DisplayObjectContainer
 	{
 		protected var layer:Image;
+		
 		protected var source:Texture;
+		
 		protected var sourceHover:Texture;
+		
 		protected var captionText:Text;
+		
 		private var _captionPos:String;
+		
 		protected var _enabled:Boolean = true;
 		private var alwaysShowCaption:Boolean = false;
 		public function InteractiveImage(param1:Texture = null, param2:Texture = null, param3:String = null, param4:Boolean = false)
@@ -41,7 +46,7 @@ package core.hud.components
 			}
 			throw IllegalOperationError("You tried to create a hotkey without texture.");
 		}
-
+		
 		public function set texture(param1:Texture):void
 		{
 			if (param1 == null)
@@ -52,12 +57,12 @@ package core.hud.components
 			source = param1;
 			layer.readjustSize();
 		}
-
+		
 		public function set hoverTexture(param1:Texture):void
 		{
 			sourceHover = param1;
 		}
-
+		
 		public function set captionPosition(param1:String):void
 		{
 			_captionPos = param1;
@@ -92,7 +97,7 @@ package core.hud.components
 				captionText.x = layer.width / 2 - captionText.width / 2 + 0.5;
 			}
 		}
-
+		
 		public function showCaption():void
 		{
 			if (captionText.text != null || captionText.text != "")
@@ -100,33 +105,33 @@ package core.hud.components
 				captionText.visible = true;
 			}
 		}
-
+		
 		public function hideCaption():void
 		{
 			captionText.visible = false;
 		}
-
+		
 		public function set caption(param1:String):void
 		{
 			captionText.text = param1;
 			captionPosition = _captionPos;
 		}
-
+		
 		public function get caption():String
 		{
 			return captionText.text;
 		}
-
+		
 		public function set captionColor(param1:uint):void
 		{
 			captionText.color = param1;
 		}
-
+		
 		public function set captionSize(param1:Number):void
 		{
 			captionText.size = param1;
 		}
-
+		
 		public function set enabled(param1:Boolean):void
 		{
 			if (!_enabled && param1)
@@ -139,11 +144,11 @@ package core.hud.components
 			}
 			_enabled = param1;
 		}
-
+		
 		protected function onClick(param1:TouchEvent):void
 		{
 		}
-
+		
 		protected function onOver(param1:TouchEvent):void
 		{
 			if (!alwaysShowCaption)
@@ -155,7 +160,7 @@ package core.hud.components
 				layer.texture = sourceHover;
 			}
 		}
-
+		
 		protected function onOut(param1:TouchEvent):void
 		{
 			if (!alwaysShowCaption)
@@ -164,7 +169,7 @@ package core.hud.components
 			}
 			layer.texture = source;
 		}
-
+		
 		private function onTouch(param1:TouchEvent):void
 		{
 			if (param1.getTouch(this, "ended"))
@@ -180,12 +185,12 @@ package core.hud.components
 				onOut(param1);
 			}
 		}
-
+		
 		protected function addListeners():void
 		{
 			addEventListener("touch", onTouch);
 		}
-
+		
 		protected function removeListeners():void
 		{
 			removeEventListener("touch", onTouch);

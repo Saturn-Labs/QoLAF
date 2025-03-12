@@ -8,13 +8,17 @@ package core.states.AIStates
 	import core.states.StateMachine;
 	import flash.geom.Point;
 	import movement.Heading;
-
+	
 	public class AIReturnOrbit implements IState
 	{
 		private var g:Game;
+		
 		private var s:EnemyShip;
+		
 		private var sm:StateMachine;
+		
 		private var target:Point;
+		
 		public function AIReturnOrbit(param1:Game, param2:EnemyShip, param3:Number, param4:Number, param5:Heading, param6:int)
 		{
 			super();
@@ -38,7 +42,7 @@ package core.states.AIStates
 				param2.factions.splice(0, 1);
 			}
 		}
-
+		
 		public function enter():void
 		{
 			var _loc5_:Number = s.orbitRadius * s.ellipseFactor * Math.cos(s.orbitAngle);
@@ -75,7 +79,7 @@ package core.states.AIStates
 			}
 			s.course.speed.x = s.course.speed.y = 0;
 		}
-
+		
 		public function execute():void
 		{
 			if (s.isFacingAngleTarget())
@@ -100,16 +104,16 @@ package core.states.AIStates
 			s.engine.update();
 			s.updateWeapons();
 		}
-
+		
 		public function exit():void
 		{
 		}
-
+		
 		public function set stateMachine(param1:StateMachine):void
 		{
 			this.sm = param1;
 		}
-
+		
 		public function get type():String
 		{
 			return "AIReturn";

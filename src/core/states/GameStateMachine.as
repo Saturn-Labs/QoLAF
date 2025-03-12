@@ -6,17 +6,24 @@ package core.states
 	import flash.utils.getQualifiedClassName;
 	import io.IInput;
 	import io.InputLocator;
-
+	
 	public class GameStateMachine
 	{
 		private var previousState:IGameState;
+		
 		private var currentState:IGameState;
+		
 		private var currentTime:Number;
+		
 		private var newTime:Number;
+		
 		private var frameTime:Number;
+		
 		private var accumulator:Number = 0;
 		private var _clock:Clock;
+		
 		private var inputManager:IInput;
+		
 		public function GameStateMachine()
 		{
 			super();
@@ -24,7 +31,7 @@ package core.states
 			currentState = null;
 			inputManager = InputLocator.getService();
 		}
-
+		
 		public function changeState(param1:IGameState):void
 		{
 			var s:IGameState = param1;
@@ -34,11 +41,11 @@ package core.states
 				return;
 			}
 			currentState.exit(function():void
-				{
-					enterState(s);
-				});
+			{
+				enterState(s);
+			});
 		}
-
+		
 		private function enterState(param1:IGameState):void
 		{
 			previousState = currentState;
@@ -46,12 +53,12 @@ package core.states
 			currentState.stateMachine = this;
 			currentState.enter();
 		}
-
+		
 		public function revertState():void
 		{
 			changeState(previousState);
 		}
-
+		
 		public function update(param1:Number = 0):void
 		{
 			if (_clock == null)
@@ -83,14 +90,14 @@ package core.states
 			}
 			inputManager.reset();
 		}
-
+		
 		public function set clock(param1:Clock):void
 		{
 			this._clock = param1;
 			currentTime = param1.time;
 		}
-
-		public function inState(...rest):Boolean
+		
+		public function inState(... rest):Boolean
 		{
 			if (rest[0] is IGameState || rest[0] is Class)
 			{
@@ -98,7 +105,7 @@ package core.states
 			}
 			return false;
 		}
-
+		
 		public function dispose():void
 		{
 			previousState = null;
@@ -108,8 +115,8 @@ package core.states
 				return;
 			}
 			currentState.exit(function():void
-				{
-				});
+			{
+			});
 			currentState = null;
 		}
 	}

@@ -4,12 +4,14 @@ package core.hud.components.map
 	import core.hud.components.Line;
 	import core.scene.Game;
 	import starling.display.Sprite;
-
+	
 	public class MapDeathLine
 	{
 		private var line:Line;
+		
 		private var scale:Number = 0.4;
 		private var g:Game;
+		
 		public function MapDeathLine(param1:Game, param2:Sprite, param3:DeathLine, param4:uint)
 		{
 			super();
@@ -23,11 +25,11 @@ package core.hud.components.map
 			this.line.lineTo(param3.toX * Map.SCALE, param3.toY * Map.SCALE);
 			param2.addChild(this.line);
 		}
-
+		
 		public function update():void
 		{
 		}
-
+		
 		public function dispose():void
 		{
 			if (g.linePool != null)

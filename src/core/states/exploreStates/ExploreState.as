@@ -26,7 +26,7 @@ package core.states.exploreStates
 	import starling.textures.Texture;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class ExploreState extends DisplayState
 	{
 		public static var COLOR:uint = 3225899;
@@ -36,28 +36,43 @@ package core.states.exploreStates
 		private var value:Number = 0;
 		private var _exploring:Boolean = false;
 		private var exploreEffect:Vector.<Emitter>;
-
+		
 		private var effectBackground:Bitmap;
+		
 		private var effectContainer:Bitmap;
+		
 		private var effectTarget:GameObject;
+		
 		private var hasDrawnBody:Boolean = false;
 		private var exploreText:Text;
+		
 		private var closeButton:ButtonExpandableHud;
+		
 		private var timer:Timer;
+		
 		private var startTime:Number = 0;
 		private var finishTime:Number = 0;
 		private var areaTypes:Dictionary;
+		
 		private var areas:Vector.<ExploreArea>;
-
+		
 		private var planetGfx:Image;
+		
 		private var areaBox:Sprite;
+		
 		private var areasText:Text;
+		
 		private var exploreMap:ExploreMap;
+		
 		private var b:Body;
+		
 		private var hasCollectedReward:Boolean = false;
 		private var bodyAreas:Array;
+		
 		private var exploredAreas:Array;
+		
 		private var zoneExpireTimer:HudTimer;
+		
 		private var updateInterval:int = 5;
 		public function ExploreState(param1:Game, param2:Body)
 		{
@@ -67,7 +82,7 @@ package core.states.exploreStates
 			this.b = param2;
 			zoneExpireTimer = new HudTimer(param1, 10);
 		}
-
+		
 		override public function enter():void
 		{
 			var defX:int;
@@ -107,17 +122,17 @@ package core.states.exploreStates
 			else
 			{
 				g.me.getExploredAreas(b, function(param1:Array):void
+				{
+					if (container == null)
 					{
-						if (container == null)
-						{
-							return;
-						}
-						exploredAreas = param1;
-						createMap();
-					});
+						return;
+					}
+					exploredAreas = param1;
+					createMap();
+				});
 			}
 		}
-
+		
 		private function addClanControl():void
 		{
 			var _loc5_:TextBitmap = null;
@@ -159,7 +174,7 @@ package core.states.exploreStates
 				addChild(_loc5_);
 			}
 		}
-
+		
 		private function createMap():void
 		{
 			exploreMap = new ExploreMap(g, bodyAreas, exploredAreas, b);
@@ -173,13 +188,13 @@ package core.states.exploreStates
 			_loc1_.y = 45;
 			addImg(_loc1_);
 		}
-
+		
 		private function showSelectTeam(param1:Event):void
 		{
 			var _loc2_:ExploreArea = param1.target as ExploreArea;
 			sm.changeState(new SelectTeamState(g, b, _loc2_));
 		}
-
+		
 		private function addExploreAreas(param1:ExploreMap):void
 		{
 			var _loc20_:* = null;
@@ -242,13 +257,13 @@ package core.states.exploreStates
 				}
 			}
 		}
-
+		
 		public function showRewardScreen(param1:Event):void
 		{
 			var _loc2_:ExploreArea = param1.target as ExploreArea;
 			sm.changeState(new ReportState(g, _loc2_));
 		}
-
+		
 		private function addImg(param1:Box):void
 		{
 			var _loc2_:Number = NaN;
@@ -264,7 +279,7 @@ package core.states.exploreStates
 				hasDrawnBody = true;
 			}
 		}
-
+		
 		override public function execute():void
 		{
 			if (updateInterval-- > 0)
@@ -291,7 +306,7 @@ package core.states.exploreStates
 			zoneExpireTimer.update();
 			super.execute();
 		}
-
+		
 		public function stopEffect():void
 		{
 			for each (var _loc1_:* in areas)
@@ -299,12 +314,12 @@ package core.states.exploreStates
 				_loc1_.stopEffect();
 			}
 		}
-
+		
 		override public function get type():String
 		{
 			return "ExploreState";
 		}
-
+		
 		override public function exit():void
 		{
 			removeChild(areaBox, true);

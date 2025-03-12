@@ -3,23 +3,22 @@ package core.hud.components.radar
 	import core.GameObject;
 	import core.scene.Game;
 	import core.solarSystem.Body;
-
+	
 	public class Compas
 	{
 		public static const WIDTH:Number = 700;
-
 		public static const HEIGHT:Number = 450;
-
 		private var arrows:Vector.<TargetArrow>;
-
+		
 		private var g:Game;
+		
 		public function Compas(param1:Game)
 		{
 			arrows = new Vector.<TargetArrow>();
 			this.g = param1;
 			super();
 		}
-
+		
 		public function update():void
 		{
 			if (g.me.ship == null)
@@ -31,7 +30,7 @@ package core.hud.components.radar
 				_loc1_.update();
 			}
 		}
-
+		
 		public function removeArrow(param1:GameObject):void
 		{
 			var _loc3_:int = 0;
@@ -48,7 +47,7 @@ package core.hud.components.radar
 				_loc3_--;
 			}
 		}
-
+		
 		public function addArrow(param1:GameObject, param2:uint):TargetArrow
 		{
 			var _loc3_:TargetArrow = new TargetArrow(g, param1, param2);
@@ -56,7 +55,7 @@ package core.hud.components.radar
 			g.addChildToCanvas(_loc3_);
 			return _loc3_;
 		}
-
+		
 		public function hasTarget(param1:GameObject):Boolean
 		{
 			for each (var _loc2_:* in arrows)
@@ -68,7 +67,7 @@ package core.hud.components.radar
 			}
 			return false;
 		}
-
+		
 		public function addHintArrow(param1:String):void
 		{
 			clear();
@@ -81,7 +80,7 @@ package core.hud.components.radar
 				}
 			}
 		}
-
+		
 		public function addHintArrowByKey(param1:String):void
 		{
 			clear();
@@ -94,7 +93,7 @@ package core.hud.components.radar
 				}
 			}
 		}
-
+		
 		public function clearType(param1:String):void
 		{
 			var _loc2_:Body = null;
@@ -116,7 +115,7 @@ package core.hud.components.radar
 				_loc4_--;
 			}
 		}
-
+		
 		public function clear():void
 		{
 			for each (var _loc1_:* in arrows)

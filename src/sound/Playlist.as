@@ -1,7 +1,7 @@
 package sound
 {
 	import flash.utils.Dictionary;
-
+	
 	public class Playlist
 	{
 		private static var THEME_ARRENIUS:String = "121xDDNiD0aZuYuO54RoVw";
@@ -39,12 +39,12 @@ package sound
 		{
 			super();
 		}
-
+		
 		private static function randomize(param1:*, param2:*):int
 		{
 			return Math.random() > 0.5 ? 1 : -1;
 		}
-
+		
 		public static function init():void
 		{
 			playlists["HrAjOBivt0SHPYtxKyiB_Q"] = PLAYLIST_HYPERION;
@@ -64,7 +64,7 @@ package sound
 			playlists["sfNQWazDdUasynuRWngLdw"] = PLAYLIST_VORSRAN;
 			initialized = true;
 		}
-
+		
 		public static function play(param1:String):void
 		{
 			if (!initialized)
@@ -80,7 +80,7 @@ package sound
 			currentTrack = currentPlaylist[i];
 			next(true);
 		}
-
+		
 		public static function next(param1:Boolean = false):void
 		{
 			var firstTrack:String;
@@ -99,11 +99,11 @@ package sound
 			}
 			currentTrack = currentPlaylist[i];
 			SoundLocator.getService().playMusic(currentTrack, false, true, null, function():void
-				{
-					next();
-				}, true);
+			{
+				next();
+			}, true);
 		}
-
+		
 		public static function stop():void
 		{
 			var _loc1_:ISound = SoundLocator.getService();

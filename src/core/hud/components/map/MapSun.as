@@ -5,7 +5,7 @@ package core.hud.components.map
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.textures.Texture;
-
+	
 	public class MapSun extends MapBodyBase
 	{
 		public function MapSun(param1:Game, param2:Sprite, param3:Body)
@@ -16,7 +16,7 @@ package core.hud.components.map
 			addOrbits();
 			init();
 		}
-
+		
 		private function addImage():void
 		{
 			layer.touchable = false;

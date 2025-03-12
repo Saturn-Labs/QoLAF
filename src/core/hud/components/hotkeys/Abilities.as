@@ -14,15 +14,19 @@ package core.hud.components.hotkeys
 	import starling.textures.Texture;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class Abilities extends Sprite
 	{
 		private var hotkeys:Vector.<AbilityHotkey>;
-
+		
 		private var g:Game;
+		
 		private var dataManager:IDataManager;
+		
 		private var textureManager:ITextureManager;
+		
 		private var keyBinds:KeyBinds;
+		
 		public function Abilities(param1:Game)
 		{
 			hotkeys = new Vector.<AbilityHotkey>();
@@ -31,7 +35,7 @@ package core.hud.components.hotkeys
 			dataManager = DataLocator.getService();
 			textureManager = TextureLocator.getService();
 		}
-
+		
 		public function load():void
 		{
 			var _loc8_:Object = null;
@@ -133,7 +137,7 @@ package core.hud.components.hotkeys
 				}
 			}
 		}
-
+		
 		public function update():void
 		{
 			for each (var _loc1_:* in hotkeys)
@@ -141,7 +145,7 @@ package core.hud.components.hotkeys
 				_loc1_.update();
 			}
 		}
-
+		
 		private function createHotkey(param1:Object, param2:Boolean, param3:Function, param4:int, param5:String, param6:String, param7:int):Function
 		{
 			var obj:Object = param1;
@@ -155,7 +159,7 @@ package core.hud.components.hotkeys
 			{
 			};
 		}
-
+		
 		public function initiateCooldown(param1:String):void
 		{
 			for each (var _loc2_:* in hotkeys)
@@ -166,7 +170,7 @@ package core.hud.components.hotkeys
 				}
 			}
 		}
-
+		
 		public function refresh():void
 		{
 			for each (var _loc1_:* in hotkeys)

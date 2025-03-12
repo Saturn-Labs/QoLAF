@@ -4,7 +4,7 @@ package core.hud.components.map
 	import core.solarSystem.Body;
 	import starling.display.Image;
 	import starling.display.Sprite;
-
+	
 	public class MapStation extends MapBodyBase
 	{
 		public function MapStation(param1:Game, param2:Sprite, param3:Body)
@@ -16,7 +16,7 @@ package core.hud.components.map
 			addText();
 			init();
 		}
-
+		
 		private function addImage():void
 		{
 			var _loc1_:String = body.type.toLowerCase().replace(" ", "");
@@ -29,7 +29,7 @@ package core.hud.components.map
 			radius = _loc2_.width / 2;
 			layer.addChild(_loc2_);
 		}
-
+		
 		private function addText():void
 		{
 			text.size = 11;

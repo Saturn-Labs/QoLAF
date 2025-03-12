@@ -13,41 +13,45 @@ package core.hud.components.explore
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	import textures.TextureManager;
-
+	
 	public class ExploreMap extends starling.display.Sprite
 	{
 		public static var selectedArea:Object = null;
 		public static var forceSelectAreaKey:String = null;
 		private static const X_SIZE:int = 130;
-
 		private static const Y_SIZE:int = 45;
-
 		private static const FINAL_X_SIZE:int = 660;
-
 		private static const FINAL_Y_SIZE:int = 660;
-
 		private static const STEPS_OF_POSTPROCCESSING:int = 0;
-
 		private static const directions:Vector.<Vector.<int>> = Vector.<Vector.<int>>([Vector.<int>([0, 1]), Vector.<int>([1, 1]), Vector.<int>([1, 0]), Vector.<int>([1, -1]), Vector.<int>([0, -1]), Vector.<int>([-1, -1]), Vector.<int>([-1, 0]), Vector.<int>([-1, 1])]);
-
+		
 		public var areas:Array;
+		
 		private var explored:Array;
+		
 		private var done:Boolean;
+		
 		private var seed:Number;
+		
 		private var g:Game;
+		
 		private var r:Random;
+		
 		private var m:Vector.<Vector.<int>>;
-
+		
 		public var shell:Vector.<Vector.<Point>>;
-
+		
 		private var grid:Vector.<Vector.<Point>>;
-
+		
 		private var lastPos:int;
+		
 		private var raw_areas:Array;
+		
 		private var extraAreas:int;
+		
 		private var area_key_index:int = 0;
 		private var map_areas:Vector.<ExploreMapArea>;
-
+		
 		private var x_chance:int = 35;
 		private var y_chance:int = 25;
 		private var fraction_cover:Number = 0.1;
@@ -72,7 +76,7 @@ package core.hud.components.explore
 			}
 			drawMap();
 		}
-
+		
 		public function getMapArea(param1:String):ExploreMapArea
 		{
 			if (map_areas != null)
@@ -87,7 +91,7 @@ package core.hud.components.explore
 			}
 			return null;
 		}
-
+		
 		private function drawMap():void
 		{
 			var _loc2_:* = null;
@@ -129,7 +133,7 @@ package core.hud.components.explore
 			_loc7_.y = 490;
 			addChild(_loc7_);
 		}
-
+		
 		private function generateGrid(param1:int, param2:int):void
 		{
 			var _loc5_:int = 0;
@@ -163,7 +167,7 @@ package core.hud.components.explore
 				_loc4_++;
 			}
 		}
-
+		
 		private function drawGrid(param1:Number, param2:Number):void
 		{
 			var _loc5_:int = 0;
@@ -182,7 +186,7 @@ package core.hud.components.explore
 			_loc4_.graphics.endFill();
 			addChild(TextureManager.imageFromSprite(_loc4_, "planetGrid"));
 		}
-
+		
 		private function transformMap():void
 		{
 			var _loc5_:Number = NaN;
@@ -214,7 +218,7 @@ package core.hud.components.explore
 				}
 			}
 		}
-
+		
 		private function transformMap3():void
 		{
 			var _loc7_:Number = NaN;
@@ -257,7 +261,7 @@ package core.hud.components.explore
 				}
 			}
 		}
-
+		
 		private function transformMap2():void
 		{
 			var _loc2_:Number = NaN;
@@ -293,7 +297,7 @@ package core.hud.components.explore
 				}
 			}
 		}
-
+		
 		private function selectEasiest():void
 		{
 			var _loc4_:int = 10000;
@@ -346,12 +350,12 @@ package core.hud.components.explore
 				selectedArea = _loc2_.area;
 			}
 		}
-
+		
 		public function moveOnTop(param1:ExploreMapArea):void
 		{
 			addChild(param1);
 		}
-
+		
 		public function clearSelected(param1:ExploreMapArea):void
 		{
 			for each (var _loc2_:* in map_areas)
@@ -362,7 +366,7 @@ package core.hud.components.explore
 				}
 			}
 		}
-
+		
 		private function generateMap():void
 		{
 			done = false;
@@ -381,7 +385,7 @@ package core.hud.components.explore
 				}
 			}
 		}
-
+		
 		private function tryGenerateMap():Boolean
 		{
 			var _loc7_:int = 0;
@@ -481,7 +485,7 @@ package core.hud.components.explore
 			Console.write("explore area map done");
 			return true;
 		}
-
+		
 		private function startNewGroup(param1:int):Boolean
 		{
 			var _loc2_:Vector.<int> = getRandomPosList();
@@ -495,7 +499,7 @@ package core.hud.components.explore
 			}
 			return false;
 		}
-
+		
 		private function joinOldGroup(param1:int):Boolean
 		{
 			var _loc2_:Vector.<int> = getRandomPosList();
@@ -509,7 +513,7 @@ package core.hud.components.explore
 			}
 			return false;
 		}
-
+		
 		private function addSquaresToGroup(param1:int, param2:int):Boolean
 		{
 			var _loc9_:int = 0;
@@ -552,7 +556,7 @@ package core.hud.components.explore
 			}
 			return true;
 		}
-
+		
 		private function getRandomPosList():Vector.<int>
 		{
 			var _loc2_:int = 0;
@@ -565,7 +569,7 @@ package core.hud.components.explore
 			}
 			return _loc1_;
 		}
-
+		
 		private function enoughNrNeighbours(param1:int, param2:int, param3:int):Boolean
 		{
 			var _loc8_:int = 0;
@@ -603,7 +607,7 @@ package core.hud.components.explore
 			}
 			return false;
 		}
-
+		
 		private function tryAddNeighbours(param1:int, param2:int, param3:int, param4:int, param5:int):int
 		{
 			if (m[param1][param2] != param3)
@@ -640,7 +644,7 @@ package core.hud.components.explore
 			}
 			return _loc6_;
 		}
-
+		
 		private function canJoinOld(param1:int, param2:int):Boolean
 		{
 			var _loc4_:int = 0;
@@ -666,7 +670,7 @@ package core.hud.components.explore
 			}
 			return false;
 		}
-
+		
 		private function getMinDist(param1:int, param2:int):int
 		{
 			var _loc6_:int = 0;
@@ -693,7 +697,7 @@ package core.hud.components.explore
 			}
 			return _loc5_;
 		}
-
+		
 		private function canAddNew(param1:int, param2:int):Boolean
 		{
 			var _loc4_:int = 0;
@@ -715,7 +719,7 @@ package core.hud.components.explore
 			}
 			return false;
 		}
-
+		
 		private function removeInterior():void
 		{
 			var _loc3_:int = 0;
@@ -773,7 +777,7 @@ package core.hud.components.explore
 				_loc2_++;
 			}
 		}
-
+		
 		private function createShells(param1:int):Vector.<Vector.<Point>>
 		{
 			var _loc3_:int = 0;
@@ -790,7 +794,7 @@ package core.hud.components.explore
 			}
 			return _loc2_;
 		}
-
+		
 		private function getStartPoint(param1:Vector.<Point>, param2:int, param3:int = 0, param4:int = 0):void
 		{
 			if (param3 != 0)
@@ -821,7 +825,7 @@ package core.hud.components.explore
 				param3++;
 			}
 		}
-
+		
 		private function createShell(param1:int, param2:Vector.<Point> = null):Vector.<Point>
 		{
 			var _loc5_:Point = null;
@@ -876,7 +880,7 @@ package core.hud.components.explore
 			postProccessEdge(_loc3_);
 			return _loc3_;
 		}
-
+		
 		private function getNextPoint(param1:int, param2:int, param3:int, param4:int):Point
 		{
 			var _loc8_:int = 0;
@@ -909,7 +913,7 @@ package core.hud.components.explore
 			}
 			return null;
 		}
-
+		
 		private function getDirection(param1:Vector.<Point>):int
 		{
 			var _loc4_:int = 0;
@@ -979,7 +983,7 @@ package core.hud.components.explore
 			}
 			return 0;
 		}
-
+		
 		private function isDone(param1:Vector.<Point>):Boolean
 		{
 			if (param1.length <= 2)
@@ -992,7 +996,7 @@ package core.hud.components.explore
 			}
 			return false;
 		}
-
+		
 		private function removeNarrows(param1:Vector.<Point>):void
 		{
 			var _loc3_:int = 0;
@@ -1018,7 +1022,7 @@ package core.hud.components.explore
 				_loc4_--;
 			}
 		}
-
+		
 		private function postProccessEdge(param1:Vector.<Point>):void
 		{
 			var _loc2_:int = 0;
@@ -1056,17 +1060,17 @@ package core.hud.components.explore
 				_loc6_++;
 			}
 		}
-
+		
 		private function dist2(param1:int, param2:int, param3:int, param4:int):int
 		{
 			return Math.max(Math.abs(param1 - param3), Math.abs(param2 - param4));
 		}
-
+		
 		private function dist(param1:Point, param2:Point):Number
 		{
 			return (param1.x - param2.x) * (param1.x - param2.x) + (param1.y - param2.y) * (param1.y - param2.y);
 		}
-
+		
 		private function findClosesPoint(param1:Point, param2:Vector.<Point>):Point
 		{
 			var _loc3_:Number = NaN;
@@ -1092,7 +1096,7 @@ package core.hud.components.explore
 			}
 			return _loc6_;
 		}
-
+		
 		private function postProccessShells(param1:Number):void
 		{
 			var _loc3_:* = null;
@@ -1117,7 +1121,7 @@ package core.hud.components.explore
 				removeNarrows(_loc2_);
 			}
 		}
-
+		
 		private function createMatrix(param1:int, param2:int):Vector.<Vector.<int>>
 		{
 			var _loc3_:* = undefined;

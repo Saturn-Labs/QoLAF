@@ -21,33 +21,45 @@ package core.scene
 	import playerio.Connection;
 	import playerio.Message;
 	import playerio.PlayerIOError;
-	import qolaf.data.ClientSettings;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import startSetup.StartSetup;
-
+	
 	public class SceneBase extends DisplayObjectContainer implements ISceneState
 	{
 		public static var settings:Settings;
-		// QoLAF
-		public static var clientSettings:ClientSettings;
+		
 		public var myCargo:Cargo;
+		
 		private var clockInitComplete:Boolean;
+		
 		private var userJoinedComplete:Boolean;
+		
 		public var room:Room;
+		
 		public var client:Client;
+		
 		private var connection:Connection;
+		
 		protected var roomId:String;
+		
 		protected var serviceRoomId:String;
+		
 		public var serviceConnection:Connection;
+		
 		protected var clock:Clock;
+		
 		public var canvas:Sprite;
+		
 		private var hud:Sprite;
+		
 		private var menu:Sprite;
+		
 		private var overlay:Sprite;
+		
 		public const CANVAS_BACKGROUND:String = "canvasBackground";
 		public const CANVAS_BODIES:String = "canvasBodies";
 		public const CANVAS_DROPS:String = "canvasDrops";
@@ -60,26 +72,45 @@ package core.scene
 		public const CANVAS_EFFECTS:String = "canvasEffects";
 		public const CANVAS_TEXTS:String = "canvasTexts";
 		public var canvasBackground:DisplayObjectContainer;
+		
 		public var canvasBodies:Sprite;
+		
 		public var canvasDrops:Sprite;
+		
 		public var canvasSpawners:Sprite;
+		
 		public var canvasTurrets:Sprite;
+		
 		public var canvasBosses:Sprite;
+		
 		public var canvasEnemyShips:Sprite;
+		
 		public var canvasPlayerShips:Sprite;
+		
 		public var canvasProjectiles:Sprite;
+		
 		public var canvasEffects:Sprite;
+		
 		public var canvasTexts:Sprite;
+		
 		private var layersInfo:Array;
+		
 		private var connectionHandlers:Dictionary;
+		
 		private var serviceHandlers:Dictionary;
+		
 		protected var _stateMachine:SceneStateMachine;
+		
 		protected var _leaving:Boolean;
+		
 		public var blockHotkeys:Boolean = false;
 		public var camera:StarlingCameraFocus;
+		
 		private var resizeCallbacks:Array;
+		
 		public var time:Number = 0;
 		public var messageCounter:Dictionary;
+		
 		public function SceneBase(param1:Client, param2:Connection, param3:Connection, param4:Room)
 		{
 			canvas = new Sprite();
@@ -124,55 +155,11 @@ package core.scene
 			canvas.addChild(canvasEffects);
 			canvas.addChild(canvasTexts);
 			Login.fadeScreen.repositionScreen(overlay);
-			canvas.touchable = true;
-			layersInfo = [ {
-						"name": "canvasBackground",
-						"instance": this.canvasBackground,
-						"ratio": 1
-					}, {
-						"name": "canvasBodies",
-						"instance": this.canvasBodies,
-						"ratio": 0
-					}, {
-						"name": "canvasSpawmers",
-						"instance": this.canvasSpawners,
-						"ratio": 0
-					}, {
-						"name": "canvasTurrets",
-						"instance": this.canvasTurrets,
-						"ratio": 0
-					}, {
-						"name": "canvasBosses",
-						"instance": this.canvasBosses,
-						"ratio": 0
-					}, {
-						"name": "canvasEnemyShip",
-						"instance": this.canvasEnemyShips,
-						"ratio": 0
-					}, {
-						"name": "canvasDrops",
-						"instance": this.canvasDrops,
-						"ratio": 0
-					}, {
-						"name": "canvasPlayerShip",
-						"instance": this.canvasPlayerShips,
-						"ratio": 0
-					}, {
-						"name": "canvasProjectiles",
-						"instance": this.canvasProjectiles,
-						"ratio": 0
-					}, {
-						"name": "canvasEffects",
-						"instance": this.canvasEffects,
-						"ratio": 0
-					}, {
-						"name": "canvasTexts",
-						"instance": this.canvasTexts,
-						"ratio": 0
-					}];
+			canvas.touchable = false;
+			layersInfo = [{"name": "canvasBackground", "instance": this.canvasBackground, "ratio": 1}, {"name": "canvasBodies", "instance": this.canvasBodies, "ratio": 0}, {"name": "canvasSpawmers", "instance": this.canvasSpawners, "ratio": 0}, {"name": "canvasTurrets", "instance": this.canvasTurrets, "ratio": 0}, {"name": "canvasBosses", "instance": this.canvasBosses, "ratio": 0}, {"name": "canvasEnemyShip", "instance": this.canvasEnemyShips, "ratio": 0}, {"name": "canvasDrops", "instance": this.canvasDrops, "ratio": 0}, {"name": "canvasPlayerShip", "instance": this.canvasPlayerShips, "ratio": 0}, {"name": "canvasProjectiles", "instance": this.canvasProjectiles, "ratio": 0}, {"name": "canvasEffects", "instance": this.canvasEffects, "ratio": 0}, {"name": "canvasTexts", "instance": this.canvasTexts, "ratio": 0}];
 			initConnection(param3);
 		}
-
+		
 		private function initConnection(param1:Connection):void
 		{
 			this.connection = param1;
@@ -186,7 +173,7 @@ package core.scene
 			addMessageHandler("*", anyMessage);
 			initClock();
 		}
-
+		
 		public function traceDisplayObjectCounts():void
 		{
 			var _loc1_:int = 0;
@@ -221,7 +208,7 @@ package core.scene
 			MessageLog.writeChatMsg("system", "Total: " + _loc1_, null, "");
 			TweenMax.delayedCall(1, traceDisplayObjectCounts);
 		}
-
+		
 		public function toggleRoamingCanvases(param1:Boolean):void
 		{
 			canvasEffects.visible = param1;
@@ -236,7 +223,7 @@ package core.scene
 			canvasTexts.visible = param1;
 			hud.visible = param1;
 		}
-
+		
 		public function enter():void
 		{
 			if (stage)
@@ -248,7 +235,7 @@ package core.scene
 				addEventListener("addedToStage", init);
 			}
 		}
-
+		
 		protected function init(param1:Event = null):void
 		{
 			StartSetup.showProgressText("Init game room");
@@ -260,7 +247,7 @@ package core.scene
 			camera.update();
 			stage.addEventListener("resize", resize);
 		}
-
+		
 		protected function resize(param1:Event):void
 		{
 			for each (var _loc2_:* in resizeCallbacks)
@@ -272,7 +259,7 @@ package core.scene
 				camera.setFocusPosition(stage.stageWidth / 2, stage.stageHeight / 2);
 			}
 		}
-
+		
 		private function joined(param1:Message):void
 		{
 			Console.write("joined ...");
@@ -280,21 +267,21 @@ package core.scene
 			userJoinedComplete = true;
 			joinReady();
 		}
-
+		
 		public function execute():void
 		{
 		}
-
+		
 		protected function handleDisconnect():void
 		{
 			Console.write("Disconnected from server");
 		}
-
+		
 		private function handleError(param1:PlayerIOError):void
 		{
 			Console.write(param1);
 		}
-
+		
 		private function initClock():void
 		{
 			StartSetup.showProgressText("Synchronizing");
@@ -303,7 +290,7 @@ package core.scene
 			clock.start();
 			clock.addEventListener("clockReady", onClockReady);
 		}
-
+		
 		private function onClockReady(param1:Event):void
 		{
 			clock.removeEventListener("clockReady", onClockReady);
@@ -313,7 +300,7 @@ package core.scene
 			clockInitComplete = true;
 			joinReady();
 		}
-
+		
 		private function joinReady():void
 		{
 			Console.write("joinReady");
@@ -325,14 +312,14 @@ package core.scene
 				serviceConnection.addDisconnectHandler(handleDisconnect);
 			}
 		}
-
+		
 		protected function onJoinAndClockSynched(param1:Event = null):void
 		{
 			StartSetup.showProgressText("Joined and synched game room");
 			removeEventListener("addedToStage", onJoinAndClockSynched);
 			time = clock.time;
 		}
-
+		
 		public function exit():void
 		{
 			_leaving = true;
@@ -398,17 +385,17 @@ package core.scene
 			removeEventListeners();
 			removeChildren(0, -1, true);
 		}
-
+		
 		public function addChildToBackground(param1:DisplayObject):void
 		{
 			canvasBackground.addChild(param1);
 		}
-
+		
 		public function addChildToBackgroundAt(param1:DisplayObject, param2:int):void
 		{
 			canvasBackground.addChildAt(param1, param2);
 		}
-
+		
 		public function removeChildFromBackground(param1:DisplayObject, param2:Boolean = false):void
 		{
 			if (!canvasBackground.contains(param1))
@@ -417,17 +404,17 @@ package core.scene
 			}
 			canvasBackground.removeChild(param1, param2);
 		}
-
+		
 		public function addChildToCanvas(param1:DisplayObject):void
 		{
 			canvas.addChild(param1);
 		}
-
+		
 		public function addChildToCanvasAt(param1:DisplayObject, param2:int):void
 		{
 			canvas.addChildAt(param1, param2);
 		}
-
+		
 		public function removeChildFromCanvas(param1:DisplayObject, param2:Boolean = false):void
 		{
 			if (!canvas.contains(param1))
@@ -436,17 +423,17 @@ package core.scene
 			}
 			canvas.removeChild(param1, param2);
 		}
-
+		
 		override public function addChild(param1:DisplayObject):DisplayObject
 		{
 			return hud.addChild(param1);
 		}
-
+		
 		override public function addChildAt(param1:DisplayObject, param2:int):DisplayObject
 		{
 			return hud.addChildAt(param1, param2);
 		}
-
+		
 		override public function removeChild(param1:DisplayObject, param2:Boolean = false):DisplayObject
 		{
 			if (!hud.contains(param1))
@@ -455,17 +442,17 @@ package core.scene
 			}
 			return hud.removeChild(param1, param2);
 		}
-
+		
 		public function addChildToMenu(param1:DisplayObject):void
 		{
 			menu.addChild(param1);
 		}
-
+		
 		public function addChildToMenuAt(param1:DisplayObject, param2:int):void
 		{
 			menu.addChildAt(param1, param2);
 		}
-
+		
 		public function removeChildFromMenu(param1:DisplayObject, param2:Boolean = false):void
 		{
 			if (!menu.contains(param1))
@@ -474,12 +461,12 @@ package core.scene
 			}
 			menu.removeChild(param1, param2);
 		}
-
+		
 		public function addChildToHud(param1:DisplayObject):void
 		{
 			hud.addChild(param1);
 		}
-
+		
 		public function removeChildFromHud(param1:DisplayObject, param2:Boolean = false):void
 		{
 			if (!hud.contains(param1))
@@ -488,7 +475,7 @@ package core.scene
 			}
 			hud.removeChild(param1, param2);
 		}
-
+		
 		public function addChildToOverlay(param1:DisplayObject, param2:Boolean = false):void
 		{
 			if (!this.blockHotkeys && param2)
@@ -497,7 +484,7 @@ package core.scene
 			}
 			overlay.addChild(param1);
 		}
-
+		
 		public function addChildToOverlayAt(param1:DisplayObject, param2:int):void
 		{
 			if (param2 >= overlay.numChildren)
@@ -506,7 +493,7 @@ package core.scene
 			}
 			overlay.addChildAt(param1, param2);
 		}
-
+		
 		public function removeChildFromOverlay(param1:DisplayObject, param2:Boolean = false):void
 		{
 			this.blockHotkeys = false;
@@ -516,7 +503,7 @@ package core.scene
 			}
 			overlay.removeChild(param1, param2);
 		}
-
+		
 		public function addToCanvasLayer(param1:String, param2:DisplayObject):void
 		{
 			var _loc6_:int = 0;
@@ -535,7 +522,7 @@ package core.scene
 				_loc6_++;
 			}
 		}
-
+		
 		public function removeFromCanvasLayer(param1:String, param2:DisplayObject):void
 		{
 			var _loc6_:int = 0;
@@ -554,12 +541,12 @@ package core.scene
 				_loc6_++;
 			}
 		}
-
+		
 		public function set stateMachine(param1:SceneStateMachine):void
 		{
 			_stateMachine = param1;
 		}
-
+		
 		protected function getServerTime():Number
 		{
 			if (clock != null)
@@ -569,23 +556,23 @@ package core.scene
 			}
 			return 0;
 		}
-
-		public function rpc(param1:String, param2:Function, ...rest):void
+		
+		public function rpc(param1:String, param2:Function, ... rest):void
 		{
 			var m:Message;
 			var i:int;
 			var type:String = param1;
 			var handler:Function = param2;
 			var args:Array = rest;
-			connection.addMessageHandler(type, (function():Function
-					{
-						var rpcHandler:Function;
-						return rpcHandler = function(param1:Message):void
-						{
-							connection.removeMessageHandler(type, rpcHandler);
-							handler(param1);
-						};
-					})());
+			connection.addMessageHandler(type, (function():*
+			{
+				var rpcHandler:Function;
+				return rpcHandler = function(param1:Message):void
+				{
+					connection.removeMessageHandler(type, rpcHandler);
+					handler(param1);
+				};
+			})());
 			m = connection.createMessage(type);
 			i = 0;
 			while (i < args.length)
@@ -595,29 +582,29 @@ package core.scene
 			}
 			connection.sendMessage(m);
 		}
-
+		
 		public function rpcMessage(param1:Message, param2:Function):void
 		{
 			var mess:Message = param1;
 			var handler:Function = param2;
-			connection.addMessageHandler(mess.type, (function():Function
-					{
-						var rpcHandler:Function;
-						return rpcHandler = function(param1:Message):void
-						{
-							connection.removeMessageHandler(param1.type, rpcHandler);
-							handler(param1);
-						};
-					})());
+			connection.addMessageHandler(mess.type, (function():*
+			{
+				var rpcHandler:Function;
+				return rpcHandler = function(param1:Message):void
+				{
+					connection.removeMessageHandler(param1.type, rpcHandler);
+					handler(param1);
+				};
+			})());
 			connection.sendMessage(mess);
 		}
-
+		
 		public function addMessageHandler(param1:String, param2:Function):void
 		{
 			connectionHandlers[param1] = param2;
 			connection.addMessageHandler(param1, param2);
 		}
-
+		
 		public function removeMessageHandler(param1:String, param2:Function):void
 		{
 			if (connectionHandlers.hasOwnProperty(param1))
@@ -629,7 +616,7 @@ package core.scene
 				connection.removeMessageHandler(param1, param2);
 			}
 		}
-
+		
 		public function increaseMessageCounter(param1:String):void
 		{
 			if (param1 == "msgPack")
@@ -644,7 +631,7 @@ package core.scene
 			var _loc3_:* = messageCounter[_loc2_] + 1;
 			messageCounter[_loc2_] = _loc3_;
 		}
-
+		
 		public function traceMessageCount():void
 		{
 			var _loc3_:Array = [];
@@ -652,10 +639,7 @@ package core.scene
 			{
 				if (messageCounter[_loc2_] != 0)
 				{
-					_loc3_.push( {
-								"type":_loc2_,
-								"count":messageCounter[_loc2_]
-							});
+					_loc3_.push({"type": _loc2_, "count": messageCounter[_loc2_]});
 				}
 			}
 			_loc3_.sortOn("count", 0x10 | 2);
@@ -664,8 +648,8 @@ package core.scene
 				Console.write(_loc1_.type + ": " + _loc1_.count);
 			}
 		}
-
-		public function send(param1:String, ...rest):void
+		
+		public function send(param1:String, ... rest):void
 		{
 			var _loc4_:int = 0;
 			var _loc3_:Message = connection.createMessage(param1);
@@ -684,8 +668,8 @@ package core.scene
 				sendMessage(_loc3_);
 			}
 		}
-
-		public function sendToServiceRoom(param1:String, ...rest):void
+		
+		public function sendToServiceRoom(param1:String, ... rest):void
 		{
 			var _loc4_:int = 0;
 			var _loc3_:Message = serviceConnection.createMessage(param1);
@@ -704,23 +688,23 @@ package core.scene
 				sendMessageToServiceRoom(_loc3_);
 			}
 		}
-
-		public function rpcServiceRoom(param1:String, param2:Function, ...rest):void
+		
+		public function rpcServiceRoom(param1:String, param2:Function, ... rest):void
 		{
 			var m:Message;
 			var i:int;
 			var type:String = param1;
 			var handler:Function = param2;
 			var args:Array = rest;
-			serviceConnection.addMessageHandler(type, (function():Function
-					{
-						var rpcHandler:Function;
-						return rpcHandler = function(param1:Message):void
-						{
-							serviceConnection.removeMessageHandler(type, rpcHandler);
-							handler(param1);
-						};
-					})());
+			serviceConnection.addMessageHandler(type, (function():*
+			{
+				var rpcHandler:Function;
+				return rpcHandler = function(param1:Message):void
+				{
+					serviceConnection.removeMessageHandler(type, rpcHandler);
+					handler(param1);
+				};
+			})());
 			m = serviceConnection.createMessage(type);
 			i = 0;
 			while (i < args.length)
@@ -730,13 +714,13 @@ package core.scene
 			}
 			serviceConnection.sendMessage(m);
 		}
-
+		
 		public function addServiceMessageHandler(param1:String, param2:Function):void
 		{
 			serviceHandlers[param1] = param2;
 			serviceConnection.addMessageHandler(param1, param2);
 		}
-
+		
 		public function removeServiceMessageHandler(param1:String, param2:Function):void
 		{
 			if (serviceHandlers.hasOwnProperty(param1))
@@ -745,18 +729,18 @@ package core.scene
 			}
 			serviceConnection.removeMessageHandler(param1, param2);
 		}
-
+		
 		public function sendMessageToServiceRoom(param1:Message):void
 		{
 			serviceConnection.sendMessage(param1);
 		}
-
+		
 		public function sendMessage(param1:Message):void
 		{
 			connection.sendMessage(param1);
 		}
-
-		public function createMessage(param1:String, ...rest):Message
+		
+		public function createMessage(param1:String, ... rest):Message
 		{
 			var _loc4_:int = 0;
 			var _loc3_:Message = connection.createMessage(param1);
@@ -768,17 +752,17 @@ package core.scene
 			}
 			return _loc3_;
 		}
-
+		
 		protected function userJoined(param1:Message):void
 		{
 			Console.write("User joined");
 		}
-
+		
 		protected function userLeft(param1:Message):void
 		{
 			Console.write("User left");
 		}
-
+		
 		public function showErrorDialog(param1:String, param2:Boolean = false, param3:Function = null):void
 		{
 			var m:String = param1;
@@ -796,15 +780,15 @@ package core.scene
 				client.errorLog.writeError(m, "", "", {});
 			}
 			dialog.addEventListener("close", function(param1:Event):void
+			{
+				dialogClose(param1);
+				if (callback != null)
 				{
-					dialogClose(param1);
-					if (callback != null)
-					{
-						callback();
-					}
-				});
+					callback();
+				}
+			});
 		}
-
+		
 		public function showConfirmDialog(param1:String, param2:Function = null, param3:Function = null):void
 		{
 			var m:String = param1;
@@ -814,23 +798,23 @@ package core.scene
 			dialog.text = m;
 			addChildToOverlay(dialog);
 			dialog.addEventListener("close", function(param1:Event):void
+			{
+				dialogClose(param1);
+				if (closeCallback != null)
 				{
-					dialogClose(param1);
-					if (closeCallback != null)
-					{
-						closeCallback();
-					}
-				});
+					closeCallback();
+				}
+			});
 			dialog.addEventListener("accept", function(param1:Event):void
+			{
+				dialogClose(param1);
+				if (callback != null)
 				{
-					dialogClose(param1);
-					if (callback != null)
-					{
-						callback();
-					}
-				});
+					callback();
+				}
+			});
 		}
-
+		
 		public function showMessageDialog(param1:String, param2:Function = null):void
 		{
 			var m:String = param1;
@@ -839,20 +823,20 @@ package core.scene
 			dialog.text = m;
 			addChildToOverlay(dialog);
 			dialog.addEventListener("close", function(param1:Event):void
+			{
+				dialogClose(param1);
+				if (callback != null)
 				{
-					dialogClose(param1);
-					if (callback != null)
-					{
-						callback();
-					}
-				});
+					callback();
+				}
+			});
 		}
-
+		
 		private function errorFromServer(param1:Message):void
 		{
 			showErrorDialog(param1.getString(0));
 		}
-
+		
 		public function infoMessageDialog(param1:String):void
 		{
 			var _loc2_:PopupMessage = new PopupMessage();
@@ -860,7 +844,7 @@ package core.scene
 			addChildToOverlay(_loc2_);
 			_loc2_.addEventListener("close", dialogClose);
 		}
-
+		
 		private function dialogClose(param1:Event):void
 		{
 			var _loc2_:Sprite = param1.target as Sprite;
@@ -875,22 +859,22 @@ package core.scene
 			_loc2_.removeEventListeners();
 			_loc2_.dispose();
 		}
-
+		
 		private function message(param1:Message):void
 		{
 			showErrorDialog(param1.getString(0));
 		}
-
+		
 		private function anyMessage(param1:Message):void
 		{
 		}
-
+		
 		private function duplicateLogin(param1:Message):void
 		{
 			showErrorDialog("You were disconnected because you signed in from another place.");
 			exit();
 		}
-
+		
 		public function get connected():Boolean
 		{
 			if (connection != null && connection.connected)
@@ -899,12 +883,12 @@ package core.scene
 			}
 			return false;
 		}
-
+		
 		public function get isLeaving():Boolean
 		{
 			return _leaving;
 		}
-
+		
 		public function disconnect():void
 		{
 			if (connection)
@@ -912,23 +896,23 @@ package core.scene
 				connection.disconnect();
 			}
 		}
-
+		
 		public function draw():void
 		{
 			throw new IllegalOperationError("Subclasses of RoomBase has to override draw().");
 		}
-
+		
 		public function drawGUIEffect(param1:Bitmap, param2:Vector.<Emitter>):void
 		{
 			throw new IllegalOperationError("Subclasses of RoomBase has to override drawGUIEffect().");
 		}
-
+		
 		public function refreshClock():void
 		{
 			clock.start();
 			clock.addEventListener("clockReady", onRefreshClockReady);
 		}
-
+		
 		private function onRefreshClockReady(param1:Event):void
 		{
 			clock.removeEventListener("clockReady", onRefreshClockReady);
@@ -937,17 +921,17 @@ package core.scene
 				MessageLog.write("Latency: " + Math.round(clock.latency) + " ms");
 			}
 		}
-
+		
 		public function addResizeListener(param1:Function):void
 		{
 			resizeCallbacks.push(param1);
 		}
-
+		
 		public function removeResizeListener(param1:Function):void
 		{
 			resizeCallbacks.splice(resizeCallbacks.indexOf(param1), 1);
 		}
-
+		
 		private function debugMessage(param1:Message):void
 		{
 			var _loc2_:String = null;
@@ -969,37 +953,37 @@ package core.scene
 				}
 			}
 		}
-
+		
 		public function set touchableCanvas(param1:Boolean):void
 		{
 			canvas.touchable = param1;
 		}
-
+		
 		public function isSystemTypeClan():Boolean
 		{
 			return room.data.systemType == "clan";
 		}
-
+		
 		public function isSystemTypeSurvival():Boolean
 		{
 			return room.data.systemType == "survival";
 		}
-
+		
 		public function isSystemTypeHostile():Boolean
 		{
 			return room.data.systemType == "hostile";
 		}
-
+		
 		public function isSystemTypeDomination():Boolean
 		{
 			return room.data.systemType == "domination";
 		}
-
+		
 		public function isSystemTypeDeathMatch():Boolean
 		{
 			return room.data.systemType == "deathmatch";
 		}
-
+		
 		public function isSystemPvPEnabled():Boolean
 		{
 			var _loc1_:String = room.data.systemType;

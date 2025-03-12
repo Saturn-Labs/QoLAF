@@ -3,19 +3,23 @@ package core.hud.components
 	import starling.display.Image;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class Line extends Image
 	{
 		private var overlap:Boolean;
+		
 		public var toX:Number;
+		
 		public var toY:Number;
+		
 		private var oldTextureName:String;
+		
 		public function Line(param1:String = "line1")
 		{
 			var _loc2_:ITextureManager = TextureLocator.getService();
 			super(_loc2_.getTextureMainByTextureName(param1));
 		}
-
+		
 		public function init(param1:String = "line1", param2:int = 1, param3:uint = 16777215, param4:Number = 1, param5:Boolean = false):void
 		{
 			var _loc6_:ITextureManager = null;
@@ -34,7 +38,7 @@ package core.hud.components
 			this.touchable = true;
 			this.visible = true;
 		}
-
+		
 		public function lineTo(param1:Number, param2:Number):void
 		{
 			this.toX = param1;
@@ -50,7 +54,7 @@ package core.hud.components
 			width = overlap ? _loc4_ + height : _loc4_;
 			this.rotation = Math.atan2(_loc5_, _loc3_);
 		}
-
+		
 		public function set thickness(param1:Number):void
 		{
 			var _loc2_:Number = this.rotation;
@@ -58,7 +62,7 @@ package core.hud.components
 			height = param1;
 			this.rotation = _loc2_;
 		}
-
+		
 		override public function dispose():void
 		{
 			super.dispose();

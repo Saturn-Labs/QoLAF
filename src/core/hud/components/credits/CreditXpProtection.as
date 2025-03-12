@@ -4,11 +4,13 @@ package core.hud.components.credits
 	import generics.Localize;
 	import playerio.Message;
 	import starling.display.Sprite;
-
+	
 	public class CreditXpProtection extends CreditDayItem
 	{
 		private var selectedDays:int;
+		
 		private var price:int;
+		
 		public function CreditXpProtection(param1:Game, param2:Sprite)
 		{
 			super(param1, param2);
@@ -19,21 +21,12 @@ package core.hud.components.credits
 			confirmText = Localize.t("This will add xp protection to your ship.");
 			aquired = param1.me.hasXpProtection();
 			expiryTime = param1.me.xpProtection;
-			bundles.push( {
-						"days": 1,
-						"cost": 75
-					});
-			bundles.push( {
-						"days": 3,
-						"cost": 215
-					});
-			bundles.push( {
-						"days": 7,
-						"cost": 425
-					});
+			bundles.push({"days": 1, "cost": 75});
+			bundles.push({"days": 3, "cost": 215});
+			bundles.push({"days": 7, "cost": 425});
 			super.load();
 		}
-
+		
 		override protected function onBuy(param1:int):void
 		{
 			super.onBuy(param1);
@@ -52,7 +45,7 @@ package core.hud.components.credits
 			}
 			g.rpc("buyXpProtection", onBuyXpProtection, param1);
 		}
-
+		
 		private function onBuyXpProtection(param1:Message):void
 		{
 			if (!param1.getBoolean(0))
@@ -69,7 +62,7 @@ package core.hud.components.credits
 			updateContainers();
 			dispatchEventWith("bought");
 		}
-
+		
 		override protected function updateAquiredText():void
 		{
 			super.updateAquiredText();

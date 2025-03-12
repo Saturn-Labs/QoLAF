@@ -5,17 +5,25 @@ package core.hud.components
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
 	import starling.events.TouchEvent;
-
+	
 	public class SettingsKeybind extends Sprite
 	{
 		private var type:int;
+		
 		private var bg:Box;
+		
 		private var description:Text;
+		
 		private var buttonOne:Button;
+		
 		private var buttonTwo:Button;
+		
 		private var keybinds:KeyBinds;
+		
 		private var currentButton:Button;
+		
 		private var currentNumber:int;
+		
 		public function SettingsKeybind(param1:KeyBinds, param2:int, param3:int, param4:int)
 		{
 			super();
@@ -25,13 +33,13 @@ package core.hud.components
 			this.y = param4;
 			load();
 		}
-
+		
 		public function update():void
 		{
 			buttonOne.text = keybinds.getKeyName(type, 1);
 			buttonTwo.text = keybinds.getKeyName(type, 2);
 		}
-
+		
 		private function load():void
 		{
 			bg = new Box(610, 24, "highlight", 0.5, 10);
@@ -52,7 +60,7 @@ package core.hud.components
 			bg.addChild(buttonTwo);
 			addChild(bg);
 		}
-
+		
 		private function listenButton(param1:TouchEvent):void
 		{
 			if (param1.interactsWith(buttonOne))
@@ -84,7 +92,7 @@ package core.hud.components
 			currentButton.touchable = true;
 			currentButton.enabled = true;
 		}
-
+		
 		private function onMouseTouch(param1:TouchEvent):void
 		{
 			param1.stopImmediatePropagation();
@@ -99,7 +107,7 @@ package core.hud.components
 				currentButton.enabled = true;
 			}
 		}
-
+		
 		private function rightClick(param1:Event):void
 		{
 			currentButton.text = "Mouse2";
@@ -111,7 +119,7 @@ package core.hud.components
 			currentButton.touchable = true;
 			currentButton.enabled = true;
 		}
-
+		
 		private function onClickButton(param1:KeyboardEvent):void
 		{
 			stage.removeEventListener("keyDown", onClickButton);

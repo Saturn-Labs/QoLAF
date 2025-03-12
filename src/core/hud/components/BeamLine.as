@@ -2,28 +2,37 @@ package core.hud.components
 {
 	import core.scene.Game;
 	import starling.display.MeshBatch;
-
+	
 	public class BeamLine extends MeshBatch
 	{
 		private var period:int = 100;
 		public var nodeFrequence:int;
+		
 		public var thickness:Number;
+		
 		public var amplitude:Number;
+		
 		private var ampFactor:Number;
+		
 		private var glowWidth:Number;
+		
 		private var glowColor:Number;
+		
 		private var _color:uint;
+		
 		private var lineTexture:String;
+		
 		private var lines:Vector.<Line>;
-
+		
 		private var g:Game;
+		
 		public function BeamLine(param1:Game)
 		{
 			lines = new Vector.<Line>();
 			super();
 			this.g = param1;
 		}
-
+		
 		public function init(param1:Number = 3, param2:int = 3, param3:Number = 2, param4:uint = 16777215, param5:Number = 1, param6:Number = 3, param7:uint = 16711680, param8:String = "line2"):void
 		{
 			this.thickness = param1 * 2;
@@ -38,7 +47,7 @@ package core.hud.components
 			_color = param4;
 			this.touchable = true;
 		}
-
+		
 		public function lineTo(param1:Number, param2:Number, param3:Number = 1):void
 		{
 			var _loc14_:int = 0;
@@ -103,7 +112,7 @@ package core.hud.components
 				_loc14_++;
 			}
 		}
-
+		
 		override public function set touchable(param1:Boolean):void
 		{
 			var _loc3_:int = 0;
@@ -117,7 +126,7 @@ package core.hud.components
 			}
 			super.touchable = param1;
 		}
-
+		
 		override public function clear():void
 		{
 			var _loc1_:int = 0;
@@ -130,7 +139,7 @@ package core.hud.components
 			}
 			lines.length = 0;
 		}
-
+		
 		override public function set color(param1:uint):void
 		{
 			var _loc3_:int = 0;
@@ -144,7 +153,7 @@ package core.hud.components
 			}
 			_color = param1;
 		}
-
+		
 		override public function get color():uint
 		{
 			return _color;

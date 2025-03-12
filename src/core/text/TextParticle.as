@@ -4,16 +4,23 @@ package core.text
 	import flash.geom.Point;
 	import starling.text.TextField;
 	import starling.text.TextFormat;
-
+	
 	public class TextParticle extends TextField
 	{
 		public var id:int;
+		
 		public var alive:Boolean;
+		
 		public var ttl:int;
+		
 		public var maxTtl:int;
+		
 		public var speed:Point;
+		
 		public var fixed:Boolean;
+		
 		private var g:Game;
+		
 		public function TextParticle(param1:int, param2:Game)
 		{
 			this.g = param2;
@@ -26,7 +33,7 @@ package core.text
 			speed = new Point();
 			blendMode = "add";
 		}
-
+		
 		public function update():void
 		{
 			ttl -= 33;
@@ -36,7 +43,7 @@ package core.text
 				alpha = 0;
 			}
 		}
-
+		
 		public function reset():void
 		{
 			alpha = 1;
@@ -47,7 +54,7 @@ package core.text
 			alive = false;
 			autoWidth();
 		}
-
+		
 		override public function set text(param1:String):void
 		{
 			if (super.text == param1)
@@ -58,7 +65,7 @@ package core.text
 			super.text = param1;
 			autoWidth();
 		}
-
+		
 		public function autoWidth():void
 		{
 			this.width = this.textBounds.width + 4;

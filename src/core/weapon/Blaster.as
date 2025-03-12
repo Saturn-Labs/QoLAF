@@ -5,15 +5,16 @@ package core.weapon
 	import core.scene.Game;
 	import core.ship.PlayerShip;
 	import flash.geom.Point;
-
+	
 	public class Blaster extends Weapon
 	{
 		private var nextShot:Number;
+		
 		public function Blaster(param1:Game)
 		{
 			super(param1);
 		}
-
+		
 		override protected function shoot():void
 		{
 			var _loc2_:PlayerShip = null;
@@ -69,7 +70,7 @@ package core.weapon
 				}
 			}
 		}
-
+		
 		private function fireProjectiles(param1:Number = 0):void
 		{
 			var _loc11_:int = 0;

@@ -9,15 +9,19 @@ package startSetup
 	import starling.events.TouchEvent;
 	import starling.filters.GlowFilter;
 	import textures.TextureLocator;
-
+	
 	public class PickButton extends Sprite
 	{
 		private var bgr:Box;
+		
 		private var callback:Function;
+		
 		private var image:Image;
+		
 		public var mouseOverCallback:Function = null;
 		private var isSelected:Boolean = false;
 		private var rotationTween:TweenMax;
+		
 		public function PickButton(param1:String, param2:Function, param3:Boolean = false)
 		{
 			super();
@@ -43,7 +47,7 @@ package startSetup
 			pivotX = width / 2;
 			pivotY = height / 2;
 		}
-
+		
 		private function onTouch(param1:TouchEvent):void
 		{
 			var _loc2_:ISound = null;
@@ -66,26 +70,23 @@ package startSetup
 				callback();
 			}
 		}
-
+		
 		public function select():void
 		{
 			isSelected = true;
 			image.alpha = 1;
-			rotationTween = TweenMax.to(image, 0.7, {
-						"rotation": 3.141592653589793 * 1.5,
-						"onComplete": function():void
-						{
-							if (!RymdenRunt.isBuggedFlashVersion)
-							{
-								image.filter = new GlowFilter(16777215, 1, 1, 0.7);
-							}
-							image.scaleX = 1.3;
-							image.scaleY = 1.3;
-						}
-					});
+			rotationTween = TweenMax.to(image, 0.7, {"rotation": 3.141592653589793 * 1.5, "onComplete": function():void
+			{
+				if (!RymdenRunt.isBuggedFlashVersion)
+				{
+					image.filter = new GlowFilter(16777215, 1, 1, 0.7);
+				}
+				image.scaleX = 1.3;
+				image.scaleY = 1.3;
+			}});
 			bgr.filter = new GlowFilter(16777215, 0.8, 1, 0.7);
 		}
-
+		
 		public function deselect():void
 		{
 			isSelected = false;

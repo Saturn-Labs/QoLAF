@@ -5,22 +5,35 @@ package core.states.AIStates
 	import core.scene.Game;
 	import core.states.IState;
 	import core.states.StateMachine;
-
+	
 	public class Instant implements IState
 	{
 		protected var g:Game;
+		
 		protected var p:Projectile;
+		
 		private var sm:StateMachine;
+		
 		private var isEnemy:Boolean;
+		
 		private var color:uint;
+		
 		private var thickness:Number;
+		
 		private var alpha:Number;
+		
 		private var amplitude:Number;
+		
 		private var frequency:Number;
+		
 		private var glowColor:uint;
+		
 		private var lineInner:BeamLine;
+		
 		private var lineOuter:BeamLine;
+		
 		private var texture:String;
+		
 		private var tick:int = 0;
 		public function Instant(param1:Game, param2:Projectile, param3:uint, param4:uint, param5:Number, param6:Number, param7:Number, param8:Number, param9:String = null)
 		{
@@ -50,7 +63,7 @@ package core.states.AIStates
 				this.isEnemy = param2.unit.type == "enemyShip" || param2.unit.type == "turret";
 			}
 		}
-
+		
 		public function enter():void
 		{
 			var _loc1_:* = null;
@@ -63,7 +76,7 @@ package core.states.AIStates
 			lineOuter.visible = false;
 			g.canvasEffects.addChild(lineOuter);
 		}
-
+		
 		public function execute():void
 		{
 			if (tick == 0 && p.range != 0)
@@ -107,16 +120,16 @@ package core.states.AIStates
 			}
 			p.course.time += 33;
 		}
-
+		
 		public function exit():void
 		{
 		}
-
+		
 		public function set stateMachine(param1:StateMachine):void
 		{
 			this.sm = param1;
 		}
-
+		
 		public function get type():String
 		{
 			return "Instant";

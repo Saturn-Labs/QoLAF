@@ -2,7 +2,7 @@ package core.hud.components
 {
 	import starling.text.TextField;
 	import starling.text.TextFormat;
-
+	
 	public class TextBitmap extends TextField
 	{
 		public function TextBitmap(param1:int = 0, param2:int = 0, param3:String = "", param4:int = 13)
@@ -30,7 +30,7 @@ package core.hud.components
 			}
 			autoWidth();
 		}
-
+		
 		override public function set text(param1:String):void
 		{
 			if (super.text == param1)
@@ -45,7 +45,7 @@ package core.hud.components
 			super.text = param1;
 			autoWidth();
 		}
-
+		
 		public function autoWidth():void
 		{
 			this.width = this.textBounds.width + 4;
@@ -54,7 +54,7 @@ package core.hud.components
 				alignRight();
 			}
 		}
-
+		
 		public function set size(param1:int):void
 		{
 			this.width = 800;
@@ -74,24 +74,24 @@ package core.hud.components
 			this.format.size = param1;
 			autoWidth();
 		}
-
+		
 		public function get size():int
 		{
 			return this.format.size;
 		}
-
+		
 		public function alignRight():void
 		{
 			pivotX = this.textBounds.width + 4;
 			format.horizontalAlign = "right";
 		}
-
+		
 		public function alignLeft():void
 		{
 			pivotX = 0;
 			format.horizontalAlign = "left";
 		}
-
+		
 		public function center():void
 		{
 			pivotX = textBounds.width / 2;

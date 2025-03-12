@@ -3,14 +3,15 @@ package core.particle
 	import core.GameObject;
 	import core.scene.Game;
 	import debug.Console;
-
+	
 	public class EmitterManager
 	{
 		public var emitters:Vector.<Emitter>;
-
+		
 		private var g:Game;
+		
 		private var inactiveEmitters:Vector.<Emitter>;
-
+		
 		public function EmitterManager(param1:Game)
 		{
 			var _loc2_:int = 0;
@@ -27,7 +28,7 @@ package core.particle
 			}
 			Console.write(" -- emitter pool complete ");
 		}
-
+		
 		public function update():void
 		{
 			var _loc3_:int = 0;
@@ -49,7 +50,7 @@ package core.particle
 			}
 			CollectiveMeshBatch.AllMeshesAreUpdated();
 		}
-
+		
 		public function getEmitter():Emitter
 		{
 			var _loc1_:Emitter = null;
@@ -66,7 +67,7 @@ package core.particle
 			_loc1_.alive = true;
 			return _loc1_;
 		}
-
+		
 		public function forceUpdate(param1:GameObject = null):void
 		{
 			var _loc3_:int = 0;
@@ -82,7 +83,7 @@ package core.particle
 				_loc3_--;
 			}
 		}
-
+		
 		public function clean(param1:GameObject):void
 		{
 			var _loc4_:int = 0;
@@ -99,7 +100,7 @@ package core.particle
 				_loc4_--;
 			}
 		}
-
+		
 		public function removeEmitter(param1:Emitter, param2:int):void
 		{
 			param1.killEmitter();
@@ -107,7 +108,7 @@ package core.particle
 			inactiveEmitters.push(param1);
 			param1.dispose();
 		}
-
+		
 		public function dispose():void
 		{
 			for each (var _loc1_:* in emitters)

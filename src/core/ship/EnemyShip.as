@@ -8,97 +8,140 @@ package core.ship
 	import core.scene.Game;
 	import core.spawner.Spawner;
 	import core.unit.Unit;
-	import core.weapon.Debuff;
 	import core.weapon.Weapon;
 	import flash.geom.Point;
 	import movement.Heading;
-	import qolaf.modifiers.Modifier;
 	import starling.filters.ColorMatrixFilter;
-
+	
 	public class EnemyShip extends Ship
 	{
 		public static const RARE_TYPE_NORMAL:int = 0;
-
 		public static const RARE_TYPE_DEFENDER:int = 1;
-
 		public static const RARE_TYPE_ATTACKER:int = 2;
-
 		public static const RARE_TYPE_SPEEDER:int = 3;
-
 		public static const RARE_TYPE_LEGENDARY:int = 4;
-
 		public static const RARE_TYPE_UNIQUE:int = 5;
-
 		public static const RARE_TYPE_PET:int = 6;
-
 		public static const RIGHT:int = 1;
-
 		public static const LEFT:int = -1;
-
 		public var aggroRange:int;
+		
 		public var chaseRange:int;
+		
 		public var aimSkill:Number;
+		
 		public var stopWhenClose:Boolean;
+		
 		public var observer:Boolean;
+		
 		public var visionRange:int;
+		
 		public var nextTurnDir:int;
+		
 		public var flee:Boolean;
+		
 		public var fleeLifeTreshhold:int;
+		
 		public var fleeDuration:int;
+		
 		public var fleeClose:int;
+		
 		public var sniper:Boolean;
+		
 		public var sniperMinRange:Number;
+		
 		public var teleport:Boolean;
+		
 		private var kamikazeFilter:ColorMatrixFilter;
+		
 		private var kamikazeStarted:Boolean;
+		
 		public var kamikaze:Boolean;
+		
 		public var kamikazeLifeTreshhold:int;
+		
 		public var kamikazeDmg:int;
+		
 		public var kamikazeRadius:int;
+		
 		public var kamikazeTtl:int;
+		
 		public var kamikazeHoming:Boolean;
+		
 		public var kamikazeEffect:String = "-Gx9QanEEUKc1ADl5B6nxg";
 		public var kamikazeWhenClose:Boolean;
+		
 		public var melee:Boolean;
+		
 		public var meleeCharge:Boolean;
+		
 		public var meleeChargeSpeedBonus:Number;
+		
 		public var meleeChargeDuration:int;
+		
 		public var meleeChargeCoolDown:int;
+		
 		public var meleeCanGrab:Boolean;
+		
 		public var meleeStuck:Boolean;
+		
 		public var meleeOffset:Point;
+		
 		public var meleeTargetStartAngle:Number;
+		
 		public var meleeTargetAngleDiff:Number;
+		
 		public var meleeChargeEndTime:Number;
+		
 		public var oldSpeed:Number;
+		
 		public var oldTurningSpeed:Number;
+		
 		public var alwaysFire:Boolean;
+		
 		public var orbitSpawner:Boolean;
+		
 		public var hasOrbitData:Boolean;
+		
 		public var spawner:Spawner;
+		
 		public var angleVelocity:Number;
+		
 		public var orbitAngle:Number;
+		
 		public var orbitRadius:Number;
+		
 		public var ellipseFactor:Number;
+		
 		public var ellipseAlpha:Number;
+		
 		public var orbitStartTime:Number;
+		
 		public var aiCloak:Boolean;
+		
 		public var aiHardenShield:Boolean;
+		
 		public var aiHardenShieldDuration:Number;
+		
 		public var aiHardenShieldEndtime:Number;
+		
 		private var aiHardenedShieldEffect:Vector.<Emitter>;
-
+		
 		public var rareType:int = 0;
 		public var target:Unit;
+		
 		public var weaponRanges:Vector.<WeaponRange>;
-
+		
 		public var escapeWeapon:Weapon;
+		
 		public var antiProjectileWeapon:Weapon;
+		
 		public var chargeEffect:Vector.<Emitter>;
-
+		
 		private var AFName:TextBitmap;
-		public var rareEmitters:Vector.<Emitter>;
-
+		
+		private var rareEmitters:Vector.<Emitter>;
+		
 		private var sign:int = 1;
 		public function EnemyShip(param1:Game)
 		{
@@ -110,7 +153,7 @@ package core.ship
 			canvas = param1.canvasEnemyShips;
 			super(param1);
 		}
-
+		
 		public function stopShooting():void
 		{
 			for each (var _loc1_:* in weapons)
@@ -118,20 +161,20 @@ package core.ship
 				_loc1_.fire = false;
 			}
 		}
-
+		
 		override public function addToCanvas():void
 		{
 			addAFName();
 			super.addToCanvas();
 		}
-
+		
 		override public function addToCanvasForReal():void
 		{
 			addAFName();
 			rareEmitters = EmitterFactory.createRareType(g, this, this.rareType);
 			super.addToCanvasForReal();
 		}
-
+		
 		override public function removeFromCanvas():void
 		{
 			if (hasFaction("AF") && AFName != null)
@@ -145,7 +188,7 @@ package core.ship
 			rareEmitters.length = 0;
 			super.removeFromCanvas();
 		}
-
+		
 		private function addAFName():void
 		{
 			if (owner != null)
@@ -192,7 +235,7 @@ package core.ship
 				g.canvasTexts.addChild(AFName);
 			}
 		}
-
+		
 		override public function update():void
 		{
 			if (aiHardenShield && aiHardenShieldEndtime < g.time)
@@ -205,22 +248,18 @@ package core.ship
 			}
 			super.update();
 		}
-
+		
 		public function cloakStart():void
 		{
 			TweenMax.to(_mc, 1, {"alpha": 0, "onComplete": function():void
-					{
-						course.pos.x = 2411242;
-						course.pos.y = 8942522;
-						clearConvergeTarget();
-						aiCloak = true;
-					}
-				});
-
-			// QoLAF
-			addModifier(new Modifier(Debuff.CLOAKED, 0, true));
+			{
+				course.pos.x = 2411242;
+				course.pos.y = 8942522;
+				clearConvergeTarget();
+				aiCloak = true;
+			}});
 		}
-
+		
 		public function cloakEnd(param1:Heading):void
 		{
 			course = param1;
@@ -228,21 +267,15 @@ package core.ship
 			clearConvergeTarget();
 			aiCloak = false;
 			addToCanvasForReal();
-
-			// QoLAF
-			removeModifierById(Debuff.CLOAKED);
 		}
-
+		
 		public function hardenShield():void
 		{
 			aiHardenShield = true;
 			aiHardenShieldEndtime = g.time + aiHardenShieldDuration;
 			aiHardenedShieldEffect = EmitterFactory.create("uWIxfxRAgUm6ThgrRFnixw", g, pos.x, pos.y, this, true);
-
-			// QoLAF
-			addModifier(new Modifier(Debuff.HARD_SHIELD, aiHardenShieldDuration));
 		}
-
+		
 		public function startKamikaze():void
 		{
 			kamikazeStarted = true;
@@ -253,7 +286,7 @@ package core.ship
 			}
 			runKamikazeEffect();
 		}
-
+		
 		private function runKamikazeEffect(param1:int = -1):void
 		{
 			var kamikazeSteps:int = param1;
@@ -262,35 +295,35 @@ package core.ship
 				kamikazeSteps = kamikazeTtl * 2 * 2 * 2;
 			}
 			TweenMax.delayedCall(0.125, function():void
+			{
+				if (!kamikazeStarted)
 				{
-					if (!kamikazeStarted)
-					{
-						return;
-					}
-					kamikazeSteps--;
-					if (sign > 0)
-					{
-						_mc.blendMode = "add";
-						_mc.filter = kamikazeFilter;
-						_mc.filter.cache();
-					}
-					else
-					{
-						_mc.blendMode = "normal";
-						_mc.filter = null;
-					}
-					sign *= -1;
-					if (kamikazeSteps > 0 || kamikazeWhenClose)
-					{
-						runKamikazeEffect(kamikazeSteps);
-					}
-					else
-					{
-						_mc.filter = null;
-					}
-				});
+					return;
+				}
+				kamikazeSteps--;
+				if (sign > 0)
+				{
+					_mc.blendMode = "add";
+					_mc.filter = kamikazeFilter;
+					_mc.filter.cache();
+				}
+				else
+				{
+					_mc.blendMode = "normal";
+					_mc.filter = null;
+				}
+				sign *= -1;
+				if (kamikazeSteps > 0 || kamikazeWhenClose)
+				{
+					runKamikazeEffect(kamikazeSteps);
+				}
+				else
+				{
+					_mc.filter = null;
+				}
+			});
 		}
-
+		
 		override public function destroy(param1:Boolean = true):void
 		{
 			if (stateMachine.inState("AITeleport") || stateMachine.inState("AITeleportEntry") || stateMachine.inState("AITeleportExit"))
@@ -303,7 +336,7 @@ package core.ship
 			}
 			super.destroy(param1);
 		}
-
+		
 		public function set roll(param1:Boolean):void
 		{
 			if (course != null)
@@ -311,7 +344,7 @@ package core.ship
 				course.roll = param1;
 			}
 		}
-
+		
 		public function get roll():Boolean
 		{
 			if (course != null)
@@ -320,7 +353,7 @@ package core.ship
 			}
 			return false;
 		}
-
+		
 		public function calculateOrbitSpeed():Point
 		{
 			var _loc1_:Number = g.time;
@@ -332,7 +365,7 @@ package core.ship
 			_loc4_ -= orbitRadius * Math.sin(_loc3_);
 			return new Point((_loc2_ * Math.cos(ellipseAlpha) - _loc4_ * Math.sin(ellipseAlpha)) * 1000 / 33, (_loc2_ * Math.sin(ellipseAlpha) + _loc4_ * Math.cos(ellipseAlpha)) * 1000 / 33);
 		}
-
+		
 		override public function reset():void
 		{
 			weaponRanges.splice(0, weaponRanges.length);
@@ -391,7 +424,7 @@ package core.ship
 			rareType = 0;
 			super.reset();
 		}
-
+		
 		override public function draw():void
 		{
 			if (AFName != null)
@@ -401,7 +434,7 @@ package core.ship
 			}
 			super.draw();
 		}
-
+		
 		override public function get type():String
 		{
 			return "enemyShip";

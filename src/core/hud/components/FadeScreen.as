@@ -24,32 +24,51 @@ package core.hud.components
 	import starling.textures.Texture;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class FadeScreen extends EventDispatcher
 	{
 		private static var Promotion:Class;
+		
 		private var fadeTime:int = 150;
 		private var period:int = 30;
 		private var currentStep:int = 0;
 		private var bgrQuad:Quad;
+		
 		private var screenText:ScreenTextField;
+		
 		private var screen:Sprite;
+		
 		private var loadingText:TextBitmap;
+		
 		private var fadeInSteps:int;
+		
 		private var fadeOutSteps:int;
+		
 		private var fadeInTimer:Timer;
+		
 		private var fadeOutTimer:Timer;
+		
 		private var loadingImage:Image;
+		
 		private var loadingImage2:Image;
+		
 		private var tween:TweenMax;
+		
 		private var tween2:TweenMax;
+		
 		private var texts:Array;
+		
 		private var textsPvp:Array;
+		
 		private var textureManager:ITextureManager;
+		
 		private var promotionButton:NativeImageButton;
+		
 		private var promotionUrl:String = "";
 		private var topPvpPlayersList:TopPvPPlayersList;
+		
 		private var stage:Stage;
+		
 		public function FadeScreen(param1:Stage)
 		{
 			bgrQuad = new Quad(1000, 1000, 4278190080);
@@ -95,7 +114,7 @@ package core.hud.components
 			fadeInTimer.addEventListener("timerComplete", onFadeInTimerComplete);
 			param1.addEventListener("resize", resize);
 		}
-
+		
 		private function createPromotionButton():void
 		{
 			var bitmap:Bitmap;
@@ -105,10 +124,10 @@ package core.hud.components
 			}
 			bitmap = new Promotion();
 			promotionButton = new NativeImageButton(function():void
-				{
-					var _loc1_:URLRequest = new URLRequest(promotionUrl);
-					navigateToURL(_loc1_, "_blank");
-				}, bitmap.bitmapData);
+			{
+				var _loc1_:URLRequest = new URLRequest(promotionUrl);
+				navigateToURL(_loc1_, "_blank");
+			}, bitmap.bitmapData);
 			promotionButton.x = stage.stageWidth - promotionButton.width;
 			promotionButton.y = stage.stageHeight - promotionButton.height;
 			if (promotionUrl.length > 0)
@@ -116,7 +135,7 @@ package core.hud.components
 				Starling.current.nativeOverlay.addChild(promotionButton);
 			}
 		}
-
+		
 		private function createCustomPromotionButton(param1:String):void
 		{
 			var url:URLRequest;
@@ -130,37 +149,37 @@ package core.hud.components
 			img = new Loader();
 			img.load(url);
 			img.contentLoaderInfo.addEventListener("complete", function(param1:flash.events.Event):void
+			{
+				var e:flash.events.Event = param1;
+				var bitmap:Bitmap = e.target.content;
+				promotionButton = new NativeImageButton(function():void
 				{
-					var e:flash.events.Event = param1;
-					var bitmap:Bitmap = e.target.content;
-					promotionButton = new NativeImageButton(function():void
-						{
-							var _loc1_:URLRequest = new URLRequest(promotionUrl);
-							navigateToURL(_loc1_, "_blank");
-						}, bitmap.bitmapData);
-					if (promotionButton.width > 300)
-					{
-						promotionButton.width = 300;
-					}
-					if (promotionButton.height > 300)
-					{
-						promotionButton.height = 300;
-					}
-					promotionButton.x = stage.stageWidth - promotionButton.width;
-					promotionButton.y = stage.stageHeight - promotionButton.height;
-					if (promotionUrl.length > 0)
-					{
-						Starling.current.nativeOverlay.addChild(promotionButton);
-					}
-				});
+					var _loc1_:URLRequest = new URLRequest(promotionUrl);
+					navigateToURL(_loc1_, "_blank");
+				}, bitmap.bitmapData);
+				if (promotionButton.width > 300)
+				{
+					promotionButton.width = 300;
+				}
+				if (promotionButton.height > 300)
+				{
+					promotionButton.height = 300;
+				}
+				promotionButton.x = stage.stageWidth - promotionButton.width;
+				promotionButton.y = stage.stageHeight - promotionButton.height;
+				if (promotionUrl.length > 0)
+				{
+					Starling.current.nativeOverlay.addChild(promotionButton);
+				}
+			});
 		}
-
+		
 		private function onFadeOutTimerUpdate(param1:TimerEvent):void
 		{
 			screen.alpha = (fadeOutSteps - currentStep) / fadeOutSteps;
 			currentStep++;
 		}
-
+		
 		public function showHighscore(param1:Message):void
 		{
 			var _loc2_:Array = textsPvp[Math.floor(Math.random() * (texts.length - 0.1))];
@@ -173,7 +192,7 @@ package core.hud.components
 			loadingImage.alpha = 0;
 			loadingImage2.alpha = 1;
 		}
-
+		
 		private function onFadeOutTimerComplete(param1:TimerEvent):void
 		{
 			screen.alpha = 0;
@@ -191,13 +210,13 @@ package core.hud.components
 			}
 			dispatchEvent(new starling.events.Event("fadeOutComplete"));
 		}
-
+		
 		private function onFadeInTimerUpdate(param1:TimerEvent):void
 		{
 			screen.alpha = currentStep / fadeInSteps;
 			currentStep++;
 		}
-
+		
 		private function onFadeInTimerComplete(param1:TimerEvent):void
 		{
 			loadingText.visible = true;
@@ -206,7 +225,7 @@ package core.hud.components
 			loadingImage2.alpha = 0;
 			dispatchEvent(new starling.events.Event("fadeInComplete"));
 		}
-
+		
 		public function show():void
 		{
 			var textArray:Array;
@@ -225,11 +244,15 @@ package core.hud.components
 			}
 			else if (Game.instance)
 			{
-				Game.instance.rpcServiceRoom("getPromotionImage", function(message:Message):void
+				Game.instance.rpcServiceRoom("getPromotionImage", (function():*
+				{
+					var rpcHandler:Function;
+					return rpcHandler = function(param1:Message):void
 					{
-						promotionUrl = message.getString(0);
-						createCustomPromotionButton(message.getString(1));
-					});
+						promotionUrl = param1.getString(0);
+						createCustomPromotionButton(param1.getString(1));
+					};
+				})());
 			}
 			loadingText.visible = true;
 			textArray = texts[Math.floor(Math.random() * (texts.length - 0.1))];
@@ -244,7 +267,7 @@ package core.hud.components
 			currentStep = 0;
 			stage.addEventListener("enterFrame", update);
 		}
-
+		
 		public function fadeIn():void
 		{
 			Console.write("faaaaaade in fade screen");
@@ -272,7 +295,7 @@ package core.hud.components
 			currentStep = 0;
 			fadeInTimer.start();
 		}
-
+		
 		public function fadeOut():void
 		{
 			if (promotionButton != null && Starling.current.nativeOverlay.contains(promotionButton))
@@ -294,7 +317,7 @@ package core.hud.components
 			fadeInTimer.reset();
 			fadeOutTimer.start();
 		}
-
+		
 		private function update(param1:EnterFrameEvent):void
 		{
 			loadingImage.rotation += 0.002;
@@ -304,7 +327,7 @@ package core.hud.components
 			loadingImage2.x = stage.stageWidth - loadingImage2.texture.width * 0.25 - 25;
 			loadingImage2.y = stage.stageHeight - loadingImage2.texture.height * 0.25 - 25;
 		}
-
+		
 		public function dispose():void
 		{
 			Console.write("Disposed screen!");
@@ -329,12 +352,12 @@ package core.hud.components
 			tween2.kill();
 			bgrQuad.dispose();
 		}
-
+		
 		public function repositionScreen(param1:DisplayObjectContainer):void
 		{
 			param1.addChild(screen);
 		}
-
+		
 		private function resize(param1:starling.events.Event = null):void
 		{
 			bgrQuad.width = stage.stageWidth;

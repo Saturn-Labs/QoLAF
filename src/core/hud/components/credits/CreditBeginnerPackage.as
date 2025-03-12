@@ -10,17 +10,19 @@ package core.hud.components.credits
 	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.Event;
-
+	
 	public class CreditBeginnerPackage extends CreditPackageItem
 	{
 		private var previewBox:Box;
+		
 		private var overlay:Quad;
+		
 		public function CreditBeginnerPackage(param1:Game, param2:Sprite, param3:Boolean = false)
 		{
 			super(param1, param2, param3);
 			load();
 		}
-
+		
 		override protected function load():void
 		{
 			var scrollContainer:ScrollContainer;
@@ -47,23 +49,23 @@ package core.hud.components.credits
 			scrollContainer.y = 20;
 			previewBox.addChild(scrollContainer);
 			previewButton = new Button(function():void
-				{
-					var _loc1_:SkinItem = new SkinItem(g, g.dataManager.loadKey("Skins", "kBGo5xJkZUivH1h4MCxIkA"), 2);
-					scrollContainer.addChild(_loc1_);
-					g.addChildToOverlay(overlay, true);
-					g.addChildToOverlay(previewBox, true);
-				}, "Preview", "highlight");
+			{
+				var _loc1_:SkinItem = new SkinItem(g, g.dataManager.loadKey("Skins", "kBGo5xJkZUivH1h4MCxIkA"), 2);
+				scrollContainer.addChild(_loc1_);
+				g.addChildToOverlay(overlay, true);
+				g.addChildToOverlay(previewBox, true);
+			}, "Preview", "highlight");
 			previewButton.autoEnableAfterClick = true;
 			previewButton.y = 253;
 			previewButton.x = 200;
 			previewButton.size = 10;
 			infoContainer.addChild(previewButton);
 			closeButton = new Button(function():void
-				{
-					scrollContainer.removeChildren();
-					g.removeChildFromOverlay(overlay);
-					g.removeChildFromOverlay(previewBox);
-				}, Localize.t("Close"));
+			{
+				scrollContainer.removeChildren();
+				g.removeChildFromOverlay(overlay);
+				g.removeChildFromOverlay(previewBox);
+			}, Localize.t("Close"));
 			closeButton.autoEnableAfterClick = true;
 			closeButton.x = 360;
 			closeButton.y = 435;
@@ -72,7 +74,7 @@ package core.hud.components.credits
 			super.load();
 			g.addResizeListener(resize);
 		}
-
+		
 		private function resize(param1:Event = null):void
 		{
 			previewBox.x = g.stage.stageWidth / 2 - 200;
@@ -80,7 +82,7 @@ package core.hud.components.credits
 			overlay.width = g.stage.stageWidth;
 			overlay.height = g.stage.stageHeight;
 		}
-
+		
 		override protected function onSuccess(param1:Message):void
 		{
 			g.showMessageDialog(Localize.t("<font color='#88ff88'>Thanks for buying!</font><br><br><font color='#ffff88'>If not everything is updated, please reload the game!</font>"));
@@ -93,12 +95,12 @@ package core.hud.components.credits
 			updateContainers();
 			g.hud.update();
 		}
-
+		
 		override protected function updateContainers():void
 		{
 			super.updateContainers();
 		}
-
+		
 		override public function dispose():void
 		{
 			g.removeResizeListener(resize);

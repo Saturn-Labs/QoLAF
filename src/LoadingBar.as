@@ -4,11 +4,13 @@ package
 	import starling.display.Sprite;
 	import starling.text.TextField;
 	import starling.text.TextFormat;
-
+	
 	public class LoadingBar extends Sprite
 	{
 		private var status:TextBitmap;
+		
 		private var percent:TextField;
+		
 		public function LoadingBar(param1:Number, param2:Number)
 		{
 			super();
@@ -23,7 +25,7 @@ package
 			percent.blendMode = "add";
 			addChild(percent);
 		}
-
+		
 		public function update(param1:String, param2:int):void
 		{
 			this.status.text = param1;

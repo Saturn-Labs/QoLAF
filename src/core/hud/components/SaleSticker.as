@@ -4,7 +4,7 @@ package core.hud.components
 	import starling.display.Sprite;
 	import starling.textures.Texture;
 	import textures.TextureLocator;
-
+	
 	public class SaleSticker extends Sprite
 	{
 		public function SaleSticker(param1:String = "", param2:String = "", param3:String = "", param4:uint = 14942208, param5:Texture = null, param6:Texture = null)

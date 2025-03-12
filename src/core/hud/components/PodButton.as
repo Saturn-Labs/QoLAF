@@ -12,24 +12,33 @@ package core.hud.components
 	import starling.textures.Texture;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class PodButton extends Sprite
 	{
 		protected static var normalTexture:Texture;
+		
 		protected static var highlightTexture:Texture;
+		
 		protected static var positiveTexture:Texture;
+		
 		protected static var warningTexture:Texture;
+		
 		protected static const BUTTON_SCALE_9_GRID:Rectangle = new Rectangle(25, 11, 8, 4);
-
 		protected var image:Image;
+		
 		protected var styleImage:Image;
+		
 		protected var hoverImage:Image;
+		
 		protected var style:String;
+		
 		protected var tf:TextField;
+		
 		protected var autoscale:Boolean = true;
 		protected var padding:int = 10;
 		public var autoEnableAfterClick:Boolean = false;
 		public var callback:Function;
+		
 		public function PodButton(param1:Function, param2:String = "I'm a button yeah", param3:String = "normal", param4:int = 13, param5:String = "font13")
 		{
 			super();
@@ -61,7 +70,7 @@ package core.hud.components
 			addEventListener("touch", onTouch);
 			addEventListener("addedToStage", update);
 		}
-
+		
 		protected function update(param1:Event = null):void
 		{
 			if (!this.stage)
@@ -81,13 +90,13 @@ package core.hud.components
 				removeEventListener("addedToStage", update);
 			}
 		}
-
+		
 		public function centerPivot():void
 		{
 			pivotX = width / 2;
 			pivotY = height / 2;
 		}
-
+		
 		protected function updateStyle():void
 		{
 			var _loc1_:Texture = null;
@@ -114,37 +123,37 @@ package core.hud.components
 			hoverImage.blendMode = "screen";
 			hoverImage.visible = false;
 		}
-
+		
 		public function set text(param1:String):void
 		{
 			tf.text = param1;
 			update();
 		}
-
+		
 		public function get text():String
 		{
 			return tf.text;
 		}
-
+		
 		override public function set width(param1:Number):void
 		{
 			tf.width = param1;
 			autoscale = false;
 			update();
 		}
-
+		
 		override public function get width():Number
 		{
 			return tf.width + image.width;
 		}
-
+		
 		public function set size(param1:int):void
 		{
 			var _loc2_:int = autoscale ? 500 : tf.width;
 			tf.format.size = param1;
 			update();
 		}
-
+		
 		public function set enabled(param1:Boolean):void
 		{
 			if (param1)
@@ -162,12 +171,12 @@ package core.hud.components
 			}
 			useHandCursor = param1;
 		}
-
+		
 		public function alignWithText():void
 		{
 			y -= Math.round((tf.height - 14) / 2);
 		}
-
+		
 		private function onTouch(param1:TouchEvent):void
 		{
 			if (param1.getTouch(this, "began"))
@@ -184,7 +193,7 @@ package core.hud.components
 				mouseOut(param1);
 			}
 		}
-
+		
 		private function onClick(param1:TouchEvent):void
 		{
 			var _loc2_:ISound = SoundLocator.getService();
@@ -202,22 +211,22 @@ package core.hud.components
 				callback(param1);
 			}
 		}
-
+		
 		private function mouseOver(param1:TouchEvent):void
 		{
 			hoverImage.visible = true;
 		}
-
+		
 		private function mouseOut(param1:TouchEvent):void
 		{
 			hoverImage.visible = false;
 		}
-
+		
 		override public function set x(param1:Number):void
 		{
 			super.x = Math.round(param1);
 		}
-
+		
 		override public function set y(param1:Number):void
 		{
 			super.y = Math.round(param1);

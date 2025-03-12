@@ -8,21 +8,30 @@ package core.states.AIStates
 	import core.states.StateMachine;
 	import core.unit.Unit;
 	import generics.Util;
-
+	
 	public class Boomerang extends ProjectileBullet implements IState
 	{
 		private var g:Game;
+		
 		private var _p:Projectile;
+		
 		private var _sm:StateMachine;
+		
 		private var _isEnemy:Boolean;
+		
 		private var globalInterval:Number = 1000;
 		private var localTargetList:Vector.<Unit>;
-
+		
 		private var nextGlobalUpdate:Number;
+		
 		private var nextLocalUpdate:Number;
+		
 		private var localRangeSQ:Number;
+		
 		private var firstUpdate:Boolean;
+		
 		private var engine:GameObject;
+		
 		private var elapsedTime:Number = 0;
 		private var startTime:Number = 0;
 		public function Boomerang(param1:Game, param2:Projectile)
@@ -35,12 +44,12 @@ package core.states.AIStates
 			engine = new GameObject();
 			super(param1, param2);
 		}
-
+		
 		override public function enter():void
 		{
 			super.enter();
 		}
-
+		
 		override public function execute():void
 		{
 			var _loc7_:Number = NaN;
@@ -109,16 +118,16 @@ package core.states.AIStates
 			super.execute();
 			elapsedTime += _loc1_;
 		}
-
+		
 		override public function exit():void
 		{
 		}
-
+		
 		override public function set stateMachine(param1:StateMachine):void
 		{
 			this._sm = param1;
 		}
-
+		
 		override public function get type():String
 		{
 			return "Boomerang";

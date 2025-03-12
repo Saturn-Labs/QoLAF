@@ -20,24 +20,31 @@ package core.states.gameStates
 	import starling.events.Event;
 	import starling.events.TouchEvent;
 	import starling.filters.ColorMatrixFilter;
-
+	
 	public class LandedPaintShop extends LandedState
 	{
 		private var preview:GameObject;
+		
 		private var sliderShipHue:Slider;
+		
 		private var sliderShipBrightness:Slider;
+		
 		private var sliderShipSaturation:Slider;
+		
 		private var sliderShipContrast:Slider;
+		
 		private var sliderEngineHue:Slider;
+		
 		private var fleetObj:FleetObj;
+		
 		private var emitters:Vector.<Emitter>;
-
+		
 		public function LandedPaintShop(param1:Game, param2:Body)
 		{
 			emitters = new Vector.<Emitter>();
 			super(param1, param2, param2.name);
 		}
-
+		
 		override public function enter():void
 		{
 			var obj:Object;
@@ -67,14 +74,14 @@ package core.states.gameStates
 			sliderShipHue.direction == "horizontal";
 			sliderShipHue.useHandCursor = true;
 			sliderShipHue.addEventListener("change", function(param1:Event):void
-				{
-					var _loc2_:ColorMatrixFilter = new ColorMatrixFilter();
-					_loc2_.adjustHue(sliderShipHue.value);
-					_loc2_.adjustBrightness(sliderShipBrightness.value);
-					_loc2_.adjustSaturation(sliderShipSaturation.value);
-					_loc2_.adjustContrast(sliderShipContrast.value);
-					preview.movieClip.filter = _loc2_;
-				});
+			{
+				var _loc2_:ColorMatrixFilter = new ColorMatrixFilter();
+				_loc2_.adjustHue(sliderShipHue.value);
+				_loc2_.adjustBrightness(sliderShipBrightness.value);
+				_loc2_.adjustSaturation(sliderShipSaturation.value);
+				_loc2_.adjustContrast(sliderShipContrast.value);
+				preview.movieClip.filter = _loc2_;
+			});
 			labelShipBrightness = new Text();
 			labelShipBrightness.text = Localize.t("Ship brightness");
 			labelShipBrightness.x = 250;
@@ -90,14 +97,14 @@ package core.states.gameStates
 			sliderShipBrightness.direction == "horizontal";
 			sliderShipBrightness.useHandCursor = true;
 			sliderShipBrightness.addEventListener("change", function(param1:Event):void
-				{
-					var _loc2_:ColorMatrixFilter = new ColorMatrixFilter();
-					_loc2_.adjustHue(sliderShipHue.value);
-					_loc2_.adjustBrightness(sliderShipBrightness.value);
-					_loc2_.adjustSaturation(sliderShipSaturation.value);
-					_loc2_.adjustContrast(sliderShipContrast.value);
-					preview.movieClip.filter = _loc2_;
-				});
+			{
+				var _loc2_:ColorMatrixFilter = new ColorMatrixFilter();
+				_loc2_.adjustHue(sliderShipHue.value);
+				_loc2_.adjustBrightness(sliderShipBrightness.value);
+				_loc2_.adjustSaturation(sliderShipSaturation.value);
+				_loc2_.adjustContrast(sliderShipContrast.value);
+				preview.movieClip.filter = _loc2_;
+			});
 			labelShipSaturation = new Text();
 			labelShipSaturation.text = Localize.t("Ship saturation");
 			labelShipSaturation.x = 250;
@@ -113,14 +120,14 @@ package core.states.gameStates
 			sliderShipSaturation.direction == "horizontal";
 			sliderShipSaturation.useHandCursor = true;
 			sliderShipSaturation.addEventListener("change", function(param1:Event):void
-				{
-					var _loc2_:ColorMatrixFilter = new ColorMatrixFilter();
-					_loc2_.adjustHue(sliderShipHue.value);
-					_loc2_.adjustBrightness(sliderShipBrightness.value);
-					_loc2_.adjustSaturation(sliderShipSaturation.value);
-					_loc2_.adjustContrast(sliderShipContrast.value);
-					preview.movieClip.filter = _loc2_;
-				});
+			{
+				var _loc2_:ColorMatrixFilter = new ColorMatrixFilter();
+				_loc2_.adjustHue(sliderShipHue.value);
+				_loc2_.adjustBrightness(sliderShipBrightness.value);
+				_loc2_.adjustSaturation(sliderShipSaturation.value);
+				_loc2_.adjustContrast(sliderShipContrast.value);
+				preview.movieClip.filter = _loc2_;
+			});
 			labelShipContrast = new Text();
 			labelShipContrast.text = Localize.t("Ship contrast");
 			labelShipContrast.x = 250;
@@ -136,14 +143,14 @@ package core.states.gameStates
 			sliderShipContrast.direction == "horizontal";
 			sliderShipContrast.useHandCursor = true;
 			sliderShipContrast.addEventListener("change", function(param1:Event):void
-				{
-					var _loc2_:ColorMatrixFilter = new ColorMatrixFilter();
-					_loc2_.adjustHue(sliderShipHue.value);
-					_loc2_.adjustBrightness(sliderShipBrightness.value);
-					_loc2_.adjustSaturation(sliderShipSaturation.value);
-					_loc2_.adjustContrast(sliderShipContrast.value);
-					preview.movieClip.filter = _loc2_;
-				});
+			{
+				var _loc2_:ColorMatrixFilter = new ColorMatrixFilter();
+				_loc2_.adjustHue(sliderShipHue.value);
+				_loc2_.adjustBrightness(sliderShipBrightness.value);
+				_loc2_.adjustSaturation(sliderShipSaturation.value);
+				_loc2_.adjustContrast(sliderShipContrast.value);
+				preview.movieClip.filter = _loc2_;
+			});
 			labelEngineHue = new Text();
 			labelEngineHue.text = Localize.t("Engine color");
 			labelEngineHue.x = 250;
@@ -159,37 +166,37 @@ package core.states.gameStates
 			sliderEngineHue.direction == "horizontal";
 			sliderEngineHue.useHandCursor = true;
 			sliderEngineHue.addEventListener("change", function(param1:Event):void
+			{
+				for each (var _loc2_:* in emitters)
 				{
-					for each (var _loc2_:* in emitters)
-					{
-						_loc2_.changeHue(sliderEngineHue.value);
-					}
-				});
+					_loc2_.changeHue(sliderEngineHue.value);
+				}
+			});
 			if (me.freePaintJobs > 0)
 			{
 				buyWithFluxButton = new Button(function(param1:TouchEvent):void
+				{
+					var e:TouchEvent = param1;
+					var confirmBox:PopupConfirmMessage = new PopupConfirmMessage();
+					confirmBox.text = "Are you sure you want to buy the paint job? You have <FONT COLOR='#adff2f'>" + me.freePaintJobs + "</FONT> free paint jobs left.";
+					g.addChildToOverlay(confirmBox, true);
+					confirmBox.addEventListener("accept", function():void
 					{
-						var e:TouchEvent = param1;
-						var confirmBox:PopupConfirmMessage = new PopupConfirmMessage();
-						confirmBox.text = "Are you sure you want to buy the paint job? You have <FONT COLOR='#adff2f'>" + me.freePaintJobs + "</FONT> free paint jobs left.";
-						g.addChildToOverlay(confirmBox, true);
-						confirmBox.addEventListener("accept", function():void
-							{
-								var m:Message = g.createMessage("buyPaintJob", sliderShipHue.value, sliderShipBrightness.value, sliderShipSaturation.value, sliderShipContrast.value, sliderEngineHue.value);
-								g.rpcMessage(m, function(param1:Message):void
-									{
-										boughtPaintJob(param1);
-										confirmBox.removeEventListeners();
-										g.removeChildFromOverlay(confirmBox, true);
-									});
-							});
-						confirmBox.addEventListener("close", function():void
-							{
-								buyWithFluxButton.enabled = true;
-								confirmBox.removeEventListeners();
-								g.removeChildFromOverlay(confirmBox, true);
-							});
-					}, Localize.t("Buy for Free"), "positive");
+						var m:Message = g.createMessage("buyPaintJob", sliderShipHue.value, sliderShipBrightness.value, sliderShipSaturation.value, sliderShipContrast.value, sliderEngineHue.value);
+						g.rpcMessage(m, function(param1:Message):void
+						{
+							boughtPaintJob(param1);
+							confirmBox.removeEventListeners();
+							g.removeChildFromOverlay(confirmBox, true);
+						});
+					});
+					confirmBox.addEventListener("close", function():void
+					{
+						buyWithFluxButton.enabled = true;
+						confirmBox.removeEventListeners();
+						g.removeChildFromOverlay(confirmBox, true);
+					});
+				}, Localize.t("Buy for Free"), "positive");
 				freePaintJobs = new Text();
 				freePaintJobs.htmlText = "You have <FONT COLOR='#adff2f'>" + me.freePaintJobs + "</FONT> free paint jobs left.";
 				freePaintJobs.x = 395;
@@ -199,30 +206,30 @@ package core.states.gameStates
 			else
 			{
 				buyWithFluxButton = new Button(function(param1:TouchEvent):void
+				{
+					var e:TouchEvent = param1;
+					g.creditManager.refresh(function():void
 					{
-						var e:TouchEvent = param1;
-						g.creditManager.refresh(function():void
+						var confirmBuyWithFlux:CreditBuyBox = new CreditBuyBox(g, CreditManager.getCostPaintJob(), Localize.t("Are you sure you want to buy the paint job?"));
+						g.addChildToOverlay(confirmBuyWithFlux);
+						confirmBuyWithFlux.addEventListener("accept", function():void
+						{
+							var m:Message = g.createMessage("buyPaintJob", sliderShipHue.value, sliderShipBrightness.value, sliderShipSaturation.value, sliderShipContrast.value, sliderEngineHue.value);
+							g.rpcMessage(m, function(param1:Message):void
 							{
-								var confirmBuyWithFlux:CreditBuyBox = new CreditBuyBox(g, CreditManager.getCostPaintJob(), Localize.t("Are you sure you want to buy the paint job?"));
-								g.addChildToOverlay(confirmBuyWithFlux);
-								confirmBuyWithFlux.addEventListener("accept", function():void
-									{
-										var m:Message = g.createMessage("buyPaintJob", sliderShipHue.value, sliderShipBrightness.value, sliderShipSaturation.value, sliderShipContrast.value, sliderEngineHue.value);
-										g.rpcMessage(m, function(param1:Message):void
-											{
-												boughtPaintJob(param1);
-												confirmBuyWithFlux.removeEventListeners();
-												g.removeChildFromOverlay(confirmBuyWithFlux, true);
-											});
-									});
-								confirmBuyWithFlux.addEventListener("close", function():void
-									{
-										buyWithFluxButton.enabled = true;
-										confirmBuyWithFlux.removeEventListeners();
-										g.removeChildFromOverlay(confirmBuyWithFlux, true);
-									});
+								boughtPaintJob(param1);
+								confirmBuyWithFlux.removeEventListeners();
+								g.removeChildFromOverlay(confirmBuyWithFlux, true);
 							});
-					}, Localize.t("Buy for [flux] Flux").replace("[flux]", CreditManager.getCostPaintJob()), "positive");
+						});
+						confirmBuyWithFlux.addEventListener("close", function():void
+						{
+							buyWithFluxButton.enabled = true;
+							confirmBuyWithFlux.removeEventListeners();
+							g.removeChildFromOverlay(confirmBuyWithFlux, true);
+						});
+					});
+				}, Localize.t("Buy for [flux] Flux").replace("[flux]", CreditManager.getCostPaintJob()), "positive");
 			}
 			buyWithFluxButton.x = 270;
 			buyWithFluxButton.y = 440;
@@ -243,7 +250,7 @@ package core.states.gameStates
 				g.showErrorDialog("Sorry but the repaint stations is currently closed due to a bug in your version of Flash (version 23). We are expecting Adobe to release a new version the coming days.", false, leave);
 			}
 		}
-
+		
 		private function boughtPaintJob(param1:Message):void
 		{
 			if (!param1.getBoolean(0))
@@ -263,7 +270,7 @@ package core.states.gameStates
 			}
 			leave();
 		}
-
+		
 		private function addShip():void
 		{
 			var _loc1_:* = null;
@@ -338,12 +345,12 @@ package core.states.gameStates
 			}
 			addChild(_loc6_);
 		}
-
+		
 		override public function execute():void
 		{
 			super.execute();
 		}
-
+		
 		override public function exit(param1:Function):void
 		{
 			for each (var _loc2_:* in emitters)

@@ -23,56 +23,70 @@ package core.hud.components
 	import starling.events.TouchEvent;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class CrewDetails extends Sprite
 	{
 		private static const HEIGHT:int = 58;
-
 		private static const WIDTH:int = 52;
-
 		private static const textX1:int = 60;
-
 		private static const textX2:int = 175;
-
 		private static const textY1:int = 7;
-
 		private static const textY2:int = 30;
-
 		public static const MODE_SHIP:int = 0;
-
 		public static const MODE_CANTINA:int = 1;
-
 		public static const MODE_REPORT:int = 2;
-
 		public static const IMAGES_SPECIALS:Vector.<String> = Vector.<String>(["spec_cold.png", "spec_heat.png", "spec_radiation.png", "spec_first_contact.png", "spec_trade.png", "spec_collaboration.png", "spec_kinetic.png", "spec_energy.png", "spec_bio_weapons.png"]);
-
+		
 		public static const IMAGES_SKILLS:Vector.<String> = Vector.<String>(["skill_environment.png", "skill_diplomacy.png", "skill_combat.png"]);
-
+		
 		private var exploreTimer:HudTimer;
+		
 		private var img:Image;
+		
 		public var crewMember:CrewMember;
+		
 		private var injuryTimer:HudTimer;
+		
 		private var injuryStatus:Text;
+		
 		private var g:Game;
+		
 		private var bgColor:uint = 1717572;
 		private var requestReloadCallback:Function;
+		
 		public var requestRemovalCallback:Function;
+		
 		private var raiseButtons:Array;
+		
 		private var dismissButton:Button;
+		
 		private var trainButton:Button;
+		
 		public var mode:int;
+		
 		private var statusTween:TweenMax;
+		
 		private var skillPointsText:Text;
+		
 		private var skillPointsValue:Text;
+		
 		private var skillPointsValueTween1:TweenMax;
+		
 		private var skillPointsValueTween2:TweenMax;
+		
 		private var nextY:int = 0;
 		private var specialSkillsHolder:Sprite;
+		
 		private var specialSkills:Dictionary;
+		
 		private var acceptButton:Button;
+		
 		private var confirmBuyWithFlux:CreditBuyBox;
+		
 		private var confirmTraining:PopupConfirmMessage;
+		
 		private var confirmDismiss:PopupConfirmMessage;
+		
 		public function CrewDetails(param1:Game, param2:CrewMember, param3:Function = null, param4:Boolean = true, param5:int = 0)
 		{
 			var _loc9_:Text = null;
@@ -128,17 +142,17 @@ package core.hud.components
 			}
 			addEventListener("removedFromStage", clean);
 		}
-
+		
 		public function get key():String
 		{
 			return crewMember.key;
 		}
-
+		
 		public function getLevel(param1:int):int
 		{
 			return crewMember.skills[param1];
 		}
-
+		
 		private function addCurrentStatus():void
 		{
 			if (crewMember.isIdle())
@@ -181,7 +195,7 @@ package core.hud.components
 			statusTween = TweenMax.to(_loc1_, 1, {"alpha": 0.5, "yoyo": true, "repeat": -1});
 			addChild(_loc2_);
 		}
-
+		
 		private function addClaimTraining(param1:Sprite):void
 		{
 			var _loc2_:Button = new Button(requestCompleteTraining, Localize.t("Collect"), "reward");
@@ -189,25 +203,25 @@ package core.hud.components
 			_loc2_.y = -2;
 			param1.addChild(_loc2_);
 		}
-
+		
 		private function requestCompleteTraining(param1:TouchEvent):void
 		{
 			var e:TouchEvent = param1;
 			g.rpc("completeTraining", function(param1:Message):void
+			{
+				var _loc2_:Boolean = param1.getBoolean(0);
+				if (!_loc2_)
 				{
-					var _loc2_:Boolean = param1.getBoolean(0);
-					if (!_loc2_)
-					{
-						g.showErrorDialog(param1.getString(1));
-						return;
-					}
-					var _loc3_:int = param1.getInt(1);
-					var _loc4_:int = _loc3_ - crewMember.skillPoints;
-					crewMember.completeTraining(_loc3_);
-					g.showMessageDialog(Localize.t("[name] got [diff] new skill points!").replace("[name]", crewMember.name).replace("[diff]", _loc4_), requestReload);
-				}, crewMember.key);
+					g.showErrorDialog(param1.getString(1));
+					return;
+				}
+				var _loc3_:int = param1.getInt(1);
+				var _loc4_:int = _loc3_ - crewMember.skillPoints;
+				crewMember.completeTraining(_loc3_);
+				g.showMessageDialog(Localize.t("[name] got [diff] new skill points!").replace("[name]", crewMember.name).replace("[diff]", _loc4_), requestReload);
+			}, crewMember.key);
 		}
-
+		
 		private function requestReload():void
 		{
 			if (requestReloadCallback == null)
@@ -216,7 +230,7 @@ package core.hud.components
 			}
 			requestReloadCallback();
 		}
-
+		
 		private function addSkillPoints():void
 		{
 			skillPointsText = new Text(0, 92);
@@ -226,7 +240,7 @@ package core.hud.components
 			addChild(skillPointsText);
 			updateSkillPoints();
 		}
-
+		
 		private function updateSkillPoints():void
 		{
 			var rb:ButtonHud;
@@ -262,13 +276,12 @@ package core.hud.components
 				skillPointsValueTween2.kill();
 			}
 			TweenMax.to(skillPointsValue, 0.5, {"scaleX": 1, "scaleY": 1, "alpha": 1, "ease": Circ.easeOut, "onComplete": function():void
-					{
-						skillPointsValueTween1 = TweenMax.to(skillPointsValue, 0.6, {"yoyo": true, "scaleX": 1.05, "repeat": -1, "alpha": 0.8, "ease": Sine.easeInOut});
-						skillPointsValueTween2 = TweenMax.to(skillPointsValue, 0.6, {"yoyo": true, "scaleY": 1.05, "delay": 0.3, "repeat": -1, "ease": Sine.easeInOut});
-					}
-				});
+			{
+				skillPointsValueTween1 = TweenMax.to(skillPointsValue, 0.6, {"yoyo": true, "scaleX": 1.05, "repeat": -1, "alpha": 0.8, "ease": Sine.easeInOut});
+				skillPointsValueTween2 = TweenMax.to(skillPointsValue, 0.6, {"yoyo": true, "scaleY": 1.05, "delay": 0.3, "repeat": -1, "ease": Sine.easeInOut});
+			}});
 		}
-
+		
 		private function addText(param1:int, param2:int, param3:String, param4:uint):Text
 		{
 			var _loc5_:Text = new Text(param1, param2);
@@ -279,7 +292,7 @@ package core.hud.components
 			addChild(_loc5_);
 			return _loc5_;
 		}
-
+		
 		private function addSkills():void
 		{
 			nextY = 170;
@@ -288,7 +301,7 @@ package core.hud.components
 			addSkill("Combat");
 			addSpecialSkills();
 		}
-
+		
 		private function addSpecialSkills():void
 		{
 			var _loc1_:Sprite = null;
@@ -322,7 +335,7 @@ package core.hud.components
 			addChild(specialSkillsHolder);
 			nextY += specialSkillsHolder.height;
 		}
-
+		
 		private function addOrUpdateSpecialSkill(param1:int, param2:Number = -1):Sprite
 		{
 			var oldSkills:Sprite;
@@ -367,9 +380,9 @@ package core.hud.components
 			if (known && !unlocked && crewMember.isIdleOrInjured())
 			{
 				raiseButton = new ButtonHud(function():void
-					{
-						raiseSpecialSkill(i);
-					}, "button_pay.png");
+				{
+					raiseSpecialSkill(i);
+				}, "button_pay.png");
 				raiseButtons.push(raiseButton);
 				raiseButton.x = barXPos + barWidth + 5;
 				raiseButton.y = 2;
@@ -398,7 +411,7 @@ package core.hud.components
 			specialSkillsHolder.addChild(s);
 			return s;
 		}
-
+		
 		private function addSpecialUnlockHint(param1:Text, param2:Sprite, param3:String):void
 		{
 			if (param3 == "Cold")
@@ -447,7 +460,7 @@ package core.hud.components
 				new ToolTip(g, param2, Localize.t("Requires Energy Weapons specialty skill."), null, "crewSkill");
 			}
 		}
-
+		
 		private function isSpecialVisible(param1:int):Boolean
 		{
 			var _loc2_:String = Area.SPECIALTYPE[param1];
@@ -492,7 +505,7 @@ package core.hud.components
 			}
 			return false;
 		}
-
+		
 		private function addSkill(param1:String):void
 		{
 			var skillImg:String;
@@ -539,9 +552,9 @@ package core.hud.components
 			if (crewMember.isIdleOrInjured())
 			{
 				raiseButton = new ButtonHud(function():void
-					{
-						raiseSkill(name, t2);
-					}, "button_pay.png");
+				{
+					raiseSkill(name, t2);
+				}, "button_pay.png");
 				raiseButtons.push(raiseButton);
 				raiseButton.x = t2.x + 10;
 				raiseButton.y = t2.y + 18;
@@ -549,7 +562,7 @@ package core.hud.components
 			}
 			nextY += 45;
 		}
-
+		
 		private function raiseSpecialSkill(param1:int):void
 		{
 			var type:int = param1;
@@ -560,19 +573,19 @@ package core.hud.components
 			crewMember.skillPoints--;
 			updateSkillPoints();
 			g.rpc("raiseCrewSpecialty", function(param1:Message):void
+			{
+				var _loc3_:int = param1.getInt(0);
+				var _loc2_:Number = param1.getNumber(1);
+				crewMember.specials[_loc3_] = _loc2_;
+				addOrUpdateSpecialSkill(_loc3_, _loc2_);
+				if (_loc2_ >= 1)
 				{
-					var _loc3_:int = param1.getInt(0);
-					var _loc2_:Number = param1.getNumber(1);
-					crewMember.specials[_loc3_] = _loc2_;
-					addOrUpdateSpecialSkill(_loc3_, _loc2_);
-					if (_loc2_ >= 1)
-					{
-						playSkillUnlockAnimation(_loc3_, "aquired!");
-					}
-					updateSkillPoints();
-				}, crewMember.key, type);
+					playSkillUnlockAnimation(_loc3_, "aquired!");
+				}
+				updateSkillPoints();
+			}, crewMember.key, type);
 		}
-
+		
 		private function playSkillUnlockAnimation(param1:int, param2:String, param3:Boolean = true):void
 		{
 			var type:int = param1;
@@ -580,59 +593,57 @@ package core.hud.components
 			var isAccuired:Boolean = param3;
 			var soundManager:ISound = SoundLocator.getService();
 			soundManager.preCacheSound("7zeIcPFb-UWzgtR_3nrZ8Q", function():void
+			{
+				var t:Text = new Text();
+				t.size = 26;
+				t.alpha = 0;
+				t.scaleX = 20;
+				t.scaleY = 20;
+				if (isAccuired)
 				{
-					var t:Text = new Text();
-					t.size = 26;
-					t.alpha = 0;
-					t.scaleX = 20;
-					t.scaleY = 20;
-					if (isAccuired)
+					t.color = 65280;
+				}
+				else
+				{
+					t.color = 16777215;
+				}
+				t.glow = true;
+				t.text = Localize.t(Area.SPECIALTYPE[type]) + " " + Localize.t(text);
+				t.x = width / 2;
+				if (mode == 0)
+				{
+					t.x -= 150;
+				}
+				t.y = 230;
+				t.centerPivot();
+				addChild(t);
+				TweenMax.to(t, 0.5, {"alpha": 1, "scaleX": 1, "scaleY": 1, "onComplete": function():void
+				{
+					soundManager.play("7zeIcPFb-UWzgtR_3nrZ8Q");
+					TweenMax.to(t, 3, {"y": t.y - 50, "alpha": 0.2, "onComplete": function():void
 					{
-						t.color = 65280;
-					}
-					else
+						TweenMax.to(t, 2, {"alpha": 0, "scaleX": 20, "scaleY": 20, "onComplete": function():void
+						{
+							removeChild(t);
+							t = null;
+						}});
+					}});
+				}, "ease": Circ.easeIn});
+				if (isAccuired)
+				{
+					TweenMax.delayedCall(1.5, function():void
 					{
-						t.color = 16777215;
-					}
-					t.glow = true;
-					t.text = Localize.t(Area.SPECIALTYPE[type]) + " " + Localize.t(text);
-					t.x = width / 2;
-					if (mode == 0)
-					{
-						t.x -= 150;
-					}
-					t.y = 230;
-					t.centerPivot();
-					addChild(t);
-					TweenMax.to(t, 0.5, {"alpha": 1, "scaleX": 1, "scaleY": 1, "onComplete": function():void
-							{
-								soundManager.play("7zeIcPFb-UWzgtR_3nrZ8Q");
-								TweenMax.to(t, 3, {"y": t.y - 50, "alpha": 0.2, "onComplete": function():void
-										{
-											TweenMax.to(t, 2, {"alpha": 0, "scaleX": 20, "scaleY": 20, "onComplete": function():void
-													{
-														removeChild(t);
-														t = null;
-													}
-												});
-										}
-									});
-							}, "ease": Circ.easeIn});
-					if (isAccuired)
-					{
-						TweenMax.delayedCall(1.5, function():void
-							{
-								if ((type + 1) % 3 == 0)
-								{
-									return;
-								}
-								playSkillUnlockAnimation(type + 1, "unlocked!", false);
-								addSpecialSkills();
-							});
-					}
-				});
+						if ((type + 1) % 3 == 0)
+						{
+							return;
+						}
+						playSkillUnlockAnimation(type + 1, "unlocked!", false);
+						addSpecialSkills();
+					});
+				}
+			});
 		}
-
+		
 		private function raiseSkill(param1:String, param2:Text):void
 		{
 			if (crewMember.skillPoints < 1)
@@ -664,7 +675,7 @@ package core.hud.components
 			}
 			g.send("raiseCrewSkill", crewMember.key, _loc3_);
 		}
-
+		
 		private function addDismiss():void
 		{
 			if (mode != 0)
@@ -688,7 +699,7 @@ package core.hud.components
 				dismissButton.visible = false;
 			}
 		}
-
+		
 		private function addBuy():void
 		{
 			if (mode != 1)
@@ -700,29 +711,29 @@ package core.hud.components
 			acceptButton.y = 460;
 			addChild(acceptButton);
 		}
-
+		
 		private function accept(param1:TouchEvent):void
 		{
 			var e:TouchEvent = param1;
 			var fluxCost:Number = CreditManager.getCostCrew();
 			g.creditManager.refresh(function():void
+			{
+				confirmBuyWithFlux = new CreditBuyBox(g, fluxCost, Localize.t("Are you sure you want [name] to join your crew?").replace("[name]", crewMember.name));
+				g.addChildToOverlay(confirmBuyWithFlux);
+				confirmBuyWithFlux.addEventListener("accept", function():void
 				{
-					confirmBuyWithFlux = new CreditBuyBox(g, fluxCost, Localize.t("Are you sure you want [name] to join your crew?").replace("[name]", crewMember.name));
-					g.addChildToOverlay(confirmBuyWithFlux);
-					confirmBuyWithFlux.addEventListener("accept", function():void
-						{
-							g.rpc("buyCantinaCrew", buyCrewResult, crewMember.seed);
-							confirmBuyWithFlux.removeEventListeners();
-						});
-					confirmBuyWithFlux.addEventListener("close", function():void
-						{
-							acceptButton.enabled = true;
-							confirmBuyWithFlux.removeEventListeners();
-							g.removeChildFromOverlay(confirmBuyWithFlux, true);
-						});
+					g.rpc("buyCantinaCrew", buyCrewResult, crewMember.seed);
+					confirmBuyWithFlux.removeEventListeners();
 				});
+				confirmBuyWithFlux.addEventListener("close", function():void
+				{
+					acceptButton.enabled = true;
+					confirmBuyWithFlux.removeEventListeners();
+					g.removeChildFromOverlay(confirmBuyWithFlux, true);
+				});
+			});
 		}
-
+		
 		private function buyCrewResult(param1:Message):void
 		{
 			var _loc2_:CrewMember = null;
@@ -740,7 +751,7 @@ package core.hud.components
 				g.showErrorDialog(param1.getString(1));
 			}
 		}
-
+		
 		private function addTrain():void
 		{
 			if (!crewMember.isIdle())
@@ -756,7 +767,7 @@ package core.hud.components
 				trainButton.visible = false;
 			}
 		}
-
+		
 		private function showStartTraining(param1:TouchEvent):void
 		{
 			confirmTraining = new PopupConfirmMessage(Localize.t("Start training?"));
@@ -766,36 +777,36 @@ package core.hud.components
 			confirmTraining.addEventListener("accept", onAcceptTraining);
 			confirmTraining.addEventListener("close", onCancelStartTraining);
 		}
-
+		
 		private function onAcceptTraining(param1:Event):void
 		{
 			var e:Event = param1;
 			g.removeChildFromOverlay(confirmTraining);
 			confirmTraining.removeEventListeners();
 			g.rpc("startTraining", function(param1:Message):void
+			{
+				var _loc4_:Boolean = param1.getBoolean(0);
+				if (!_loc4_)
 				{
-					var _loc4_:Boolean = param1.getBoolean(0);
-					if (!_loc4_)
-					{
-						g.showErrorDialog(param1.getString(1), true);
-						return;
-					}
-					var _loc3_:int = param1.getInt(1);
-					var _loc2_:Number = param1.getNumber(2);
-					var _loc5_:Number = param1.getNumber(3);
-					crewMember.trainingType = _loc3_;
-					crewMember.trainingEnd = _loc5_;
-					requestReload();
-				}, crewMember.key, 1);
+					g.showErrorDialog(param1.getString(1), true);
+					return;
+				}
+				var _loc3_:int = param1.getInt(1);
+				var _loc2_:Number = param1.getNumber(2);
+				var _loc5_:Number = param1.getNumber(3);
+				crewMember.trainingType = _loc3_;
+				crewMember.trainingEnd = _loc5_;
+				requestReload();
+			}, crewMember.key, 1);
 		}
-
+		
 		private function onCancelStartTraining(param1:Event):void
 		{
 			trainButton.enabled = true;
 			g.removeChildFromOverlay(confirmTraining);
 			confirmTraining.removeEventListeners();
 		}
-
+		
 		private function dismiss(param1:TouchEvent):void
 		{
 			confirmDismiss = new PopupConfirmMessage(Localize.t("Fire"), Localize.t("No, don't."));
@@ -804,7 +815,7 @@ package core.hud.components
 			confirmDismiss.addEventListener("accept", onAcceptDismiss);
 			confirmDismiss.addEventListener("close", onCancelDismiss);
 		}
-
+		
 		private function onAcceptDismiss(param1:Event):void
 		{
 			var cm:CrewMember;
@@ -821,22 +832,22 @@ package core.hud.components
 				{
 					g.me.crewMembers.splice(i, 1);
 					g.showMessageDialog(Localize.t("[name] has left your ship.").replace("[name]", cm.name), function():void
-						{
-							requestReloadCallback(true);
-						});
+					{
+						requestReloadCallback(true);
+					});
 					break;
 				}
 				i++;
 			}
 		}
-
+		
 		private function onCancelDismiss(param1:Event):void
 		{
 			dismissButton.enabled = true;
 			g.removeChildFromOverlay(confirmDismiss);
 			confirmDismiss.removeEventListeners();
 		}
-
+		
 		private function getSkillColor(param1:int):uint
 		{
 			var _loc4_:int = 0;
@@ -862,7 +873,7 @@ package core.hud.components
 			}
 			return 4868682;
 		}
-
+		
 		private function getSpecialIcon(param1:int, param2:Boolean = false):Image
 		{
 			var _loc4_:Image = null;
@@ -877,7 +888,7 @@ package core.hud.components
 			}
 			return _loc4_;
 		}
-
+		
 		public function clean(param1:Event = null):void
 		{
 			ToolTip.disposeType("crewSkill");

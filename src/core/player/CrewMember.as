@@ -8,39 +8,61 @@ package core.player
 	import starling.textures.Texture;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class CrewMember
 	{
 		public static const RANKS:Vector.<String> = Vector.<String>(["Rookie", "Private", "Corporal", "Sergeant", "Sergeant major", "2nd lieutenant", "Lieutenant"]);
-
+		
 		public var key:String;
+		
 		public var name:String;
+		
 		private var _imageKey:String;
+		
 		public var texture:Texture;
+		
 		public var skills:Array;
+		
 		public var specials:Array;
+		
 		public var solarSystem:String;
+		
 		public var body:String;
+		
 		public var area:String;
+		
 		public var fullLocation:String;
+		
 		public var injuryStart:Number;
+		
 		public var injuryEnd:Number;
+		
 		public var trainingEnd:Number;
+		
 		public var trainingType:int;
+		
 		public var missions:int;
+		
 		public var successMissions:int;
+		
 		public var rank:int;
+		
 		public var seed:int;
+		
 		public var skillPoints:int;
+		
 		public var artifact:String;
+		
 		public var artifactEnd:Number;
+		
 		private var g:Game;
+		
 		public function CrewMember(param1:Game)
 		{
 			super();
 			this.g = param1;
 		}
-
+		
 		public static function getRank(param1:int):String
 		{
 			if (param1 < RANKS.length)
@@ -49,7 +71,7 @@ package core.player
 			}
 			return "";
 		}
-
+		
 		public function set imageKey(param1:String):void
 		{
 			_imageKey = param1;
@@ -63,12 +85,12 @@ package core.player
 			var _loc2_:ITextureManager = TextureLocator.getService();
 			texture = _loc2_.getTextureGUIByTextureName(_loc3_.fileName);
 		}
-
+		
 		public function get imageKey():String
 		{
 			return _imageKey;
 		}
-
+		
 		public function hasSpecialAreaSkill(param1:ExploreArea):Boolean
 		{
 			for each (var _loc2_:* in param1.specialTypes)
@@ -84,7 +106,7 @@ package core.player
 			}
 			return true;
 		}
-
+		
 		public function hasUnlockedSpecialSkill(param1:String):Boolean
 		{
 			var _loc2_:int = Area.getSpecialIndex(param1);
@@ -94,7 +116,7 @@ package core.player
 			}
 			return false;
 		}
-
+		
 		public function getTrainingTime():Number
 		{
 			var _loc1_:int = (getTotalSkillValue() + skillPoints) / 3;
@@ -106,12 +128,12 @@ package core.player
 			}
 			return _loc3_;
 		}
-
+		
 		public function getTotalSkillValue():int
 		{
 			return getSkillValueByName("Survival") + getSkillValueByName("Diplomacy") + getSkillValueByName("Combat");
 		}
-
+		
 		public function availableForExplore(param1:ExploreArea):Boolean
 		{
 			if (area != null && area.length > 0)
@@ -132,7 +154,7 @@ package core.player
 			}
 			return true;
 		}
-
+		
 		public function getCompactFullLocation():String
 		{
 			if (fullLocation == null)
@@ -146,7 +168,7 @@ package core.player
 			}
 			return fullLocation;
 		}
-
+		
 		public function getSkillValueByName(param1:String):int
 		{
 			if (param1 == "Survival")
@@ -163,7 +185,7 @@ package core.player
 			}
 			return 0;
 		}
-
+		
 		public function getSkillIndexByName(param1:String):int
 		{
 			if (param1 == "Survival")
@@ -180,7 +202,7 @@ package core.player
 			}
 			return 0;
 		}
-
+		
 		public function isIdle():Boolean
 		{
 			if (isInjured)
@@ -201,7 +223,7 @@ package core.player
 			}
 			return true;
 		}
-
+		
 		public function isIdleOrInjured():Boolean
 		{
 			if (isDeployed)
@@ -218,27 +240,27 @@ package core.player
 			}
 			return true;
 		}
-
+		
 		public function get isTraining():Boolean
 		{
 			return trainingEnd != 0;
 		}
-
+		
 		public function get isTrainingComplete():Boolean
 		{
 			return g.time > trainingEnd;
 		}
-
+		
 		public function get isUpgrading():Boolean
 		{
 			return artifactEnd > g.time;
 		}
-
+		
 		public function get isUpgradeComplete():Boolean
 		{
 			return artifactEnd > 0 && artifactEnd < g.time;
 		}
-
+		
 		public function get injuryTime():Number
 		{
 			if (g.time > injuryStart && g.time < injuryEnd)
@@ -247,7 +269,7 @@ package core.player
 			}
 			return 0;
 		}
-
+		
 		public function get isWaitingForPickup():Boolean
 		{
 			if (area == null || area == "")
@@ -266,17 +288,17 @@ package core.player
 			}
 			return false;
 		}
-
+		
 		public function get isDeployed():Boolean
 		{
 			return area != null && area != "";
 		}
-
+		
 		public function get isInjured():Boolean
 		{
 			return injuryEnd != 0 && injuryEnd > g.time;
 		}
-
+		
 		public function getToolTipText():String
 		{
 			var _loc3_:int = 0;
@@ -298,7 +320,7 @@ package core.player
 			}
 			return _loc1_;
 		}
-
+		
 		public function completeTraining(param1:int):void
 		{
 			skillPoints = param1;

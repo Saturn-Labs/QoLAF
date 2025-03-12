@@ -13,81 +13,142 @@ package core.weapon
 	import generics.Util;
 	import sound.ISound;
 	import sound.SoundLocator;
-
+	
 	public class Weapon extends GameObject
 	{
 		public static const TYPE_FLEE:int = 0;
-
 		public static const TYPE_ANTIPROJECTILE:int = 1;
-
 		public var type:String;
+		
 		public var dmg:Damage;
+		
 		public var debuffType:int;
+		
 		public var debuffDuration:int;
+		
 		public var debuffValue:Damage;
+		
 		public var debuffEffect:String;
+		
 		public var debuffType2:int;
+		
 		public var debuffDuration2:int;
+		
 		public var debuffValue2:Damage;
+		
 		public var debuffEffect2:String;
+		
 		public var fireEffect:String;
+		
 		public var dmgRadius:int;
+		
 		public var numberOfHits:int;
+		
 		public var reloadTime:Number;
+		
 		public var speed:Number;
+		
 		public var acceleration:Number;
+		
 		public var ttl:int;
+		
 		public var projectileFunction:String;
+		
 		public var range:Number;
+		
 		public var friction:Number;
+		
 		public var angleVariance:Number;
+		
 		public var positionYVariance:Number;
+		
 		public var positionXVariance:Number;
+		
 		public var sideShooter:Boolean;
+		
 		public var positionOffsetX:Number;
+		
 		public var positionOffsetY:Number;
+		
 		public var maxProjectiles:int;
+		
 		public var projectiles:Vector.<Projectile>;
-
+		
 		public var multiNrOfP:int;
+		
 		public var multiOffset:Number;
+		
 		public var multiAngleOffset:Number;
+		
 		public var multiSpreadStart:Boolean;
+		
 		public var fireSound:String;
+		
 		public var alive:Boolean;
+		
 		public var fireNextTime:Number;
+		
 		public var rotationSpeed:Number;
+		
 		public var unit:Unit;
+		
 		public var target:Unit;
+		
 		public var hasTechTree:Boolean;
+		
 		public var key:String;
+		
 		public var useShipSystem:Boolean;
+		
 		public var randomAngle:Boolean;
+		
 		public var techIconFileName:String;
+		
 		public var specialCondition:String;
+		
 		public var specialBonusPercentage:Number;
+		
 		public var waveDirection:int;
+		
 		public var isMissileWeapon:Boolean;
+		
 		public var fireBackwards:Boolean;
+		
 		public var aimArc:Number;
+		
 		public var level:int;
+		
 		public var heatCost:Number;
+		
 		public var shieldVamp:Number;
+		
 		public var healthVamp:Number;
+		
 		public var burst:int;
+		
 		public var burstDelay:Number;
+		
 		public var burstCurrent:int;
+		
 		public var active:Boolean;
+		
 		public var hotkey:int;
+		
 		public var hasChargeUp:Boolean;
+		
 		public var chargeUpTimeMax:Number;
+		
 		protected var g:Game;
+		
 		protected var _fire:Boolean;
+		
 		public var chargeUpTime:Number;
+		
 		public var lastFire:Number = 0;
 		public var global:Boolean = false;
 		public var triggerMeleeAnimation:Boolean = false;
 		public var fireCallback:Function;
+		
 		public function Weapon(param1:Game)
 		{
 			super();
@@ -95,7 +156,7 @@ package core.weapon
 			heatCost = 0;
 			this.g = param1;
 		}
-
+		
 		public function init(param1:Object, param2:int, param3:int = -1, param4:String = ""):void
 		{
 			var _loc5_:int = 0;
@@ -265,7 +326,7 @@ package core.weapon
 			}
 			global = param1.global;
 		}
-
+		
 		public function addDebuff(param1:int, param2:int, param3:Damage, param4:String):void
 		{
 			if (debuffType == -1)
@@ -288,7 +349,7 @@ package core.weapon
 				debuffValue2 = param3;
 			}
 		}
-
+		
 		public function getDescription(param1:Boolean):String
 		{
 			var _loc2_:String = null;
@@ -343,7 +404,7 @@ package core.weapon
 			}
 			return _loc2_;
 		}
-
+		
 		private function addTechStats(param1:Object, param2:int):void
 		{
 			var _loc11_:Object = null;
@@ -425,12 +486,12 @@ package core.weapon
 			aimArc = aimArc * _loc8_ / 100;
 			rotationSpeed = rotationSpeed * _loc9_ / 100;
 		}
-
+		
 		private function addEliteTechStats(param1:Object, param2:int, param3:String):void
 		{
 			EliteTechs.addWeaponEliteTechs(this, param1, param2, param3);
 		}
-
+		
 		override public function update():void
 		{
 			if (_fire && unit.isAddedToCanvas)
@@ -444,12 +505,12 @@ package core.weapon
 				shoot();
 			}
 		}
-
+		
 		protected function shoot():void
 		{
 			throw new IllegalOperationError("Abstract method must be overriden");
 		}
-
+		
 		public function set fire(param1:Boolean):void
 		{
 			var _loc2_:PlayerShip = null;
@@ -470,17 +531,17 @@ package core.weapon
 			chargeUpTime = 0;
 			_fire = param1;
 		}
-
+		
 		public function get fire():Boolean
 		{
 			return _fire;
 		}
-
+		
 		public function destroy():void
 		{
 			alive = false;
 		}
-
+		
 		public function playFireSound():void
 		{
 			var _loc3_:Point = g.camera.getCameraCenter();
@@ -493,7 +554,7 @@ package core.weapon
 			var _loc4_:ISound = SoundLocator.getService();
 			_loc4_.play(fireSound);
 		}
-
+		
 		public function inRange(param1:Unit):Boolean
 		{
 			if (param1 == null)
@@ -509,7 +570,7 @@ package core.weapon
 			var _loc2_:Number = _loc3_ * _loc3_ + _loc4_ * _loc4_ - param1.collisionRadius;
 			return _loc2_ <= range * range;
 		}
-
+		
 		public function aim():Number
 		{
 			var _loc8_:EnemyShip = null;
@@ -540,7 +601,7 @@ package core.weapon
 			var _loc2_:Number = target.pos.y + _loc4_.y * _loc3_;
 			return Math.atan2(_loc2_ - unit.pos.y, _loc1_ - unit.pos.x) - unit.rotation;
 		}
-
+		
 		private function inAimAngle(param1:Unit):Boolean
 		{
 			var _loc4_:Number = NaN;
@@ -588,11 +649,11 @@ package core.weapon
 			}
 			return false;
 		}
-
+		
 		override public function draw():void
 		{
 		}
-
+		
 		public function setActive(param1:PlayerShip, param2:Boolean):Boolean
 		{
 			if (param2 && param1.activeWeapons < param1.unlockedWeaponSlots)
@@ -609,7 +670,7 @@ package core.weapon
 			}
 			return false;
 		}
-
+		
 		override public function reset():void
 		{
 			projectileFunction = null;

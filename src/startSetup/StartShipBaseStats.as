@@ -5,11 +5,13 @@ package startSetup
 	import core.hud.components.Text;
 	import starling.display.Quad;
 	import starling.display.Sprite;
-
+	
 	public class StartShipBaseStats extends Sprite
 	{
 		private var skinObj:Object;
+		
 		private var speed:int;
+		
 		private var tweenDelay:Number = 0.7;
 		public function StartShipBaseStats(param1:Object, param2:int)
 		{
@@ -28,7 +30,7 @@ package startSetup
 			_loc4_ += _loc3_;
 			addWeapon(_loc4_);
 		}
-
+		
 		private function addWeapon(param1:int):void
 		{
 			var _loc5_:int = 0;
@@ -59,7 +61,7 @@ package startSetup
 				_loc5_++;
 			}
 		}
-
+		
 		private function addStat(param1:String, param2:String, param3:int):void
 		{
 			var _loc6_:int = 0;
@@ -86,11 +88,7 @@ package startSetup
 				_loc5_.alpha = 0.2;
 				if (_loc6_ > _loc7_)
 				{
-					TweenMax.to(_loc5_, 1, {
-								"alpha": 0.7,
-								"delay": tweenDelay,
-								"ease": Elastic.easeInOut
-							});
+					TweenMax.to(_loc5_, 1, {"alpha": 0.7, "delay": tweenDelay, "ease": Elastic.easeInOut});
 					tweenDelay += 0.07;
 				}
 				_loc5_.y = param3 + 3;

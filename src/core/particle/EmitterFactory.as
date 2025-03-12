@@ -10,14 +10,14 @@ package core.particle
 	import starling.display.Sprite;
 	import starling.textures.Texture;
 	import textures.*;
-
+	
 	public class EmitterFactory
 	{
 		public function EmitterFactory()
 		{
 			super();
 		}
-
+		
 		public static function create(param1:String, param2:Game, param3:int = 0, param4:int = 0, param5:GameObject = null, param6:Boolean = false, param7:Boolean = true, param8:Boolean = true, param9:Sprite = null):Vector.<Emitter>
 		{
 			var delay:Number;
@@ -43,12 +43,12 @@ package core.particle
 				{
 					delay = Number(effectObj.multipleDelay);
 					TweenMax.delayedCall(delay / 1000, function():void
-						{
-							var _loc1_:Number = Number(effectObj.multipleRadius);
-							var _loc2_:Number = x + (_loc1_ - _loc1_ * 2 * Math.random());
-							var _loc3_:Number = y + (_loc1_ - _loc1_ * 2 * Math.random());
-							create(key, g, _loc2_, _loc3_, target, play, addToRenderList, false);
-						});
+					{
+						var _loc1_:Number = Number(effectObj.multipleRadius);
+						var _loc2_:Number = x + (_loc1_ - _loc1_ * 2 * Math.random());
+						var _loc3_:Number = y + (_loc1_ - _loc1_ * 2 * Math.random());
+						create(key, g, _loc2_, _loc3_, target, play, addToRenderList, false);
+					});
 				}
 				emitters = new Vector.<Emitter>();
 				for each (obj in effectObj.emitters)
@@ -158,7 +158,7 @@ package core.particle
 			}
 			return null;
 		}
-
+		
 		private static function resolveTexture(param1:Object, param2:GameObject = null):Texture
 		{
 			var _loc3_:ITextureManager = null;
@@ -179,7 +179,7 @@ package core.particle
 			_loc3_ = TextureLocator.getService();
 			return _loc3_.getTextureMainByKey(param1.bitmap);
 		}
-
+		
 		public static function createRareType(param1:Game, param2:EnemyShip, param3:int = 0):Vector.<Emitter>
 		{
 			var _loc4_:* = undefined;

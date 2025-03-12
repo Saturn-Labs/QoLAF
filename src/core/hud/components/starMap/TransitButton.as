@@ -7,13 +7,17 @@ package core.hud.components.starMap
 	import starling.display.Sprite;
 	import starling.events.TouchEvent;
 	import textures.TextureManager;
-
+	
 	public class TransitButton extends starling.display.Sprite
 	{
 		public var target:SolarSystem;
+		
 		private var hovered:Boolean;
+		
 		private var color:uint;
+		
 		private var textureImage:Image;
+		
 		public function TransitButton(param1:SolarSystem, param2:uint)
 		{
 			super();
@@ -23,19 +27,19 @@ package core.hud.components.starMap
 			useHandCursor = true;
 			addEventListener("touch", onTouch);
 		}
-
+		
 		private function mouseOver(param1:TouchEvent):void
 		{
 			hovered = true;
 			draw();
 		}
-
+		
 		private function mouseOut(param1:TouchEvent):void
 		{
 			hovered = false;
 			draw();
 		}
-
+		
 		private function draw():void
 		{
 			removeChildren();
@@ -60,7 +64,7 @@ package core.hud.components.starMap
 			textureImage = TextureManager.imageFromSprite(_loc2_, "transitButton" + hovered.toString());
 			addChild(textureImage);
 		}
-
+		
 		private function onTouch(param1:TouchEvent):void
 		{
 			if (param1.getTouch(this, "ended"))
@@ -76,13 +80,13 @@ package core.hud.components.starMap
 				mouseOut(param1);
 			}
 		}
-
+		
 		private function click(param1:TouchEvent):void
 		{
 			var _loc2_:ISound = SoundLocator.getService();
 			_loc2_.play("3hVYqbNNSUWoDGk_pK1BdQ");
 		}
-
+		
 		override public function dispose():void
 		{
 			super.dispose();

@@ -4,21 +4,23 @@ package core.solarSystem
 	import debug.Console;
 	import flash.utils.Dictionary;
 	import playerio.Message;
-
+	
 	public class BodyManager
 	{
 		private static const MAX_ORBIT_DIFF:Number = 10;
-
 		public var bodiesById:Dictionary;
+		
 		public var bodies:Vector.<Body>;
-
+		
 		public var roots:Vector.<Body>;
-
+		
 		public var visibleBodies:Vector.<Body>;
-
+		
 		private var startTime:Number;
+		
 		private var bodyId:int = 0;
 		private var g:Game;
+		
 		public function BodyManager(param1:Game)
 		{
 			super();
@@ -28,11 +30,11 @@ package core.solarSystem
 			bodiesById = new Dictionary();
 			visibleBodies = new Vector.<Body>();
 		}
-
+		
 		public function addMessageHandlers():void
 		{
 		}
-
+		
 		public function update():void
 		{
 			var _loc2_:Body = null;
@@ -50,7 +52,7 @@ package core.solarSystem
 				_loc3_--;
 			}
 		}
-
+		
 		public function forceUpdate():void
 		{
 			var _loc2_:Body = null;
@@ -64,7 +66,7 @@ package core.solarSystem
 				_loc3_--;
 			}
 		}
-
+		
 		public function getBodyByKey(param1:String):Body
 		{
 			for each (var _loc2_:* in bodies)
@@ -76,21 +78,21 @@ package core.solarSystem
 			}
 			return null;
 		}
-
+		
 		public function getBody():Body
 		{
 			var _loc1_:Body = new Body(g);
 			bodies.push(_loc1_);
 			return _loc1_;
 		}
-
+		
 		public function getRoot():Body
 		{
 			var _loc1_:Body = getBody();
 			roots.push(_loc1_);
 			return _loc1_;
 		}
-
+		
 		public function syncBodies(param1:Message, param2:int, param3:int):void
 		{
 			var _loc5_:* = 0;
@@ -106,7 +108,7 @@ package core.solarSystem
 				_loc5_ += 2;
 			}
 		}
-
+		
 		public function initSolarSystem(param1:Message):void
 		{
 			var _loc9_:* = 0;
@@ -117,31 +119,31 @@ package core.solarSystem
 			BodyFactory.createSolarSystem(g, _loc8_);
 			g.solarSystem.pvpAboveCap = param1.getBoolean(1);
 			_loc9_ = 5;
-			var _loc5_:int = param1.getInt(_loc9_++ );
+			var _loc5_:int = param1.getInt(_loc9_++);
 			var _loc6_:int = _loc5_ * 5 + _loc9_;
 			while (_loc9_ < _loc6_)
 			{
 				g.deathLineManager.addLine(param1.getInt(_loc9_), param1.getInt(_loc9_ + 1), param1.getInt(_loc9_ + 2), param1.getInt(_loc9_ + 3), param1.getString(_loc9_ + 4));
 				_loc9_ += 5;
 			}
-			var _loc4_:int = param1.getInt(_loc9_++ );
+			var _loc4_:int = param1.getInt(_loc9_++);
 			_loc6_ = _loc4_ * 4 + _loc9_;
 			g.bossManager.initBosses(param1, _loc9_, _loc6_);
 			_loc9_ = _loc6_;
-			var _loc7_:int = param1.getInt(_loc9_++ );
+			var _loc7_:int = param1.getInt(_loc9_++);
 			_loc6_ = _loc7_ * 5 + _loc9_;
 			g.spawnManager.syncSpawners(param1, _loc9_, _loc6_);
 			_loc9_ = _loc6_;
-			var _loc2_:int = param1.getInt(_loc9_++ );
+			var _loc2_:int = param1.getInt(_loc9_++);
 			_loc6_ = _loc2_ * 5 + _loc9_;
 			g.turretManager.syncTurret(param1, _loc9_, _loc6_);
 			_loc9_ = _loc6_;
-			var _loc3_:int = param1.getInt(_loc9_++ );
+			var _loc3_:int = param1.getInt(_loc9_++);
 			_loc6_ = _loc3_ * 2 + _loc9_;
 			g.bodyManager.syncBodies(param1, _loc9_, _loc6_);
 			_loc9_ = _loc6_;
 		}
-
+		
 		public function dispose():void
 		{
 			bodiesById = null;

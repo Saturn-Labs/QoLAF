@@ -7,7 +7,6 @@ package core.hud.components.credits
 	import core.hud.components.Text;
 	import core.hud.components.dialogs.PopupMessage;
 	import core.scene.Game;
-	import embeds.BuyButtonBitmap;
 	import facebook.FB;
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
@@ -24,19 +23,26 @@ package core.hud.components.credits
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.TouchEvent;
-
+	
 	public class CreditPackageItem extends CreditBaseItem
 	{
 		public var button:NativeImageButton;
+		
 		public var buyContainer:starling.display.Sprite;
+		
 		private var price:Text;
+		
 		protected var descriptionContainer:starling.display.Sprite;
+		
 		protected var waitingContainer:starling.display.Sprite;
+		
 		protected var aquiredContainer:starling.display.Sprite;
+		
 		protected var aquiredText:Text;
+		
 		protected var aquired:Boolean = false;
 		private var nativeLayer:flash.display.Sprite;
-		private var BuyButtonAsset:Class;
+		
 		protected var description:String = "";
 		protected var checkoutDescription:String = "";
 		protected var checkoutDescriptionShort:String = "";
@@ -52,10 +58,9 @@ package core.hud.components.credits
 			aquiredContainer = new starling.display.Sprite();
 			aquiredText = new Text();
 			nativeLayer = new flash.display.Sprite();
-			BuyButtonAsset = embeds.BuyButtonBitmap;
 			super(param1, param2, param3);
 		}
-
+		
 		override protected function load():void
 		{
 			if (g.salesManager.isPackageSale(itemKey + "_sale"))
@@ -70,7 +75,7 @@ package core.hud.components.credits
 			updateContainers();
 			super.load();
 		}
-
+		
 		private function addBuyButton():void
 		{
 			var obj:Object;
@@ -80,27 +85,27 @@ package core.hud.components.credits
 			var sale:Sale;
 			var crossOver:Image;
 			var saleTimer:SaleTimer;
-			var bitmap:Bitmap = new BuyButtonAsset();
+			var bitmap:Bitmap = new EmbeddedAssets.BuyButtonBitmap();
 			button = new NativeImageButton(function():void
+			{
+				Starling.current.nativeStage.removeChild(nativeLayer);
+				if (Login.currentState == "facebook")
 				{
-					Starling.current.nativeStage.removeChild(nativeLayer);
-					if (Login.currentState == "facebook")
-					{
-						onBuyFacebook();
-					}
-					else if (Login.currentState == "steam")
-					{
-						onBuySteam();
-					}
-					else if (Login.currentState == "kongregate")
-					{
-						onBuyKred();
-					}
-					else
-					{
-						onBuyPaypal();
-					}
-				}, bitmap.bitmapData);
+					onBuyFacebook();
+				}
+				else if (Login.currentState == "steam")
+				{
+					onBuySteam();
+				}
+				else if (Login.currentState == "kongregate")
+				{
+					onBuyKred();
+				}
+				else
+				{
+					onBuyPaypal();
+				}
+			}, bitmap.bitmapData);
 			button.x = 30;
 			button.y = 20;
 			button.visible = false;
@@ -150,12 +155,12 @@ package core.hud.components.credits
 				if (!spinner)
 				{
 					saleTimer = new SaleTimer(g, sale.startTime, sale.endTime, function():void
+					{
+						if (button != null)
 						{
-							if (button != null)
-							{
-								button.visible = !aquired;
-							}
-						});
+							button.visible = !aquired;
+						}
+					});
 					saleTimer.x = price.x + 140;
 					buyContainer.addChild(saleTimer);
 				}
@@ -165,36 +170,40 @@ package core.hud.components.credits
 				select();
 			}
 		}
-
+		
 		private function onBuyPaypal():void
 		{
 			var popup:PopupMessage;
-			g.client.payVault.getBuyDirectInfo("paypal", {"currency": "USD", "item_name": itemLabel}, [ {"itemKey": itemKey}], function(param1:Object):void
-				{
-					navigateToURL(new URLRequest(param1.paypalurl + "&os0=" + Login.currentState + "&on0=Info"), "_blank");
-				}, function(param1:PlayerIOError):void
-				{
-					g.showMessageDialog("Unable to buy item");
-					Starling.current.nativeStage.addChild(nativeLayer);
-				});
+			g.client.payVault.getBuyDirectInfo("paypal", {"currency": "USD", "item_name": itemLabel}, [{"itemKey": itemKey}], function(param1:Object):void
+			{
+				navigateToURL(new URLRequest(param1.paypalurl + "&os0=" + Login.currentState + "&on0=Info"), "_blank");
+			}, function(param1:PlayerIOError):void
+			{
+				g.showMessageDialog("Unable to buy item");
+				Starling.current.nativeStage.addChild(nativeLayer);
+			});
 			popup = new PopupMessage();
 			popup.text = "Click me when transaction is finished. If your package content is not shown instantly, try reloading the game. You need to land on a station to switch active ship.";
 			g.addChildToOverlay(popup);
-			popup.addEventListener("close", function():void
+			popup.addEventListener("close", (function():*
+			{
+				var closePopup:Function;
+				return closePopup = function(param1:Event):void
 				{
 					g.removeChildFromOverlay(popup);
 					popup.removeEventListeners();
 					onClose();
-				});
+				};
+			})());
 		}
-
+		
 		public function redraw():void
 		{
 			var _loc1_:Point = price.localToGlobal(new Point(price.x, price.y));
 			button.x = _loc1_.x;
 			button.y = _loc1_.y - price.height + 10;
 		}
-
+		
 		override protected function showInfo(param1:Boolean):void
 		{
 			var _loc2_:Point = null;
@@ -227,7 +236,7 @@ package core.hud.components.credits
 				}
 			}
 		}
-
+		
 		private function onBuySteam():void
 		{
 			var info:Object = {"steamid": RymdenRunt.info.userId, "appid": RymdenRunt.info.appId, "language": "EN", "currency": "USD"};
@@ -235,86 +244,90 @@ package core.hud.components.credits
 			var buyItemInfo:PayVaultBuyItemInfo = new PayVaultBuyItemInfo();
 			buyItemInfo.itemKey = itemKey;
 			vault.getBuyDirectInfo("steam", info, [buyItemInfo], function(param1:Object):void
+			{
+				var SteamBuySuccess:Function;
+				var SteamBuyFail:Function;
+				var obj:Object = param1;
+				info.orderid = obj.orderid;
+				SteamBuySuccess = function():void
 				{
-					var SteamBuySuccess:Function;
-					var SteamBuyFail:Function;
-					var obj:Object = param1;
-					info.orderid = obj.orderid;
-					SteamBuySuccess = function():void
+					RymdenRunt.instance.removeEventListener("steambuysuccess", SteamBuySuccess);
+					RymdenRunt.instance.removeEventListener("steambuyfail", SteamBuyFail);
+					vault.usePaymentInfo("steam", info, function(param1:Object):void
 					{
-						RymdenRunt.instance.removeEventListener("steambuysuccess", SteamBuySuccess);
-						RymdenRunt.instance.removeEventListener("steambuyfail", SteamBuyFail);
-						vault.usePaymentInfo("steam", info, function(param1:Object):void
-							{
-								onClose();
-							}, function(param1:PlayerIOError):void
-							{
-								g.showErrorDialog(param1.message, false);
-								Starling.current.nativeStage.addChild(nativeLayer);
-							});
-					};
-					SteamBuyFail = function():void
+						onClose();
+					}, function(param1:PlayerIOError):void
 					{
-						RymdenRunt.instance.removeEventListener("steambuysuccess", SteamBuySuccess);
-						RymdenRunt.instance.removeEventListener("steambuyfail", SteamBuyFail);
+						g.showErrorDialog(param1.message, false);
 						Starling.current.nativeStage.addChild(nativeLayer);
-					};
-					RymdenRunt.instance.addEventListener("steambuysuccess", SteamBuySuccess);
-					RymdenRunt.instance.addEventListener("steambuyfail", SteamBuyFail);
-				}, function(param1:PlayerIOError):void
+					});
+				};
+				SteamBuyFail = function():void
 				{
-					g.showErrorDialog("Buying package failed! " + param1.message, false);
+					RymdenRunt.instance.removeEventListener("steambuysuccess", SteamBuySuccess);
+					RymdenRunt.instance.removeEventListener("steambuyfail", SteamBuyFail);
 					Starling.current.nativeStage.addChild(nativeLayer);
-				});
+				};
+				RymdenRunt.instance.addEventListener("steambuysuccess", SteamBuySuccess);
+				RymdenRunt.instance.addEventListener("steambuyfail", SteamBuyFail);
+			}, function(param1:PlayerIOError):void
+			{
+				g.showErrorDialog("Buying package failed! " + param1.message, false);
+				Starling.current.nativeStage.addChild(nativeLayer);
+			});
 		}
-
+		
 		private function onBuyFacebook():void
 		{
 			var popup:PopupMessage;
 			Starling.current.nativeStage.displayState = "normal";
-			g.client.payVault.getBuyDirectInfo("facebookv2", {"title": itemLabel, "description": checkoutDescription, "image": g.client.gameFS.getUrl("/img/techicons/" + bitmap, Login.useSecure), "currencies": "USD"}, [ {"itemKey": itemKey}], function(param1:Object):void
+			g.client.payVault.getBuyDirectInfo("facebookv2", {"title": itemLabel, "description": checkoutDescription, "image": g.client.gameFS.getUrl("/img/techicons/" + bitmap, Login.useSecure), "currencies": "USD"}, [{"itemKey": itemKey}], function(param1:Object):void
+			{
+				var info:Object = param1;
+				FB.ui(info, function(param1:Object):void
 				{
-					var info:Object = param1;
-					FB.ui(info, function(param1:Object):void
-						{
-							if (param1.status != "completed")
-							{
-								g.showErrorDialog("Buying package failed!", false);
-								Starling.current.nativeStage.addChild(nativeLayer);
-							}
-						});
-				}, function(param1:PlayerIOError):void
-				{
-					g.showErrorDialog("Unable to buy item!");
-					Starling.current.nativeStage.addChild(nativeLayer);
+					if (param1.status != "completed")
+					{
+						g.showErrorDialog("Buying package failed!", false);
+						Starling.current.nativeStage.addChild(nativeLayer);
+					}
 				});
+			}, function(param1:PlayerIOError):void
+			{
+				g.showErrorDialog("Unable to buy item!");
+				Starling.current.nativeStage.addChild(nativeLayer);
+			});
 			popup = new PopupMessage();
 			popup.text = "Click me when transaction is finished. If your package content is not shown instantly, try reloading the game. You need to land on a station to switch active ship.";
 			g.addChildToOverlay(popup);
-			popup.addEventListener("close", function():void
+			popup.addEventListener("close", (function():*
+			{
+				var closePopup:Function;
+				return closePopup = function(param1:Event):void
 				{
 					g.removeChildFromOverlay(popup);
 					popup.removeEventListeners();
 					onClose();
-				});
+				};
+			})());
 		}
-
+		
 		private function onBuyKred():void
 		{
 			Starling.current.nativeStage.displayState = "normal";
 			Login.kongregate.mtx.purchaseItems(["item" + itemKey], function(param1:Object):void
+			{
+				if (param1.success)
 				{
-					if (param1.success)
-					{
-						onClose(null);
-					}
-					else
-					{
-						g.showMessageDialog("Buying package failed!");
-					}
-				});
+					onClose(null);
+				}
+				else
+				{
+					g.showMessageDialog("Buying package failed!");
+				}
+			});
 		}
-
+		
 		override public function exit():void
 		{
 			if (Starling.current.nativeStage.contains(nativeLayer))
@@ -322,28 +335,28 @@ package core.hud.components.credits
 				Starling.current.nativeStage.removeChild(nativeLayer);
 			}
 		}
-
+		
 		private function onClose(param1:TouchEvent = null):void
 		{
 			var e:TouchEvent = param1;
 			g.rpc(rpcFunction, function(param1:Message):void
+			{
+				if (param1.getBoolean(0))
 				{
-					if (param1.getBoolean(0))
-					{
-						onSuccess(param1);
-					}
-					else
-					{
-						g.showErrorDialog(param1.getString(1), true);
-					}
-				});
+					onSuccess(param1);
+				}
+				else
+				{
+					g.showErrorDialog(param1.getString(1), true);
+				}
+			});
 		}
-
+		
 		protected function onSuccess(param1:Message):void
 		{
 			updateAquiredText();
 		}
-
+		
 		protected function addDescription():void
 		{
 			var _loc3_:int = 0;
@@ -372,7 +385,7 @@ package core.hud.components.credits
 			descriptionContainer.y = 70;
 			infoContainer.addChild(descriptionContainer);
 		}
-
+		
 		protected function addWaiting():void
 		{
 			var _loc1_:Text = new Text();
@@ -383,7 +396,7 @@ package core.hud.components.credits
 			waitingContainer.visible = false;
 			infoContainer.addChild(waitingContainer);
 		}
-
+		
 		protected function addAquired():void
 		{
 			aquiredText.x = 0;
@@ -395,14 +408,14 @@ package core.hud.components.credits
 			aquiredContainer.visible = false;
 			infoContainer.addChild(aquiredContainer);
 		}
-
+		
 		protected function updateContainers():void
 		{
 			buyContainer.visible = !aquired;
 			aquiredContainer.visible = aquired;
 			waitingContainer.visible = false;
 		}
-
+		
 		protected function updateAquiredText():void
 		{
 			if (aquired)
@@ -410,7 +423,7 @@ package core.hud.components.credits
 				aquiredText.text = "Aquired!";
 			}
 		}
-
+		
 		protected function showFailed(param1:String):void
 		{
 			g.showErrorDialog(param1);

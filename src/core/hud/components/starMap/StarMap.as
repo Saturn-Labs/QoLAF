@@ -28,48 +28,82 @@ package core.hud.components.starMap
 	import starling.events.TouchEvent;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class StarMap extends Sprite
 	{
 		public static var selectedSolarSystem:SolarSystem;
+		
 		private static const PADDING:Number = 30;
-
 		public static var friendsInSelectedSystem:Array = [];
 		private var g:Game;
+		
 		private var p:Player;
+		
 		private var dataManager:IDataManager;
+		
 		private var discoveredSolarSystemsKeys:Array;
+		
 		private var allSolarSystems:Object;
+		
 		private var solarSystemIcons:Array;
+		
 		private var _height:Number;
+		
 		private var _width:Number;
+		
 		private var animationTween:TweenMax;
+		
 		private var textureManager:ITextureManager;
+		
 		private var container:Sprite;
+		
 		private var warpPathContainer:Sprite;
+		
 		private var galaxyText:Text;
+		
 		private var crewText:Text;
+		
 		private var crewBullet:Image;
+		
 		private var friendsInSystem:Sprite;
+		
 		private var friendsBullet:Image;
+		
 		private var crewAndFriendContainer:Sprite;
+		
 		private var _selectedWarpPath:WarpPath;
+		
 		private var allowBuy:Boolean;
+		
 		private var _currentSolarSystemKey:String;
+		
 		private var _currentSolarSystem:SolarSystem;
+		
 		private var focusSolarSystemKey:String;
+		
 		private var neighbours:Array;
+		
 		private var _warpPathLicenses:Array;
+		
 		private var _warpPaths:Array;
+		
 		private var confirmBuyWithFlux:CreditBuyBox;
+		
 		private var aquiredContainer:Sprite;
+		
 		private var aquiredText:Text;
+		
 		private var buyContainer:Sprite;
+		
 		private var buyButton:Button;
+		
 		private var buyWithFluxButton:Button;
+		
 		private var buyWithInviteButton:FBInviteUnlock = null;
 		private var shipImage:MovieClip;
+		
 		private var orText:Text;
+		
 		public function StarMap(param1:Game, param2:Number = 540, param3:Number = 240, param4:Boolean = false, param5:String = "")
 		{
 			var bgr2:Image;
@@ -158,61 +192,61 @@ package core.hud.components.starMap
 			if (allowBuy)
 			{
 				buyButton = new Button(function(param1:TouchEvent):void
+				{
+					if (selectedWarpPath != null)
 					{
-						if (selectedWarpPath != null)
-						{
-							if (selectedSolarSystem.dev && !g.me.isDeveloper)
-							{
-								g.showErrorDialog(Localize.t("Sorry! This warp path is not yet ready for hyper speed!"));
-								return;
-							}
-							g.rpc("buyWarpPath", boughtWarpPath, selectedWarpPath.key);
-						}
-					}, Localize.t("Buy"), "positive");
-				buyButton.name = "buyButton";
-				buyContainer.addChild(orText);
-				buyContainer.addChild(buyButton);
-				buyWithFluxButton = new Button(function():void
-					{
-						var warpPathObj:Object;
-						var fluxCost:int;
-						if (selectedWarpPath == null)
-						{
-							return;
-						}
-						if (selectedSolarSystem.dev && (!g.me.isTester && !g.me.isDeveloper))
+						if (selectedSolarSystem.dev && !g.me.isDeveloper)
 						{
 							g.showErrorDialog(Localize.t("Sorry! This warp path is not yet ready for hyper speed!"));
 							return;
 						}
-						warpPathObj = dataManager.loadKey("WarpPaths", selectedWarpPath.key);
-						fluxCost = CreditManager.getCostWarpPathLicense(warpPathObj.payVaultItem);
-						g.creditManager.refresh(function():void
-							{
-								confirmBuyWithFlux = new CreditBuyBox(g, fluxCost, Localize.t("Are you sure you want to buy the warp path license?"));
-								g.addChildToOverlay(confirmBuyWithFlux);
-								confirmBuyWithFlux.addEventListener("accept", onAccept);
-								confirmBuyWithFlux.addEventListener("close", onClose);
-							});
-					}, Localize.t("Buy with Flux"), "highlight");
+						g.rpc("buyWarpPath", boughtWarpPath, selectedWarpPath.key);
+					}
+				}, Localize.t("Buy"), "positive");
+				buyButton.name = "buyButton";
+				buyContainer.addChild(orText);
+				buyContainer.addChild(buyButton);
+				buyWithFluxButton = new Button(function():void
+				{
+					var warpPathObj:Object;
+					var fluxCost:int;
+					if (selectedWarpPath == null)
+					{
+						return;
+					}
+					if (selectedSolarSystem.dev && (!g.me.isTester && !g.me.isDeveloper))
+					{
+						g.showErrorDialog(Localize.t("Sorry! This warp path is not yet ready for hyper speed!"));
+						return;
+					}
+					warpPathObj = dataManager.loadKey("WarpPaths", selectedWarpPath.key);
+					fluxCost = CreditManager.getCostWarpPathLicense(warpPathObj.payVaultItem);
+					g.creditManager.refresh(function():void
+					{
+						confirmBuyWithFlux = new CreditBuyBox(g, fluxCost, Localize.t("Are you sure you want to buy the warp path license?"));
+						g.addChildToOverlay(confirmBuyWithFlux);
+						confirmBuyWithFlux.addEventListener("accept", onAccept);
+						confirmBuyWithFlux.addEventListener("close", onClose);
+					});
+				}, Localize.t("Buy with Flux"), "highlight");
 				buyContainer.addChild(buyWithFluxButton);
 				if (Login.currentState == "facebook")
 				{
 					buyWithInviteButton = new FBInviteUnlock(g, Math.ceil(1), function():void
+					{
+						if (selectedWarpPath != null)
 						{
-							if (selectedWarpPath != null)
+							if (selectedSolarSystem.dev && (!g.me.isTester && !g.me.isDeveloper))
 							{
-								if (selectedSolarSystem.dev && (!g.me.isTester && !g.me.isDeveloper))
-								{
-									g.showErrorDialog(Localize.t("Sorry! This warp path is not yet ready for hyper speed!"));
-									return;
-								}
-								g.rpc("buyWarpPathWithInvites", boughtWarpPath, selectedWarpPath.key);
+								g.showErrorDialog(Localize.t("Sorry! This warp path is not yet ready for hyper speed!"));
+								return;
 							}
-						}, function():void
-						{
-							g.showErrorDialog(Localize.t("Insufficient number of invites."));
-						});
+							g.rpc("buyWarpPathWithInvites", boughtWarpPath, selectedWarpPath.key);
+						}
+					}, function():void
+					{
+						g.showErrorDialog(Localize.t("Insufficient number of invites."));
+					});
 					buyWithInviteButton.visible = false;
 					buyWithInviteButton.enabled = false;
 					buyContainer.addChild(buyWithInviteButton);
@@ -229,7 +263,7 @@ package core.hud.components.starMap
 			addChild(aquiredContainer);
 			addEventListener("removedFromStage", clean);
 		}
-
+		
 		public function load(param1:Function = null):void
 		{
 			var systemKey:String;
@@ -250,49 +284,49 @@ package core.hud.components.starMap
 			allSolarSystems = dataManager.loadTable("SolarSystems");
 			createMap();
 			loadFriends(function():void
+			{
+				loadCrew();
+				if (focusSolarSystemKey == "")
 				{
-					loadCrew();
-					if (focusSolarSystemKey == "")
-					{
-						focusSolarSystemKey = currentSolarSystem.key;
-					}
-					var _loc1_:SolarSystem = findSolarSystemIcon(focusSolarSystemKey);
-					if (_loc1_ != null)
-					{
-						selectedSolarSystem.selected = false;
-						selectIcon(_loc1_);
-					}
-					if (callback != null)
-					{
-						callback();
-					}
-				});
+					focusSolarSystemKey = currentSolarSystem.key;
+				}
+				var _loc1_:SolarSystem = findSolarSystemIcon(focusSolarSystemKey);
+				if (_loc1_ != null)
+				{
+					selectedSolarSystem.selected = false;
+					selectIcon(_loc1_);
+				}
+				if (callback != null)
+				{
+					callback();
+				}
+			});
 		}
-
+		
 		private function loadFriends(param1:Function):void
 		{
 			var callback:Function = param1;
 			g.friendManager.updateOnlineFriends(function():void
+			{
+				if (Player.onlineFriends.length == 0)
 				{
-					if (Player.onlineFriends.length == 0)
+					callback();
+					return;
+				}
+				for each (var _loc2_:* in solarSystemIcons)
+				{
+					for each (var _loc1_:* in Player.onlineFriends)
 					{
-						callback();
-						return;
-					}
-					for each (var _loc2_:* in solarSystemIcons)
-					{
-						for each (var _loc1_:* in Player.onlineFriends)
+						if (_loc1_.currentSolarSystem == _loc2_.key)
 						{
-							if (_loc1_.currentSolarSystem == _loc2_.key)
-							{
-								_loc2_.hasFriends = true;
-							}
+							_loc2_.hasFriends = true;
 						}
 					}
-					callback();
-				});
+				}
+				callback();
+			});
 		}
-
+		
 		private function loadCrew():void
 		{
 			var _loc3_:Vector.<CrewMember> = g.me.crewMembers;
@@ -307,7 +341,7 @@ package core.hud.components.starMap
 				}
 			}
 		}
-
+		
 		private function createMap():void
 		{
 			var _loc8_:Object = null;
@@ -382,7 +416,7 @@ package core.hud.components.starMap
 				}
 			}
 		}
-
+		
 		private function transitClick(param1:Event):void
 		{
 			var _loc2_:* = null;
@@ -396,7 +430,7 @@ package core.hud.components.starMap
 				}
 			}
 		}
-
+		
 		private function onTouch(param1:TouchEvent):void
 		{
 			var _loc2_:SolarSystem = param1.currentTarget as SolarSystem;
@@ -409,7 +443,7 @@ package core.hud.components.starMap
 				selectIcon(_loc2_);
 			}
 		}
-
+		
 		private function selectIcon(param1:SolarSystem):void
 		{
 			var _loc7_:WarpToFriendRow = null;
@@ -473,7 +507,7 @@ package core.hud.components.starMap
 			}
 			handleWarpJumpAllowance();
 		}
-
+		
 		private function handleWarpJumpAllowance():void
 		{
 			var _loc6_:* = null;
@@ -596,7 +630,7 @@ package core.hud.components.starMap
 			aquiredContainer.y = 15;
 			dispatchEvent(new Event("disallowWarpJump"));
 		}
-
+		
 		private function findClosestPath(param1:String):Vector.<Node>
 		{
 			var _loc3_:Node = new Node(currentSolarSystem.key);
@@ -607,7 +641,7 @@ package core.hud.components.starMap
 			}
 			return _loc2_.getNodePath();
 		}
-
+		
 		private function fbs(param1:Node, param2:String):Node
 		{
 			var _loc4_:Vector.<Node> = new Vector.<Node>();
@@ -628,7 +662,7 @@ package core.hud.components.starMap
 			}
 			return param1;
 		}
-
+		
 		private function findChildren(param1:Node, param2:Vector.<WarpPath>):void
 		{
 			var _loc3_:Node = null;
@@ -653,7 +687,7 @@ package core.hud.components.starMap
 				}
 			}
 		}
-
+		
 		private function isDiscovered(param1:String):Boolean
 		{
 			for each (var _loc2_:* in discoveredSolarSystemsKeys)
@@ -665,7 +699,7 @@ package core.hud.components.starMap
 			}
 			return false;
 		}
-
+		
 		private function findSolarSystemIcon(param1:String):SolarSystem
 		{
 			for each (var _loc2_:* in solarSystemIcons)
@@ -677,7 +711,7 @@ package core.hud.components.starMap
 			}
 			return null;
 		}
-
+		
 		private function updateRect(param1:Number, param2:Number):void
 		{
 			var x:Number = param1;
@@ -687,34 +721,30 @@ package core.hud.components.starMap
 			{
 				animationTween.kill();
 			}
-			animationTween = TweenMax.to(rect, 1, {
-						"x": x - _width / 2,
-						"y": y - _height / 2,
-						"onUpdate": function():void
-						{
-							container.x = -rect.x;
-							container.y = -rect.y;
-						}
-					});
+			animationTween = TweenMax.to(rect, 1, {"x": x - _width / 2, "y": y - _height / 2, "onUpdate": function():void
+			{
+				container.x = -rect.x;
+				container.y = -rect.y;
+			}});
 		}
-
+		
 		public function get selectedWarpPath():WarpPath
 		{
 			return _selectedWarpPath;
 		}
-
+		
 		public function get currentSolarSystem():SolarSystem
 		{
 			return _currentSolarSystem;
 		}
-
+		
 		private function onAccept(param1:Event):void
 		{
 			g.rpc("buyWarpPathWithFlux", boughtWarpPathWithFlux, selectedWarpPath.key);
 			confirmBuyWithFlux.removeEventListener("accept", onAccept);
 			confirmBuyWithFlux.removeEventListener("close", onClose);
 		}
-
+		
 		private function boughtWarpPathWithFlux(param1:Message):void
 		{
 			var _loc2_:Object = null;
@@ -742,14 +772,14 @@ package core.hud.components.starMap
 				}
 			}
 		}
-
+		
 		private function onClose(param1:Event):void
 		{
 			confirmBuyWithFlux.removeEventListener("accept", onAccept);
 			confirmBuyWithFlux.removeEventListener("close", onClose);
 			buyWithFluxButton.enabled = true;
 		}
-
+		
 		private function boughtWarpPath(param1:Message):void
 		{
 			if (param1.getBoolean(0) && selectedWarpPath != null && selectedSolarSystem != null)
@@ -776,21 +806,17 @@ package core.hud.components.starMap
 				}
 			}
 		}
-
+		
 		private function animateBuy():void
 		{
 			var soundManager:ISound = SoundLocator.getService();
 			soundManager.preCacheSound("7zeIcPFb-UWzgtR_3nrZ8Q", function():void
-				{
-					TweenMax.from(selectedSolarSystem, 1, {
-								"scaleX": 8,
-								"scaleY": 8,
-								"alpha": 0
-							});
-					soundManager.play("7zeIcPFb-UWzgtR_3nrZ8Q");
-				});
+			{
+				TweenMax.from(selectedSolarSystem, 1, {"scaleX": 8, "scaleY": 8, "alpha": 0});
+				soundManager.play("7zeIcPFb-UWzgtR_3nrZ8Q");
+			});
 		}
-
+		
 		public function clean(param1:Event = null):void
 		{
 			Console.write("Clean up warp gate");
@@ -812,32 +838,33 @@ import starling.display.Sprite;
 class Node
 {
 	private var _children:Vector.<Node>;
-
+	
 	public var parent:Node = null;
 	private var _key:String;
+	
 	public function Node(param1:String)
 	{
 		_children = new Vector.<Node>();
 		super();
 		_key = param1;
 	}
-
+	
 	public function addChild(param1:Node):void
 	{
 		param1.parent = this;
 		_children.push(param1);
 	}
-
+	
 	public function get children():Vector.<Node>
 	{
 		return _children;
 	}
-
+	
 	public function get key():String
 	{
 		return _key;
 	}
-
+	
 	public function getNodePath(param1:Vector.<Node> = null):Vector.<Node>
 	{
 		if (param1 == null)

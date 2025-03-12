@@ -6,21 +6,21 @@ package core.drops
 	import sound.ISound;
 	import sound.SoundLocator;
 	import textures.*;
-
+	
 	public class DropFactory
 	{
 		public function DropFactory()
 		{
 			super();
 		}
-
+		
 		public static function createDrop(param1:String, param2:Game):Drop
 		{
 			var _loc4_:IDataManager = DataLocator.getService();
 			var _loc3_:Object = _loc4_.loadKey("Drops", param1);
 			return setDropProps(param2, _loc3_, param1);
 		}
-
+		
 		public static function createDropFromCargo(param1:String, param2:Game):Drop
 		{
 			var _loc4_:Object = null;
@@ -36,7 +36,7 @@ package core.drops
 			}
 			return null;
 		}
-
+		
 		public static function setDropProps(param1:Game, param2:Object, param3:String):Drop
 		{
 			var _loc4_:Drop = param1.dropManager.getDrop();

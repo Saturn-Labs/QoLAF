@@ -3,12 +3,15 @@ package core.login
 	import com.greensock.TweenMax;
 	import core.hud.components.Text;
 	import starling.display.Sprite;
-
+	
 	public class ConnectStatus extends Sprite
 	{
 		private var connectTween:TweenMax;
+		
 		private var connectText:Text;
+		
 		private var connectSubText:Text;
+		
 		public function ConnectStatus()
 		{
 			connectText = new Text();
@@ -29,23 +32,19 @@ package core.login
 			connectSubText.y = connectText.y + connectText.height;
 			connectSubText.center();
 			this.addChild(connectSubText);
-			connectTween = TweenMax.fromTo(connectText, 1, {"alpha": 1}, {
-						"alpha": 0.5,
-						"yoyo": true,
-						"repeat": -1
-					});
+			connectTween = TweenMax.fromTo(connectText, 1, {"alpha": 1}, {"alpha": 0.5, "yoyo": true, "repeat": -1});
 		}
-
+		
 		public function clean():void
 		{
 			connectTween.kill();
 		}
-
+		
 		public function set text(param1:String):void
 		{
 			connectText.text = param1;
 		}
-
+		
 		public function set subText(param1:String):void
 		{
 			if (param1 != "")
@@ -53,7 +52,7 @@ package core.login
 				connectSubText.text = param1;
 			}
 		}
-
+		
 		public function update(param1:ConnectEvent):void
 		{
 			if (param1.message == "")

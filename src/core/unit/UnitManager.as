@@ -1,62 +1,40 @@
 package core.unit
 {
-	import flash.geom.Rectangle;
-	import starling.display.Quad;
 	import core.scene.Game;
 	import core.ship.PlayerShip;
 	import starling.display.Sprite;
-	import starling.events.TouchEvent;
-	import starling.events.Touch;
-	import starling.events.Event;
-	import starling.events.TouchPhase;
-	import starling.filters.GlowFilter;
-	import qolaf.target.TargetSystem;
-
+	
 	public class UnitManager
 	{
 		private var g:Game;
+		
 		public var units:Vector.<Unit>;
-
+		
 		public function UnitManager(param1:Game)
 		{
 			units = new Vector.<Unit>();
 			super();
 			this.g = param1;
 		}
-
-		public function add(unit:Unit, canvas:Sprite, param3:Boolean = true):void
+		
+		public function add(param1:Unit, param2:Sprite, param3:Boolean = true):void
 		{
-			units.push(unit);
+			units.push(param1);
 			if (param3)
 			{
-				g.hud.radar.add(unit);
+				g.hud.radar.add(param1);
 			}
-
-			unit.canvas = canvas;
-
-			// QoLAF
-			unit.movieClip.touchable = true;
-			unit.movieClip.addEventListener(TouchEvent.TOUCH, function(event:TouchEvent):void
-				{
-					if (!TargetSystem.canTarget(unit) || !TargetSystem.isTargetInRange(unit))
-						return;
-					var touch:Touch = event.getTouch(unit.movieClip);
-					if (touch && touch.phase == TouchPhase.BEGAN)
-					{
-						Game.instance.targetSystem.target = unit;
-					}
-				});
-
-			if (unit.isBossUnit)
+			param1.canvas = param2;
+			if (param1.isBossUnit)
 			{
-				unit.addToCanvas();
+				param1.addToCanvas();
 			}
-			if (unit is PlayerShip)
+			if (param1 is PlayerShip)
 			{
-				unit.addToCanvas();
+				param1.addToCanvas();
 			}
 		}
-
+		
 		public function remove(param1:Unit):void
 		{
 			units.splice(units.indexOf(param1), 1);
@@ -64,7 +42,7 @@ package core.unit
 			param1.removeFromCanvas();
 			param1.reset();
 		}
-
+		
 		public function forceUpdate():void
 		{
 			var _loc1_:Unit = null;
@@ -77,7 +55,7 @@ package core.unit
 				_loc2_++;
 			}
 		}
-
+		
 		public function getTarget(param1:int):Unit
 		{
 			for each (var _loc2_:* in units)

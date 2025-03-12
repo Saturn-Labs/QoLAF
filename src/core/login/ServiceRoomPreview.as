@@ -10,32 +10,44 @@ package core.login
 	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.TouchEvent;
-
+	
 	public class ServiceRoomPreview extends Sprite
 	{
 		public static var WIDTH:int = 300;
 		public static const roomNames:Array = ["alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta", "iota", "kappa", "lambda", "mu", "beta", "nu", "xi", "omicron", "pi", "rho", "sigma", "tau", "upsilon", "phi", "chi", "psi", "omega"];
-
 		public var info:RoomInfo;
+		
 		private var _name:Text;
+		
 		private var online:Text;
+		
 		private var friends:Text;
+		
 		private var status:Text;
+		
 		private var level:Text;
+		
 		private var recommended:Text;
+		
 		private var recommendedBg:Quad;
+		
 		private var connection:Connection;
+		
 		private var selectCallback:Function;
+		
 		public var enabled:Boolean = false;
 		public var even:Boolean = true;
 		private var serviceRoomSelector:ServiceRoomSelector;
+		
 		private var bg:Quad;
+		
 		private var isSupporter:Boolean = false;
 		public var avgLevel:int = -1;
 		public var playerLevel:int = -1;
 		private var onlineFriends:Vector.<Friend>;
-
+		
 		private var friendsTooltip:Sprite;
+		
 		public var isClosing:Boolean = false;
 		public function ServiceRoomPreview(param1:RoomInfo, param2:Function, param3:ServiceRoomSelector)
 		{
@@ -107,7 +119,7 @@ package core.login
 				join();
 			}
 		}
-
+		
 		private function onTouch(param1:TouchEvent):void
 		{
 			if (param1.getTouch(this) == null)
@@ -128,12 +140,12 @@ package core.login
 				selectRoom();
 			}
 		}
-
+		
 		public function selectRoom():void
 		{
 			selectCallback(this, info.id);
 		}
-
+		
 		private function getName():String
 		{
 			var _loc1_:int = getIndex();
@@ -147,7 +159,7 @@ package core.login
 			}
 			return roomNames[_loc1_];
 		}
-
+		
 		private function getIndex():int
 		{
 			var _loc1_:Number = NaN;
@@ -162,17 +174,17 @@ package core.login
 			}
 			return -1;
 		}
-
+		
 		public function isOpenForAll():Boolean
 		{
 			return info.onlineUsers < 950;
 		}
-
+		
 		public function isOpenForSupporters():Boolean
 		{
 			return info.onlineUsers < 1000;
 		}
-
+		
 		private function validate():Boolean
 		{
 			if (getIndex() < 0)
@@ -185,7 +197,7 @@ package core.login
 			}
 			return true;
 		}
-
+		
 		private function join():void
 		{
 			if (!validate())
@@ -199,29 +211,26 @@ package core.login
 				return;
 			}
 			friends.text = "Looking for friends...";
-			Login.client.multiplayer.joinRoom(info.id, {
-						"client_version": 1379,
-						"preview": "true"
-					}, joined, function(param1:PlayerIOError):void
+			Login.client.multiplayer.joinRoom(info.id, {"client_version": 1379, "preview": "true"}, joined, function(param1:PlayerIOError):void
+			{
+				var _loc2_:String = null;
+				if (param1.errorID != 2)
+				{
+					_loc2_ = param1.message;
+					if (_loc2_.indexOf("The room cannot") > -1)
 					{
-						var _loc2_:String = null;
-						if (param1.errorID != 2)
-						{
-							_loc2_ = param1.message;
-							if (_loc2_.indexOf("The room cannot") > -1)
-							{
-								full(true);
-							}
-							else
-							{
-								status.text = "An error occured...";
-							}
-							trace(_loc2_);
-							friends.color = 16711680;
-						}
-					});
+						full(true);
+					}
+					else
+					{
+						status.text = "An error occured...";
+					}
+					trace(_loc2_);
+					friends.color = 16711680;
+				}
+			});
 		}
-
+		
 		private function joined(param1:Connection):void
 		{
 			var c:Connection = param1;
@@ -229,12 +238,12 @@ package core.login
 			connection.addMessageHandler("onlineFriends", onOnlineFriends);
 			connection.addMessageHandler("preview", onPreview);
 			connection.addMessageHandler("error", function(param1:Message):void
-				{
-					friends.text = param1.getString(0);
-					friends.color = 16711680;
-				});
+			{
+				friends.text = param1.getString(0);
+				friends.color = 16711680;
+			});
 		}
-
+		
 		private function onPreview(param1:Message):void
 		{
 			isSupporter = param1.getBoolean(0);
@@ -249,7 +258,7 @@ package core.login
 				serviceRoomSelector.setNewPlayer();
 			}
 		}
-
+		
 		private function onOnlineFriends(param1:Message):void
 		{
 			var _loc3_:Friend = null;
@@ -276,7 +285,7 @@ package core.login
 			updateStatus();
 			showFriendsTooltip();
 		}
-
+		
 		private function showFriendsTooltip():void
 		{
 			var _loc3_:int = 0;
@@ -321,7 +330,7 @@ package core.login
 			addChild(friendsTooltip);
 			hideFriends();
 		}
-
+		
 		private function hideFriends():void
 		{
 			if (!friendsTooltip)
@@ -330,7 +339,7 @@ package core.login
 			}
 			friendsTooltip.visible = false;
 		}
-
+		
 		private function updateStatus():void
 		{
 			if (isClosing)
@@ -358,14 +367,14 @@ package core.login
 			}
 			full();
 		}
-
+		
 		public function disable():void
 		{
 			enabled = false;
 			this.removeEventListeners();
 			TweenMax.to(this, 0.3, {"alpha": 0});
 		}
-
+		
 		public function highlight():void
 		{
 			var _loc1_:Quad = new Quad(bg.width + 4, bg.height + 4, 11150770);
@@ -374,7 +383,7 @@ package core.login
 			bg.alpha = 0.9;
 			addChildAt(_loc1_, 0);
 		}
-
+		
 		private function full(param1:Boolean = false):void
 		{
 			status.text = "FULL";
@@ -385,7 +394,7 @@ package core.login
 				friends.text = "";
 			}
 		}
-
+		
 		public function trySetClosing():void
 		{
 			var _loc1_:int = ServiceRoomSelector.totalFree - info.onlineUsers;
@@ -402,7 +411,7 @@ package core.login
 			useHandCursor = false;
 			alpha = 0.5;
 		}
-
+		
 		public function setRecommended(param1:Boolean):void
 		{
 			recommended.visible = param1;

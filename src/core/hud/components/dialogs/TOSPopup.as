@@ -8,14 +8,19 @@ package core.hud.components.dialogs
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
 	import starling.events.TouchEvent;
-
+	
 	public class TOSPopup extends PopupMessage
 	{
 		public var confirmButton:Button;
+		
 		public var g:Game;
+		
 		public var textField2:Text;
+		
 		public var textField3:Text;
+		
 		public var textField4:Text;
+		
 		public function TOSPopup(param1:Game)
 		{
 			super("Decline");
@@ -51,7 +56,7 @@ package core.hud.components.dialogs
 			textField3.addEventListener("touch", openExternalROC);
 			box.addChild(textField3);
 		}
-
+		
 		override protected function keyDown(param1:KeyboardEvent):void
 		{
 			if (param1.keyCode == 13)
@@ -60,13 +65,13 @@ package core.hud.components.dialogs
 				accept();
 			}
 		}
-
+		
 		private function accept(param1:TouchEvent = null):void
 		{
 			dispatchEventWith("accept");
 			removeEventListeners();
 		}
-
+		
 		private function openExternalPP(param1:TouchEvent):void
 		{
 			var _loc2_:URLRequest = null;
@@ -76,7 +81,7 @@ package core.hud.components.dialogs
 				navigateToURL(_loc2_, "_blank");
 			}
 		}
-
+		
 		private function openExternalTOS(param1:TouchEvent):void
 		{
 			var _loc2_:URLRequest = null;
@@ -86,7 +91,7 @@ package core.hud.components.dialogs
 				navigateToURL(_loc2_, "_blank");
 			}
 		}
-
+		
 		private function openExternalROC(param1:TouchEvent):void
 		{
 			var _loc2_:URLRequest = null;
@@ -96,7 +101,7 @@ package core.hud.components.dialogs
 				navigateToURL(_loc2_, "_blank");
 			}
 		}
-
+		
 		override protected function redraw(param1:Event = null):void
 		{
 			super.redraw();

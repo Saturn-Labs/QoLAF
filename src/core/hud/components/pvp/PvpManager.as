@@ -7,53 +7,56 @@ package core.hud.components.pvp
 	import core.states.gameStates.PvpScreenState;
 	import playerio.Message;
 	import starling.events.Event;
-
+	
 	public class PvpManager
 	{
 		public static const MATCH_WARMUP:int = 0;
-
 		public static const MATCH_STARTING:int = 1;
-
 		public static const MATCH_RUNNING:int = 2;
-
 		public static const MATCH_ENDED:int = 3;
-
 		public static const MATCH_CLOSED:int = 4;
-
 		public static const ITEM_HEALTH:String = "health";
-
 		public static const ITEM_HEALTH_SMALL:String = "healthSmall";
-
 		public static const ITEM_SHIELD:String = "shield";
-
 		public static const ITEM_SHIELD_SMALL:String = "shieldSmall";
-
 		public static const ITEM_QUAD:String = "quad";
-
 		public static const ITEM_DOMINATION_ZONE:String = "dominationZone";
-
 		public static const ITEM_TEAM1_SAFE_ZONE:String = "safezoneT1";
-
 		public static const ITEM_TEAM2_SAFE_ZONE:String = "safezoneT2";
-
 		protected var g:Game;
+		
 		public var type:String;
+		
 		protected var scoreLimit:int;
+		
 		protected var matchState:int;
+		
 		protected var roomStartTime:Number;
+		
 		protected var matchStartTime:Number;
+		
 		protected var matchEndTime:Number;
+		
 		protected var roomEndTime:Number;
+		
 		protected var endGameScreenTime:Number;
+		
 		protected var requestTime:Number;
+		
 		public var matchEnded:Boolean;
+		
 		public var scoreListUpdated:Boolean;
+		
 		protected var scoreList:Vector.<PvpScoreHolder>;
-
+		
 		protected var timerText:Text;
+		
 		protected var scoreText:Text;
+		
 		protected var leaderText:Text;
+		
 		protected var map:Map;
+		
 		protected var isLoaded:Boolean = false;
 		public function PvpManager(param1:Game, param2:Boolean = true)
 		{
@@ -98,7 +101,7 @@ package core.hud.components.pvp
 			this.g = param1;
 			resize();
 		}
-
+		
 		private static function compareFunction(param1:PvpScoreHolder, param2:PvpScoreHolder):int
 		{
 			if (param1.score < param2.score)
@@ -127,16 +130,16 @@ package core.hud.components.pvp
 			}
 			return 1;
 		}
-
+		
 		public function updateMap(param1:Player):void
 		{
 			map.playerJoined(param1);
 		}
-
+		
 		public function addZones(param1:Array):void
 		{
 		}
-
+		
 		public function formatTime(param1:Number):String
 		{
 			if (param1 < 0 || param1.toString() == "NaN")
@@ -156,13 +159,13 @@ package core.hud.components.pvp
 			}
 			return _loc2_ + ":" + _loc3_;
 		}
-
+		
 		protected function loadMap():void
 		{
 			map.load(0.035, 160, 160, 0, 0, true);
 			isLoaded = true;
 		}
-
+		
 		public function update():void
 		{
 			if (!isLoaded)
@@ -177,96 +180,96 @@ package core.hud.components.pvp
 			map.update();
 			switch (matchState)
 			{
-				case 0:
-					if (timerText != null)
+			case 0: 
+				if (timerText != null)
+				{
+					timerText.htmlText = "Starting in: <FONT COLOR='#7777ff'>" + formatTime((matchStartTime - g.time) / 1000) + "</FONT>";
+					scoreText.htmlText = "Frags Left: <FONT COLOR='#7777ff'>" + scoreLimit + "</FONT>";
+					leaderText.htmlText = "Leader: <FONT COLOR='#7777ff'>None</FONT>";
+				}
+				if (matchStartTime != 0 && matchStartTime < g.time)
+				{
+					matchState = 2;
+					g.textManager.createPvpText("The Match begins! Fight!", 0, 50);
+				}
+				for each (var _loc1_:* in g.playerManager.players)
+				{
+					_loc1_.inSafeZone = true;
+				}
+				break;
+			case 2: 
+				if (timerText != null)
+				{
+					timerText.htmlText = "Time Left: <FONT COLOR='#7777ff'>" + formatTime((matchEndTime - g.time) / 1000) + "</FONT>";
+					if (scoreList.length > 0)
 					{
-						timerText.htmlText = "Starting in: <FONT COLOR='#7777ff'>" + formatTime((matchStartTime - g.time) / 1000) + "</FONT>";
-						scoreText.htmlText = "Frags Left: <FONT COLOR='#7777ff'>" + scoreLimit + "</FONT>";
-						leaderText.htmlText = "Leader: <FONT COLOR='#7777ff'>None</FONT>";
-					}
-					if (matchStartTime != 0 && matchStartTime < g.time)
-					{
-						matchState = 2;
-						g.textManager.createPvpText("The Match begins! Fight!", 0, 50);
-					}
-					for each (var _loc1_:* in g.playerManager.players)
-					{
-						_loc1_.inSafeZone = true;
-					}
-					break;
-				case 2:
-					if (timerText != null)
-					{
-						timerText.htmlText = "Time Left: <FONT COLOR='#7777ff'>" + formatTime((matchEndTime - g.time) / 1000) + "</FONT>";
-						if (scoreList.length > 0)
+						scoreText.htmlText = "Frags Left: <FONT COLOR='#7777ff'>" + (scoreLimit - scoreList[0].score).toString() + "</FONT>";
+						if (scoreList[0].playerKey == g.me.id)
 						{
-							scoreText.htmlText = "Frags Left: <FONT COLOR='#7777ff'>" + (scoreLimit - scoreList[0].score).toString() + "</FONT>";
-							if (scoreList[0].playerKey == g.me.id)
-							{
-								leaderText.htmlText = "Leader: <FONT COLOR='#7777ff'>You</FONT>";
-							}
-							else
-							{
-								leaderText.htmlText = "Leader: <FONT COLOR='#7777ff'>" + scoreList[0].playerName + "</FONT>";
-							}
+							leaderText.htmlText = "Leader: <FONT COLOR='#7777ff'>You</FONT>";
+						}
+						else
+						{
+							leaderText.htmlText = "Leader: <FONT COLOR='#7777ff'>" + scoreList[0].playerName + "</FONT>";
 						}
 					}
-					if (matchEndTime != 0 && matchEndTime < g.time)
+				}
+				if (matchEndTime != 0 && matchEndTime < g.time)
+				{
+					matchState = 3;
+					matchEnded = true;
+				}
+				break;
+			case 3: 
+				if (timerText != null)
+				{
+					timerText.htmlText = "Closing in: <FONT COLOR='#7777ff'>" + formatTime((roomEndTime - g.time) / 1000) + "</FONT>";
+					scoreText.htmlText = "<FONT COLOR='#7777ff'>Game over!</FONT>";
+					if (scoreList.length == 1)
 					{
-						matchState = 3;
-						matchEnded = true;
-					}
-					break;
-				case 3:
-					if (timerText != null)
-					{
-						timerText.htmlText = "Closing in: <FONT COLOR='#7777ff'>" + formatTime((roomEndTime - g.time) / 1000) + "</FONT>";
-						scoreText.htmlText = "<FONT COLOR='#7777ff'>Game over!</FONT>";
-						if (scoreList.length == 1)
+						if (scoreList[0].playerKey == g.me.id)
 						{
-							if (scoreList[0].playerKey == g.me.id)
-							{
-								leaderText.htmlText = "Winner: <FONT COLOR='#7777ff'>You</FONT>";
-							}
-							else
-							{
-								leaderText.htmlText = "Winner: <FONT COLOR='#7777ff'>" + scoreList[0].playerName + "</FONT>";
-							}
+							leaderText.htmlText = "Winner: <FONT COLOR='#7777ff'>You</FONT>";
+						}
+						else
+						{
+							leaderText.htmlText = "Winner: <FONT COLOR='#7777ff'>" + scoreList[0].playerName + "</FONT>";
 						}
 					}
-					if (endGameScreenTime != 0 && endGameScreenTime < g.time)
-					{
-						g.enterState(new PvpScreenState(g));
-						endGameScreenTime = g.time + 60000;
-					}
-					if (roomEndTime != 0 && roomEndTime < g.time)
-					{
-						matchState = 4;
-					}
+				}
+				if (endGameScreenTime != 0 && endGameScreenTime < g.time)
+				{
+					g.enterState(new PvpScreenState(g));
+					endGameScreenTime = g.time + 60000;
+				}
+				if (roomEndTime != 0 && roomEndTime < g.time)
+				{
+					matchState = 4;
+				}
 			}
 		}
-
+		
 		public function hideText():void
 		{
 			timerText.visible = false;
 			scoreText.visible = false;
 			leaderText.visible = false;
 		}
-
+		
 		public function showText():void
 		{
 			timerText.visible = true;
 			scoreText.visible = true;
 			leaderText.visible = true;
 		}
-
+		
 		protected function m_gameEnded(param1:Message):void
 		{
 			var _loc2_:Number = NaN;
 			var _loc5_:int = 0;
-			matchEndTime = param1.getNumber(_loc5_++ );
+			matchEndTime = param1.getNumber(_loc5_++);
 			endGameScreenTime = matchEndTime + 5000;
-			roomEndTime = param1.getNumber(_loc5_++ );
+			roomEndTime = param1.getNumber(_loc5_++);
 			saveScore(param1, _loc5_);
 			for each (var _loc4_:* in g.playerManager.players)
 			{
@@ -320,12 +323,12 @@ package core.hud.components.pvp
 			}
 			Game.trackEvent("pvp", "match stats", g.me.level.toString(), _loc2_);
 		}
-
+		
 		protected function m_updateScore(param1:Message):void
 		{
 			saveScore(param1, 0);
 		}
-
+		
 		protected function saveScore(param1:Message, param2:int):void
 		{
 			var _loc8_:* = 0;
@@ -337,9 +340,9 @@ package core.hud.components.pvp
 			_loc8_ = param2;
 			while (_loc8_ < param1.length)
 			{
-				_loc7_ = param1.getString(_loc8_++ );
-				_loc5_ = param1.getString(_loc8_++ );
-				_loc6_ = param1.getInt(_loc8_++ );
+				_loc7_ = param1.getString(_loc8_++);
+				_loc5_ = param1.getString(_loc8_++);
+				_loc6_ = param1.getInt(_loc8_++);
 				_loc3_ = getScoreHolder(_loc7_, _loc5_);
 				if (_loc3_ == null)
 				{
@@ -354,31 +357,31 @@ package core.hud.components.pvp
 					}
 				}
 				_loc3_.team = _loc6_;
-				_loc3_.rank = param1.getInt(_loc8_++ );
-				_loc3_.score = param1.getInt(_loc8_++ );
-				_loc3_.kills = param1.getInt(_loc8_++ );
-				_loc3_.deaths = param1.getInt(_loc8_++ );
-				_loc3_.xpSum = param1.getInt(_loc8_++ );
-				_loc3_.steelSum = param1.getInt(_loc8_++ );
-				_loc3_.hydrogenSum = param1.getInt(_loc8_++ );
-				_loc3_.plasmaSum = param1.getInt(_loc8_++ );
-				_loc3_.iridiumSum = param1.getInt(_loc8_++ );
-				_loc3_.damageSum = param1.getInt(_loc8_++ );
-				_loc3_.healingSum = param1.getInt(_loc8_++ );
-				_loc3_.bonusPercent = param1.getInt(_loc8_++ );
-				_loc3_.first = param1.getInt(_loc8_++ );
-				_loc3_.second = param1.getInt(_loc8_++ );
-				_loc3_.third = param1.getInt(_loc8_++ );
-				_loc3_.hotStreak3 = param1.getInt(_loc8_++ );
-				_loc3_.hotStreak10 = param1.getInt(_loc8_++ );
-				_loc3_.noDeaths = param1.getInt(_loc8_++ );
-				_loc3_.capZone = param1.getInt(_loc8_++ );
-				_loc3_.defZone = param1.getInt(_loc8_++ );
-				_loc3_.brokeKillingSpree = param1.getInt(_loc8_++ );
-				_loc3_.pickups = param1.getInt(_loc8_++ );
-				_loc3_.rating = param1.getNumber(_loc8_++ );
-				_loc3_.ratingChange = param1.getNumber(_loc8_++ );
-				_loc3_.dailyBonus = param1.getInt(_loc8_++ );
+				_loc3_.rank = param1.getInt(_loc8_++);
+				_loc3_.score = param1.getInt(_loc8_++);
+				_loc3_.kills = param1.getInt(_loc8_++);
+				_loc3_.deaths = param1.getInt(_loc8_++);
+				_loc3_.xpSum = param1.getInt(_loc8_++);
+				_loc3_.steelSum = param1.getInt(_loc8_++);
+				_loc3_.hydrogenSum = param1.getInt(_loc8_++);
+				_loc3_.plasmaSum = param1.getInt(_loc8_++);
+				_loc3_.iridiumSum = param1.getInt(_loc8_++);
+				_loc3_.damageSum = param1.getInt(_loc8_++);
+				_loc3_.healingSum = param1.getInt(_loc8_++);
+				_loc3_.bonusPercent = param1.getInt(_loc8_++);
+				_loc3_.first = param1.getInt(_loc8_++);
+				_loc3_.second = param1.getInt(_loc8_++);
+				_loc3_.third = param1.getInt(_loc8_++);
+				_loc3_.hotStreak3 = param1.getInt(_loc8_++);
+				_loc3_.hotStreak10 = param1.getInt(_loc8_++);
+				_loc3_.noDeaths = param1.getInt(_loc8_++);
+				_loc3_.capZone = param1.getInt(_loc8_++);
+				_loc3_.defZone = param1.getInt(_loc8_++);
+				_loc3_.brokeKillingSpree = param1.getInt(_loc8_++);
+				_loc3_.pickups = param1.getInt(_loc8_++);
+				_loc3_.rating = param1.getNumber(_loc8_++);
+				_loc3_.ratingChange = param1.getNumber(_loc8_++);
+				_loc3_.dailyBonus = param1.getInt(_loc8_++);
 				_loc3_.afk = param1.getBoolean(_loc8_);
 				_loc8_++;
 			}
@@ -391,7 +394,7 @@ package core.hud.components.pvp
 			}
 			scoreListUpdated = true;
 		}
-
+		
 		public function addDamage(param1:String, param2:int):void
 		{
 			var _loc3_:PvpScoreHolder = getScoreItem(param1);
@@ -401,7 +404,7 @@ package core.hud.components.pvp
 			}
 			scoreListUpdated = true;
 		}
-
+		
 		public function addHealing(param1:String, param2:int):void
 		{
 			var _loc3_:PvpScoreHolder = getScoreItem(param1);
@@ -411,7 +414,7 @@ package core.hud.components.pvp
 			}
 			scoreListUpdated = true;
 		}
-
+		
 		public function getScoreItem(param1:String):PvpScoreHolder
 		{
 			for each (var _loc2_:* in scoreList)
@@ -423,12 +426,12 @@ package core.hud.components.pvp
 			}
 			return null;
 		}
-
+		
 		public function getScoreList():Vector.<PvpScoreHolder>
 		{
 			return scoreList;
 		}
-
+		
 		public function getScoreHolder(param1:String, param2:String):PvpScoreHolder
 		{
 			for each (var _loc3_:* in scoreList)
@@ -446,7 +449,7 @@ package core.hud.components.pvp
 			scoreList.push(_loc3_);
 			return _loc3_;
 		}
-
+		
 		private function m_pvpInitPlayers(param1:Message):void
 		{
 			var _loc7_:String = null;
@@ -455,23 +458,23 @@ package core.hud.components.pvp
 			var _loc3_:Player = null;
 			var _loc2_:PvpScoreHolder = null;
 			var _loc8_:int = 0;
-			type = param1.getString(_loc8_++ );
-			scoreLimit = param1.getInt(_loc8_++ );
-			var _loc5_:int = param1.getInt(_loc8_++ );
+			type = param1.getString(_loc8_++);
+			scoreLimit = param1.getInt(_loc8_++);
+			var _loc5_:int = param1.getInt(_loc8_++);
 			if (_loc5_ > 0)
 			{
 				matchState = _loc5_;
 			}
-			roomStartTime = param1.getNumber(_loc8_++ );
-			matchStartTime = param1.getNumber(_loc8_++ );
-			matchEndTime = param1.getNumber(_loc8_++ );
+			roomStartTime = param1.getNumber(_loc8_++);
+			matchStartTime = param1.getNumber(_loc8_++);
+			matchEndTime = param1.getNumber(_loc8_++);
 			endGameScreenTime = matchEndTime + 5000;
-			roomEndTime = param1.getNumber(_loc8_++ );
+			roomEndTime = param1.getNumber(_loc8_++);
 			_loc8_;
 			while (_loc8_ < param1.length)
 			{
-				_loc7_ = param1.getString(_loc8_++ );
-				_loc4_ = param1.getString(_loc8_++ );
+				_loc7_ = param1.getString(_loc8_++);
+				_loc4_ = param1.getString(_loc8_++);
 				_loc6_ = param1.getInt(_loc8_);
 				_loc3_ = g.playerManager.playersById[_loc7_];
 				if (_loc3_ != null)
@@ -484,7 +487,7 @@ package core.hud.components.pvp
 			}
 			scoreList.sort(compareFunction);
 		}
-
+		
 		private function m_startQuad(param1:Message):void
 		{
 			var _loc3_:String = param1.getString(0);
@@ -496,7 +499,7 @@ package core.hud.components.pvp
 			}
 			_loc2_.ship.useQuad(_loc4_);
 		}
-
+		
 		private function m_setHostile(param1:Message):void
 		{
 			var _loc3_:String = null;
@@ -514,7 +517,7 @@ package core.hud.components.pvp
 				_loc4_ += 2;
 			}
 		}
-
+		
 		public function resize(param1:Event = null):void
 		{
 			if (timerText != null)

@@ -13,14 +13,19 @@ package core.states.gameStates.missions
 	import starling.filters.GlowFilter;
 	import starling.text.TextField;
 	import starling.text.TextFormat;
-
+	
 	public class Statusbar extends Sprite
 	{
 		private var label:TextField;
+		
 		private var g:Game;
+		
 		private var daily:Daily;
+		
 		private var bg:Image;
+		
 		private var front:Image;
+		
 		public function Statusbar(param1:Game, param2:Daily)
 		{
 			var _loc4_:ISound = null;
@@ -63,7 +68,7 @@ package core.states.gameStates.missions
 			addChild(label);
 			setRatio();
 		}
-
+		
 		private function setRatio():void
 		{
 			if (!front)
@@ -77,7 +82,7 @@ package core.states.gameStates.missions
 			front.setTexCoords(3, _loc1_, 1);
 			label.text = Math.floor(_loc1_ * 100).toFixed().toString() + "% complete";
 		}
-
+		
 		private function onClaim(param1:TouchEvent):void
 		{
 			if (param1.getTouch(this, "ended"))
@@ -88,7 +93,7 @@ package core.states.gameStates.missions
 				g.rpc("dailyMissionClaim", onClaimResponse, daily.key);
 			}
 		}
-
+		
 		private function onClaimResponse(param1:Message):void
 		{
 			var soundManager:ISound;
@@ -99,36 +104,28 @@ package core.states.gameStates.missions
 			bg.filter = new GlowFilter();
 			soundManager = SoundLocator.getService();
 			soundManager.play("daily_claim");
-			TweenMax.to(bg.filter, 0.3, {
-						"repeat": 5,
-						"yoyo": true,
-						"blur": 15,
-						"onCompleteListener": function():void
-						{
-							var reward:DailyReward;
-							var xpos:int;
-							removeChild(label);
-							bg.filter.dispose();
-							bg.filter = null;
-							TweenMax.to(bg, 0.8, {
-										"width": 0,
-										"onCompleteListener": function():void
-										{
-											removeChild(bg);
-											dispatchEventWith("dailyMissionClaimed");
-											soundManager.stop("daily_claim");
-											soundManager.play("daily_reward");
-										}
-									});
-							reward = new DailyReward(g, daily);
-							addChild(reward);
-							reward.x = width;
-							xpos = width / 2 - reward.width;
-							TweenMax.to(reward, 0.8, {"x": xpos});
-						}
-					});
+			TweenMax.to(bg.filter, 0.3, {"repeat": 5, "yoyo": true, "blur": 15, "onCompleteListener": function():void
+			{
+				var reward:DailyReward;
+				var xpos:int;
+				removeChild(label);
+				bg.filter.dispose();
+				bg.filter = null;
+				TweenMax.to(bg, 0.8, {"width": 0, "onCompleteListener": function():void
+				{
+					removeChild(bg);
+					dispatchEventWith("dailyMissionClaimed");
+					soundManager.stop("daily_claim");
+					soundManager.play("daily_reward");
+				}});
+				reward = new DailyReward(g, daily);
+				addChild(reward);
+				reward.x = width;
+				xpos = width / 2 - reward.width;
+				TweenMax.to(reward, 0.8, {"x": xpos});
+			}});
 		}
-
+		
 		public function update(param1:EnterFrameEvent):void
 		{
 			if (daily.status != 2)
@@ -148,7 +145,7 @@ package core.states.gameStates.missions
 				label.text = "Available again in " + Util.getFormattedTime(_loc2_);
 			}
 		}
-
+		
 		override public function dispose():void
 		{
 			bg.removeEventListeners();

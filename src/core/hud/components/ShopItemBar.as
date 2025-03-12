@@ -19,35 +19,52 @@ package core.hud.components
 	import starling.text.TextFormat;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class ShopItemBar extends Sprite
 	{
 		private static var SPECIAL_WEAPON_BLOOD_CLAW:String = "P6XvSQpMr0q7kQUsjeHvwQ";
 		private static var SPECIAL_WEAPON_X27S:String = "w3-ZtQ-y_kiefCpnvFo88A";
 		private static var SPECIAL_WEAPON_SPORE:String = "nRRv5U5g30adeYN9X2C78Q";
 		private var priceItems:Vector.<PriceCommodities>;
-
+		
 		private var dataManager:IDataManager;
+		
 		private var textureManager:ITextureManager;
+		
 		private var buyObj:Object;
+		
 		private var alreadyAquiredText:TextBitmap;
+		
 		private var buyButton:Button;
+		
 		private var buyWithFluxButton:Button;
+		
 		private var confirmBuyWithFlux:CreditBuyBox;
+		
 		private var nameText:TextBitmap;
+		
 		private var weaponIcon:Image;
+		
 		private var g:Game;
+		
 		private var _canAfford:Boolean = true;
 		private var _hasItem:Boolean = false;
 		private var infoContainer:Sprite;
+		
 		private var selectContainer:Sprite;
+		
 		private var selectQuad:Quad;
+		
 		private var selected:Boolean = false;
 		private var hover:Boolean = false;
 		private var table:String;
+		
 		private var key:String;
+		
 		private var orText:TextBitmap;
+		
 		private var fluxCost:int;
+		
 		public function ShopItemBar(param1:Game, param2:Sprite, param3:Object, param4:int)
 		{
 			var table:String;
@@ -102,9 +119,9 @@ package core.hud.components
 			array = shopItem.priceItems;
 			i = 0;
 			buyButton = new Button(function():void
-				{
-					g.rpc("buy", bought, table, item);
-				}, Localize.t("Produce"), "positive");
+			{
+				g.rpc("buy", bought, table, item);
+			}, Localize.t("Produce"), "positive");
 			buyButton.x = 0;
 			buyButton.y = 0;
 			alreadyAquiredText.text = Localize.t("Aquired!");
@@ -170,15 +187,15 @@ package core.hud.components
 			orText.visible = !specialWeapon;
 			infoContainer.addChild(orText);
 			buyWithFluxButton = new Button(function():void
+			{
+				g.creditManager.refresh(function():void
 				{
-					g.creditManager.refresh(function():void
-						{
-							confirmBuyWithFlux = new CreditBuyBox(g, fluxCost, Localize.t("Are you sure you want to buy the [name]?").replace("[name]", obj.name));
-							g.addChildToOverlay(confirmBuyWithFlux);
-							confirmBuyWithFlux.addEventListener("accept", onAccept);
-							confirmBuyWithFlux.addEventListener("close", onClose);
-						});
-				}, Localize.t("Buy for [flux] Flux").replace("[flux]", fluxCost), "highlight");
+					confirmBuyWithFlux = new CreditBuyBox(g, fluxCost, Localize.t("Are you sure you want to buy the [name]?").replace("[name]", obj.name));
+					g.addChildToOverlay(confirmBuyWithFlux);
+					confirmBuyWithFlux.addEventListener("accept", onAccept);
+					confirmBuyWithFlux.addEventListener("close", onClose);
+				});
+			}, Localize.t("Buy for [flux] Flux").replace("[flux]", fluxCost), "highlight");
 			buyWithFluxButton.y = buyButton.y;
 			buyWithFluxButton.x = orText.x + orText.width + 10;
 			buyWithFluxButton.visible = !specialWeapon;
@@ -187,14 +204,14 @@ package core.hud.components
 			addDescription(obj);
 			this.addEventListener("removedFromStage", clean);
 		}
-
+		
 		private function onAccept(param1:Event):void
 		{
 			g.rpc("buyWeaponWithFlux", boughtWeaponWithFlux, key, table);
 			confirmBuyWithFlux.removeEventListener("accept", onAccept);
 			confirmBuyWithFlux.removeEventListener("close", onClose);
 		}
-
+		
 		private function boughtWeaponWithFlux(param1:Message):void
 		{
 			if (param1.getBoolean(0))
@@ -215,21 +232,21 @@ package core.hud.components
 				}
 			}
 		}
-
+		
 		private function onClose(param1:Event):void
 		{
 			confirmBuyWithFlux.removeEventListener("accept", onAccept);
 			confirmBuyWithFlux.removeEventListener("close", onClose);
 			buyWithFluxButton.enabled = true;
 		}
-
+		
 		private function addDescription(param1:Object):void
 		{
 			var _loc2_:ShopItemBarStats = new ShopItemBarStats(param1);
 			_loc2_.y = buyButton.y + buyButton.height;
 			infoContainer.addChild(_loc2_);
 		}
-
+		
 		public function update():void
 		{
 			for each (var _loc1_:* in priceItems)
@@ -237,7 +254,7 @@ package core.hud.components
 				_loc1_.load();
 			}
 		}
-
+		
 		private function bought(param1:Message):void
 		{
 			if (param1.getBoolean(0))
@@ -252,26 +269,18 @@ package core.hud.components
 				animate();
 			}
 		}
-
+		
 		private function animate():void
 		{
 			var soundManager:ISound = SoundLocator.getService();
 			soundManager.preCacheSound("7zeIcPFb-UWzgtR_3nrZ8Q", function():void
-				{
-					TweenMax.from(alreadyAquiredText, 1, {
-								"scaleX": 8,
-								"scaleY": 8,
-								"alpha": 0
-							});
-					TweenMax.from(weaponIcon, 1, {
-								"scaleX": 8,
-								"scaleY": 8,
-								"alpha": 0
-							});
-					soundManager.play("7zeIcPFb-UWzgtR_3nrZ8Q");
-				});
+			{
+				TweenMax.from(alreadyAquiredText, 1, {"scaleX": 8, "scaleY": 8, "alpha": 0});
+				TweenMax.from(weaponIcon, 1, {"scaleX": 8, "scaleY": 8, "alpha": 0});
+				soundManager.play("7zeIcPFb-UWzgtR_3nrZ8Q");
+			});
 		}
-
+		
 		private function set hasItem(param1:Boolean):void
 		{
 			alreadyAquiredText.visible = param1;
@@ -286,30 +295,30 @@ package core.hud.components
 				buyWithFluxButton.visible = false;
 			}
 		}
-
+		
 		private function set canAfford(param1:Boolean):void
 		{
 			_canAfford = param1;
 			enabled = _hasItem ? false : param1;
 		}
-
+		
 		private function set enabled(param1:Boolean):void
 		{
 			buyButton.enabled = param1;
 		}
-
+		
 		private function showInfo(param1:Boolean):void
 		{
 			infoContainer.visible = param1;
 		}
-
+		
 		public function deselect():void
 		{
 			selected = false;
 			drawSelectContainer();
 			showInfo(selected);
 		}
-
+		
 		private function click(param1:TouchEvent):void
 		{
 			param1.stopPropagation();
@@ -320,7 +329,7 @@ package core.hud.components
 			showInfo(selected);
 			dispatchEvent(new TouchEvent("select", param1.touches));
 		}
-
+		
 		private function drawSelectContainer():void
 		{
 			selectQuad.width = 300;
@@ -341,19 +350,19 @@ package core.hud.components
 				selectQuad.alpha = 0.3;
 			}
 		}
-
+		
 		private function mOut(param1:TouchEvent):void
 		{
 			hover = false;
 			drawSelectContainer();
 		}
-
+		
 		private function mOver(param1:TouchEvent):void
 		{
 			hover = true;
 			drawSelectContainer();
 		}
-
+		
 		private function onTouch(param1:TouchEvent):void
 		{
 			if (param1.getTouch(this, "ended"))
@@ -369,7 +378,7 @@ package core.hud.components
 				mOut(param1);
 			}
 		}
-
+		
 		private function clean(param1:Event = null):void
 		{
 			removeEventListener("removedFromStage", clean);

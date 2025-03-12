@@ -6,14 +6,19 @@ package core.hud.components.map
 	import starling.display.Sprite;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class MapPvpZone extends Sprite
 	{
 		private var g:Game;
+		
 		private var dz:DominationZone;
+		
 		private var img:Image;
+		
 		private var currentOwner:int;
+		
 		private var zone:Image;
+		
 		private var lastBlink:Number = 0;
 		public function MapPvpZone(param1:Game, param2:DominationZone)
 		{
@@ -35,7 +40,7 @@ package core.hud.components.map
 			zone.color = 16777215;
 			addChild(zone);
 		}
-
+		
 		public function update():void
 		{
 			if (dz.ownerTeam != currentOwner)

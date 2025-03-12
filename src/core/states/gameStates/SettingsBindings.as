@@ -9,16 +9,19 @@ package core.states.gameStates
 	import generics.Localize;
 	import starling.display.Sprite;
 	import starling.events.Event;
-
+	
 	public class SettingsBindings extends Sprite
 	{
 		private var g:Game;
+		
 		private var keybinds:KeyBinds;
+		
 		private var currentHeight:Number = 0;
 		private var currentWidth:Number = 50;
 		private var scrollArea:ScrollContainer;
+		
 		private var keybindList:Vector.<SettingsKeybind>;
-
+		
 		public function SettingsBindings(param1:Game)
 		{
 			keybindList = new Vector.<SettingsKeybind>();
@@ -34,7 +37,7 @@ package core.states.gameStates
 			addChild(scrollArea);
 			param1.stage.addEventListener("updateButtons", updateButtons);
 		}
-
+		
 		private function initComponents():void
 		{
 			var _loc1_:Text = new Text();
@@ -93,7 +96,7 @@ package core.states.gameStates
 			addKeybind(8);
 			addKeybind(0);
 		}
-
+		
 		private function addKeybind(param1:int):void
 		{
 			var _loc2_:SettingsKeybind = new SettingsKeybind(keybinds, param1, currentWidth, currentHeight);
@@ -101,7 +104,7 @@ package core.states.gameStates
 			scrollArea.addChild(_loc2_);
 			currentHeight += 62;
 		}
-
+		
 		public function updateButtons(param1:Event):void
 		{
 			for each (var _loc2_:* in keybindList)

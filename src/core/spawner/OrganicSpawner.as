@@ -4,22 +4,21 @@ package core.spawner
 	import starling.textures.Texture;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class OrganicSpawner extends Spawner
 	{
 		private static const NR_OF_INACTIVE_FRAMES:int = 7;
-
 		private var dmgTile:int = -1;
 		private var dmgTileDuration:int = 1000;
 		private var dmgTileNextReduction:Number = 0;
 		private var inactiveTexturesArray:Vector.<Vector.<Texture>>;
-
+		
 		public function OrganicSpawner(param1:Game)
 		{
 			super(param1);
 			inactiveTexturesArray = new Vector.<Vector.<Texture>>();
 		}
-
+		
 		override public function update():void
 		{
 			var _loc1_:int = 0;
@@ -49,7 +48,7 @@ package core.spawner
 				}
 			}
 		}
-
+		
 		override public function switchTexturesByObj(param1:Object, param2:String = "texture_main_NEW.png"):void
 		{
 			var _loc3_:* = undefined;
@@ -67,7 +66,7 @@ package core.spawner
 				}
 			}
 		}
-
+		
 		override public function takeDamage(param1:int):void
 		{
 			if (dmgTile < 6)

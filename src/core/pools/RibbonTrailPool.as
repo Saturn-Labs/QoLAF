@@ -3,15 +3,17 @@ package core.pools
 	import core.scene.Game;
 	import extensions.RibbonTrail;
 	import starling.display.MeshBatch;
-
+	
 	public class RibbonTrailPool
 	{
 		private var meshBatch:MeshBatch;
+		
 		private var inactiveRibbonTrails:Vector.<RibbonTrail>;
-
+		
 		private var activeRibbonTrails:Vector.<RibbonTrail>;
-
+		
 		private var g:Game;
+		
 		public function RibbonTrailPool(param1:Game)
 		{
 			var _loc3_:int = 0;
@@ -31,7 +33,7 @@ package core.pools
 			meshBatch.blendMode = "add";
 			param1.canvasEffects.addChild(meshBatch);
 		}
-
+		
 		public function getRibbonTrail():RibbonTrail
 		{
 			var _loc1_:RibbonTrail = null;
@@ -54,7 +56,7 @@ package core.pools
 			}
 			return _loc1_;
 		}
-
+		
 		public function update():void
 		{
 			var _loc3_:int = 0;
@@ -72,7 +74,7 @@ package core.pools
 				_loc3_++;
 			}
 		}
-
+		
 		public function removeRibbonTrail(param1:RibbonTrail):void
 		{
 			var _loc2_:int = int(activeRibbonTrails.indexOf(param1));
@@ -83,7 +85,7 @@ package core.pools
 			activeRibbonTrails.splice(_loc2_, 1);
 			inactiveRibbonTrails.push(param1);
 		}
-
+		
 		public function dispose():void
 		{
 			for each (var _loc1_:* in inactiveRibbonTrails)

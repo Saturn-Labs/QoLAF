@@ -11,19 +11,28 @@ package core.hud.components.techTree
 	import starling.events.TouchEvent;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class EliteTechBar extends Sprite
 	{
 		private var g:Game;
+		
 		private var icon:Image;
+		
 		private var _name:Text;
+		
 		private var desc:Text;
+		
 		private var level:Text;
+		
 		private var box:Box;
+		
 		private var techSkill:TechSkill;
+		
 		private var eliteTech:String;
+		
 		public var etpm:EliteTechPopupMenu = null;
 		private var textureManager:ITextureManager;
+		
 		public function EliteTechBar(param1:Game, param2:String, param3:String, param4:String, param5:int, param6:String, param7:TechSkill)
 		{
 			box = new Box(420, 120, "light", 1, 2);
@@ -78,19 +87,19 @@ package core.hud.components.techTree
 			addChild(box);
 			this.addEventListener("touch", onTouch);
 		}
-
+		
 		private function mouseOver(param1:TouchEvent):void
 		{
 			box.alpha = 1;
 			box.useHandCursor = true;
 		}
-
+		
 		private function mouseOut(param1:TouchEvent):void
 		{
 			box.alpha = 0.5;
 			box.useHandCursor = false;
 		}
-
+		
 		private function mouseClick(param1:TouchEvent):void
 		{
 			var _loc2_:Boolean = false;
@@ -114,12 +123,12 @@ package core.hud.components.techTree
 			g.rpc("selectActiveEliteTech", updateAndClose, techSkill.table, techSkill.tech, eliteTech);
 			etpm.disableAll();
 		}
-
+		
 		private function updateAndClose(param1:Message):void
 		{
 			etpm.updateAndClose(param1);
 		}
-
+		
 		private function onTouch(param1:TouchEvent):void
 		{
 			if (param1.getTouch(this, "ended"))
@@ -135,7 +144,7 @@ package core.hud.components.techTree
 				mouseOut(param1);
 			}
 		}
-
+		
 		override public function dispose():void
 		{
 			removeEventListeners();

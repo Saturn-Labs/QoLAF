@@ -17,72 +17,120 @@ package core.projectile
 	import starling.core.Starling;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class Projectile extends GameObject
 	{
 		private static const DT:Number = 33;
-
 		private static const DTxDT_HALF:Number = Math.pow(33, 2) * 0.5;
-
 		public var numberOfHits:int;
+		
 		public var alive:Boolean;
+		
 		public var ttl:int;
+		
 		public var ttlMax:int;
+		
 		public var speed:Point;
+		
 		public var speedMax:Number;
+		
 		public var rotationSpeedMax:Number;
+		
 		public var acceleration:Number;
+		
 		public var stateMachine:StateMachine;
+		
 		public var unit:Unit;
+		
 		public var weapon:Weapon;
+		
 		public var dmgRadius:int;
+		
 		public var wave:Boolean;
+		
 		public var waveDirection:int;
+		
 		public var waveAmplitude:Number;
+		
 		public var waveFrequency:Number;
+		
 		public var clusterProjectile:String;
+		
 		public var clusterNrOfSplits:int;
+		
 		public var clusterNrOfProjectiles:int;
+		
 		public var clusterAngle:Number;
+		
 		public var aiAlwaysExplode:Boolean;
+		
 		public var oldPos:Point;
+		
 		public var boomerangReturnTime:int;
+		
 		public var boomerangReturning:Boolean;
+		
 		public var direction:int;
+		
 		public var ps:PlayerShip;
+		
 		public var range:Number;
+		
 		public var debuffType:int;
+		
 		public var target:Unit;
+		
 		public var targetProjectile:Projectile;
+		
 		public var error:Point;
+		
 		public var convergenceTime:int;
+		
 		public var convergenceCounter:int;
+		
 		public var collisionRadius:Number;
+		
 		public var useShipSystem:Boolean;
+		
 		public var course:Heading;
+		
 		public var thrustEmitters:Vector.<Emitter>;
-
+		
 		public var randomAngle:Boolean;
+		
 		public var explosionEffect:String;
+		
 		public var explosionSound:String;
+		
 		public var isVisible:Boolean = false;
 		public var isEnemy:Boolean;
+		
 		public var isHeal:Boolean;
+		
 		public var aiStuck:Boolean;
+		
 		public var aiStuckDuration:int;
+		
 		public var aiTargetSelf:Boolean;
+		
 		public var aiDelayedAcceleration:Boolean;
+		
 		public var aiDelayedAccelerationTime:int = 0;
 		private var g:Game;
+		
 		public var ai:String;
+		
 		public var errorRot:Number;
+		
 		public var hasRibbonTrail:Boolean = false;
 		public var useRibbonOffset:Boolean = false;
 		public var ribbonThickness:Number = 0;
 		public var ribbonTrail:RibbonTrail;
+		
 		private var followingRibbonSegment:RibbonSegment;
+		
 		public var followingRibbonSegmentLine:Vector.<RibbonSegment>;
-
+		
 		private var hasDoneFirstUpdate:Boolean = false;
 		private var tempVx:Number = 0;
 		private var tempVy:Number = 0;
@@ -102,7 +150,7 @@ package core.projectile
 			ttl = 0;
 			thrustEmitters = new Vector.<Emitter>();
 		}
-
+		
 		override public function update():void
 		{
 			var _loc2_:Point = null;
@@ -157,7 +205,7 @@ package core.projectile
 			}
 			super.update();
 		}
-
+		
 		private function updateRibbonTrail():void
 		{
 			var _loc3_:Number = NaN;
@@ -199,7 +247,7 @@ package core.projectile
 			}
 			ribbonTrail.advanceTime(33);
 		}
-
+		
 		public function fastforward():void
 		{
 			if (course.time + 10000 >= g.time)
@@ -217,7 +265,7 @@ package core.projectile
 				}
 			}
 		}
-
+		
 		public function updateHeading(param1:Heading):void
 		{
 			var _loc2_:Number = NaN;
@@ -258,7 +306,7 @@ package core.projectile
 			param1.pos.y += 0.001 * param1.speed.y * 33;
 			param1.time += 33;
 		}
-
+		
 		public function explode(param1:Boolean = false, param2:Unit = null):void
 		{
 			var _loc3_:* = undefined;
@@ -288,7 +336,7 @@ package core.projectile
 				}
 			}
 		}
-
+		
 		public function destroy(param1:Boolean = true):void
 		{
 			var _loc2_:int = 0;
@@ -311,7 +359,7 @@ package core.projectile
 				stateMachine.update();
 			}
 		}
-
+		
 		public function ignite():void
 		{
 			var _loc1_:int = 0;
@@ -322,7 +370,7 @@ package core.projectile
 				_loc1_++;
 			}
 		}
-
+		
 		public function disable():void
 		{
 			if (ai == "mine")
@@ -330,7 +378,7 @@ package core.projectile
 				switchTextures(imgObj.textureName.replace("active", "disabled"));
 			}
 		}
-
+		
 		public function activate():void
 		{
 			if (ai == "mine")
@@ -339,14 +387,14 @@ package core.projectile
 				Starling.juggler.add(_mc);
 			}
 		}
-
+		
 		private function switchTextures(param1:String):void
 		{
 			var _loc2_:ITextureManager = TextureLocator.getService();
 			_textures = _loc2_.getTexturesMainByTextureName(param1);
 			swapFrames(_mc, _textures);
 		}
-
+		
 		public function tryAddRibbonTrail():void
 		{
 			if (hasRibbonTrail)
@@ -355,7 +403,7 @@ package core.projectile
 				updateRibbonTrail();
 			}
 		}
-
+		
 		override public function addToCanvas():void
 		{
 			isAddedToCanvas = true;
@@ -364,7 +412,7 @@ package core.projectile
 				return;
 			}
 		}
-
+		
 		override public function removeFromCanvas():void
 		{
 			isAddedToCanvas = false;
@@ -373,7 +421,7 @@ package core.projectile
 				return;
 			}
 		}
-
+		
 		override public function reset():void
 		{
 			g.emitterManager.clean(this);

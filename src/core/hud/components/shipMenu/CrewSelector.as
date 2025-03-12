@@ -13,14 +13,17 @@ package core.hud.components.shipMenu
 	import starling.textures.Texture;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class CrewSelector extends Sprite
 	{
 		private var g:Game;
+		
 		private var p:Player;
+		
 		private var icons:Vector.<MenuSelectIcon>;
-
+		
 		private var textureManager:ITextureManager;
+		
 		public function CrewSelector(param1:Game, param2:Player)
 		{
 			icons = new Vector.<MenuSelectIcon>();
@@ -30,7 +33,7 @@ package core.hud.components.shipMenu
 			textureManager = TextureLocator.getService();
 			load();
 		}
-
+		
 		private function load():void
 		{
 			var _loc2_:String = null;
@@ -63,7 +66,7 @@ package core.hud.components.shipMenu
 				_loc4_++;
 			}
 		}
-
+		
 		private function createCrewIcon(param1:int, param2:Texture, param3:String, param4:Boolean = true, param5:Boolean = false, param6:Boolean = false, param7:String = null):void
 		{
 			var number:int = param1;
@@ -82,27 +85,27 @@ package core.hud.components.shipMenu
 			if (!locked)
 			{
 				crewIcon.addEventListener("touch", function(param1:TouchEvent):void
+				{
+					if (param1.getTouch(crewIcon, "ended"))
 					{
-						if (param1.getTouch(crewIcon, "ended"))
-						{
-							dispatchEventWith("crewSelected");
-						}
-					});
+						dispatchEventWith("crewSelected");
+					}
+				});
 			}
 			else if (locked && enabled)
 			{
 				crewIcon.addEventListener("touch", function(param1:TouchEvent):void
+				{
+					if (param1.getTouch(crewIcon, "ended"))
 					{
-						if (param1.getTouch(crewIcon, "ended"))
-						{
-							openUnlockSlot(crewIcon.number);
-						}
-					});
+						openUnlockSlot(crewIcon.number);
+					}
+				});
 			}
 			addChild(crewIcon);
 			icons.push(crewIcon);
 		}
-
+		
 		private function openUnlockSlot(param1:int):void
 		{
 			var fluxCost:int;
@@ -119,29 +122,29 @@ package core.hud.components.shipMenu
 			{
 				buyBox.addBuyForFluxButton(fluxCost, number, "buyCrewSlotWithFlux", "Are you sure you want to buy a crew slot?");
 				buyBox.addEventListener("fluxBuy", function(param1:Event):void
-					{
-						Game.trackEvent("used flux", "bought crew slot", "number " + number, fluxCost);
-						p.unlockedCrewSlots = number;
-						g.removeChildFromOverlay(buyBox, true);
-						refresh();
-					});
+				{
+					Game.trackEvent("used flux", "bought crew slot", "number " + number, fluxCost);
+					p.unlockedCrewSlots = number;
+					g.removeChildFromOverlay(buyBox, true);
+					refresh();
+				});
 			}
 			buyBox.addEventListener("accept", function(param1:Event):void
-				{
-					var e:Event = param1;
-					g.me.tryUnlockSlot("slotCrew", number, function():void
-						{
-							g.removeChildFromOverlay(buyBox, true);
-							refresh();
-						});
-				});
-			buyBox.addEventListener("close", function(param1:Event):void
+			{
+				var e:Event = param1;
+				g.me.tryUnlockSlot("slotCrew", number, function():void
 				{
 					g.removeChildFromOverlay(buyBox, true);
+					refresh();
 				});
+			});
+			buyBox.addEventListener("close", function(param1:Event):void
+			{
+				g.removeChildFromOverlay(buyBox, true);
+			});
 			g.addChildToOverlay(buyBox);
 		}
-
+		
 		public function refresh():void
 		{
 			for each (var _loc1_:* in icons)
@@ -155,7 +158,7 @@ package core.hud.components.shipMenu
 			dispatchEventWith("refresh");
 			load();
 		}
-
+		
 		override public function dispose():void
 		{
 			for each (var _loc1_:* in icons)

@@ -8,19 +8,25 @@ package sound
 	import flash.media.SoundTransform;
 	import flash.net.URLRequest;
 	import flash.utils.getTimer;
-
+	
 	public class SoundObject extends Sound
 	{
 		private var position:Number;
+		
 		private var sc:SoundChannel;
+		
 		private var loop:Boolean;
+		
 		public var isPlaying:Boolean = false;
 		private var _volume:Number;
+		
 		public var multipleAllowed:Boolean = false;
 		public var key:String;
+		
 		private var _originalVolume:Number;
+		
 		private var soundChannels:Vector.<SoundChannel>;
-
+		
 		private var oldTime:int = 0;
 		public function SoundObject(param1:String)
 		{
@@ -29,7 +35,7 @@ package sound
 			loop = false;
 			position = 0;
 		}
-
+		
 		public function playObject(param1:Number, param2:Boolean = false):SoundChannel
 		{
 			var _loc3_:uint = uint(getTimer());
@@ -59,7 +65,7 @@ package sound
 			}
 			return sc;
 		}
-
+		
 		public function resume(param1:Number, param2:Boolean):SoundChannel
 		{
 			this.loop = param2;
@@ -75,7 +81,7 @@ package sound
 			fadePlay(position);
 			return sc;
 		}
-
+		
 		public function pause():void
 		{
 			if (sc != null)
@@ -85,7 +91,7 @@ package sound
 				sc.stop();
 			}
 		}
-
+		
 		public function stop():void
 		{
 			isPlaying = false;
@@ -100,7 +106,7 @@ package sound
 			loop = false;
 			sc = null;
 		}
-
+		
 		public function fadePlay(param1:*, param2:Function = null):void
 		{
 			var tween:TweenMax;
@@ -122,47 +128,41 @@ package sound
 				volume = 0;
 				sc = play(position);
 				isPlaying = true;
-				tween = TweenMax.to(this, 3, {
-							"volume": originalVolume * soundManager.musicVolume,
-							"onComplete": function():void
-							{
-								if (callback != null)
-								{
-									callback();
-								}
-							}
-						});
+				tween = TweenMax.to(this, 3, {"volume": originalVolume * soundManager.musicVolume, "onComplete": function():void
+				{
+					if (callback != null)
+					{
+						callback();
+					}
+				}});
 			}
 			else if (callback != null)
 			{
 				callback();
 			}
 		}
-
+		
 		public function fadeStop(param1:Function = null):void
 		{
 			var tween:TweenMax;
 			var callback:Function = param1;
 			if (sc != null)
 			{
-				tween = TweenMax.to(this, 3, {
-							"volume": 0,
-							"onComplete": function():void
-							{
-								stop();
-								if (callback != null)
-								{
-									callback();
-								}
-							}
-						});
+				tween = TweenMax.to(this, 3, {"volume": 0, "onComplete": function():void
+				{
+					stop();
+					if (callback != null)
+					{
+						callback();
+					}
+				}});
 			}
 			else if (callback != null)
 			{
 				callback();
 			}
 		}
-
+		
 		private function restartSoundChannel(param1:Event):void
 		{
 			if (!loop)
@@ -175,7 +175,7 @@ package sound
 			updateVolume();
 			sc.addEventListener("soundComplete", restartSoundChannel);
 		}
-
+		
 		private function updateVolume():void
 		{
 			var _loc1_:SoundTransform = null;
@@ -185,28 +185,28 @@ package sound
 				sc.soundTransform = _loc1_;
 			}
 		}
-
+		
 		public function get volume():Number
 		{
 			return _volume;
 		}
-
+		
 		public function set volume(param1:Number):void
 		{
 			_volume = param1;
 			updateVolume();
 		}
-
+		
 		public function set originalVolume(param1:Number):void
 		{
 			_originalVolume = param1;
 		}
-
+		
 		public function get originalVolume():Number
 		{
 			return _originalVolume;
 		}
-
+		
 		private function killSoundChannel(param1:Event):void
 		{
 			var _loc2_:SoundChannel = param1.target as SoundChannel;

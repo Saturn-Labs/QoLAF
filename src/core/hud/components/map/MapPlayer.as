@@ -13,17 +13,24 @@ package core.hud.components.map
 	import starling.display.Sprite;
 	import starling.textures.Texture;
 	import textures.TextureLocator;
-
+	
 	public class MapPlayer
 	{
 		private var player:Player;
+		
 		private var scale:Number = 0.35;
 		private var layer:Image;
+		
 		private var text:TextBitmap;
+		
 		private var g:Game;
+		
 		private var supporterImage:Image;
+		
 		private var lastTeam:int;
+		
 		private var isDomination:Boolean;
+		
 		public function MapPlayer(param1:Sprite, param2:Player, param3:Game, param4:Boolean)
 		{
 			var ship:PlayerShip;
@@ -72,23 +79,14 @@ package core.hud.components.map
 				{
 					supporterImage.visible = false;
 				}
-				TweenMax.to(layer, 0.5, {
-							"startAt": {
-								"scaleX": 1.5,
-								"scaleY": 1.5
-							},
-							"scaleX": scale,
-							"scaleY": scale,
-							"ease": Circ.easeIn,
-							"onComplete": function():void
-							{
-								text.visible = true;
-								if (supporterImage != null)
-								{
-									supporterImage.visible = true;
-								}
-							}
-						});
+				TweenMax.to(layer, 0.5, {"startAt": {"scaleX": 1.5, "scaleY": 1.5}, "scaleX": scale, "scaleY": scale, "ease": Circ.easeIn, "onComplete": function():void
+				{
+					text.visible = true;
+					if (supporterImage != null)
+					{
+						supporterImage.visible = true;
+					}
+				}});
 			}
 			else if (isDomination == false && player.group != null && g.me.group != null && player.group.id == g.me.group.id)
 			{
@@ -108,7 +106,7 @@ package core.hud.components.map
 			container.addChild(text);
 			this.player = player;
 		}
-
+		
 		public function get isMe():Boolean
 		{
 			if (player != null)
@@ -117,7 +115,7 @@ package core.hud.components.map
 			}
 			return false;
 		}
-
+		
 		public function update():void
 		{
 			if (player == null || player.ship == null || player.ship.landed || player.ship.hp <= 0)
@@ -133,7 +131,7 @@ package core.hud.components.map
 			}
 			draw();
 		}
-
+		
 		private function draw():void
 		{
 			layer.visible = true;
@@ -160,27 +158,27 @@ package core.hud.components.map
 				supporterImage.y = text.y + 3;
 			}
 		}
-
+		
 		public function get width():Number
 		{
 			return layer.width * scale;
 		}
-
+		
 		public function get height():Number
 		{
 			return layer.height * scale;
 		}
-
+		
 		public function get x():Number
 		{
 			return layer.x;
 		}
-
+		
 		public function get y():Number
 		{
 			return layer.y;
 		}
-
+		
 		public function dispose():void
 		{
 			if (layer && layer.filter)

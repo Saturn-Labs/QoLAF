@@ -2,14 +2,14 @@ package core.spawner
 {
 	import core.boss.Boss;
 	import core.scene.Game;
-
+	
 	public class SpawnFactory
 	{
 		public function SpawnFactory()
 		{
 			super();
 		}
-
+		
 		public static function createSpawner(param1:Object, param2:String, param3:Game, param4:Boss = null):Spawner
 		{
 			var _loc5_:Spawner = param3.spawnManager.getSpawner(param1.type);

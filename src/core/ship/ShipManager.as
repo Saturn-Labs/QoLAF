@@ -1,7 +1,6 @@
 package core.ship
 {
 	import core.scene.Game;
-	import core.scene.SceneBase;
 	import core.spawner.Spawner;
 	import core.states.AIStates.AIChase;
 	import core.states.AIStates.AIExit;
@@ -23,23 +22,25 @@ package core.ship
 	import generics.Random;
 	import movement.Heading;
 	import playerio.Message;
-	import qolaf.target.TargetSystem;
-
+	
 	public class ShipManager
 	{
 		private var g:Game;
+		
 		public var shipSync:ShipSync;
+		
 		public var ships:Vector.<Ship>;
-
+		
 		public var players:Vector.<PlayerShip>;
-
+		
 		private var inactivePlayers:Vector.<PlayerShip>;
-
+		
 		public var enemies:Vector.<EnemyShip>;
-
+		
 		private var inactiveEnemies:Vector.<EnemyShip>;
-
+		
 		public var enemiesById:Dictionary;
+		
 		public function ShipManager(param1:Game)
 		{
 			var _loc4_:int = 0;
@@ -69,18 +70,18 @@ package core.ship
 				_loc4_++;
 			}
 		}
-
+		
 		public function addMessageHandlers():void
 		{
 			shipSync.addMessageHandlers();
 			g.addMessageHandler("enemyUpdate", onEnemyUpdate);
 		}
-
+		
 		public function addEarlyMessageHandlers():void
 		{
 			g.addMessageHandler("spawnEnemy", onSpawnEnemy);
 		}
-
+		
 		public function update():void
 		{
 			var _loc2_:int = 0;
@@ -100,7 +101,7 @@ package core.ship
 				_loc2_--;
 			}
 		}
-
+		
 		public function getPlayerShip():PlayerShip
 		{
 			var _loc1_:PlayerShip = null;
@@ -115,7 +116,7 @@ package core.ship
 			_loc1_.reset();
 			return _loc1_;
 		}
-
+		
 		public function activatePlayerShip(param1:PlayerShip):void
 		{
 			g.unitManager.add(param1, g.canvasPlayerShips);
@@ -123,7 +124,7 @@ package core.ship
 			players.push(param1);
 			param1.alive = true;
 		}
-
+		
 		public function getEnemyShip():EnemyShip
 		{
 			var _loc1_:EnemyShip = null;
@@ -138,7 +139,7 @@ package core.ship
 			_loc1_.reset();
 			return _loc1_;
 		}
-
+		
 		public function activateEnemyShip(param1:EnemyShip):void
 		{
 			g.unitManager.add(param1, g.canvasEnemyShips);
@@ -146,7 +147,7 @@ package core.ship
 			enemies.push(param1);
 			param1.alive = true;
 		}
-
+		
 		public function removeShip(param1:Ship, param2:int):void
 		{
 			ships.splice(param2, 1);
@@ -169,12 +170,12 @@ package core.ship
 			}
 			g.unitManager.remove(param1);
 		}
-
+		
 		private function onSpawnEnemy(param1:Message):void
 		{
 			spawnEnemy(param1);
 		}
-
+		
 		public function spawnEnemy(param1:Message, param2:int = 0, param3:int = 0):void
 		{
 			var _loc4_:int = 0;
@@ -220,18 +221,18 @@ package core.ship
 			_loc26_ = param2;
 			while (_loc26_ < param3)
 			{
-				_loc17_ = param1.getString(_loc26_++ );
-				_loc9_ = param1.getInt(_loc26_++ );
-				_loc16_ = param1.getInt(_loc26_++ );
-				_loc12_ = param1.getString(_loc26_++ );
-				_loc8_ = param1.getNumber(_loc26_++ );
-				_loc19_ = param1.getNumber(_loc26_++ );
-				_loc14_ = param1.getNumber(_loc26_++ );
-				_loc7_ = param1.getNumber(_loc26_++ );
-				_loc23_ = param1.getNumber(_loc26_++ );
-				_loc11_ = param1.getNumber(_loc26_++ );
-				_loc21_ = param1.getBoolean(_loc26_++ );
-				_loc28_ = param1.getBoolean(_loc26_++ );
+				_loc17_ = param1.getString(_loc26_++);
+				_loc9_ = param1.getInt(_loc26_++);
+				_loc16_ = param1.getInt(_loc26_++);
+				_loc12_ = param1.getString(_loc26_++);
+				_loc8_ = param1.getNumber(_loc26_++);
+				_loc19_ = param1.getNumber(_loc26_++);
+				_loc14_ = param1.getNumber(_loc26_++);
+				_loc7_ = param1.getNumber(_loc26_++);
+				_loc23_ = param1.getNumber(_loc26_++);
+				_loc11_ = param1.getNumber(_loc26_++);
+				_loc21_ = param1.getBoolean(_loc26_++);
+				_loc28_ = param1.getBoolean(_loc26_++);
 				_loc29_ = g.spawnManager.getSpawnerByKey(_loc12_);
 				_loc10_ = new Heading();
 				_loc26_ = _loc10_.parseMessage(param1, _loc26_);
@@ -243,18 +244,18 @@ package core.ship
 				createSetEnemy(_loc18_, _loc9_, _loc10_, _loc25_, _loc8_, _loc29_, _loc19_, _loc14_, _loc7_, _loc23_, _loc11_, _loc21_);
 				if (_loc16_ == 6)
 				{
-					_loc18_.hp = param1.getInt(_loc26_++ );
+					_loc18_.hp = param1.getInt(_loc26_++);
 					_loc18_.hpMax = _loc18_.hp;
-					_loc18_.shieldHp = param1.getInt(_loc26_++ );
+					_loc18_.shieldHp = param1.getInt(_loc26_++);
 					_loc18_.shieldHpMax = _loc18_.shieldHp;
-					_loc18_.shieldRegen = param1.getInt(_loc26_++ );
-					_loc18_.engine.speed = param1.getNumber(_loc26_++ );
-					_loc18_.engine.acceleration = param1.getNumber(_loc26_++ );
-					_loc20_ = param1.getNumber(_loc26_++ );
-					_loc24_ = param1.getInt(_loc26_++ );
-					_loc22_ = param1.getInt(_loc26_++ );
-					_loc6_ = param1.getNumber(_loc26_++ );
-					_loc30_ = param1.getInt(_loc26_++ );
+					_loc18_.shieldRegen = param1.getInt(_loc26_++);
+					_loc18_.engine.speed = param1.getNumber(_loc26_++);
+					_loc18_.engine.acceleration = param1.getNumber(_loc26_++);
+					_loc20_ = param1.getNumber(_loc26_++);
+					_loc24_ = param1.getInt(_loc26_++);
+					_loc22_ = param1.getInt(_loc26_++);
+					_loc6_ = param1.getNumber(_loc26_++);
+					_loc30_ = param1.getInt(_loc26_++);
 					for each (var _loc27_:* in _loc18_.weapons)
 					{
 						_loc27_.speed = _loc20_;
@@ -263,8 +264,8 @@ package core.ship
 						_loc27_.reloadTime = _loc6_;
 						_loc27_.multiNrOfP = _loc30_;
 					}
-					_loc18_.name = param1.getString(_loc26_++ );
-					_loc5_ = param1.getInt(_loc26_++ );
+					_loc18_.name = param1.getString(_loc26_++);
+					_loc5_ = param1.getInt(_loc26_++);
 					_loc13_ = g.unitManager.getTarget(_loc5_);
 					_loc18_.owner = _loc13_ as PlayerShip;
 				}
@@ -275,7 +276,7 @@ package core.ship
 				_loc26_;
 			}
 		}
-
+		
 		private function createSetEnemy(param1:EnemyShip, param2:int, param3:Heading, param4:int, param5:Number, param6:Spawner, param7:Number, param8:Number, param9:Number, param10:Number, param11:Number, param12:Boolean = false):void
 		{
 			param1.id = param2;
@@ -315,7 +316,7 @@ package core.ship
 				param1.stateMachine.changeState(new AIIdle(g, param1, param3));
 			}
 		}
-
+		
 		private function randomizeSpeed(param1:EnemyShip):void
 		{
 			var _loc2_:Random = new Random(1 / param1.id);
@@ -323,7 +324,7 @@ package core.ship
 			param1.engine.speed *= 0.8 + 0.001 * _loc2_.random(201);
 			param1.engine.rotationSpeed *= 0.6 + 0.002 * _loc2_.random(201);
 		}
-
+		
 		public function getShipFromId(param1:int):Ship
 		{
 			for each (var _loc2_:* in ships)
@@ -335,7 +336,7 @@ package core.ship
 			}
 			return null;
 		}
-
+		
 		public function enemyFire(param1:Message, param2:int = 0):void
 		{
 			var _loc8_:int = 0;
@@ -357,37 +358,32 @@ package core.ship
 				_loc5_.target = _loc6_;
 			}
 		}
-
-		public function damaged(message:Message, pointer:int):void
+		
+		public function damaged(param1:Message, param2:int):void
 		{
-			var damage:int = 0;
-			var enemyId:int = message.getInt(pointer + 1);
-			var ship:EnemyShip = enemiesById[enemyId];
-			if (ship != null)
+			var _loc5_:int = 0;
+			var _loc4_:int = param1.getInt(param2 + 1);
+			var _loc3_:EnemyShip = enemiesById[_loc4_];
+			if (_loc3_ != null)
 			{
-				damage = message.getInt(pointer + 2);
-
-				// QoLAF
-				if (Game.instance.playerManager.me != null && Game.instance.playerManager.me.ship != null && TargetSystem.getDistance(Game.instance.playerManager.me.ship, ship) < 600 && SceneBase.clientSettings.autoTarget)
-					Game.instance.targetSystem.target = ship;
-
-				ship.takeDamage(damage);
-				ship.shieldHp = message.getInt(pointer + 3);
-				if (ship.shieldHp == 0)
+				_loc5_ = param1.getInt(param2 + 2);
+				_loc3_.takeDamage(_loc5_);
+				_loc3_.shieldHp = param1.getInt(param2 + 3);
+				if (_loc3_.shieldHp == 0)
 				{
-					if (ship.shieldRegenCounter > -1000)
+					if (_loc3_.shieldRegenCounter > -1000)
 					{
-						ship.shieldRegenCounter = -1000;
+						_loc3_.shieldRegenCounter = -1000;
 					}
 				}
-				ship.hp = message.getInt(pointer + 4);
-				if (message.getBoolean(pointer + 5))
+				_loc3_.hp = param1.getInt(param2 + 4);
+				if (param1.getBoolean(param2 + 5))
 				{
-					ship.doDOTEffect(message.getInt(pointer + 6), message.getString(pointer + 7), message.getInt(pointer + 8));
+					_loc3_.doDOTEffect(param1.getInt(param2 + 6), param1.getString(param2 + 7), param1.getInt(param2 + 8));
 				}
 			}
 		}
-
+		
 		public function killed(param1:Message, param2:int):void
 		{
 			var _loc5_:int = param1.getInt(param2);
@@ -398,7 +394,7 @@ package core.ship
 				_loc3_.destroy(_loc4_);
 			}
 		}
-
+		
 		private function syncEnemyTarget(param1:Message, param2:int):void
 		{
 			var _loc7_:* = 0;
@@ -418,38 +414,38 @@ package core.ship
 					{
 						switch (_loc5_)
 						{
-							case "AIObserve":
-								_loc3_.stateMachine.changeState(new AIObserve(g, _loc3_, _loc4_, _loc3_.course, 0));
-								break;
-							case "AIChase":
-								_loc3_.stateMachine.changeState(new AIChase(g, _loc3_, _loc4_, _loc3_.course, 0));
-								break;
-							case "AIResurect":
-								_loc3_.stateMachine.changeState(new AIResurect(g, _loc3_));
-								break;
-							case "AIFollow":
-								_loc3_.stateMachine.changeState(new AIFollow(g, _loc3_, _loc4_, _loc3_.course, 0));
-								break;
-							case "AIMelee":
-								_loc3_.stateMachine.changeState(new AIMelee(g, _loc3_, _loc4_, _loc3_.course, 0));
-								break;
-							case "AIOrbit":
-								_loc3_.stateMachine.changeState(new AIOrbit(g, _loc3_));
-								break;
-							case "AIIdle":
-								_loc3_.stateMachine.changeState(new AIIdle(g, _loc3_, _loc3_.course));
-								break;
-							case "AIKamikaze":
-								_loc3_.stateMachine.changeState(new AIKamikaze(g, _loc3_, _loc4_, _loc3_.course, 0));
-								break;
-							case "AITeleport":
-								_loc3_.stateMachine.changeState(new AITeleport(g, _loc3_, _loc4_));
-								break;
-							case "AITeleportExit":
-								_loc3_.stateMachine.changeState(new AITeleportExit(g, _loc3_));
-								break;
-							case "AIExit":
-								_loc3_.stateMachine.changeState(new AIExit(g, _loc3_));
+						case "AIObserve": 
+							_loc3_.stateMachine.changeState(new AIObserve(g, _loc3_, _loc4_, _loc3_.course, 0));
+							break;
+						case "AIChase": 
+							_loc3_.stateMachine.changeState(new AIChase(g, _loc3_, _loc4_, _loc3_.course, 0));
+							break;
+						case "AIResurect": 
+							_loc3_.stateMachine.changeState(new AIResurect(g, _loc3_));
+							break;
+						case "AIFollow": 
+							_loc3_.stateMachine.changeState(new AIFollow(g, _loc3_, _loc4_, _loc3_.course, 0));
+							break;
+						case "AIMelee": 
+							_loc3_.stateMachine.changeState(new AIMelee(g, _loc3_, _loc4_, _loc3_.course, 0));
+							break;
+						case "AIOrbit": 
+							_loc3_.stateMachine.changeState(new AIOrbit(g, _loc3_));
+							break;
+						case "AIIdle": 
+							_loc3_.stateMachine.changeState(new AIIdle(g, _loc3_, _loc3_.course));
+							break;
+						case "AIKamikaze": 
+							_loc3_.stateMachine.changeState(new AIKamikaze(g, _loc3_, _loc4_, _loc3_.course, 0));
+							break;
+						case "AITeleport": 
+							_loc3_.stateMachine.changeState(new AITeleport(g, _loc3_, _loc4_));
+							break;
+						case "AITeleportExit": 
+							_loc3_.stateMachine.changeState(new AITeleportExit(g, _loc3_));
+							break;
+						case "AIExit": 
+							_loc3_.stateMachine.changeState(new AIExit(g, _loc3_));
 						}
 					}
 					_loc6_ = 0;
@@ -464,7 +460,7 @@ package core.ship
 				_loc7_ += 4;
 			}
 		}
-
+		
 		public function initSyncEnemies(param1:Message):void
 		{
 			var _loc2_:* = 1;
@@ -476,40 +472,40 @@ package core.ship
 			_loc2_ = _loc3_;
 			syncEnemyTarget(param1, _loc2_);
 		}
-
+		
 		public function initEnemies(param1:Message):void
 		{
 			Console.write("running spawnEnemy");
 			spawnEnemy(param1, 0, 0);
 		}
-
+		
 		private function onEnemyUpdate(param1:Message):void
 		{
 			var _loc4_:int = 0;
 			var _loc5_:Boolean = false;
 			var _loc6_:int = 0;
-			var _loc2_:EnemyShip = g.shipManager.enemiesById[param1.getInt(_loc6_++ )];
+			var _loc2_:EnemyShip = g.shipManager.enemiesById[param1.getInt(_loc6_++)];
 			if (_loc2_ == null)
 			{
 				return;
 			}
-			_loc2_.hp = param1.getInt(_loc6_++ );
-			_loc2_.shieldHp = param1.getInt(_loc6_++ );
+			_loc2_.hp = param1.getInt(_loc6_++);
+			_loc2_.shieldHp = param1.getInt(_loc6_++);
 			if (_loc2_.hp < _loc2_.hpMax || _loc2_.shieldHp < _loc2_.shieldHpMax)
 			{
 				_loc2_.isInjured = true;
 			}
-			var _loc3_:Ship = g.shipManager.getShipFromId(param1.getInt(_loc6_++ ));
+			var _loc3_:Ship = g.shipManager.getShipFromId(param1.getInt(_loc6_++));
 			_loc4_ = 0;
 			while (_loc4_ < _loc2_.weapons.length)
 			{
-				_loc5_ = param1.getBoolean(_loc6_++ );
+				_loc5_ = param1.getBoolean(_loc6_++);
 				_loc2_.weapons[_loc4_].fire = _loc5_;
 				_loc2_.weapons[_loc4_].target = _loc5_ ? _loc3_ : null;
 				_loc4_++;
 			}
 		}
-
+		
 		public function dispose():void
 		{
 			var _loc1_:* = null;

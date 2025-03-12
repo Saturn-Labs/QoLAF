@@ -9,13 +9,17 @@ package core.login
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.TouchEvent;
-
+	
 	public class GuestName extends Sprite
 	{
 		public var nameInput:InputText;
+		
 		private var errorText:Text;
+		
 		private var text:Text;
+		
 		private var button:Button;
+		
 		public function GuestName(param1:String = "Guest-")
 		{
 			super();
@@ -43,14 +47,14 @@ package core.login
 			addChild(errorText);
 			addEventListener("addedToStage", addedToStage);
 		}
-
+		
 		private function addedToStage(param1:Event):void
 		{
 			removeEventListener("addedToStage", addedToStage);
 			nameInput.setFocus();
 			nameInput.selectRange(0, -1);
 		}
-
+		
 		private function onEnter(param1:Event = null):void
 		{
 			if (nameInput.text.length < 3)
@@ -64,7 +68,7 @@ package core.login
 			var _loc2_:Event = new Event("nameEntered", false, nameInput.text);
 			dispatchEvent(_loc2_);
 		}
-
+		
 		private function onClick(param1:TouchEvent):void
 		{
 			onEnter();

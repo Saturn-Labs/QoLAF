@@ -2,17 +2,17 @@ package core.hud.components.dialogs
 {
 	import core.hud.components.LootItem;
 	import starling.events.Event;
-
+	
 	public class LootPopupConfirmMessage extends PopupConfirmMessage
 	{
 		private var items:Vector.<LootItem>;
-
+		
 		public function LootPopupConfirmMessage(param1:String = "Confirm", param2:String = "Cancel")
 		{
 			items = new Vector.<LootItem>();
 			super(param1, param2);
 		}
-
+		
 		public function addItem(param1:LootItem):void
 		{
 			param1.y = textField.height + 40 * items.length;
@@ -23,7 +23,7 @@ package core.hud.components.dialogs
 				redraw();
 			}
 		}
-
+		
 		override protected function redraw(param1:Event = null):void
 		{
 			super.redraw();

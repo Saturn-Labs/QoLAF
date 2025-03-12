@@ -23,35 +23,45 @@ package core.states.gameStates
 	import starling.text.TextField;
 	import starling.text.TextFormat;
 	import textures.TextureLocator;
-
+	
 	public class PodState extends PlayState
 	{
 		private var bgr:Image;
+		
 		private var tracks1:Image;
+		
 		private var tracks2:Image;
+		
 		private const TRACK1_Y:Number = 140;
-
 		private const TRACK2_Y:Number = 340;
-
 		private var podsContainer:Sprite;
+		
 		private var buttonContainer:Sprite;
+		
 		private var lootContainer:Sprite;
+		
 		private var buy1Button:Button;
+		
 		private var buy10Button:Button;
+		
 		private var boughtPods:int = 0;
 		private var nrOfPodsText:TextField;
+		
 		private var closeButton:ButtonExpandableHud;
+		
 		private var pods:Vector.<Pod>;
-
+		
 		private var floatTween:TweenMax;
+		
 		private var currentPod:Pod;
+		
 		public function PodState(param1:Game)
 		{
 			pods = new Vector.<Pod>();
 			super(param1);
 			textureManager = TextureLocator.getService();
 		}
-
+		
 		override public function enter():void
 		{
 			var image:Image;
@@ -89,9 +99,9 @@ package core.states.gameStates
 			image.y = 90;
 			addChild(image);
 			closeButton = new ButtonExpandableHud(function():void
-				{
-					sm.changeState(new RoamingState(g));
-				}, Localize.t("close"));
+			{
+				sm.changeState(new RoamingState(g));
+			}, Localize.t("close"));
 			closeButton.x = bgr.width - 56 - closeButton.width;
 			closeButton.y = 10;
 			addChild(closeButton);
@@ -121,20 +131,20 @@ package core.states.gameStates
 			buy1Button.enabled = false;
 			buttonContainer.addChild(buy1Button);
 			buy1Button.addEventListener("triggered", function():void
+			{
+				var buyConfirm:CreditBuyBox = new CreditBuyBox(g, CreditManager.getCostPods(), Localize.t("You will recieve 1 pod."));
+				buyConfirm.addEventListener("accept", function():void
 				{
-					var buyConfirm:CreditBuyBox = new CreditBuyBox(g, CreditManager.getCostPods(), Localize.t("You will recieve 1 pod."));
-					buyConfirm.addEventListener("accept", function():void
-						{
-							buyPods(1);
-							buyConfirm.removeEventListeners();
-						});
-					buyConfirm.addEventListener("close", function():void
-						{
-							buyConfirm.removeEventListeners();
-							buy1Button.enabled = true;
-						});
-					g.addChildToOverlay(buyConfirm);
+					buyPods(1);
+					buyConfirm.removeEventListeners();
 				});
+				buyConfirm.addEventListener("close", function():void
+				{
+					buyConfirm.removeEventListeners();
+					buy1Button.enabled = true;
+				});
+				g.addChildToOverlay(buyConfirm);
+			});
 			new ToolTip(g, buy1Button, Localize.t("Awesome! :D But if you buy 10 pods you will have a greater chance to get a rare reward."), null, "PodState");
 			buy10Button = new Button(textureManager.getTextureGUIByTextureName("pod_buy_10_button.png"), Localize.t("BUY 10"), null, textureManager.getTextureGUIByTextureName("pod_buy_10_button_hover.png"), textureManager.getTextureGUIByTextureName("pod_buy_10_button_disabled.png"));
 			buy10Button.x = 415;
@@ -144,20 +154,20 @@ package core.states.gameStates
 			buy10Button.enabled = false;
 			buttonContainer.addChild(buy10Button);
 			buy10Button.addEventListener("triggered", function():void
+			{
+				var buyConfirm:CreditBuyBox = new CreditBuyBox(g, CreditManager.getCostPods() * 10, Localize.t("You will recieve 10 pods."));
+				buyConfirm.addEventListener("accept", function():void
 				{
-					var buyConfirm:CreditBuyBox = new CreditBuyBox(g, CreditManager.getCostPods() * 10, Localize.t("You will recieve 10 pods."));
-					buyConfirm.addEventListener("accept", function():void
-						{
-							buyPods(10);
-							buyConfirm.removeEventListeners();
-						});
-					buyConfirm.addEventListener("close", function():void
-						{
-							buyConfirm.removeEventListeners();
-							buy10Button.enabled = true;
-						});
-					g.addChildToOverlay(buyConfirm);
+					buyPods(10);
+					buyConfirm.removeEventListeners();
 				});
+				buyConfirm.addEventListener("close", function():void
+				{
+					buyConfirm.removeEventListeners();
+					buy10Button.enabled = true;
+				});
+				g.addChildToOverlay(buyConfirm);
+			});
 			new ToolTip(g, buy10Button, Localize.t("Good choice! 8D"), null, "PodState");
 			nrOfPodsText = new TextField(100, 30, "---", new TextFormat("DAIDRR", 12, 11184810));
 			nrOfPodsText.x = 660;
@@ -183,7 +193,7 @@ package core.states.gameStates
 			g.rpcMessage(message, initPodCount);
 			loadCompleted();
 		}
-
+		
 		private function initPodCount(param1:Message):void
 		{
 			var pod:Pod;
@@ -204,9 +214,9 @@ package core.states.gameStates
 				pod = pods[0];
 				podsContainer.addChild(pod);
 				animateReadyPod(pod, function():void
-					{
-						readyOpenPod(m);
-					});
+				{
+					readyOpenPod(m);
+				});
 			}
 			else
 			{
@@ -214,7 +224,7 @@ package core.states.gameStates
 				buy10Button.enabled = true;
 			}
 		}
-
+		
 		private function buyPods(param1:int):void
 		{
 			var i:int;
@@ -236,10 +246,10 @@ package core.states.gameStates
 			buy10Button.enabled = false;
 			podsContainer.addChild(pod);
 			animateReadyPod(pod, function():void
-				{
-				});
+			{
+			});
 		}
-
+		
 		private function animateReadyPod(param1:Pod, param2:Function):void
 		{
 			var pod:Pod = param1;
@@ -252,13 +262,12 @@ package core.states.gameStates
 			TweenMax.fromTo(pod, 1, {"x": g.stage.stageWidth / 2 + 1000 + bgr.width / 2}, {"x": g.stage.stageWidth / 2 + bgr.width / 2, "onComplete": callback});
 			pod.rotation = -0.02;
 			floatTween = TweenMax.to(pod, 1, {"rotation": 0.02, "repeat": 30, "yoyo": true, "ease": Sine.easeInOut, "onComplete": function():void
-					{
-						pod.rotation = 0;
-						callback();
-					}
-				});
+			{
+				pod.rotation = 0;
+				callback();
+			}});
 		}
-
+		
 		private function animateInPod(param1:Pod, param2:Function):void
 		{
 			var pod:Pod = param1;
@@ -266,15 +275,14 @@ package core.states.gameStates
 			pod.y = 248;
 			currentPod = pod;
 			TweenMax.fromTo(pod, 1, {"x": pod.x}, {"x": 400, "onComplete": function():void
-					{
-						animateCloseTracks(function():void
-							{
-								callback();
-							});
-					}
+			{
+				animateCloseTracks(function():void
+				{
+					callback();
 				});
+			}});
 		}
-
+		
 		private function animateOutPod(param1:Pod, param2:Function):void
 		{
 			var pod:Pod = param1;
@@ -282,43 +290,41 @@ package core.states.gameStates
 			pod.y = 248;
 			pod.animateClose();
 			animateCloseTracks(function():void
+			{
+				animateOpenTracks();
+				TweenMax.fromTo(pod, 1, {"x": pod.x}, {"x": -1000, "onComplete": function():void
 				{
-					animateOpenTracks();
-					TweenMax.fromTo(pod, 1, {"x": pod.x}, {"x": -1000, "onComplete": function():void
-							{
-								callback();
-							}
-						});
-				}, false);
+					callback();
+				}});
+			}, false);
 		}
-
+		
 		private function animateOpenPod(param1:Pod, param2:Function):void
 		{
 			var pod:Pod = param1;
 			var callback:Function = param2;
 			pod.animateOpen();
 			animateOpenTracks(function():void
-				{
-					TweenMax.delayedCall(2, callback);
-				});
+			{
+				TweenMax.delayedCall(2, callback);
+			});
 		}
-
+		
 		private function animateOpenTracks(param1:Function = null):void
 		{
 			var callback:Function = param1;
 			soundManager.play("eucUcmDqTUudHmw_S7U5oQ");
 			TweenMax.fromTo(tracks1, 0.5, {"y": tracks1.y}, {"y": tracks1.y - 40, "onComplete": function():void
-					{
-						soundManager.stop("eucUcmDqTUudHmw_S7U5oQ");
-						if (Boolean(callback))
-						{
-							callback();
-						}
-					}
-				});
+			{
+				soundManager.stop("eucUcmDqTUudHmw_S7U5oQ");
+				if (Boolean(callback))
+				{
+					callback();
+				}
+			}});
 			TweenMax.fromTo(tracks2, 0.5, {"y": tracks2.y}, {"y": tracks2.y + 23});
 		}
-
+		
 		private function animateCloseTracks(param1:Function = null, param2:Boolean = true):void
 		{
 			var callback:Function = param1;
@@ -329,30 +335,29 @@ package core.states.gameStates
 				delay = 0.5;
 			}
 			TweenMax.delayedCall(delay, function():void
+			{
+				soundManager.play("eucUcmDqTUudHmw_S7U5oQ");
+				TweenMax.fromTo(tracks1, 0.5, {"y": tracks1.y}, {"y": tracks1.y + 40, "onComplete": function():void
 				{
-					soundManager.play("eucUcmDqTUudHmw_S7U5oQ");
-					TweenMax.fromTo(tracks1, 0.5, {"y": tracks1.y}, {"y": tracks1.y + 40, "onComplete": function():void
-							{
-								soundManager.stop("eucUcmDqTUudHmw_S7U5oQ");
-								if (snap)
-								{
-									if (currentPod)
-									{
-										TweenMax.to(currentPod, 0.05, {"rotation": 0});
-									}
-									soundManager.play("nNNvkjb7O0ezA29C19_kmQ");
-									floatTween.kill();
-								}
-								if (Boolean(callback))
-								{
-									callback();
-								}
-							}
-						});
-					TweenMax.fromTo(tracks2, 0.5, {"y": tracks2.y}, {"y": tracks2.y - 23});
-				});
+					soundManager.stop("eucUcmDqTUudHmw_S7U5oQ");
+					if (snap)
+					{
+						if (currentPod)
+						{
+							TweenMax.to(currentPod, 0.05, {"rotation": 0});
+						}
+						soundManager.play("nNNvkjb7O0ezA29C19_kmQ");
+						floatTween.kill();
+					}
+					if (Boolean(callback))
+					{
+						callback();
+					}
+				}});
+				TweenMax.fromTo(tracks2, 0.5, {"y": tracks2.y}, {"y": tracks2.y - 23});
+			});
 		}
-
+		
 		private function readyOpenPod(param1:Message):void
 		{
 			var m:Message = param1;
@@ -362,67 +367,71 @@ package core.states.gameStates
 			closeButton.enabled = true;
 			UpdateNrOfPods();
 			animateInPod(pod, function():void
+			{
+				var pod2:Pod;
+				if (boughtPods > 1)
 				{
-					var pod2:Pod;
-					if (boughtPods > 1)
+					pod2 = pods[1];
+					podsContainer.addChild(pod2);
+					animateReadyPod(pod2, function():void
 					{
-						pod2 = pods[1];
-						podsContainer.addChild(pod2);
-						animateReadyPod(pod2, function():void
-							{
-							});
-					}
-					pod.listenForClick(createClickOpenPod(pod));
-				});
+					});
+				}
+				pod.listenForClick(createClickOpenPod(pod));
+			});
 			g.creditManager.refresh();
 			g.hud.buyFluxButton.updateCredits();
 		}
-
+		
 		private function createClickOpenPod(param1:Pod):Function
 		{
 			var pod:Pod = param1;
-			return function():void
+			return (function():*
 			{
-				var message:Message;
-				UpdateNrOfPods();
-				closeButton.enabled = false;
-				g.blockHotkeys = true;
-				soundManager.play("f5msdkJp8EmqT0gXFokkKg");
-				message = g.createMessage("openPod");
-				g.rpcMessage(message, function(param1:Message):void
+				var internalFunc:Function;
+				return internalFunc = function():void
+				{
+					var message:Message;
+					UpdateNrOfPods();
+					closeButton.enabled = false;
+					g.blockHotkeys = true;
+					soundManager.play("f5msdkJp8EmqT0gXFokkKg");
+					message = g.createMessage("openPod");
+					g.rpcMessage(message, function(param1:Message):void
 					{
 						boughtPods--;
 						onOpenPod(param1, pod);
 					});
-			};
+				};
+			})();
 		}
-
+		
 		private function onOpenPod(param1:Message, param2:Pod):void
 		{
 			SoundLocator.getService().play("7zeIcPFb-UWzgtR_3nrZ8Q");
 			showLoot(param1, param2);
 			openPod(param1, param2);
 		}
-
+		
 		private function openPod(param1:Message, param2:Pod):void
 		{
 			var m:Message = param1;
 			var pod:Pod = param2;
 			animateOpenPod(pod, function():void
+			{
+				animateOutPod(pod, function():void
 				{
-					animateOutPod(pod, function():void
-						{
-							pods.shift().removeFromParent(true);
-							if (boughtPods == 0)
-							{
-								openingComplete();
-								return;
-							}
-							readyOpenPod(m);
-						});
+					pods.shift().removeFromParent(true);
+					if (boughtPods == 0)
+					{
+						openingComplete();
+						return;
+					}
+					readyOpenPod(m);
 				});
+			});
 		}
-
+		
 		private function openingComplete():void
 		{
 			g.blockHotkeys = false;
@@ -432,7 +441,7 @@ package core.states.gameStates
 			buy1Button.enabled = true;
 			buy10Button.enabled = true;
 		}
-
+		
 		private function showLoot(param1:Message, param2:Pod):void
 		{
 			var textColor:uint;
@@ -500,24 +509,24 @@ package core.states.gameStates
 			else if (table == "Artifacts")
 			{
 				ArtifactFactory.createArtifact(key, g, g.me, function(param1:Artifact):void
-					{
-						var _loc2_:ArtifactCargoBox = new ArtifactCargoBox(g, param1);
-						_loc2_.update();
-						_loc2_.alignPivot();
-						_loc2_.scaleX = _loc2_.scaleY = 1.2;
-						_loc2_.y = -34;
-						lootContainer.addChild(_loc2_);
-						nameText = new TextField(200, 30, "", new TextFormat("DAIDRR"));
-						nameText.x = _loc2_.x;
-						nameText.format.color = textColor;
-						nameText.text = name;
-						nameText.format.size = 14;
-						nameText.format.horizontalAlign = "center";
-						nameText.pivotX = nameText.width / 2;
-						lootContainer.addChild(nameText);
-						TweenMax.fromTo(lootContainer, 0.5, {"y": 300, "alpha": 0}, {"y": lootContainer.y, "alpha": 1});
-						g.me.artifacts.push(param1);
-					});
+				{
+					var _loc2_:ArtifactCargoBox = new ArtifactCargoBox(g, param1);
+					_loc2_.update();
+					_loc2_.alignPivot();
+					_loc2_.scaleX = _loc2_.scaleY = 1.2;
+					_loc2_.y = -34;
+					lootContainer.addChild(_loc2_);
+					nameText = new TextField(200, 30, "", new TextFormat("DAIDRR"));
+					nameText.x = _loc2_.x;
+					nameText.format.color = textColor;
+					nameText.text = name;
+					nameText.format.size = 14;
+					nameText.format.horizontalAlign = "center";
+					nameText.pivotX = nameText.width / 2;
+					lootContainer.addChild(nameText);
+					TweenMax.fromTo(lootContainer, 0.5, {"y": 300, "alpha": 0}, {"y": lootContainer.y, "alpha": 1});
+					g.me.artifacts.push(param1);
+				});
 			}
 			else if (table == "Weapons")
 			{
@@ -583,18 +592,18 @@ package core.states.gameStates
 				TweenMax.fromTo(lootContainer, 0.5, {"y": 300, "alpha": 0}, {"y": lootContainer.y, "alpha": 1});
 			}
 		}
-
+		
 		private function UpdateNrOfPods():void
 		{
 			nrOfPodsText.text = Localize.t("[nr] Pods").replace("[nr]", pods.length);
 			g.hud.updatePodCount(pods.length);
 		}
-
+		
 		override public function tickUpdate():void
 		{
 			super.tickUpdate();
 		}
-
+		
 		override public function execute():void
 		{
 			if (loaded)
@@ -606,7 +615,7 @@ package core.states.gameStates
 			}
 			super.execute();
 		}
-
+		
 		override public function exit(param1:Function):void
 		{
 			ToolTip.disposeType("PodState");
@@ -631,11 +640,17 @@ import textures.TextureLocator;
 class Pod extends Sprite
 {
 	public var top:Image;
+	
 	public var bottom:Image;
+	
 	public var center:Button;
+	
 	private var lootText:TextBitmap;
+	
 	private var cTween:TweenMax;
+	
 	private var tween:TweenMax;
+	
 	public function Pod(param1:Game)
 	{
 		super();
@@ -658,58 +673,60 @@ class Pod extends Sprite
 		this.addChild(bottom);
 		this.addChild(center);
 	}
-
+	
 	public function listenForClick(param1:Function):void
 	{
 		var callback:Function = param1;
 		center.enabled = true;
 		tween = TweenMax.fromTo(center, 0.3, {"alpha": 1, "scaleX": 1, "scaleY": 1}, {"alpha": 0.9, "scaleX": 1.2, "scaleY": 1.2, "yoyo": true, "repeat": -1});
-		center.addEventListener("triggered", function():void
+		center.addEventListener("triggered", (function():*
+		{
+			var f:Function;
+			return f = function():void
 			{
 				center.removeEventListeners();
 				callback();
 				tween.kill();
 				SoundLocator.getService().play("3hVYqbNNSUWoDGk_pK1BdQ");
 				cTween = TweenMax.fromTo(center, 0.5, {"color": 16777215}, {"color": 16711935, "yoyo": true, "repeat": -1});
-			});
+			};
+		})());
 	}
-
+	
 	public function animateOpen(param1:Function = null):void
 	{
 		var callback:Function = param1;
 		cTween.kill();
 		TweenMax.fromTo(top, 0.5, {"y": top.y}, {"y": top.y - 40, "onComplete": function():void
-				{
-					if (Boolean(callback))
-					{
-						callback();
-					}
-				}
-			});
+		{
+			if (Boolean(callback))
+			{
+				callback();
+			}
+		}});
 		TweenMax.fromTo(bottom, 0.5, {"y": bottom.y}, {"y": bottom.y + 23});
 		TweenMax.fromTo(center, 2, {"rotation": 1, "alpha": 1, "scaleX": 1, "scaleY": 1}, {"rotation": 3.141592653589793 * 8, "alpha": 0, "scaleX": 5, "scaleY": 5});
 		center.blendMode = "screen";
 	}
-
+	
 	public function animateClose(param1:Function = null):void
 	{
 		var callback:Function = param1;
 		TweenMax.fromTo(top, 0.5, {"y": top.y}, {"y": top.y + 40, "onComplete": function():void
-				{
-					if (Boolean(callback))
-					{
-						callback();
-					}
-				}
-			});
+		{
+			if (Boolean(callback))
+			{
+				callback();
+			}
+		}});
 		TweenMax.fromTo(bottom, 0.5, {"y": bottom.y}, {"y": bottom.y - 23});
 	}
-
+	
 	public function animateSpinColor(param1:uint):void
 	{
 		TweenMax.fromTo(center, 2, {"color": 16777215}, {"color": param1});
 	}
-
+	
 	public function animateLootText(param1:String, param2:uint):void
 	{
 		addChild(lootText);

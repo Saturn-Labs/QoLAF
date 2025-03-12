@@ -19,38 +19,55 @@ package core.hud.components
 	import starling.text.TextFormat;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class CrewDisplayBox extends Sprite
 	{
 		private static const HEIGHT:int = 128;
-
 		private static const WIDTH:int = 117;
-
 		public static const IMAGES_SPECIALS:Vector.<String> = Vector.<String>(["spec_cold.png", "spec_heat.png", "spec_radiation.png", "spec_first_contact.png", "spec_trade.png", "spec_collaboration.png", "spec_kinetic.png", "spec_energy.png", "spec_bio_weapons.png"]);
-
+		
 		public static const IMAGES_SKILLS:Vector.<String> = Vector.<String>(["skill_environment.png", "skill_diplomacy.png", "skill_combat.png"]);
-
+		
 		private var exploreTimer:HudTimer;
+		
 		private var img:Image;
+		
 		private var selectedFlash:Quad;
+		
 		private var crewMember:CrewMember;
+		
 		private var area:ExploreArea;
+		
 		private var injuryTimer:HudTimer;
+		
 		private var injuryStatus:TextBitmap;
+		
 		private var upgradeArtifactBox:ArtifactCargoBox;
+		
 		private var upgradeInstantButton:Button;
+		
 		private var upgradeArtifactTimer:HudTimer;
+		
 		private var box:GradientBox;
+		
 		private var nextY:int = 30;
 		public var selected:Boolean;
+		
 		private var g:Game;
+		
 		private var confirmBox:PopupConfirmMessage;
+		
 		private var p:Player;
+		
 		private var crewState:CrewState;
+		
 		private var inSelectState:Boolean;
+		
 		private var upgradeStatus:Text;
+		
 		private var textY:int = 155;
 		private var selectButton:Button;
+		
 		private var inUse:Boolean = false;
 		public function CrewDisplayBox(param1:Game, param2:CrewMember, param3:ExploreArea, param4:Player = null, param5:Boolean = true, param6:CrewState = null)
 		{
@@ -104,24 +121,24 @@ package core.hud.components
 			addChild(selectedFlash);
 			addEventListener("removedFromStage", clean);
 		}
-
+		
 		public function get key():String
 		{
 			return crewMember.key;
 		}
-
+		
 		public function getLevel(param1:int):int
 		{
 			return crewMember.skills[param1];
 		}
-
+		
 		public function showLackSpecialSkill():void
 		{
 			var _loc1_:TextBitmap = new TextBitmap(-15, textY, "Not skilled enough");
 			_loc1_.format.color = 16711680;
 			addChild(_loc1_);
 		}
-
+		
 		public function update():void
 		{
 			var _loc2_:TextBitmap = null;
@@ -175,7 +192,7 @@ package core.hud.components
 				addUpgradeTimer();
 			}
 		}
-
+		
 		public function toggleSelected():Boolean
 		{
 			var _loc1_:String = "ADD";
@@ -198,17 +215,17 @@ package core.hud.components
 			}
 			return selected;
 		}
-
+		
 		public function getChance():Number
 		{
 			return Area.getSuccessChance(area.level, area.type, crewMember, area.specialTypes);
 		}
-
+		
 		public function getTime():Number
 		{
 			return Area.getTime(area.size, area.level, area.rewardLevel, area.specialTypes, crewMember.skills[area.type]);
 		}
-
+		
 		private function upgradeArtifactComplete():void
 		{
 			var _loc1_:TextBitmap = null;
@@ -221,7 +238,7 @@ package core.hud.components
 			_loc1_.alignRight();
 			box.addChild(_loc1_);
 		}
-
+		
 		private function addUpgradeTimer():void
 		{
 			if (crewMember.artifactEnd == 0)
@@ -251,7 +268,7 @@ package core.hud.components
 			upgradeArtifactBox.y = textY;
 			addChild(upgradeArtifactBox);
 		}
-
+		
 		private function instantArtifactUpgrade(param1:Message):void
 		{
 			if (param1.getBoolean(0))
@@ -264,7 +281,7 @@ package core.hud.components
 				g.showErrorDialog(param1.getString(1), false);
 			}
 		}
-
+		
 		private function addLocation(param1:GradientBox, param2:Boolean):void
 		{
 			var _loc4_:TextBitmap = null;
@@ -352,12 +369,12 @@ package core.hud.components
 				param1.addChild(_loc5_);
 			}
 		}
-
+		
 		override public function get height():Number
 		{
 			return 190;
 		}
-
+		
 		private function addSkills(param1:GradientBox):void
 		{
 			var _loc3_:int = 160;
@@ -367,7 +384,7 @@ package core.hud.components
 			addSkill("Combat", _loc3_, _loc2_ + 60);
 			addSpecialSkills();
 		}
-
+		
 		private function addSpecialSkills():void
 		{
 			var _loc2_:Quad = null;
@@ -403,7 +420,7 @@ package core.hud.components
 				_loc5_++;
 			}
 		}
-
+		
 		private function addSkill(param1:String, param2:int, param3:int):void
 		{
 			var _loc9_:String = null;
@@ -436,7 +453,7 @@ package core.hud.components
 			new ToolTip(g, _loc8_, param1, null, "crewSkill");
 			box.addChild(_loc8_);
 		}
-
+		
 		private function getSkillColor(param1:int):uint
 		{
 			var _loc4_:int = 0;
@@ -462,7 +479,7 @@ package core.hud.components
 			}
 			return 4868682;
 		}
-
+		
 		private function addSpecialIcon(param1:GradientBox, param2:int, param3:int, param4:int, param5:Boolean = false):void
 		{
 			var _loc8_:Image = null;
@@ -482,7 +499,7 @@ package core.hud.components
 			new ToolTip(g, _loc7_, Area.SPECIALTYPE[param2], null, "crewSkill");
 			param1.addChild(_loc7_);
 		}
-
+		
 		private function useTeam(param1:TouchEvent = null):void
 		{
 			inUse = !inUse;
@@ -498,7 +515,7 @@ package core.hud.components
 			}
 			dispatchEvent(new Event("teamSelected"));
 		}
-
+		
 		public function mOver(param1:TouchEvent):void
 		{
 			if (inUse)
@@ -506,7 +523,7 @@ package core.hud.components
 				return;
 			}
 		}
-
+		
 		public function mOut(param1:TouchEvent):void
 		{
 			if (inUse)
@@ -514,7 +531,7 @@ package core.hud.components
 				return;
 			}
 		}
-
+		
 		public function dismiss(param1:TouchEvent):void
 		{
 			confirmBox = new PopupConfirmMessage("Fire", "No, don't.");
@@ -523,7 +540,7 @@ package core.hud.components
 			confirmBox.addEventListener("accept", onAccept);
 			confirmBox.addEventListener("close", onClose);
 		}
-
+		
 		private function onAccept(param1:Event):void
 		{
 			var _loc2_:CrewMember = null;
@@ -547,13 +564,13 @@ package core.hud.components
 				crewState.refresh();
 			}
 		}
-
+		
 		private function onClose(param1:Event):void
 		{
 			g.removeChildFromOverlay(confirmBox, true);
 			confirmBox.removeEventListeners();
 		}
-
+		
 		private function onTouch(param1:TouchEvent):void
 		{
 			if (!inSelectState)
@@ -573,7 +590,7 @@ package core.hud.components
 				mOut(param1);
 			}
 		}
-
+		
 		public function clean(param1:Event = null):void
 		{
 			ToolTip.disposeType("crewSkill");

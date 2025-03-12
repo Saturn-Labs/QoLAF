@@ -20,36 +20,43 @@ package core.spawner
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	import textures.TextureManager;
-
+	
 	public class Spawner extends Unit
 	{
 		public static const TYPE_ORGANIC:String = "organic";
-
 		public static const TYPE_MECH:String = "mech";
-
 		public static const TYPE_ABSTRACT:String = "abstract";
-
 		public var spawnerType:String;
+		
 		public var orbitRadius:int;
+		
 		public var orbitAngle:Number = 0;
 		public var angleVelocity:Number = 0;
 		public var rotationSpeed:Number = 0;
 		public var angleOffset:Number = 0;
 		public var hidden:Boolean;
+		
 		public var innerRadius:int;
+		
 		public var outerRadius:int;
+		
 		public var key:String;
+		
 		public var objKey:String;
+		
 		public var offset:Point;
+		
 		public var turrets:Vector.<Turret>;
-
+		
 		public var imageOffset:Point;
+		
 		public var imageScale:Number;
+		
 		public var initialHardenedShield:Boolean = false;
 		private var aiHardenedShieldEffect:Vector.<Emitter>;
-
+		
 		private var deadTextures:Vector.<Texture>;
-
+		
 		public function Spawner(param1:Game)
 		{
 			aiHardenedShieldEffect = new Vector.<Emitter>();
@@ -60,7 +67,7 @@ package core.spawner
 			dotTimers = new Vector.<TweenMax>();
 			deadTextures = TextureManager.BASIC_TEXTURES;
 		}
-
+		
 		override public function update():void
 		{
 			if (hp <= 0)
@@ -132,7 +139,7 @@ package core.spawner
 				super.update();
 			}
 		}
-
+		
 		public function updatePos(param1:Number):void
 		{
 			var _loc2_:Number = g.time;
@@ -143,7 +150,7 @@ package core.spawner
 			_pos.y = _loc4_ + parentObj.y;
 			rotation = -rotationSpeed * Math.atan2(_pos.x - parentObj.x, _pos.y - parentObj.y) + 3.141592653589793 / 2 + Util.sign(angleVelocity) * 3.141592653589793 / 2;
 		}
-
+		
 		public function addTurrets(param1:Object):void
 		{
 			var _loc2_:* = this;
@@ -156,7 +163,7 @@ package core.spawner
 				}
 			}
 		}
-
+		
 		private function createTurret(param1:Object, param2:Spawner):void
 		{
 			if (this.parentObj is Boss)
@@ -176,7 +183,7 @@ package core.spawner
 			param2.turrets.push(_loc3_);
 			_loc3_.stateMachine.changeState(new AITurret(g, _loc3_));
 		}
-
+		
 		override public function destroy(param1:Boolean = true):void
 		{
 			var _loc3_:ISound = null;
@@ -214,7 +221,7 @@ package core.spawner
 				Body(parentObj).setSpawnersCleared(param1);
 			}
 		}
-
+		
 		public function rebuild():void
 		{
 			hp = hpMax;
@@ -241,7 +248,7 @@ package core.spawner
 			}
 			alive = true;
 		}
-
+		
 		public function tryAdjustUberStats(param1:Boss):void
 		{
 			var _loc3_:Number = NaN;
@@ -266,12 +273,12 @@ package core.spawner
 				level = g.hud.uberStats.uberLevel;
 			}
 		}
-
+		
 		public function hardenShield():void
 		{
 			aiHardenedShieldEffect = EmitterFactory.create("uWIxfxRAgUm6ThgrRFnixw", g, pos.x, pos.y, this, true);
 		}
-
+		
 		override public function switchTexturesByObj(param1:Object, param2:String = "texture_main_NEW.png"):void
 		{
 			super.switchTexturesByObj(param1, param2);
@@ -281,7 +288,7 @@ package core.spawner
 				deadTextures = _loc3_.getTexturesMainByTextureName(imgObj.textureName.replace("active", "dead"));
 			}
 		}
-
+		
 		protected function changeStateTextures(param1:Vector.<Texture>, param2:Boolean = false):void
 		{
 			if (param1 == null)
@@ -299,12 +306,12 @@ package core.spawner
 			_mc.pivotX = _mc.texture.width / 2;
 			_mc.pivotY = _mc.texture.height / 2;
 		}
-
+		
 		public function isMech():Boolean
 		{
 			return spawnerType == "mech";
 		}
-
+		
 		override public function get type():String
 		{
 			return "spawner";

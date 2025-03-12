@@ -25,35 +25,44 @@ package core.hud.components.hangar
 	import starling.events.Event;
 	import starling.events.TouchEvent;
 	import textures.TextureLocator;
-
+	
 	public class SkinItem extends Sprite
 	{
 		public static const MODE_SWITCH:int = 0;
-
 		public static const MODE_BUY:int = 1;
-
 		public static const MODE_PREVIEW:int = 2;
-
 		public static const MODE_SPINNER:int = 3;
-
 		private var g:Game;
+		
 		private var obj:Object;
+		
 		private var mode:int;
+		
 		public var buyContainer:Sprite;
+		
 		public var buyButton:Button = null;
 		private var premanufacturedDetails:Sprite;
+		
 		private var hasSpecialWeapon:Boolean = false;
 		private var specialweapon:Sprite;
+		
 		private var premanufactured:Sprite;
+		
 		private var specialStats:Sprite;
+		
 		private var specialCount:int = 0;
 		private var stats:SkinItemBaseStats;
+		
 		private var cost:CreditLabel;
+		
 		private var desc:Text;
+		
 		private var emitters:Vector.<Emitter>;
-
+		
 		private var clickedButton:Button;
+		
 		private var activateButton:Button;
+		
 		public function SkinItem(param1:Game, param2:Object, param3:int)
 		{
 			buyContainer = new Sprite();
@@ -76,7 +85,7 @@ package core.hud.components.hangar
 			addPremanufacturedSkills();
 			addPremanufacturedDetails();
 		}
-
+		
 		private function addPremanufacturedDetails():void
 		{
 			premanufacturedDetails.y = premanufactured.y + premanufactured.height + 15;
@@ -91,7 +100,7 @@ package core.hud.components.hangar
 			premanufacturedDetails.addChild(_loc2_);
 			addChild(premanufacturedDetails);
 		}
-
+		
 		private function addSpecialWeapon():void
 		{
 			var _loc7_:int = 0;
@@ -131,7 +140,7 @@ package core.hud.components.hangar
 				addChild(specialweapon);
 			}
 		}
-
+		
 		private function addPremanufacturedSkills():void
 		{
 			var _loc6_:int = 0;
@@ -172,7 +181,7 @@ package core.hud.components.hangar
 			}
 			addChild(premanufactured);
 		}
-
+		
 		private function addSpecialStats():void
 		{
 			var _loc2_:Text = getHeaderText(Localize.t("Specialties") + ":");
@@ -191,7 +200,7 @@ package core.hud.components.hangar
 			}
 			addChild(specialStats);
 		}
-
+		
 		private function addSpecialText(param1:String):void
 		{
 			var _loc3_:Object = obj.specials;
@@ -207,7 +216,7 @@ package core.hud.components.hangar
 			specialStats.addChild(_loc2_);
 			specialCount++;
 		}
-
+		
 		private function addBaseStats():void
 		{
 			var _loc1_:Text = getHeaderText(Localize.t("Base stats") + ":");
@@ -216,7 +225,7 @@ package core.hud.components.hangar
 			stats.addChild(_loc1_);
 			addChild(stats);
 		}
-
+		
 		private function addBuy():void
 		{
 			var originalCost:Text;
@@ -254,12 +263,12 @@ package core.hud.components.hangar
 				if (g.salesManager.getSpecialSkinSale(obj.key) && mode != 3)
 				{
 					saleTimer = new SaleTimer(g, g.time - 120000, g.time + 120000, function():void
+					{
+						if (buyButton != null)
 						{
-							if (buyButton != null)
-							{
-								buyButton.enabled = false;
-							}
-						});
+							buyButton.enabled = false;
+						}
+					});
 					buyContainer.addChild(saleTimer);
 				}
 			}
@@ -276,7 +285,7 @@ package core.hud.components.hangar
 				addChild(buyContainer);
 			}
 		}
-
+		
 		private function getHeaderText(param1:String):Text
 		{
 			var _loc2_:Text = new Text();
@@ -285,7 +294,7 @@ package core.hud.components.hangar
 			_loc2_.size = 13;
 			return _loc2_;
 		}
-
+		
 		private function addNameAndDescription():void
 		{
 			var _loc1_:Text = new Text();
@@ -301,7 +310,7 @@ package core.hud.components.hangar
 			desc.color = 11184810;
 			addChild(desc);
 		}
-
+		
 		private function addShip():void
 		{
 			var _loc1_:* = null;
@@ -388,28 +397,28 @@ package core.hud.components.hangar
 				}
 			}
 		}
-
+		
 		private function createButton(param1:Object):Button
 		{
 			var obj:Object = param1;
 			var buyButton:Button = new Button(function():void
+			{
+				var buyConfirm:CreditBuyBox = new CreditBuyBox(g, !!obj.salePrice ? obj.salePrice : obj.price, Localize.t("This will add a new ship to your fleet."));
+				g.addChildToOverlay(buyConfirm);
+				buyConfirm.addEventListener("accept", function(param1:Event):void
 				{
-					var buyConfirm:CreditBuyBox = new CreditBuyBox(g, !!obj.salePrice ? obj.salePrice : obj.price, Localize.t("This will add a new ship to your fleet."));
-					g.addChildToOverlay(buyConfirm);
-					buyConfirm.addEventListener("accept", function(param1:Event):void
-						{
-							onBuy(obj);
-							clickedButton = buyButton;
-							buyConfirm.removeEventListeners();
-							buyButton.enabled = false;
-							buyButton.visible = false;
-						});
-					buyConfirm.addEventListener("close", function(param1:Event):void
-						{
-							buyConfirm.removeEventListeners();
-							buyButton.enabled = true;
-						});
-				}, Localize.t("Buy"), "buy");
+					onBuy(obj);
+					clickedButton = buyButton;
+					buyConfirm.removeEventListeners();
+					buyButton.enabled = false;
+					buyButton.visible = false;
+				});
+				buyConfirm.addEventListener("close", function(param1:Event):void
+				{
+					buyConfirm.removeEventListeners();
+					buyButton.enabled = true;
+				});
+			}, Localize.t("Buy"), "buy");
 			buyButton.width = 70;
 			buyButton.size = 11;
 			buyButton.x = 300;
@@ -417,12 +426,12 @@ package core.hud.components.hangar
 			buyContainer.addChild(buyButton);
 			return buyButton;
 		}
-
+		
 		private function onBuy(param1:Object):void
 		{
 			g.rpc("buySkin", onBuyComplete, param1.key);
 		}
-
+		
 		private function onBuyComplete(param1:Message):void
 		{
 			if (!param1.getBoolean(0))
@@ -441,7 +450,7 @@ package core.hud.components.hangar
 			removeChild(cost);
 			dispatchEventWith("bought");
 		}
-
+		
 		private function addAquiredText():void
 		{
 			var _loc1_:Text = new Text(375, 15);
@@ -451,7 +460,7 @@ package core.hud.components.hangar
 			_loc1_.color = 4521796;
 			buyContainer.addChild(_loc1_);
 		}
-
+		
 		private function addSwitchButton():void
 		{
 			activateButton = new Button(activateShip, Localize.t("Use this ship"), "positive");
@@ -459,7 +468,7 @@ package core.hud.components.hangar
 			activateButton.y = 15;
 			addChild(activateButton);
 		}
-
+		
 		private function activateShip(param1:TouchEvent = null):void
 		{
 			g.me.changeSkin(obj.key);
@@ -472,7 +481,7 @@ package core.hud.components.hangar
 			addChild(_loc2_);
 			g.me.leaveBody();
 		}
-
+		
 		override public function dispose():void
 		{
 			for each (var _loc1_:* in emitters)

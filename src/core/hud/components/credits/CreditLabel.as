@@ -4,10 +4,11 @@ package core.hud.components.credits
 	import starling.display.Image;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class CreditLabel extends Text
 	{
 		private var fluxIcon:Image;
+		
 		public function CreditLabel()
 		{
 			super();
@@ -16,7 +17,7 @@ package core.hud.components.credits
 			fluxIcon.visible = false;
 			addChild(fluxIcon);
 		}
-
+		
 		override public function set text(param1:String):void
 		{
 			super.text = param1;
@@ -27,7 +28,7 @@ package core.hud.components.credits
 			}
 			draw();
 		}
-
+		
 		override protected function draw():void
 		{
 			super.draw();

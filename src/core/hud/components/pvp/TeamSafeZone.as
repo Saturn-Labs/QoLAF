@@ -8,20 +8,27 @@ package core.hud.components.pvp
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	import textures.TextureManager;
-
+	
 	public class TeamSafeZone
 	{
 		private var textureManager:ITextureManager;
+		
 		public var zoneRadius:Number = 350;
 		public var team:int = -1;
 		private var g:Game;
+		
 		private var friendlyZone:Image;
+		
 		private var enemyZone:Image;
+		
 		private var img:Image;
+		
 		public var friendlyColor:uint = 255;
 		public var enemyColor:uint = 16711680;
 		public var x:int;
+		
 		public var y:int;
+		
 		public function TeamSafeZone(param1:Game, param2:Object, param3:int)
 		{
 			super();
@@ -42,7 +49,7 @@ package core.hud.components.pvp
 			this.g.addChildToCanvasAt(friendlyZone, 8);
 			this.g.addChildToCanvasAt(img, 9);
 		}
-
+		
 		public function updateZone():void
 		{
 			var _loc1_:Number = NaN;
@@ -72,7 +79,7 @@ package core.hud.components.pvp
 				}
 			}
 		}
-
+		
 		private function createZoneImg(param1:Object, param2:uint, param3:String):Image
 		{
 			var _loc10_:Image = null;

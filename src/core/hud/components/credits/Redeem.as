@@ -13,15 +13,21 @@ package core.hud.components.credits
 	import starling.events.TouchEvent;
 	import starling.text.TextField;
 	import starling.text.TextFormat;
-
+	
 	public class Redeem extends Sprite
 	{
 		private var g:Game;
+		
 		private var input:InputText;
+		
 		private var box:Box;
+		
 		private var redeemButton:Button;
+		
 		private var cancelButton:Button;
+		
 		private var label:TextField;
+		
 		public function Redeem(param1:Game)
 		{
 			box = new Box(220, 80, "highlight", 1, 15);
@@ -45,14 +51,14 @@ package core.hud.components.credits
 			box.addChild(redeemButton);
 			addEventListener("addedToStage", stageAddHandler);
 		}
-
+		
 		private function stageAddHandler(param1:Event):void
 		{
 			removeEventListener("addedToStage", stageAddHandler);
 			stage.addEventListener("resize", redraw);
 			redraw();
 		}
-
+		
 		private function onRedeem(param1:TouchEvent):void
 		{
 			var _loc3_:String = input.text;
@@ -71,14 +77,14 @@ package core.hud.components.credits
 				g.rpc("redeemPod", onRedeemPod, _loc3_);
 			}
 		}
-
+		
 		private function onRedeemCode(param1:Message):void
 		{
 			var skin:String;
 			var popup:RedeemSuccess;
 			var m:Message = param1;
 			var i:int = 0;
-			var success:Boolean = m.getBoolean(i++ );
+			var success:Boolean = m.getBoolean(i++);
 			if (!success)
 			{
 				label.text = Localize.t(m.getString(i));
@@ -86,31 +92,31 @@ package core.hud.components.credits
 				redeemButton.enabled = true;
 				return;
 			}
-			g.me.tractorBeam = m.getNumber(i++ );
-			g.me.expBoost = m.getNumber(i++ );
-			g.me.cargoProtection = m.getNumber(i++ );
-			g.me.xpProtection = m.getNumber(i++ );
+			g.me.tractorBeam = m.getNumber(i++);
+			g.me.expBoost = m.getNumber(i++);
+			g.me.cargoProtection = m.getNumber(i++);
+			g.me.xpProtection = m.getNumber(i++);
 			skin = m.getString(i);
 			g.me.addNewSkin(skin);
 			g.hud.update();
 			popup = new RedeemSuccess(g, skin);
 			g.addChildToOverlay(popup);
 			popup.addEventListener("close", function(param1:Event):void
-				{
-					popup.removeEventListeners();
-					g.removeChildFromOverlay(popup);
-				});
+			{
+				popup.removeEventListeners();
+				g.removeChildFromOverlay(popup);
+			});
 			stage.removeEventListener("resize", redraw);
 			dispatchEventWith("success");
 		}
-
+		
 		private function onRedeemPod(param1:Message):void
 		{
 			var count:int;
 			var popup:PopupMessage;
 			var m:Message = param1;
 			var i:int = 0;
-			var success:Boolean = m.getBoolean(i++ );
+			var success:Boolean = m.getBoolean(i++);
 			if (!success)
 			{
 				label.text = Localize.t(m.getString(i));
@@ -123,24 +129,24 @@ package core.hud.components.credits
 			popup.text = "Congratulations!\n\nYou have received " + count + " pods";
 			g.addChildToOverlay(popup);
 			popup.addEventListener("close", function(param1:Event):void
-				{
-					popup.removeEventListeners();
-					g.removeChildFromOverlay(popup);
-				});
+			{
+				popup.removeEventListeners();
+				g.removeChildFromOverlay(popup);
+			});
 			stage.removeEventListener("resize", redraw);
 			dispatchEventWith("success");
 			g.rpc("getPodCount", function(param1:Message):void
-				{
-					g.hud.updatePodCount(param1.getInt(0));
-				});
+			{
+				g.hud.updatePodCount(param1.getInt(0));
+			});
 		}
-
+		
 		private function onCancel(param1:TouchEvent):void
 		{
 			stage.removeEventListener("resize", redraw);
 			dispatchEventWith("close");
 		}
-
+		
 		protected function redraw(param1:Event = null):void
 		{
 			box.x = Math.round(stage.stageWidth / 2 - box.width / 2);

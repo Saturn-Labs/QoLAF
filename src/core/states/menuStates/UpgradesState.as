@@ -5,17 +5,19 @@ package core.states.menuStates
 	import core.player.Player;
 	import core.scene.Game;
 	import core.states.DisplayState;
-
+	
 	public class UpgradesState extends DisplayState
 	{
 		private var techTree:TechTree;
+		
 		private var p:Player;
+		
 		public function UpgradesState(param1:Game, param2:Player)
 		{
 			super(param1, HomeState);
 			this.p = param2;
 		}
-
+		
 		override public function enter():void
 		{
 			super.enter();

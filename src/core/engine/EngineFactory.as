@@ -5,14 +5,14 @@ package core.engine
 	import core.ship.Ship;
 	import data.DataLocator;
 	import data.IDataManager;
-
+	
 	public class EngineFactory
 	{
 		public function EngineFactory()
 		{
 			super();
 		}
-
+		
 		public static function create(param1:String, param2:Game, param3:Ship):Engine
 		{
 			var _loc4_:Engine = null;

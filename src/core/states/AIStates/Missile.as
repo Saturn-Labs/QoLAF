@@ -8,15 +8,21 @@ package core.states.AIStates
 	import core.states.StateMachine;
 	import flash.geom.Point;
 	import generics.Util;
-
+	
 	public class Missile implements IState
 	{
 		private var g:Game;
+		
 		private var p:Projectile;
+		
 		private var sm:StateMachine;
+		
 		private var isEnemy:Boolean;
+		
 		private var engine:GameObject;
+		
 		private var startTime:Number;
+		
 		public function Missile(param1:Game, param2:Projectile)
 		{
 			super();
@@ -33,12 +39,12 @@ package core.states.AIStates
 			param2.convergenceCounter = 0;
 			engine = new GameObject();
 		}
-
+		
 		public function enter():void
 		{
 			startTime = g.time;
 		}
-
+		
 		public function execute():void
 		{
 			var _loc5_:Point = null;
@@ -121,16 +127,16 @@ package core.states.AIStates
 				p.course.rotation -= p.errorRot * _loc2_;
 			}
 		}
-
+		
 		public function exit():void
 		{
 		}
-
+		
 		public function set stateMachine(param1:StateMachine):void
 		{
 			this.sm = param1;
 		}
-
+		
 		public function get type():String
 		{
 			return "Missile";

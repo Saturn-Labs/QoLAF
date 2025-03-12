@@ -2,10 +2,11 @@ package core.hud.components
 {
 	import starling.text.TextField;
 	import starling.text.TextFormat;
-
+	
 	public class ButtonPvPMenu extends ButtonHud
 	{
 		private var captionText:TextField;
+		
 		public function ButtonPvPMenu(param1:Function, param2:String)
 		{
 			super(param1, "button_pvpmatch.png");
@@ -15,7 +16,7 @@ package core.hud.components
 			captionText.batchable = true;
 			addChild(captionText);
 		}
-
+		
 		public function set text(param1:String):void
 		{
 			captionText.text = param1;

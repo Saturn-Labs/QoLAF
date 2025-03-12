@@ -8,15 +8,16 @@ package
 	import flash.system.LoaderContext;
 	import flash.system.Security;
 	import flash.system.SecurityDomain;
-
+	
 	public class IDI extends MovieClip
 	{
 		public var idnet:*;
-
+		
 		private var appID:String = "5510146c694862c3f000054d";
 		private var verbose:Boolean = true;
 		private var showPreloader:Boolean = false;
 		private var loginCallback:Function;
+		
 		private var loggedIn:Boolean = false;
 		public function IDI(param1:Function)
 		{
@@ -26,7 +27,7 @@ package
 			addEventListener("addedToStage", onStage);
 			loginCallback = param1;
 		}
-
+		
 		private function handleIDNET(param1:Event):void
 		{
 			var _loc2_:Object = null;
@@ -87,11 +88,11 @@ package
 				log("rating added");
 			}
 		}
-
+		
 		private function log(param1:String):void
 		{
 		}
-
+		
 		private function onStage(param1:Event):void
 		{
 			var _loc4_:LoaderContext = new LoaderContext();
@@ -106,7 +107,7 @@ package
 			_loc3_.contentLoaderInfo.addEventListener("complete", loadComplete, false, 0, true);
 			_loc3_.load(_loc2_, _loc4_);
 		}
-
+		
 		private function loadComplete(param1:Event):void
 		{
 			idnet = param1.currentTarget.content;

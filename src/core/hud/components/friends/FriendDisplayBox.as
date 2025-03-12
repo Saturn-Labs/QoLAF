@@ -13,11 +13,13 @@ package core.hud.components.friends
 	import starling.events.TouchEvent;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class FriendDisplayBox extends Sprite
 	{
 		private var friend:Friend;
+		
 		private var reputationIcon:Image;
+		
 		public function FriendDisplayBox(param1:Game, param2:Friend)
 		{
 			var dataManager:IDataManager;
@@ -63,19 +65,19 @@ package core.hud.components.friends
 			{
 				useHandCursor = true;
 				addEventListener("touch", function(param1:TouchEvent):void
+				{
+					if (param1.getTouch(that, "ended"))
 					{
-						if (param1.getTouch(that, "ended"))
-						{
-							dispatchEventWith("friendSelected", false, friend.currentSolarSystem);
-						}
-					});
+						dispatchEventWith("friendSelected", false, friend.currentSolarSystem);
+					}
+				});
 			}
 			b = new Button(function():void
-				{
-					g.friendManager.sendRemoveFriendById(friend.id);
-					that.parent.visible = false;
-					g.showErrorDialog("Friend removed.", false);
-				}, "remove");
+			{
+				g.friendManager.sendRemoveFriendById(friend.id);
+				that.parent.visible = false;
+				g.showErrorDialog("Friend removed.", false);
+			}, "remove");
 			b.x = 490;
 			b.y = 4;
 			addChild(b);

@@ -11,14 +11,14 @@ package core.boss
 	import data.*;
 	import flash.geom.Point;
 	import generics.Util;
-
+	
 	public class BossFactory
 	{
 		public function BossFactory()
 		{
 			super();
 		}
-
+		
 		public static function createBoss(param1:String, param2:Body, param3:Array, param4:String, param5:Game):Boss
 		{
 			var _loc9_:Number = NaN;
@@ -144,7 +144,7 @@ package core.boss
 			_loc6_.stateMachine.changeState(new AIBoss(param5, _loc6_));
 			return _loc6_;
 		}
-
+		
 		private static function addTurrets(param1:Object, param2:Game, param3:Boss):void
 		{
 			var _loc4_:Array = param1.turrets;
@@ -153,7 +153,7 @@ package core.boss
 				createTurret(_loc5_, param3, param2);
 			}
 		}
-
+		
 		private static function createTurret(param1:Object, param2:Boss, param3:Game):void
 		{
 			var _loc4_:Turret = TurretFactory.createTurret(param1, param1.turret, param3, param2);
@@ -175,7 +175,7 @@ package core.boss
 			param2.allComponents.push(_loc4_);
 			_loc4_.stateMachine.changeState(new AITurret(param3, _loc4_));
 		}
-
+		
 		private static function addSpawners(param1:Object, param2:Game, param3:Boss):void
 		{
 			var _loc5_:Object = null;
@@ -191,7 +191,7 @@ package core.boss
 				createSpawner(_loc5_, _loc6_.toString(), param3, param2);
 			}
 		}
-
+		
 		private static function createSpawner(param1:Object, param2:String, param3:Boss, param4:Game):void
 		{
 			var _loc6_:Object = DataLocator.getService().loadKey("Spawners", param1.spawner);
@@ -218,7 +218,7 @@ package core.boss
 			param3.spawners.push(_loc5_);
 			param3.allComponents.push(_loc5_);
 		}
-
+		
 		private static function addBossComponents(param1:Object, param2:Game, param3:Boss):void
 		{
 			var _loc4_:Array = param1.basicObjs;
@@ -227,7 +227,7 @@ package core.boss
 				createBossComponent(_loc5_, param3, param2);
 			}
 		}
-
+		
 		private static function createBossComponent(param1:Object, param2:Boss, param3:Game):void
 		{
 			var _loc5_:Number = NaN;
@@ -292,7 +292,7 @@ package core.boss
 				_loc4_.effect = EmitterFactory.create(param1.effect, param3, 0, 0, _loc4_.effectTarget, true);
 			}
 		}
-
+		
 		private static function getTriggers(param1:Object, param2:Game):Vector.<Trigger>
 		{
 			var _loc7_:int = 0;
@@ -350,7 +350,7 @@ package core.boss
 			}
 			return _loc6_;
 		}
-
+		
 		private static function sortComponents(param1:Game, param2:Boss):void
 		{
 			param2.allComponents.sort(compareFunction);
@@ -361,7 +361,7 @@ package core.boss
 				param1.unitManager.add(_loc3_, param1.canvasBosses, false);
 			}
 		}
-
+		
 		private static function compareFunction(param1:Unit, param2:Unit):int
 		{
 			if (param1.layer < param2.layer)

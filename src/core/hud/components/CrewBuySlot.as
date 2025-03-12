@@ -9,16 +9,17 @@ package core.hud.components
 	import starling.filters.ColorMatrixFilter;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class CrewBuySlot extends Sprite
 	{
 		private static const HEIGHT:int = 58;
-
 		private static const WIDTH:int = 52;
-
 		private var box:Quad;
+		
 		private var img:Image;
+		
 		private var g:Game;
+		
 		private var bgColor:uint = 1717572;
 		private var isSelected:Boolean = false;
 		private var hovering:Boolean = false;
@@ -48,7 +49,7 @@ package core.hud.components
 			setSelected(false);
 			addEventListener("removedFromStage", clean);
 		}
-
+		
 		public function setSelected(param1:Boolean):void
 		{
 			param1 ? (box.alpha = 1) : (box.alpha = 0);
@@ -59,7 +60,7 @@ package core.hud.components
 			}
 			dispatchEventWith("crewSelected", true);
 		}
-
+		
 		private function onClick(param1:TouchEvent = null):void
 		{
 			var _loc2_:int = 0;
@@ -78,7 +79,7 @@ package core.hud.components
 			}
 			setSelected(true);
 		}
-
+		
 		public function mOver(param1:TouchEvent):void
 		{
 			if (hovering)
@@ -92,7 +93,7 @@ package core.hud.components
 			}
 			box.alpha = 0.6;
 		}
-
+		
 		public function mOut(param1:TouchEvent):void
 		{
 			if (!hovering)
@@ -107,7 +108,7 @@ package core.hud.components
 			}
 			box.alpha = 0;
 		}
-
+		
 		private function onTouch(param1:TouchEvent):void
 		{
 			if (param1.getTouch(this, "ended"))
@@ -123,7 +124,7 @@ package core.hud.components
 				mOut(param1);
 			}
 		}
-
+		
 		public function clean(param1:Event = null):void
 		{
 			removeEventListener("touch", onTouch);

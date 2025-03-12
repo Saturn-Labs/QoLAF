@@ -5,15 +5,16 @@ package core.hud.components.dialogs
 	import core.scene.Game;
 	import playerio.Message;
 	import starling.events.Event;
-
+	
 	public class PopupBuyMessage extends PopupConfirmMessage
 	{
 		public static const BOUGHT_WITH_FLUX:String = "fluxBuy";
-
 		private var priceMinerals:Vector.<PriceCommodities>;
-
+		
 		private var fluxButton:Button;
+		
 		private var g:Game;
+		
 		public function PopupBuyMessage(param1:Game)
 		{
 			priceMinerals = new Vector.<PriceCommodities>();
@@ -21,7 +22,7 @@ package core.hud.components.dialogs
 			this.g = param1;
 			this.confirmButton.visible = false;
 		}
-
+		
 		public function addCost(param1:PriceCommodities):void
 		{
 			priceMinerals.push(param1);
@@ -33,7 +34,7 @@ package core.hud.components.dialogs
 			this.confirmButton.visible = true;
 			redraw();
 		}
-
+		
 		public function addBuyForFluxButton(param1:int, param2:int, param3:String, param4:String):void
 		{
 			var fluxCost:int = param1;
@@ -41,17 +42,17 @@ package core.hud.components.dialogs
 			var rpcName:String = param3;
 			var buyMessage:String = param4;
 			fluxButton = new Button(function():void
+			{
+				g.creditManager.refresh(function():void
 				{
-					g.creditManager.refresh(function():void
-						{
-							onBuyForFlux(fluxCost, slot, rpcName, buyMessage);
-						});
-				}, "Buy for " + fluxCost + " Flux", "buy");
+					onBuyForFlux(fluxCost, slot, rpcName, buyMessage);
+				});
+			}, "Buy for " + fluxCost + " Flux", "buy");
 			fluxButton.autoEnableAfterClick = true;
 			box.addChild(fluxButton);
 			redraw();
 		}
-
+		
 		private function onBuyForFlux(param1:int, param2:int, param3:String, param4:String):void
 		{
 			var fluxCost:int = param1;
@@ -61,28 +62,28 @@ package core.hud.components.dialogs
 			var creditBuyBox:CreditBuyBox = new CreditBuyBox(g, fluxCost, buyMessage);
 			g.addChildToOverlay(creditBuyBox);
 			creditBuyBox.addEventListener("accept", function(param1:Event):void
+			{
+				var e:Event = param1;
+				g.rpc(rpcName, function(param1:Message):void
 				{
-					var e:Event = param1;
-					g.rpc(rpcName, function(param1:Message):void
-						{
-							if (param1.getBoolean(0))
-							{
-								g.creditManager.refresh();
-								dispatchEventWith("fluxBuy");
-							}
-							else
-							{
-								g.showErrorDialog(param1.getString(1), true);
-								g.removeChildFromOverlay(creditBuyBox, true);
-							}
-						}, slot);
-				});
+					if (param1.getBoolean(0))
+					{
+						g.creditManager.refresh();
+						dispatchEventWith("fluxBuy");
+					}
+					else
+					{
+						g.showErrorDialog(param1.getString(1), true);
+						g.removeChildFromOverlay(creditBuyBox, true);
+					}
+				}, slot);
+			});
 			creditBuyBox.addEventListener("close", function(param1:Event):void
-				{
-					g.removeChildFromOverlay(creditBuyBox, true);
-				});
+			{
+				g.removeChildFromOverlay(creditBuyBox, true);
+			});
 		}
-
+		
 		override protected function redraw(param1:Event = null):void
 		{
 			var _loc8_:int = 0;

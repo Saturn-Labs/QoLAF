@@ -7,10 +7,11 @@ package core.hud.components
 	import starling.display.Sprite;
 	import starling.text.TextField;
 	import starling.text.TextFormat;
-
+	
 	public class UberStats extends Sprite
 	{
 		private var g:Game;
+		
 		public var uberMaxLevel:Number = 100;
 		public var uberMinLevel:Number = 1;
 		public var uberDifficultyAtTopRank:Number = 2000;
@@ -27,15 +28,25 @@ package core.hud.components
 		private var optionalRank:int = 3;
 		private var scoreTime:Number = 0;
 		private var lives:Dictionary;
+		
 		private var rankText:TextField;
+		
 		private var challengeText:TextBitmap;
+		
 		private var missionText:TextField;
+		
 		private var optionalMissionText:TextField;
+		
 		private var xpText:TextField;
+		
 		private var optionalText:TextBitmap;
+		
 		private var scoreText:TextField;
+		
 		private var highscoreText:TextField;
+		
 		private var lifes:TextBitmap;
+		
 		private var oldCompleted:Boolean = false;
 		private var oldOptionalCompleted:Boolean = false;
 		public function UberStats(param1:Game)
@@ -62,7 +73,7 @@ package core.hud.components
 			addChild(highscoreText);
 			addChild(lifes);
 		}
-
+		
 		public function update(param1:Message):void
 		{
 			var _loc22_:int = 0;
@@ -70,23 +81,23 @@ package core.hud.components
 			var _loc9_:Object = null;
 			var _loc3_:TextBitmap = null;
 			var _loc27_:int = 0;
-			uberRank = param1.getNumber(_loc27_++ );
-			uberLevel = param1.getNumber(_loc27_++ );
-			var _loc6_:int = param1.getInt(_loc27_++ );
-			var _loc5_:Number = param1.getNumber(_loc27_++ );
-			var _loc17_:Number = param1.getNumber(_loc27_++ );
-			var _loc12_:int = param1.getInt(_loc27_++ );
-			var _loc26_:int = param1.getInt(_loc27_++ );
-			var _loc15_:int = param1.getInt(_loc27_++ );
-			var _loc4_:int = param1.getInt(_loc27_++ );
-			var _loc20_:int = param1.getInt(_loc27_++ );
-			var _loc10_:int = param1.getInt(_loc27_++ );
-			var _loc2_:int = param1.getInt(_loc27_++ );
-			var _loc11_:String = param1.getString(_loc27_++ );
-			var _loc25_:String = param1.getString(_loc27_++ );
-			var _loc16_:Boolean = param1.getBoolean(_loc27_++ );
-			var _loc7_:Boolean = param1.getBoolean(_loc27_++ );
-			var _loc21_:int = param1.getInt(_loc27_++ );
+			uberRank = param1.getNumber(_loc27_++);
+			uberLevel = param1.getNumber(_loc27_++);
+			var _loc6_:int = param1.getInt(_loc27_++);
+			var _loc5_:Number = param1.getNumber(_loc27_++);
+			var _loc17_:Number = param1.getNumber(_loc27_++);
+			var _loc12_:int = param1.getInt(_loc27_++);
+			var _loc26_:int = param1.getInt(_loc27_++);
+			var _loc15_:int = param1.getInt(_loc27_++);
+			var _loc4_:int = param1.getInt(_loc27_++);
+			var _loc20_:int = param1.getInt(_loc27_++);
+			var _loc10_:int = param1.getInt(_loc27_++);
+			var _loc2_:int = param1.getInt(_loc27_++);
+			var _loc11_:String = param1.getString(_loc27_++);
+			var _loc25_:String = param1.getString(_loc27_++);
+			var _loc16_:Boolean = param1.getBoolean(_loc27_++);
+			var _loc7_:Boolean = param1.getBoolean(_loc27_++);
+			var _loc21_:int = param1.getInt(_loc27_++);
 			var _loc18_:Array = [];
 			if (uberRank == oldUberRank + 1)
 			{
@@ -253,7 +264,7 @@ package core.hud.components
 				oldScore = _loc5_;
 			}
 		}
-
+		
 		public function CalculateUberRankFromLevel(param1:Number):Number
 		{
 			var _loc2_:int = uberMaxLevel - uberMinLevel;
@@ -263,7 +274,7 @@ package core.hud.components
 			}
 			return (param1 - uberMinLevel - _loc2_ * 0.9) * uberTopRank / (_loc2_ * 0.1) + uberTopRank;
 		}
-
+		
 		public function CalculateUberLevelFromRank(param1:Number):Number
 		{
 			var _loc2_:Number = NaN;
@@ -275,7 +286,7 @@ package core.hud.components
 			_loc2_ = uberMinLevel + _loc3_ * 0.9 + _loc3_ * 0.1 * ((param1 - uberTopRank) / uberTopRank);
 			return _loc2_ > uberMaxLevel ? uberMaxLevel : _loc2_;
 		}
-
+		
 		public function CalculateUberDifficultyFromRank(param1:Number, param2:Number):Number
 		{
 			var _loc3_:Number = 1 / Math.pow(param2, 1.2);
@@ -285,7 +296,7 @@ package core.hud.components
 			}
 			return 1 + uberDifficultyAtTopRank * _loc3_ * Math.pow(1.2, param1 - uberTopRank);
 		}
-
+		
 		public function getMyLives():int
 		{
 			return lives[g.me.id];

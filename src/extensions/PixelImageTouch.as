@@ -5,18 +5,20 @@ package extensions
 	import starling.display.Image;
 	import starling.textures.SubTexture;
 	import starling.textures.Texture;
-
+	
 	public class PixelImageTouch extends Image
 	{
 		private var _hitArea:PixelHitArea;
+		
 		private var threshold:uint;
+		
 		public function PixelImageTouch(param1:Texture, param2:PixelHitArea = null, param3:uint = 255)
 		{
 			super(param1);
 			this.hitArea = param2;
 			this.threshold = param3;
 		}
-
+		
 		override public function hitTest(param1:Point):DisplayObject
 		{
 			var _loc2_:Number = NaN;
@@ -36,7 +38,7 @@ package extensions
 			}
 			return super.hitTest(param1);
 		}
-
+		
 		override public function dispose():void
 		{
 			if (hitArea && hitArea.disposed)
@@ -45,12 +47,12 @@ package extensions
 			}
 			super.dispose();
 		}
-
+		
 		public function get hitArea():PixelHitArea
 		{
 			return _hitArea;
 		}
-
+		
 		public function set hitArea(param1:PixelHitArea):void
 		{
 			_hitArea = param1;

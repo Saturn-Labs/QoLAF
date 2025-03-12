@@ -17,18 +17,21 @@ package core.projectile
 	import movement.Heading;
 	import playerio.Message;
 	import starling.display.MeshBatch;
-
+	
 	public class ProjectileManager
 	{
 		public var inactiveProjectiles:Vector.<Projectile>;
-
+		
 		public var projectiles:Vector.<Projectile>;
-
+		
 		public var projectilesById:Dictionary;
+		
 		private var TARGET_TYPE_SHIP:String = "ship";
 		private var TARGET_TYPE_SPAWNER:String = "spawner";
 		private var g:Game;
+		
 		private var meshBatch:MeshBatch;
+		
 		public function ProjectileManager(param1:Game)
 		{
 			var _loc3_:int = 0;
@@ -47,7 +50,7 @@ package core.projectile
 				_loc3_++;
 			}
 		}
-
+		
 		public function addMessageHandlers():void
 		{
 			g.addMessageHandler("projectileAddEnemy", addEnemyProjectile);
@@ -57,7 +60,7 @@ package core.projectile
 			g.addMessageHandler("killStuckProjectiles", killStuckProjectiles);
 			g.canvasProjectiles.addChild(meshBatch);
 		}
-
+		
 		public function update():void
 		{
 			var _loc3_:int = 0;
@@ -83,7 +86,7 @@ package core.projectile
 				_loc3_--;
 			}
 		}
-
+		
 		public function getProjectile():Projectile
 		{
 			var _loc1_:Projectile = null;
@@ -98,7 +101,7 @@ package core.projectile
 			_loc1_.reset();
 			return _loc1_;
 		}
-
+		
 		public function handleBouncing(param1:Message, param2:int):void
 		{
 			var _loc3_:int = param1.getInt(param2);
@@ -110,7 +113,7 @@ package core.projectile
 			}
 			_loc4_.target = g.unitManager.getTarget(_loc5_);
 		}
-
+		
 		public function activateProjectile(param1:Projectile):void
 		{
 			param1.x = param1.course.pos.x;
@@ -135,7 +138,7 @@ package core.projectile
 				projectilesById[param1.id] = param1;
 			}
 		}
-
+		
 		public function addEnemyProjectile(param1:Message):void
 		{
 			var _loc7_:int = 0;
@@ -181,7 +184,7 @@ package core.projectile
 				_loc7_ += 7 + 10;
 			}
 		}
-
+		
 		public function addInitProjectiles(param1:Message, param2:int, param3:int):void
 		{
 			var _loc11_:* = 0;
@@ -211,7 +214,7 @@ package core.projectile
 				_loc11_ += 6;
 			}
 		}
-
+		
 		public function addPlayerProjectile(param1:Message):void
 		{
 			var _loc6_:int = 0;
@@ -273,7 +276,7 @@ package core.projectile
 				_loc6_ += 9 + 10;
 			}
 		}
-
+		
 		private function createSetProjectile(param1:Projectile, param2:int, param3:Unit, param4:Heading, param5:int, param6:int = 0, param7:int = 0, param8:Number = 0):void
 		{
 			var _loc10_:Point = null;
@@ -347,7 +350,7 @@ package core.projectile
 			activateProjectile(param1);
 			_loc14_.playFireSound();
 		}
-
+		
 		private function updateCourse(param1:Message):void
 		{
 			var _loc9_:int = 0;
@@ -429,7 +432,7 @@ package core.projectile
 				_loc9_ += 4 + 10;
 			}
 		}
-
+		
 		private function killProjectile(param1:Message):void
 		{
 			var _loc4_:int = 0;
@@ -447,7 +450,7 @@ package core.projectile
 				_loc4_++;
 			}
 		}
-
+		
 		private function killStuckProjectiles(param1:Message):void
 		{
 			var _loc2_:int = param1.getInt(0);
@@ -464,7 +467,7 @@ package core.projectile
 				}
 			}
 		}
-
+		
 		public function remove(param1:Projectile, param2:int):void
 		{
 			projectiles.splice(param2, 1);
@@ -476,7 +479,7 @@ package core.projectile
 			param1.removeFromCanvas();
 			param1.reset();
 		}
-
+		
 		public function forceUpdate():void
 		{
 			var _loc1_:Projectile = null;
@@ -489,7 +492,7 @@ package core.projectile
 				_loc2_++;
 			}
 		}
-
+		
 		public function dispose():void
 		{
 			for each (var _loc1_:* in projectiles)

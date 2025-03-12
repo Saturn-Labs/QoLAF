@@ -3,12 +3,15 @@ package core.states
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 	import starling.display.Sprite;
-
+	
 	public class DisplayStateMachine
 	{
 		public var parent:Sprite;
+		
 		private var previousState:IDisplayState;
+		
 		private var currentState:IDisplayState;
+		
 		public function DisplayStateMachine(param1:Sprite)
 		{
 			super();
@@ -16,7 +19,7 @@ package core.states
 			currentState = null;
 			this.parent = param1;
 		}
-
+		
 		public function changeState(param1:IDisplayState):void
 		{
 			if (currentState != null)
@@ -33,12 +36,12 @@ package core.states
 			currentState.stateMachine = this;
 			currentState.enter();
 		}
-
+		
 		public function revertState():void
 		{
 			changeState(previousState);
 		}
-
+		
 		public function update(param1:Number = 0):void
 		{
 			if (currentState != null)
@@ -46,8 +49,8 @@ package core.states
 				currentState.execute();
 			}
 		}
-
-		public function inState(...rest):Boolean
+		
+		public function inState(... rest):Boolean
 		{
 			if (rest[0] is String)
 			{

@@ -9,11 +9,13 @@ package core.states.gameStates
 	import core.states.exploreStates.SelectTeamState;
 	import facebook.Action;
 	import starling.display.Sprite;
-
+	
 	public class LandedExplore extends LandedState
 	{
 		private var sceneSM:DisplayStateMachine;
+		
 		private var container:Sprite;
+		
 		public function LandedExplore(param1:Game, param2:Body)
 		{
 			var _loc3_:Boolean = false;
@@ -32,7 +34,7 @@ package core.states.gameStates
 			}
 			super(param1, param2, param2.name);
 		}
-
+		
 		override public function enter():void
 		{
 			super.enter();
@@ -42,7 +44,7 @@ package core.states.gameStates
 			loadCompleted();
 			addChild(container);
 		}
-
+		
 		override public function execute():void
 		{
 			if (sceneSM.inState(SelectTeamState))
@@ -67,13 +69,13 @@ package core.states.gameStates
 				}
 			}
 		}
-
+		
 		override public function tickUpdate():void
 		{
 			sceneSM.update();
 			super.tickUpdate();
 		}
-
+		
 		override public function exit(param1:Function):void
 		{
 			sceneSM.changeState(null);

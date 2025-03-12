@@ -5,22 +5,33 @@ package core.states.AIStates
 	import core.scene.Game;
 	import core.states.IState;
 	import core.states.StateMachine;
-
+	
 	public class InstantSplitting implements IState
 	{
 		protected var g:Game;
+		
 		protected var p:Projectile;
+		
 		private var sm:StateMachine;
+		
 		private var isEnemy:Boolean;
+		
 		private var color:uint;
+		
 		private var thickness:Number;
+		
 		private var alpha:Number;
+		
 		private var maxNrOfLines:int;
+		
 		private var glowColor:uint;
+		
 		private var branchingFactor:int;
+		
 		private var splitChance:Number;
+		
 		private var lines:Vector.<BeamLine>;
-
+		
 		public function InstantSplitting(param1:Game, param2:Projectile, param3:uint, param4:uint, param5:Number, param6:Number, param7:int, param8:int, param9:Number)
 		{
 			lines = new Vector.<BeamLine>();
@@ -43,7 +54,7 @@ package core.states.AIStates
 				this.isEnemy = param2.unit.type == "enemyShip" || param2.unit.type == "turret";
 			}
 		}
-
+		
 		public function enter():void
 		{
 			var _loc1_:BeamLine = null;
@@ -52,7 +63,7 @@ package core.states.AIStates
 			lines.push(_loc1_);
 			g.canvasEffects.addChild(_loc1_);
 		}
-
+		
 		public function execute():void
 		{
 			if (p.alive)
@@ -77,16 +88,16 @@ package core.states.AIStates
 				lines = new Vector.<BeamLine>();
 			}
 		}
-
+		
 		public function exit():void
 		{
 		}
-
+		
 		public function set stateMachine(param1:StateMachine):void
 		{
 			this.sm = param1;
 		}
-
+		
 		public function get type():String
 		{
 			return "InstantSplitting";

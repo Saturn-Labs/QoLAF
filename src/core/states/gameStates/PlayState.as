@@ -15,7 +15,7 @@ package core.states.gameStates
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import textures.TextureLocator;
-
+	
 	public class PlayState extends GameState
 	{
 		private static var autoCruise:Boolean = false;
@@ -24,8 +24,10 @@ package core.states.gameStates
 		private static var oldMouseX:int = 0;
 		private static var oldMouseY:int = 0;
 		protected var container:Sprite;
+		
 		private var isInHostileZone:Boolean = false;
 		private var blackBackground:Quad;
+		
 		private var fireWithHotkeys:Boolean = false;
 		public function PlayState(param1:Game)
 		{
@@ -40,7 +42,7 @@ package core.states.gameStates
 			container.addChild(blackBackground);
 			blackBackground.visible = false;
 		}
-
+		
 		override public function enter():void
 		{
 			isInHostileZone = !g.hud.radar.inHostileZone();
@@ -48,7 +50,7 @@ package core.states.gameStates
 			resize();
 			g.addResizeListener(resize);
 		}
-
+		
 		public function resize(param1:Event = null):void
 		{
 			container.x = g.stage.stageWidth / 2 - 380;
@@ -58,13 +60,13 @@ package core.states.gameStates
 				drawBlackBackground();
 			}
 		}
-
+		
 		override public function loadCompleted():void
 		{
 			Login.fadeScreen.fadeOut();
 			_loaded = true;
 		}
-
+		
 		override public function execute():void
 		{
 			if (!g.isLeaving)
@@ -72,7 +74,7 @@ package core.states.gameStates
 				g.draw();
 			}
 		}
-
+		
 		override public function exit(param1:Function):void
 		{
 			g.removeChildFromMenu(container);
@@ -80,17 +82,17 @@ package core.states.gameStates
 			unloadCompleted();
 			param1();
 		}
-
+		
 		override public function tickUpdate():void
 		{
 			super.tickUpdate();
 		}
-
+		
 		protected function addChild(param1:DisplayObject):void
 		{
 			container.addChild(param1);
 		}
-
+		
 		private function updateMouseIntegrator():void
 		{
 			var _loc2_:int = Starling.current.nativeOverlay.mouseX;
@@ -114,52 +116,52 @@ package core.states.gameStates
 				mouseIntegrator = 0;
 			}
 		}
-
+		
 		public function updateMouseAim():void
 		{
-			var ship:PlayerShip = me.ship;
-			var heading:Heading = ship.course;
-			var globalPosition:Point = ship.getGlobalPos();
-			var globalX:Number = globalPosition.x;
-			var globalY:Number = globalPosition.y;
-			var rotationSnap:Number = ship.engine.rotationSpeed / 33;
-			var angle:Number = Math.atan2(Starling.current.nativeOverlay.mouseY - globalY, Starling.current.nativeOverlay.mouseX - globalX);
-			var angleDiff:Number = Util.angleDifference(ship.rotation, angle);
-			if (angleDiff < rotationSnap && angleDiff > -rotationSnap)
+			var _loc3_:PlayerShip = me.ship;
+			var _loc2_:Heading = _loc3_.course;
+			var _loc5_:Point = _loc3_.getGlobalPos();
+			var _loc8_:Number = _loc5_.x;
+			var _loc7_:Number = _loc5_.y;
+			var _loc1_:Number = _loc3_.engine.rotationSpeed / 33;
+			var _loc6_:Number = Math.atan2(Starling.current.nativeOverlay.mouseY - _loc7_, Starling.current.nativeOverlay.mouseX - _loc8_);
+			var _loc4_:Number = Util.angleDifference(_loc3_.rotation, _loc6_);
+			if (_loc4_ < _loc1_ && _loc4_ > -_loc1_)
 			{
-				if (heading.rotateLeft)
+				if (_loc2_.rotateLeft)
 				{
 					sendCommand(1, false);
 				}
-				if (heading.rotateRight)
+				if (_loc2_.rotateRight)
 				{
 					sendCommand(2, false);
 				}
 			}
-			else if (angleDiff > rotationSnap)
+			else if (_loc4_ > _loc1_)
 			{
-				if (heading.rotateRight)
+				if (_loc2_.rotateRight)
 				{
 					sendCommand(2, false);
 				}
-				else if (!heading.rotateLeft)
+				else if (!_loc2_.rotateLeft)
 				{
 					sendCommand(1, true);
 				}
 			}
-			else if (angleDiff < -rotationSnap)
+			else if (_loc4_ < -_loc1_)
 			{
-				if (heading.rotateLeft)
+				if (_loc2_.rotateLeft)
 				{
 					sendCommand(1, false);
 				}
-				else if (!heading.rotateRight)
+				else if (!_loc2_.rotateRight)
 				{
 					sendCommand(2, true);
 				}
 			}
 		}
-
+		
 		public function checkAccelerate(param1:Boolean = false):void
 		{
 			if (!me.commandable)
@@ -203,7 +205,7 @@ package core.states.gameStates
 				g.camera.zoomFocus(1, 100);
 			}
 		}
-
+		
 		public function updateCommands():void
 		{
 			if (!me.commandable)
@@ -237,7 +239,7 @@ package core.states.gameStates
 				handleDeathlines();
 			}
 		}
-
+		
 		private function handleTurn():void
 		{
 			if (keybinds.isInputDown(13) || keybinds.isInputDown(14))
@@ -271,7 +273,7 @@ package core.states.gameStates
 				updateMouseIntegrator();
 			}
 		}
-
+		
 		private function handleWeaponFire():void
 		{
 			var _loc2_:PlayerShip = me.ship;
@@ -321,7 +323,7 @@ package core.states.gameStates
 				sendCommand(3, false);
 			}
 		}
-
+		
 		private function handleDeathlines():void
 		{
 			var _loc1_:PlayerShip = me.ship;
@@ -351,7 +353,7 @@ package core.states.gameStates
 				g.deathLineManager.clear(true);
 			}
 		}
-
+		
 		private function checkPower():void
 		{
 			if (keybinds.isInputPressed(18))
@@ -359,7 +361,7 @@ package core.states.gameStates
 				g.commandManager.addDmgBoostCommand();
 			}
 		}
-
+		
 		private function checkConvert():void
 		{
 			if (keybinds.isInputPressed(17))
@@ -367,7 +369,7 @@ package core.states.gameStates
 				g.commandManager.addShieldConvertCommand();
 			}
 		}
-
+		
 		private function checkShield():void
 		{
 			if (keybinds.isInputPressed(16))
@@ -375,7 +377,7 @@ package core.states.gameStates
 				g.commandManager.addHardenedShieldCommand();
 			}
 		}
-
+		
 		private function checkBoost():void
 		{
 			if (keybinds.isInputPressed(15))
@@ -387,12 +389,12 @@ package core.states.gameStates
 				}
 			}
 		}
-
+		
 		private function sendCommand(param1:int, param2:Boolean):void
 		{
 			g.commandManager.addCommand(param1, param2);
 		}
-
+		
 		protected function drawBlackBackground(param1:Event = null):void
 		{
 			blackBackground.x = -container.x;
@@ -401,7 +403,7 @@ package core.states.gameStates
 			blackBackground.height = g.stage.stageHeight;
 			blackBackground.visible = true;
 		}
-
+		
 		protected function clearBackground(param1:Event = null):void
 		{
 			blackBackground.visible = false;

@@ -13,27 +13,39 @@ package core.hud.components.cargo
 	import starling.textures.Texture;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class CargoItem extends Sprite
 	{
 		public static const STYLE_HUD:String = "hud";
-
 		public static const STYLE_CARGO:String = "cargo";
-
 		public var table:String;
+		
 		public var item:String;
+		
 		public var amount:int;
+		
 		public var type:String;
+		
 		private var dataManager:IDataManager;
+		
 		private var textureManager:ITextureManager;
+		
 		private var itemImage:Image;
+		
 		private var nameText:TextBitmap;
+		
 		private var quantityText:TextBitmap;
+		
 		public var itemName:String;
+		
 		private var toolTip:ToolTip;
+		
 		private var style:String;
+		
 		private var g:SceneBase;
+		
 		private var bgr:Quad;
+		
 		public function CargoItem(param1:SceneBase, param2:String, param3:String, param4:String, param5:int)
 		{
 			super();
@@ -59,7 +71,7 @@ package core.hud.components.cargo
 			addChild(quantityText);
 			toolTip = new ToolTip(param1, itemImage, "");
 		}
-
+		
 		private function load():void
 		{
 			if (style == "cargo")
@@ -91,7 +103,7 @@ package core.hud.components.cargo
 			}
 			toolTip.text = itemName + ": <FONT COLOR='#ffffff'>" + amount + "</FONT>";
 		}
-
+		
 		public function draw(param1:String = "cargo"):void
 		{
 			this.style = param1;

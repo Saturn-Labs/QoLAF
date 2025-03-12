@@ -7,13 +7,17 @@ package core.hud.components
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.TouchEvent;
-
+	
 	public class WarpGateFriendLocationSelector extends Sprite
 	{
 		protected var box:Box;
+		
 		protected var closeButton:Button;
+		
 		protected var bgr:Quad;
+		
 		private var callback:Function;
+		
 		public function WarpGateFriendLocationSelector(param1:Function)
 		{
 			box = new Box(300, 200, "highlight", 18);
@@ -27,7 +31,7 @@ package core.hud.components
 			box.addChild(closeButton);
 			addEventListener("addedToStage", stageAddHandler);
 		}
-
+		
 		private function stageAddHandler(param1:Event):void
 		{
 			addEventListener("removedFromStage", clean);
@@ -36,12 +40,12 @@ package core.hud.components
 			bgr.height = stage.stageHeight;
 			draw();
 		}
-
+		
 		protected function close(param1:TouchEvent = null):void
 		{
 			closeAndWarp(false);
 		}
-
+		
 		protected function draw(param1:Event = null):void
 		{
 			if (stage == null)
@@ -73,26 +77,22 @@ package core.hud.components
 			bgr.width = stage.stageWidth;
 			bgr.height = stage.stageHeight;
 		}
-
+		
 		private function closeAndWarp(param1:Boolean = true):void
 		{
 			var doit:Boolean = param1;
-			TweenMax.to(this, 0.3, {
-						"height": 0,
-						"alpha": 0,
-						"onComplete": function():void
-						{
-							callback(doit);
-						}
-					});
+			TweenMax.to(this, 0.3, {"height": 0, "alpha": 0, "onComplete": function():void
+			{
+				callback(doit);
+			}});
 		}
-
+		
 		private function resize(param1:Event):void
 		{
 			box.x = Math.round(stage.stageWidth / 2 - box.width / 2);
 			box.y = Math.round(stage.stageHeight / 2 - box.height / 2);
 		}
-
+		
 		protected function clean(param1:Event):void
 		{
 			stage.removeEventListener("resize", resize);
@@ -164,10 +164,10 @@ class WarpToFriendRow extends Sprite
 			buttonText = "Warp";
 		}
 		warpToFriendButton = new Button(function():void
-			{
-				setDesiredRoom(type, friend);
-				callback();
-			}, buttonText, "positive");
+		{
+			setDesiredRoom(type, friend);
+			callback();
+		}, buttonText, "positive");
 		if (type == "clan" && !Game.instance.me.clanId)
 		{
 			warpToFriendButton.enabled = false;
@@ -178,7 +178,7 @@ class WarpToFriendRow extends Sprite
 		addChild(description);
 		addChild(warpToFriendButton);
 	}
-
+	
 	private function setDesiredRoom(param1:String, param2:Friend):void
 	{
 		var _loc3_:String = null;

@@ -2,55 +2,52 @@ package core.solarSystem
 {
 	import core.hud.components.TextBitmap;
 	import core.player.CrewMember;
-
+	
 	public class Area
 	{
 		public static const TOTALSKILLTYPES:int = 3;
-
 		public static const MINEVENTS:int = 4;
-
 		public static const TOTALSPECIALTYPES:int = 9;
-
 		public static const SKILLTYPE:Vector.<String> = Vector.<String>(["Survival", "Diplomacy", "Combat"]);
-
+		
 		public static const SKILLTYPEHTML:Vector.<String> = Vector.<String>(["Survival", "Diplomacy", "Combat"]);
-
+		
 		public static const REWARD_ACTIONS:Vector.<Array> = Vector.<Array>([["Salvaged", "Discovered", "Excavated"], ["Bribe", "Smuggled", "Traded"], ["Stole", "Pillaged", "Robbed"]]);
-
+		
 		public static const SPECIALTYPE:Vector.<String> = Vector.<String>(["Cold", "Heat", "Radiation", "First Contact", "Trade", "Collaboration", "Kinetic Weapons", "Energy Weapons", "Bio Weapons"]);
-
+		
 		public static const SPECIALTYPEHTML:Vector.<String> = Vector.<String>(["<FONT COLOR='#4682B4'>" + SPECIALTYPE[0] + "</FONT>", "<FONT COLOR='#FF2400'>" + SPECIALTYPE[1] + "</FONT>", "<FONT COLOR='#9CCB19'>" + SPECIALTYPE[2] + "</FONT>", "<FONT COLOR='#8B0000'>" + SPECIALTYPE[3] + "</FONT>", "<FONT COLOR='#7B0000'>" + SPECIALTYPE[4] + "</FONT>", "<FONT COLOR='#9151ff'>" + SPECIALTYPE[5] + "</FONT>", "<FONT COLOR='#ffffff'>" + SPECIALTYPE[6] + "</FONT>", "<FONT COLOR='#ffdfdf'>" + SPECIALTYPE[7] + "</FONT>", "<FONT COLOR='#23ff23'>" + SPECIALTYPE[8] + "</FONT>"]);
-
+		
 		public static const SPECIALCOLORTYPE:Vector.<uint> = Vector.<uint>([4620980, 16720896, 10275609, 9109504, 8060928, 9523711, 16777215, 16768991, 2359075]);
-
+		
 		public static const COLORTYPE:Vector.<uint> = Vector.<uint>([5635925, 5592575, 16724787]);
-
+		
 		public static const COLORTYPESTR:Vector.<String> = Vector.<String>(["#55ff55", "#5555ff", "#ff3333"]);
-
+		
 		public static const COLORTYPEFILL:Vector.<uint> = Vector.<uint>([2276130, 2237115, 12259601]);
-
+		
 		public static const SIZE:Vector.<String> = Vector.<String>(["Tiny", "Small", "Small", "Medium", "Medium", "Large", "Large", "Very Large", "Very Large", "Gigantic"]);
-
+		
 		public function Area()
 		{
 			super();
 		}
-
+		
 		public static function getSkillType(param1:int):String
 		{
 			return SKILLTYPE[param1];
 		}
-
+		
 		public static function getSkillTypeHtml(param1:int):String
 		{
 			return SKILLTYPEHTML[param1];
 		}
-
+		
 		public static function getRewardAction(param1:int):String
 		{
 			return REWARD_ACTIONS[param1][Math.floor(Math.random() * 3)];
 		}
-
+		
 		public static function getSpecialIndex(param1:String):int
 		{
 			var _loc2_:int = 0;
@@ -65,22 +62,22 @@ package core.solarSystem
 			}
 			return -1;
 		}
-
+		
 		public static function getSizeString(param1:int):String
 		{
 			return SIZE[param1 - 1];
 		}
-
+		
 		public static function getSpecialType(param1:int):String
 		{
 			return SPECIALTYPE[param1];
 		}
-
+		
 		public static function getSpecialTypeHtml(param1:int):String
 		{
 			return SPECIALTYPEHTML[param1];
 		}
-
+		
 		public static function getTime(param1:int, param2:int, param3:int, param4:Array, param5:int = 0):int
 		{
 			var _loc6_:Number = param2 - param5;
@@ -90,7 +87,7 @@ package core.solarSystem
 			}
 			return (0.2 * param4.length + 1) * (1 + 0.05 * _loc6_ + 0.2 * param3) * (30 * Math.pow(2, param1 - 1));
 		}
-
+		
 		public static function getSuccessChance(param1:Number, param2:int, param3:CrewMember, param4:Array):Number
 		{
 			var _loc7_:Number = NaN;
@@ -119,7 +116,7 @@ package core.solarSystem
 			}
 			return _loc7_;
 		}
-
+		
 		public static function injuryRiskText(param1:Number, param2:int, param3:int, param4:CrewMember, param5:Array):TextBitmap
 		{
 			var _loc6_:Number = Number(param4.skills[param2]);

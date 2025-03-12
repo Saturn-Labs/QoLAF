@@ -6,17 +6,21 @@ package core.states.gameStates.missions
 	import feathers.controls.ScrollContainer;
 	import starling.display.Sprite;
 	import starling.events.Event;
-
+	
 	public class MissionsList extends Sprite
 	{
 		public static var instance:MissionsList;
+		
 		private var g:Game;
+		
 		private var missions:Vector.<Mission>;
-
+		
 		private var missionViews:Vector.<MissionView>;
-
+		
 		private var missionsContainer:ScrollContainer;
+		
 		private var majorType:String;
+		
 		public function MissionsList(param1:Game)
 		{
 			missionViews = new Vector.<MissionView>();
@@ -30,7 +34,7 @@ package core.states.gameStates.missions
 			missionsContainer.y = 40;
 			addChild(missionsContainer);
 		}
-
+		
 		public static function reload():void
 		{
 			if (instance != null)
@@ -38,45 +42,49 @@ package core.states.gameStates.missions
 				instance.reload();
 			}
 		}
-
+		
 		public function loadStoryMissions():void
 		{
 			this.majorType = "static";
 			load();
 		}
-
+		
 		public function loadTimedMissions():void
 		{
 			this.majorType = "time";
 			load();
 		}
-
+		
 		public function load():void
 		{
 			var majorType:String = this.majorType;
 			missions = g.me.missions.filter(function(param1:Mission, param2:int, param3:Vector.<Mission>):Boolean
-				{
-					return param1.majorType == majorType;
-				});
+			{
+				return param1.majorType == majorType;
+			});
 			sortByDate();
 		}
-
+		
 		private function sortByDate():void
 		{
-			missions = missions.sort(function(mission1:Mission, mission2:Mission):int
+			missions = missions.sort((function():*
+			{
+				var f:Function;
+				return f = function(param1:Mission, param2:Mission):int
 				{
-					if (mission1.created < mission2.created)
+					if (param1.created < param2.created)
 					{
 						return 1;
 					}
-					if (mission1.created > mission2.created)
+					if (param1.created > param2.created)
 					{
 						return -1;
 					}
 					return 0;
-				});
+				};
+			})());
 		}
-
+		
 		private function reload(param1:Event = null):void
 		{
 			missionViews.length = 0;
@@ -84,7 +92,7 @@ package core.states.gameStates.missions
 			load();
 			drawMissions();
 		}
-
+		
 		public function drawMissions():void
 		{
 			var _loc4_:int = 0;
@@ -109,7 +117,7 @@ package core.states.gameStates.missions
 			positionMissions();
 			trySetMissionsViewed();
 		}
-
+		
 		private function positionMissions():void
 		{
 			var _loc4_:int = 0;
@@ -126,7 +134,7 @@ package core.states.gameStates.missions
 				_loc4_++;
 			}
 		}
-
+		
 		private function trySetMissionsViewed():void
 		{
 			var _loc1_:Boolean = false;
@@ -144,7 +152,7 @@ package core.states.gameStates.missions
 			}
 			g.hud.missionsButton.hideHintNew();
 		}
-
+		
 		public function update():void
 		{
 			var _loc2_:int = 0;
@@ -157,7 +165,7 @@ package core.states.gameStates.missions
 				_loc2_++;
 			}
 		}
-
+		
 		override public function dispose():void
 		{
 			missionsContainer.removeChildren(0, -1, true);

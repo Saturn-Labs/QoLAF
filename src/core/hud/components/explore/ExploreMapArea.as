@@ -25,40 +25,60 @@ package core.hud.components.explore
 	import starling.textures.Texture;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class ExploreMapArea extends starling.display.Sprite
 	{
 		private static const ALPHA_COMPLETE:Number = 0.6;
-
 		private static const ALPHA_START:Number = 0.3;
-
 		public var key:String;
+		
 		public var area:Object;
+		
 		private var shell:Vector.<Point>;
-
+		
 		public var size:int;
+		
 		private var a:Number;
+		
 		private var g:Game;
+		
 		private var color:uint;
+		
 		private var color_fill:uint;
+		
 		private var color_fill_done:uint;
+		
 		private var map:ExploreMap;
+		
 		private var selected:Boolean;
+		
 		private var mouseOver:Boolean;
+		
 		private var x_max:int;
+		
 		private var fractionText:TextBitmap;
+		
 		private var kx:Number;
+		
 		private var ky:Number;
+		
 		private var x_mid:Number;
+		
 		private var y_mid:Number;
+		
 		private var infoBox:starling.display.Sprite;
-
+		
 		private var infoBoxBgr:Quad;
+		
 		public var explore:Explore;
+		
 		public var fraction:int = 0;
 		private var areaTexture:Texture;
+		
 		private var areaImage:PixelImageTouch;
+		
 		private var tween:TweenMax;
+		
 		private var needRedraw:Boolean = true;
 		private var fader:Number = 0.02;
 		public function ExploreMapArea(param1:Game, param2:ExploreMap, param3:Object, param4:Vector.<Point>, param5:Number, param6:Number, param7:int)
@@ -158,7 +178,7 @@ package core.hud.components.explore
 				infoBox.addEventListener("touch", onTouch);
 			}
 		}
-
+		
 		private function drawArea():void
 		{
 			var _loc9_:int = 0;
@@ -209,7 +229,7 @@ package core.hud.components.explore
 			areaImage.y = _loc8_;
 			addChildAt(areaImage, 0);
 		}
-
+		
 		private function onTouch(param1:TouchEvent):void
 		{
 			var _loc2_:DisplayObject = param1.currentTarget as DisplayObject;
@@ -226,7 +246,7 @@ package core.hud.components.explore
 				mOut(param1);
 			}
 		}
-
+		
 		public function shouldBlink():Boolean
 		{
 			if (explore != null && !explore.lootClaimed)
@@ -235,7 +255,7 @@ package core.hud.components.explore
 			}
 			return false;
 		}
-
+		
 		public function update():void
 		{
 			if (!needRedraw)
@@ -287,7 +307,7 @@ package core.hud.components.explore
 				}
 			}
 		}
-
+		
 		public function select():void
 		{
 			selected = true;
@@ -299,20 +319,16 @@ package core.hud.components.explore
 			map.moveOnTop(this);
 			startTween();
 		}
-
+		
 		private function startTween():void
 		{
 			if (tween != null)
 			{
 				return;
 			}
-			tween = TweenMax.fromTo(areaImage, 0.8, {"alpha": 1}, {
-						"alpha": 0.5,
-						"yoyo": true,
-						"repeat": -1
-					});
+			tween = TweenMax.fromTo(areaImage, 0.8, {"alpha": 1}, {"alpha": 0.5, "yoyo": true, "repeat": -1});
 		}
-
+		
 		public function clearSelect():void
 		{
 			selected = false;
@@ -323,7 +339,7 @@ package core.hud.components.explore
 				areaImage.alpha = 1;
 			}
 		}
-
+		
 		public function onClick(param1:TouchEvent):void
 		{
 			if (!selected)
@@ -334,7 +350,7 @@ package core.hud.components.explore
 				select();
 			}
 		}
-
+		
 		public function mOver(param1:TouchEvent):void
 		{
 			if (selected)
@@ -349,7 +365,7 @@ package core.hud.components.explore
 			_loc2_.adjustBrightness(0.2);
 			areaImage.filter = _loc2_;
 		}
-
+		
 		public function mOut(param1:TouchEvent):void
 		{
 			if (areaImage.filter)
@@ -358,7 +374,7 @@ package core.hud.components.explore
 				areaImage.filter = null;
 			}
 		}
-
+		
 		override public function dispose():void
 		{
 			if (areaImage.filter)

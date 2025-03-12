@@ -1,5 +1,6 @@
 package core.hud.components
 {
+	
 	public class Style
 	{
 		public static var COLOR_INVALID:uint = 16729156;

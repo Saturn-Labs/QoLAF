@@ -1,12 +1,13 @@
 package generics
 {
+	
 	public class ObjUtils
 	{
 		public function ObjUtils()
 		{
 			super();
 		}
-
+		
 		public static function ToVector(param1:Object, param2:Boolean = false, param3:String = "name"):Vector.<Object>
 		{
 			var key:String;
@@ -21,13 +22,13 @@ package generics
 			if (sort)
 			{
 				output.sort(function(param1:Object, param2:Object):int
+				{
+					if (param1[sortBy] > param2[sortBy])
 					{
-						if (param1[sortBy] > param2[sortBy])
-						{
-							return 1;
-						}
-						return -1;
-					});
+						return 1;
+					}
+					return -1;
+				});
 			}
 			return output;
 		}

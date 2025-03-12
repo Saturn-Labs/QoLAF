@@ -1,48 +1,36 @@
 package core.weapon
 {
 	import generics.Localize;
-
+	
 	public class Damage
 	{
 		public static const SINGLETYPES:int = 5;
-
 		public static const TOTALTYPES:int = 10;
-
 		public static const KINETIC:int = 0;
-
 		public static const ENERGY:int = 1;
-
 		public static const CORROSIVE:int = 2;
-
 		public static const KINNETICENERGY:int = 3;
-
 		public static const CORROSIVEKINNETIC:int = 4;
-
 		public static const ALL:int = 5;
-
 		public static const HEAL:int = 6;
-
 		public static const KINNETICENERGYCORROSIVE:int = 7;
-
 		public static const DONT_SCALE:int = 8;
-
 		public static const ENERGYCORROSIVE:int = 9;
-
 		public static const RESISTANCE_CAP:int = 75;
-
 		public static const TYPE:Vector.<String> = Vector.<String>(["Kinetic", "Energy", "Corrosive", "50% Kinetic + 50% Energy", "50% Corrosive + 50% Kinetic", "", "Health", "33% Energy + 33% Kinetic + 33% Corrosive", "None", "50% Energy + 50% Corrosive"]);
-
+		
 		public static const TYPE_HTML:Vector.<String> = Vector.<String>(["<FONT COLOR='#00ffff'>Kinetic</FONT>", "<FONT COLOR='#ff030d'>Energy</FONT>", "<FONT COLOR='#009900'>Corrosive</FONT>", "<FONT COLOR='#00ffff'>Kinetic</FONT> + <FONT COLOR='#ff030d'>Energy</FONT>", "<FONT COLOR='#009900'>Corrosive</FONT> + <FONT COLOR='#00ffff'>Kinetic</FONT>", "<FONT COLOR='#ffffff'>All</FONT>", "<FONT COLOR='#00ff00'>Health</FONT>", "<FONT COLOR='#00ffff'>Kinetic</FONT> + <FONT COLOR='#ff030d'>Energy</FONT> + <FONT COLOR='#009900'>Corrosive</FONT>", "<FONT COLOR='#ff0000'>Don't scale</FONT>", "<FONT COLOR='#ff030d'>Energy</FONT> + <FONT COLOR='#009900'>Corrosive</FONT>"]);
-
+		
 		public static const SINGLETYPE_HTML:Vector.<String> = Vector.<String>(["<FONT COLOR='#00ffff'>Kinetic</FONT>", "<FONT COLOR='#ff030d'>Energy</FONT>", "<FONT COLOR='#009900'>Corrosive</FONT>", "<FONT COLOR='#00ff00'>Health</FONT>", "<FONT COLOR='#ff0000'>Special</FONT>"]);
-
+		
 		public static const stats:Vector.<Vector.<Number>> = Vector.<Vector.<Number>>([Vector.<Number>([1, 0, 0, 0, 0]), Vector.<Number>([0, 1, 0, 0, 0]), Vector.<Number>([0, 0, 1, 0, 0]), Vector.<Number>([0.5, 0.5, 0, 0, 0]), Vector.<Number>([0.5, 0, 0.5, 0, 0]), Vector.<Number>([1, 1, 1, 0, 0]), Vector.<Number>([0, 0, 0, 1, 0]), Vector.<Number>([0.33, 0.33, 0.33, 0, 0]), Vector.<Number>([0, 0, 0, 0, 1]), Vector.<Number>([0, 0.5, 0.5, 0, 0])]);
-
+		
 		public var type:int;
+		
 		private var damage:Vector.<Number>;
-
+		
 		private var damageBase:Vector.<Number>;
-
+		
 		public function Damage(param1:Number, param2:int)
 		{
 			var _loc3_:int = 0;
@@ -58,7 +46,7 @@ package core.weapon
 				_loc3_++;
 			}
 		}
-
+		
 		public function dmg():Number
 		{
 			var _loc2_:int = 0;
@@ -71,7 +59,7 @@ package core.weapon
 			}
 			return _loc1_;
 		}
-
+		
 		public function damageText():String
 		{
 			var _loc2_:int = 0;
@@ -103,7 +91,7 @@ package core.weapon
 			}
 			return _loc1_;
 		}
-
+		
 		public function debuffdamageText(param1:Number, param2:int, param3:String):String
 		{
 			var _loc5_:int = 0;
@@ -123,7 +111,7 @@ package core.weapon
 			}
 			return _loc4_;
 		}
-
+		
 		public function setBaseDmg(param1:Number):void
 		{
 			var _loc2_:int = 0;
@@ -139,7 +127,7 @@ package core.weapon
 				_loc2_++;
 			}
 		}
-
+		
 		public function addBaseDmg(param1:Number, param2:int = -1):void
 		{
 			var _loc3_:int = 0;
@@ -161,7 +149,7 @@ package core.weapon
 				_loc3_++;
 			}
 		}
-
+		
 		public function addBasePercent(param1:Number, param2:int = -1):void
 		{
 			var _loc3_:int = 0;
@@ -183,7 +171,7 @@ package core.weapon
 				_loc3_++;
 			}
 		}
-
+		
 		public function addDmgInt(param1:int, param2:int = -1):void
 		{
 			var _loc3_:int = 0;
@@ -203,7 +191,7 @@ package core.weapon
 				_loc3_++;
 			}
 		}
-
+		
 		public function addDmgPercent(param1:Number, param2:int = -1):void
 		{
 			var _loc3_:int = 0;
@@ -223,7 +211,7 @@ package core.weapon
 				_loc3_++;
 			}
 		}
-
+		
 		public function addLevelBonus(param1:int, param2:Number):void
 		{
 			var _loc3_:int = 0;

@@ -6,10 +6,11 @@ package core.hud.components
 	import flash.events.MouseEvent;
 	import flash.system.Capabilities;
 	import starling.core.Starling;
-
+	
 	public class FullScreenButton extends Sprite
 	{
 		private var hoverImage:Sprite;
+		
 		public function FullScreenButton()
 		{
 			hoverImage = new Sprite();
@@ -39,17 +40,17 @@ package core.hud.components
 			addChild(hoverImage);
 			addEventListener("click", onFullscreen);
 			addEventListener("mouseOver", function(param1:MouseEvent):void
-				{
-					hoverImage.visible = true;
-				});
+			{
+				hoverImage.visible = true;
+			});
 			addEventListener("mouseOut", function(param1:MouseEvent):void
-				{
-					hoverImage.visible = false;
-				});
+			{
+				hoverImage.visible = false;
+			});
 			this.buttonMode = true;
 			this.useHandCursor = true;
 		}
-
+		
 		public function onFullscreen(param1:MouseEvent):void
 		{
 			var _loc4_:* = Starling.current.nativeStage.displayState == "fullScreenInteractive";

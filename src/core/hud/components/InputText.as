@@ -1,6 +1,5 @@
 package core.hud.components
 {
-	import embeds.TextInputBitmap;
 	import feathers.controls.TextInput;
 	import feathers.controls.text.TextFieldTextEditor;
 	import feathers.skins.IStyleProvider;
@@ -8,11 +7,11 @@ package core.hud.components
 	import flash.text.TextFormat;
 	import starling.display.Image;
 	import starling.textures.Texture;
-
+	
 	public class InputText extends TextInput
 	{
 		public static var globalStyleProvider:IStyleProvider;
-		private static var TextInputBackground:Class = embeds.TextInputBitmap;
+		
 		private static var textFormat:TextFormat = new TextFormat("Verdana", 12, 16777215);
 		public function InputText(param1:int, param2:int, param3:int, param4:int)
 		{
@@ -23,7 +22,7 @@ package core.hud.components
 			height = param4;
 			if (!backgroundSkin)
 			{
-				backgroundSkin = new Image(Texture.fromEmbeddedAsset(InputText.TextInputBackground, false));
+				backgroundSkin = new Image(Texture.fromEmbeddedAsset(EmbeddedAssets.TextInputBitmap, false));
 			}
 			this.textEditorFactory = getTextEditor;
 			this.textEditorProperties.textFormat = InputText.textFormat;
@@ -32,17 +31,17 @@ package core.hud.components
 			paddingTop = 2;
 			paddingRight = 5;
 		}
-
+		
 		private function getTextEditor():TextFieldTextEditor
 		{
 			return new TextFieldTextEditor();
 		}
-
+		
 		override protected function get defaultStyleProvider():IStyleProvider
 		{
 			return InputText.globalStyleProvider;
 		}
-
+		
 		public function setDesktopLogin():void
 		{
 			var _loc1_:ImageSkin = new ImageSkin();

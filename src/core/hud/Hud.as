@@ -1,12 +1,7 @@
 package core.hud
 {
 	import com.greensock.TweenMax;
-	import flash.system.Capabilities;
-	import qolaf.ui.elements.ModifierTooltip;
-	import qolaf.ui.modifiers.IModifierDisplay;
-	import qolaf.ui.modifiers.SelfModifierDisplay;
-	import starling.utils.Align;
-	// import core.hud.components.BossHealth;
+	import core.hud.components.BossHealth;
 	import core.hud.components.Button;
 	import core.hud.components.ButtonCargo;
 	import core.hud.components.ButtonClan;
@@ -56,7 +51,6 @@ package core.hud
 	import data.KeyBinds;
 	import generics.Localize;
 	import playerio.Message;
-	import qolaf.ui.TargetInfoElement;
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.MeshBatch;
@@ -65,63 +59,97 @@ package core.hud
 	import starling.textures.Texture;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class Hud
 	{
 		private var g:Game;
+		
 		private var container:Sprite;
+		
 		private var shipButton:ButtonHud;
+		
 		private var mapButton:ButtonHud;
+		
 		public var cargoButton:ButtonCargo;
+		
 		public var resourceBox:ResourceBox;
+		
 		private var podButton:PodButton;
+		
 		private var settingsButton:ButtonHud;
+		
 		private var shopButton:Button;
+		
 		public var buyFluxButton:BuyFluxButton;
+		
 		public var clanButton:ButtonClan;
+		
 		private var newMissionsButton:ButtonNewMission;
+		
 		public var missionsButton:ButtonMissions;
+		
 		public var artifactsButton:ButtonHud;
+		
 		public var leaderboardButton:ButtonHud;
+		
 		public var encountersButton:ButtonHud;
+		
 		public var salesButton:Button;
+		
 		public var pvpMenuButton:ButtonPvPMenu;
+		
 		public var pvpQuickMatchButton:ButtonPvPQuickMatch;
+		
 		public var healthAndShield:HealthAndShield;
+		
 		public var powerBar:PowerBar;
-		// QoLAF
-		// public var bossHealth:BossHealth;
+		
+		public var bossHealth:BossHealth;
+		
 		public var weaponHotkeys:WeaponHotkeys;
+		
 		public var radar:Radar;
+		
 		private var shopIcons:ShopIcons;
+		
 		private var pvpIcon:PvPIcon;
+		
 		private var textureManager:ITextureManager;
+		
 		public var abilities:Abilities;
+		
 		public var compas:Compas;
+		
 		public var playerListButton:ButtonPlayers;
+		
 		private var bgr:MeshBatch;
+		
 		private var experience:Experience;
+		
 		private var landText:TextBitmap;
+		
 		private var safeZoneText:TextBitmap;
+		
 		private var repairText:TextBitmap;
+		
 		private var hintMapText:TextBitmap;
+		
 		public var uberStats:UberStats;
+		
 		private var artifactLimitText:TextBitmap;
+		
 		private var loadComplete:Boolean = false;
 		private var fullScreenButton:FullScreenButton;
+		
 		private var isShowingNewMissionsButton:Boolean = false;
 		private var hintMapFlashCounter:int = 0;
 		private var fullScreenHintImage:Image;
+		
 		private var artifactTween:TweenMax;
+		
 		private var showUtilityTexts:Boolean = true;
-		// QoLAF
-		private var targetInfoElement:TargetInfoElement;
-		private var selfModifierDisplay:SelfModifierDisplay;
-		private var modifierTooltip:ModifierTooltip;
-		public function Hud(game:Game)
+		public function Hud(param1:Game)
 		{
-			this.g = game;
-			g.hud = this;
 			container = new Sprite();
 			bgr = new MeshBatch();
 			landText = new TextBitmap();
@@ -129,42 +157,22 @@ package core.hud
 			repairText = new TextBitmap();
 			artifactLimitText = new TextBitmap();
 			fullScreenButton = new FullScreenButton();
-			healthAndShield = new HealthAndShield(game);
-			powerBar = new PowerBar(game);
-
-			// QoLAF
-			// bossHealth = new BossHealth(game);
-
-			weaponHotkeys = new WeaponHotkeys(game);
-			radar = new Radar(game);
-			experience = new Experience(game);
-			abilities = new Abilities(game);
-			compas = new Compas(game);
-			shopIcons = new ShopIcons(game);
-			pvpIcon = new PvPIcon(game);
-			uberStats = new UberStats(game);
-
-			// QoLAF
-			modifierTooltip = new ModifierTooltip();
-			targetInfoElement = new TargetInfoElement(game);
-			selfModifierDisplay = new SelfModifierDisplay();
-			selfModifierDisplay.y = 286;
-
+			super();
+			this.g = param1;
+			healthAndShield = new HealthAndShield(param1);
+			powerBar = new PowerBar(param1);
+			bossHealth = new BossHealth(param1);
+			weaponHotkeys = new WeaponHotkeys(param1);
+			radar = new Radar(param1);
+			experience = new Experience(param1);
+			abilities = new Abilities(param1);
+			compas = new Compas(param1);
+			shopIcons = new ShopIcons(param1);
+			pvpIcon = new PvPIcon(param1);
+			uberStats = new UberStats(param1);
 			textureManager = TextureLocator.getService();
 		}
-
-		// QoLAF
-		public function getTargetInfoElement():TargetInfoElement
-		{
-			return targetInfoElement;
-		}
-
-		// QoLAF
-		public function getSelfModifierDisplay():IModifierDisplay
-		{
-			return selfModifierDisplay;
-		}
-
+		
 		public function load():void
 		{
 			var keyBinds:KeyBinds;
@@ -172,10 +180,7 @@ package core.hud
 			container.addChild(bgr);
 			healthAndShield.load();
 			powerBar.load();
-
-			// QoLAF
-			// bossHealth.load();
-
+			bossHealth.load();
 			weaponHotkeys.load();
 			radar.load();
 			experience.load();
@@ -213,92 +218,92 @@ package core.hud
 			artifactLimitText.blendMode = "add";
 			artifactLimitText.visible = false;
 			mapButton = new ButtonHud(function():void
+			{
+				if (g.gameStateMachine.inState(MapState))
 				{
-					if (g.gameStateMachine.inState(MapState))
-					{
-						g.enterState(new RoamingState(g));
-					}
-					else
-					{
-						g.enterState(new MapState(g));
-					}
-				}, "button_map.png");
+					g.enterState(new RoamingState(g));
+				}
+				else
+				{
+					g.enterState(new MapState(g));
+				}
+			}, "button_map.png");
 			shipButton = new ButtonHud(function():void
-				{
-					g.enterState(new MenuState(g, HomeState));
-				}, "button_ship.png");
+			{
+				g.enterState(new MenuState(g, HomeState));
+			}, "button_ship.png");
 			cargoButton = new ButtonCargo(g, function():void
-				{
-					g.enterState(new MenuState(g, CargoState));
-				});
+			{
+				g.enterState(new MenuState(g, CargoState));
+			});
 			podButton = new PodButton(function():void
-				{
-					g.enterState(new PodState(g));
-				}, "--", "highlight", 17);
+			{
+				g.enterState(new PodState(g));
+			}, "--", "highlight", 17);
 			podButton.autoEnableAfterClick = true;
 			podButton.visible = !g.me.guest;
 			message = g.createMessage("getPodCount");
 			g.rpcMessage(message, function(param1:Message):void
-				{
-					updatePodCount(param1.getInt(0));
-				});
+			{
+				updatePodCount(param1.getInt(0));
+			});
 			artifactsButton = new ButtonHud(function():void
-				{
-					g.enterState(new MenuState(g, ArtifactState2));
-				}, "button_artifacts.png");
+			{
+				g.enterState(new MenuState(g, ArtifactState2));
+			}, "button_artifacts.png");
 			buyFluxButton = new BuyFluxButton(g);
 			buyFluxButton.visible = !g.me.guest;
 			shopButton = new Button(function():void
-				{
-					g.enterState(new ShopState(g));
-				}, Localize.t("Shop"), "buy");
+			{
+				g.enterState(new ShopState(g));
+			}, Localize.t("Shop"), "buy");
 			shopButton.autoEnableAfterClick = true;
 			shopButton.visible = !g.me.guest;
 			clanButton = new ButtonClan(function():void
-				{
-					g.enterState(new ClanState(g));
-				}, g);
+			{
+				g.enterState(new ClanState(g));
+			}, g);
 			clanButton.visible = !g.me.guest;
 			newMissionsButton = new ButtonNewMission(function():void
+			{
+				if (g.me.isDeveloper || g.me.isModerator || g.me.id == "fb100002203869719")
 				{
-					if (g.me.isDeveloper || g.me.isModerator || g.me.id == "fb100002203869719")
-					{
-						g.enterState(new MissionsState(g));
-					}
-					else
-					{
-						g.enterState(new MissionsState(g));
-					}
-				}, g);
+					g.enterState(new MissionsState(g));
+				}
+				else
+				{
+					g.enterState(new MissionsState(g));
+				}
+			}, g);
 			missionsButton = new ButtonMissions(function():void
+			{
+				if (g.me.isDeveloper || g.me.isModerator || g.me.id == "fb100002203869719")
 				{
-					if (g.me.isDeveloper || g.me.isModerator || g.me.id == "fb100002203869719")
-					{
-						g.enterState(new MissionsState(g));
-					}
-					else
-					{
-						g.enterState(new MissionsState(g));
-					}
-				});
+					g.enterState(new MissionsState(g));
+				}
+				else
+				{
+					g.enterState(new MissionsState(g));
+				}
+			});
 			abilities.load();
 			settingsButton = new ButtonHud(function():void
-				{
-					g.enterState(new SettingsState(g));
-				}, "button_settings.png");
+			{
+				g.enterState(new SettingsState(g));
+			}, "button_settings.png");
 			encountersButton = new ButtonHud(function():void
-				{
-					g.enterState(new MenuState(g, EncounterState));
-				}, "button_encounters.png");
+			{
+				g.enterState(new MenuState(g, EncounterState));
+			}, "button_encounters.png");
 			leaderboardButton = new ButtonHud(function():void
-				{
-					g.enterState(new LeaderBoardState2(g));
-				}, "button_leaderboard.png");
+			{
+				g.enterState(new LeaderBoardState2(g));
+			}, "button_leaderboard.png");
 			salesButton = new Button(function():void
-				{
-					g.tryOpenSaleSpinner();
-					salesButton.enabled = true;
-				}, "Sale!", "buy");
+			{
+				g.tryOpenSaleSpinner();
+				salesButton.enabled = true;
+			}, "Sale!", "buy");
 			if (g.me.guest == true || !g.me.hasCorrectTOSVersion)
 			{
 				salesButton.visible = false;
@@ -308,13 +313,13 @@ package core.hud
 				salesButton.visible = true;
 			}
 			playerListButton = new ButtonPlayers(function():void
-				{
-					g.enterState(new PlayerListState(g));
-				});
+			{
+				g.enterState(new PlayerListState(g));
+			});
 			pvpMenuButton = new ButtonPvPMenu(function():void
-				{
-					g.enterState(new PvpScreenState(g));
-				}, Localize.t("PvP"));
+			{
+				g.enterState(new PvpScreenState(g));
+			}, Localize.t("PvP"));
 			pvpQuickMatchButton = new ButtonPvPQuickMatch(g, "pvp random", g.queueManager.getQueue("pvp random"), true);
 			new ToolTip(g, mapButton, Localize.t("Solar system map <FONT COLOR='#44FF44'>[key]</FONT>").replace("[key]", keyBinds.getKeyChar(9)));
 			new ToolTip(g, shipButton, Localize.t("Ship <FONT COLOR='#44FF44'>[key]</FONT>").replace("[key]", keyBinds.getKeyChar(2)));
@@ -332,10 +337,10 @@ package core.hud
 			new ToolTip(g, podButton, Localize.t("Click here to purchase or open your pods."));
 			resourceBox = new ResourceBox(g);
 			g.myCargo.reloadCargoFromServer(function():void
-				{
-					resourceBox.update();
-					cargoButton.update();
-				});
+			{
+				resourceBox.update();
+				cargoButton.update();
+			});
 			if (g.solarSystem.isPvpSystemInEditor)
 			{
 				pvpQuickMatchButton.visible = false;
@@ -360,10 +365,7 @@ package core.hud
 				container.addChild(uberStats);
 			}
 			container.addChild(healthAndShield);
-
-			// QoLAF
-			// container.addChild(bossHealth);
-
+			container.addChild(bossHealth);
 			container.addChild(powerBar);
 			container.addChild(radar);
 			container.addChild(experience);
@@ -401,12 +403,6 @@ package core.hud
 			container.addChild(shopButton);
 			container.addChild(playerListButton);
 			container.addChild(resourceBox);
-
-			// QoLAF
-			container.addChild(targetInfoElement);
-			container.addChild(selfModifierDisplay);
-			container.addChild(modifierTooltip);
-
 			if (showUtilityTexts)
 			{
 				container.addChild(safeZoneText);
@@ -436,7 +432,7 @@ package core.hud
 			loadComplete = true;
 			resize();
 		}
-
+		
 		public function initMissionsButtons():void
 		{
 			var m:Mission;
@@ -453,9 +449,9 @@ package core.hud
 					if (m.missionTypeKey == "s1l0zM-6lkq9l1jlGDBy4w")
 					{
 						TweenMax.delayedCall(10, function():void
-							{
-								showNewMissionsButton();
-							});
+						{
+							showNewMissionsButton();
+						});
 						return;
 					}
 					showNewMissionsButton();
@@ -482,7 +478,7 @@ package core.hud
 				}
 			}
 		}
-
+		
 		public function showNewMissionsButton():void
 		{
 			if (newMissionsButton.visible)
@@ -491,33 +487,27 @@ package core.hud
 			}
 			isShowingNewMissionsButton = true;
 			TweenMax.delayedCall(1.5, function():void
-				{
-					missionsButton.hide();
-					newMissionsButton.show();
-					g.textManager.createNewMissionArrivedText();
-					isShowingNewMissionsButton = false;
-				});
+			{
+				missionsButton.hide();
+				newMissionsButton.show();
+				g.textManager.createNewMissionArrivedText();
+				isShowingNewMissionsButton = false;
+			});
 		}
-
+		
 		public function showMissionsButton():void
 		{
 			newMissionsButton.visible = false;
 			missionsButton.visible = true;
 		}
-
+		
 		public function hideMissionButtons():void
 		{
 			newMissionsButton.visible = false;
 			missionsButton.visible = false;
 			newMissionsButton.hide();
 		}
-
-		// QoLAF
-		public function getModifierTooltip():ModifierTooltip
-		{
-			return modifierTooltip;
-		}
-
+		
 		public function set show(param1:Boolean):void
 		{
 			if (!SceneBase.settings.showHud)
@@ -529,15 +519,15 @@ package core.hud
 				cargoButton.update();
 				resourceBox.update();
 			}
-			fullScreenButton.visible = param1 && !(Capabilities.manufacturer.indexOf("Android") >= 0 || Capabilities.manufacturer.indexOf("iOS") >= 0);
+			fullScreenButton.visible = param1;
 			container.visible = param1;
 		}
-
+		
 		public function get show():Boolean
 		{
 			return container.visible;
 		}
-
+		
 		public function hideMapHint():void
 		{
 			if (hintMapText == null)
@@ -552,7 +542,7 @@ package core.hud
 				mapButton.filter = null;
 			}
 		}
-
+		
 		public function update():void
 		{
 			if (!g.solarSystem.isPvpSystemInEditor)
@@ -564,8 +554,6 @@ package core.hud
 			compas.update();
 			experience.update();
 			shopIcons.update();
-			selfModifierDisplay.x = g.stage.stageWidth;
-
 			if (hintMapText != null)
 			{
 				hintMapFlashCounter++;
@@ -604,7 +592,7 @@ package core.hud
 				safeZoneText.visible = false;
 			}
 		}
-
+		
 		public function resize(param1:Event = null):void
 		{
 			if (!loadComplete)
@@ -752,7 +740,7 @@ package core.hud
 				hintMapText.y = g.stage.stageHeight - 135;
 			}
 		}
-
+		
 		public function removeFullScreenHint():void
 		{
 			if (fullScreenHintImage != null)
@@ -761,7 +749,7 @@ package core.hud
 				fullScreenHintImage = null;
 			}
 		}
-
+		
 		public function showArtifactLimitText():void
 		{
 			artifactLimitText.visible = true;
@@ -773,7 +761,7 @@ package core.hud
 			}
 			artifactTween = TweenMax.fromTo(artifactLimitText, 1, {"alpha": 1}, {"alpha": 0, "repeat": -1});
 		}
-
+		
 		public function hideArtifactLimitText():void
 		{
 			if (artifactTween != null)
@@ -783,7 +771,7 @@ package core.hud
 			}
 			artifactLimitText.visible = false;
 		}
-
+		
 		public function hideFullScreenHint():void
 		{
 			if (fullScreenHintImage == null)
@@ -792,7 +780,7 @@ package core.hud
 			}
 			fullScreenHintImage.visible = false;
 		}
-
+		
 		public function showFullScreenHint():void
 		{
 			if (fullScreenHintImage == null)
@@ -802,22 +790,22 @@ package core.hud
 			fullScreenHintImage.visible = true;
 			TweenMax.delayedCall(60, removeFullScreenHint);
 		}
-
+		
 		public function updateCredits():void
 		{
 			buyFluxButton.updateCredits();
 		}
-
+		
 		private function clean(param1:Event = null):void
 		{
 			g.removeResizeListener(resize);
 		}
-
+		
 		public function get isLoaded():Boolean
 		{
 			return loadComplete;
 		}
-
+		
 		public function removeUtilityTexts():void
 		{
 			showUtilityTexts = false;
@@ -825,12 +813,12 @@ package core.hud
 			container.removeChild(repairText);
 			container.removeChild(safeZoneText);
 		}
-
+		
 		public function hideLandText():void
 		{
 			landText.visible = false;
 		}
-
+		
 		public function showLandText(param1:String = ""):void
 		{
 			if (landText.visible)
@@ -841,13 +829,13 @@ package core.hud
 			landText.text = Localize.t("Press [key] to land on").replace("[key]", _loc2_.getKeyChar(10)) + " " + param1;
 			landText.visible = true;
 		}
-
+		
 		public function updatePodCount(param1:int):void
 		{
 			podButton.text = param1.toString();
 			resize();
 		}
-
+		
 		public function dispose():void
 		{
 			clean();
@@ -867,7 +855,7 @@ package core.hud
 			healthAndShield = null;
 			podButton = null;
 			powerBar = null;
-			// bossHealth = null;
+			bossHealth = null;
 			weaponHotkeys = null;
 			radar = null;
 			shopIcons = null;
@@ -880,7 +868,6 @@ package core.hud
 			bgr = null;
 			experience = null;
 			resourceBox = null;
-			targetInfoElement = null;
 			safeZoneText.dispose();
 			repairText.dispose();
 			landText.dispose();

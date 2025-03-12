@@ -7,20 +7,28 @@ package core.states.AIStates
 	import core.states.StateMachine;
 	import core.unit.Unit;
 	import flash.geom.Point;
-
+	
 	public class ProjectileBullet implements IState
 	{
 		protected var m:Game;
+		
 		protected var p:Projectile;
+		
 		protected var sm:StateMachine;
+		
 		protected var isEnemy:Boolean;
+		
 		private var globalInterval:Number = 1000;
 		private var localTargetList:Vector.<Unit>;
-
+		
 		private var nextGlobalUpdate:Number;
+		
 		private var nextLocalUpdate:Number;
+		
 		private var localRangeSQ:Number;
+		
 		private var firstUpdate:Boolean;
+		
 		public function ProjectileBullet(param1:Game, param2:Projectile)
 		{
 			super();
@@ -35,7 +43,7 @@ package core.states.AIStates
 				this.isEnemy = param2.unit.type == "enemyShip" || param2.unit.type == "turret";
 			}
 		}
-
+		
 		public function enter():void
 		{
 			if (p.ttl < globalInterval)
@@ -68,7 +76,7 @@ package core.states.AIStates
 				}
 			}
 		}
-
+		
 		public function execute():void
 		{
 			var _loc23_:Unit = null;
@@ -274,16 +282,16 @@ package core.states.AIStates
 				}
 			}
 		}
-
+		
 		public function exit():void
 		{
 		}
-
+		
 		public function set stateMachine(param1:StateMachine):void
 		{
 			this.sm = param1;
 		}
-
+		
 		public function get type():String
 		{
 			return "ProjectileBullet";

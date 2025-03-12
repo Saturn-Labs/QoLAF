@@ -15,17 +15,18 @@ package core.states.menuStates
 	import starling.display.MovieClip;
 	import starling.display.Quad;
 	import starling.display.Sprite;
-
+	
 	public class EncounterState extends DisplayState
 	{
 		public static var WIDTH:Number = 658;
 		public static var PADDING:Number = 31;
 		private var mainBody:ScrollContainer;
+		
 		public function EncounterState(param1:Game, param2:Boolean = false)
 		{
 			super(param1, HomeState, param2);
 		}
-
+		
 		override public function enter():void
 		{
 			super.enter();
@@ -45,7 +46,7 @@ package core.states.menuStates
 			addChild(mainBody);
 			load();
 		}
-
+		
 		private function load():void
 		{
 			var i:int;
@@ -92,13 +93,13 @@ package core.states.menuStates
 			encounteredNames = new Vector.<String>();
 			occupiedNames = new Vector.<String>();
 			allEncounterKeys.sort(function(param1:String, param2:String):int
+			{
+				if (param1 < param2)
 				{
-					if (param1 < param2)
-					{
-						return 1;
-					}
-					return -1;
-				});
+					return 1;
+				}
+				return -1;
+			});
 			for each (encounterKey in encounterKeys)
 			{
 				if (encounterKey.search("enemy_") != -1)
@@ -227,7 +228,7 @@ package core.states.menuStates
 			percent.y = 50;
 			addChild(percent);
 		}
-
+		
 		override public function exit():void
 		{
 			ToolTip.disposeType("encounters");

@@ -8,19 +8,27 @@ package core.states.AIStates
 	import core.unit.Unit;
 	import flash.geom.Point;
 	import generics.Util;
-
+	
 	public class MissileStuck implements IState
 	{
 		private var m:Game;
+		
 		private var p:Projectile;
+		
 		private var sm:StateMachine;
+		
 		private var isEnemy:Boolean;
+		
 		private var stuckShip:Ship = null;
 		private var stuckUnit:Unit = null;
 		private var stuckOffset:Point;
+		
 		private var stuckAngle:Number;
+		
 		private var startAngle:Number;
+		
 		private var pos:Point;
+		
 		public function MissileStuck(param1:Game, param2:Projectile)
 		{
 			var _loc3_:Number = NaN;
@@ -62,12 +70,12 @@ package core.states.AIStates
 				this.isEnemy = param2.unit.type == "enemyShip" || param2.unit.type == "turret";
 			}
 		}
-
+		
 		public function enter():void
 		{
 			p.ttl = p.ttlMax + p.aiStuckDuration * 1000;
 		}
-
+		
 		public function execute():void
 		{
 			var _loc3_:Number = NaN;
@@ -104,16 +112,16 @@ package core.states.AIStates
 				pos.y += p.error.y * _loc2_;
 			}
 		}
-
+		
 		public function exit():void
 		{
 		}
-
+		
 		public function set stateMachine(param1:StateMachine):void
 		{
 			this.sm = param1;
 		}
-
+		
 		public function get type():String
 		{
 			return "MissileStuck";

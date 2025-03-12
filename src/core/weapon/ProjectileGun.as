@@ -7,14 +7,14 @@ package core.weapon
 	import core.unit.Unit;
 	import flash.geom.Point;
 	import movement.Heading;
-
+	
 	public class ProjectileGun extends Weapon
 	{
 		public function ProjectileGun(param1:Game)
 		{
 			super(param1);
 		}
-
+		
 		override protected function shoot():void
 		{
 			var _loc1_:PlayerShip = null;
@@ -65,7 +65,7 @@ package core.weapon
 				}
 			}
 		}
-
+		
 		public function shootSyncedProjectile(param1:int, param2:Unit, param3:Heading, param4:int = -1, param5:Number = 0, param6:Number = 0, param7:Number = 0, param8:Number = 0):void
 		{
 			var _loc14_:PlayerShip = null;

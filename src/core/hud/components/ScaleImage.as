@@ -4,7 +4,7 @@ package core.hud.components
 	import starling.display.Image;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class ScaleImage extends Image
 	{
 		public function ScaleImage()

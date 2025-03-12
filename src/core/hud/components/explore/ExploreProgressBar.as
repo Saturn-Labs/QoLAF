@@ -11,7 +11,7 @@ package core.hud.components.explore
 	import flash.utils.Timer;
 	import starling.display.Quad;
 	import starling.display.Sprite;
-
+	
 	public class ExploreProgressBar extends Sprite
 	{
 		public static var COLOR:uint = 3225899;
@@ -20,27 +20,40 @@ package core.hud.components.explore
 		private var value:Number = 0;
 		private var _exploring:Boolean = false;
 		private var exploreEffect:Vector.<Emitter>;
-
+		
 		private var effectForeground:Quad;
+		
 		private var effectBackground:Quad;
+		
 		private var effectContainer:Quad;
+		
 		private var effectTarget:GameObject;
+		
 		private var effectCanvas:Sprite;
+		
 		private var finished:Boolean = false;
 		private var exploreText:Text;
+		
 		private var body:Body;
+		
 		private var g:Game;
+		
 		private var finishedCallback:Function;
+		
 		private var setValueOnFinishedLoad:Boolean = false;
 		private var onFinishedLoadValue:Number;
+		
 		private var onFinishedLoadFailed:Boolean;
+		
 		private var startOnFinish:Boolean = false;
 		private var timer:Timer;
+		
 		private var startTime:Number = 0;
 		private var finishTime:Number = 0;
 		private var failTime:Number = 0;
 		private var barWidth:Number = 452;
 		private var type:int;
+		
 		private var loadFinished:Boolean = false;
 		public function ExploreProgressBar(param1:Game, param2:Body, param3:Function, param4:int)
 		{
@@ -101,12 +114,12 @@ package core.hud.components.explore
 				start(startTime, finishTime, failTime);
 			}
 		}
-
+		
 		public function setMax():void
 		{
 			finished = true;
 		}
-
+		
 		public function start(param1:Number, param2:Number, param3:Number):void
 		{
 			Console.write("start");
@@ -137,13 +150,13 @@ package core.hud.components.explore
 			addChild(effectCanvas);
 			exploring = true;
 		}
-
+		
 		public function stop():void
 		{
 			finished = true;
 			stopEffect();
 		}
-
+		
 		public function update():void
 		{
 			var _loc2_:Number = NaN;
@@ -164,7 +177,7 @@ package core.hud.components.explore
 				setValue(_loc1_, failTime < g.time);
 			}
 		}
-
+		
 		public function stopEffect():void
 		{
 			for each (var _loc1_:* in exploreEffect)
@@ -172,12 +185,12 @@ package core.hud.components.explore
 				_loc1_.killEmitter();
 			}
 		}
-
+		
 		public function set exploring(param1:Boolean):void
 		{
 			this._exploring = param1;
 		}
-
+		
 		public function setValueAndEffect(param1:Number, param2:Boolean = false):void
 		{
 			var _loc3_:int = 0;
@@ -230,7 +243,7 @@ package core.hud.components.explore
 				exploreText.color = 16777215;
 			}
 		}
-
+		
 		private function setValue(param1:Number, param2:Boolean = false):void
 		{
 			var _loc5_:int = 0;

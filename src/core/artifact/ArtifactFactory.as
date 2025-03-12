@@ -5,14 +5,14 @@ package core.artifact
 	import data.DataLocator;
 	import data.IDataManager;
 	import playerio.DatabaseObject;
-
+	
 	public class ArtifactFactory
 	{
 		public function ArtifactFactory()
 		{
 			super();
 		}
-
+		
 		public static function createArtifact(param1:String, param2:Game, param3:Player, param4:Function):void
 		{
 			var key:String = param1;
@@ -21,17 +21,17 @@ package core.artifact
 			var callback:Function = param4;
 			var dataManager:IDataManager = DataLocator.getService();
 			dataManager.loadKeyFromBigDB("Artifacts", key, function(param1:DatabaseObject):void
+			{
+				if (param1 == null)
 				{
-					if (param1 == null)
-					{
-						callback(null);
-						return;
-					}
-					var _loc2_:Artifact = new Artifact(param1);
-					callback(_loc2_);
-				});
+					callback(null);
+					return;
+				}
+				var _loc2_:Artifact = new Artifact(param1);
+				callback(_loc2_);
+			});
 		}
-
+		
 		public static function createArtifacts(param1:Array, param2:Game, param3:Player, param4:Function):void
 		{
 			var keys:Array = param1;
@@ -40,30 +40,30 @@ package core.artifact
 			var callback:Function = param4;
 			var dataManager:IDataManager = DataLocator.getService();
 			dataManager.loadKeysFromBigDB("Artifacts", keys, function(param1:Array):void
+			{
+				var _loc2_:Artifact = null;
+				try
 				{
-					var _loc2_:Artifact = null;
-					try
+					for each (var _loc3_:* in param1)
 					{
-						for each (var _loc3_:* in param1)
+						if (_loc3_ != null)
 						{
-							if (_loc3_ != null)
-							{
-								_loc2_ = new Artifact(_loc3_);
-								p.artifacts.push(_loc2_);
-							}
+							_loc2_ = new Artifact(_loc3_);
+							p.artifacts.push(_loc2_);
 						}
 					}
-					catch (e:Error)
-					{
-						g.client.errorLog.writeError(e.toString(), "Something went wrong when loading artifacts, pid: " + p.id, e.getStackTrace(), {});
-					}
-					callback();
-				});
+				}
+				catch (e:Error)
+				{
+					g.client.errorLog.writeError(e.toString(), "Something went wrong when loading artifacts, pid: " + p.id, e.getStackTrace(), {});
+				}
+				callback();
+			});
 		}
-
+		
 		public static function createArtifactFromSkin(param1:Object):Artifact
 		{
-			var _loc3_:Artifact = new Artifact( {});
+			var _loc3_:Artifact = new Artifact({});
 			var _loc2_:Object = param1.specials;
 			_loc3_.name = "skin artifact";
 			_loc3_.stats.push(new ArtifactStat("corrosiveAdd", _loc2_["corrosiveAdd"]));

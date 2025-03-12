@@ -4,16 +4,23 @@ package core.hud.components
 	import core.scene.Game;
 	import starling.display.Sprite;
 	import starling.events.TouchEvent;
-
+	
 	public class ButtonPvPQuickMatch extends Sprite
 	{
 		private var joinQueue:ButtonPvP;
+		
 		private var leaveQueue:ButtonPvP;
+		
 		private var acceptQueue:ButtonPvP;
+		
 		private var tmpButton:ButtonPvP;
+		
 		private var type:String;
+		
 		private var queueInfo:QueueInfoHolder;
+		
 		private var g:Game;
+		
 		public function ButtonPvPQuickMatch(param1:Game, param2:String, param3:QueueInfoHolder, param4:Boolean = true)
 		{
 			this.g = param1;
@@ -27,12 +34,12 @@ package core.hud.components
 			tmpButton.touchable = false;
 			updateStatus();
 		}
-
+		
 		public function update():void
 		{
 			updateStatus();
 		}
-
+		
 		private function updateStatus():void
 		{
 			if (queueInfo == null)
@@ -125,7 +132,7 @@ package core.hud.components
 				acceptQueue.enabled = true;
 			}
 		}
-
+		
 		public function onPress():void
 		{
 			if (!queueInfo.isWaiting)
@@ -144,7 +151,7 @@ package core.hud.components
 				}
 			}
 		}
-
+		
 		private function join(param1:TouchEvent = null):void
 		{
 			g.queueManager.removedFromAllQueues();
@@ -153,14 +160,14 @@ package core.hud.components
 			g.sendToServiceRoom("tryJoinQueue", type);
 			Game.trackEvent("pvp", "queue", "joined", g.me.level);
 		}
-
+		
 		private function leave(param1:TouchEvent = null):void
 		{
 			queueInfo.isWaiting = true;
 			updateStatus();
 			g.sendToServiceRoom("tryLeaveQueue", type);
 		}
-
+		
 		private function accept(param1:TouchEvent = null):void
 		{
 			queueInfo.isWaiting = true;
@@ -168,7 +175,7 @@ package core.hud.components
 			updateStatus();
 			g.sendToServiceRoom("acceptMatch", type);
 		}
-
+		
 		private function wait(param1:TouchEvent):void
 		{
 		}

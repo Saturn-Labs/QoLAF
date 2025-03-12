@@ -1,6 +1,6 @@
 package core
 {
-
+	
 	public class uri
 	{
 		private var _source:String = "";
@@ -13,6 +13,7 @@ package core
 		private var _query:String = "";
 		private var _fragment:String = "";
 		private var _r:RegExp;
+		
 		public function uri(param1:String)
 		{
 			this._r = /\\/g;
@@ -20,7 +21,7 @@ package core
 			this._source = param1;
 			this._parse(param1);
 		}
-
+		
 		private function _parseUnixAbsoluteFilePath(param1:String):void
 		{
 			this.scheme = "file";
@@ -42,7 +43,7 @@ package core
 				this._path = param1;
 			}
 		}
-
+		
 		private function _parseWindowsAbsoluteFilePath(param1:String):void
 		{
 			if (param1.length > 2 && param1.charAt(2) != "\\" && param1.charAt(2) != "/")
@@ -56,7 +57,7 @@ package core
 			this._host = "";
 			this._path = "/" + param1.replace(this._r, "/");
 		}
-
+		
 		private function _parseWindowsUNC(param1:String):void
 		{
 			this.scheme = "file";
@@ -80,7 +81,7 @@ package core
 			}
 			this._path = this._path.replace(this._r, "/");
 		}
-
+		
 		private function _parse(param1:String):void
 		{
 			var _loc5_:String = null;
@@ -174,7 +175,7 @@ package core
 				this._fragment = _loc4_[9];
 			}
 		}
-
+		
 		public function get authority():String
 		{
 			var _loc1_:String = "";
@@ -189,62 +190,62 @@ package core
 			}
 			return _loc1_;
 		}
-
+		
 		public function get fragment():String
 		{
 			return this._fragment;
 		}
-
+		
 		public function set fragment(param1:String):void
 		{
 			this._fragment = param1;
 		}
-
+		
 		public function get host():String
 		{
 			return this._host;
 		}
-
+		
 		public function set host(param1:String):void
 		{
 			this._host = param1;
 		}
-
+		
 		public function get path():String
 		{
 			return this._path;
 		}
-
+		
 		public function set path(param1:String):void
 		{
 			this._path = param1;
 		}
-
+		
 		public function get port():int
 		{
 			return this._port;
 		}
-
+		
 		public function set port(param1:int):void
 		{
 			this._port = param1;
 		}
-
+		
 		public function get scheme():String
 		{
 			return this._scheme;
 		}
-
+		
 		public function set scheme(param1:String):void
 		{
 			this._scheme = param1;
 		}
-
+		
 		public function get source():String
 		{
 			return this._source;
 		}
-
+		
 		public function get userinfo():String
 		{
 			if (!this._username)
@@ -255,17 +256,17 @@ package core
 			_loc1_ += this._username;
 			return _loc1_ + (":" + this._password);
 		}
-
+		
 		public function get query():String
 		{
 			return this._query;
 		}
-
+		
 		public function set query(param1:String):void
 		{
 			this._query = param1;
 		}
-
+		
 		public function toString():String
 		{
 			var _loc1_:String = "";
@@ -292,7 +293,7 @@ package core
 			}
 			return _loc1_;
 		}
-
+		
 		public function valueOf():String
 		{
 			return this.toString();

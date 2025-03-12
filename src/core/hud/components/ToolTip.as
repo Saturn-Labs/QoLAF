@@ -9,22 +9,31 @@ package core.hud.components
 	import starling.events.TouchEvent;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class ToolTip
 	{
 		private static var g:SceneBase;
+		
 		private static var toolTips:Vector.<ToolTip> = new Vector.<ToolTip>();
-
+		
 		private var container:ScrollContainer;
+		
 		private var target:DisplayObject;
+		
 		private var s:String;
+		
 		private var imgs:Vector.<Image>;
-
+		
 		private var imgsData:Array;
+		
 		private var maxWidth:int;
+		
 		private var hover:Boolean;
+		
 		private var c:uint;
+		
 		public var type:String;
+		
 		public function ToolTip(param1:SceneBase, param2:DisplayObject, param3:String, param4:Array = null, param5:String = "", param6:int = 200)
 		{
 			super();
@@ -42,7 +51,7 @@ package core.hud.components
 			toolTips.push(this);
 			addListeners();
 		}
-
+		
 		public static function disposeType(param1:String = "all"):void
 		{
 			var _loc2_:ToolTip = null;
@@ -63,22 +72,22 @@ package core.hud.components
 				_loc3_--;
 			}
 		}
-
+		
 		public static function disposeAll():void
 		{
 			disposeType();
 		}
-
+		
 		public function set text(param1:String):void
 		{
 			s = param1;
 		}
-
+		
 		public function set color(param1:uint):void
 		{
 			c = param1;
 		}
-
+		
 		public function addImage(param1:Object):void
 		{
 			var _loc2_:ITextureManager = TextureLocator.getService();
@@ -87,7 +96,7 @@ package core.hud.components
 			_loc3_.y = param1.y;
 			imgs.push(_loc3_);
 		}
-
+		
 		private function mOver(param1:TouchEvent):void
 		{
 			var _loc3_:Label = null;
@@ -146,7 +155,7 @@ package core.hud.components
 				container.y = g.stage.stageHeight - container.height - 35;
 			}
 		}
-
+		
 		private function mOut(param1:TouchEvent):void
 		{
 			if (!hover)
@@ -160,7 +169,7 @@ package core.hud.components
 				container = null;
 			}
 		}
-
+		
 		private function onClick(param1:TouchEvent):void
 		{
 			hover = false;
@@ -170,7 +179,7 @@ package core.hud.components
 				container = null;
 			}
 		}
-
+		
 		private function onTouch(param1:TouchEvent):void
 		{
 			if (param1.getTouch(target, "ended"))
@@ -186,17 +195,17 @@ package core.hud.components
 				mOut(param1);
 			}
 		}
-
+		
 		public function removeListeners():void
 		{
 			target.removeEventListener("touch", onTouch);
 		}
-
+		
 		private function addListeners():void
 		{
 			target.addEventListener("touch", onTouch);
 		}
-
+		
 		public function dispose():void
 		{
 			if (container != null)

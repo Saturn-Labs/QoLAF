@@ -27,7 +27,7 @@ package core.hud.components.explore
 	import starling.textures.Texture;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class ExploreArea extends Sprite
 	{
 		public static var COLOR:uint = 3225899;
@@ -41,29 +41,49 @@ package core.hud.components.explore
 		private var totalEvents:int = 0;
 		public var lootClaimed:Boolean = false;
 		private var confirmInstantExploreBox:CreditBuyBox;
+		
 		private var actionButton:Button;
+		
 		public var body:Body;
+		
 		private var g:Game;
+		
 		private var timer:Timer;
+		
 		private var startTime:Number = 0;
 		private var finishTime:Number = 0;
 		private var failTime:Number = 0;
 		private var areaTypes:Dictionary;
+		
 		private var playerExplores:Dictionary;
+		
 		public var areaKey:String;
+		
 		public var level:Number;
+		
 		public var rewardLevel:Number;
+		
 		public var size:int;
+		
 		private var areaName:TextBitmap;
+		
 		public var type:int;
+		
 		public var specialTypes:Array;
+		
 		private var teamKey:String = null;
 		private var progressBar:ExploreProgressBar;
+		
 		private var box:Box;
+		
 		private var boxFinished:Box;
+		
 		private var exploreMapArea:ExploreMapArea;
+		
 		private var exploreTimer:HudTimer;
+		
 		private var overlay:Sprite;
+		
 		private var exploreStartedCallback:Function = null;
 		public function ExploreArea(param1:Game, param2:ExploreMap, param3:Body, param4:String, param5:String, param6:Number, param7:Number, param8:int, param9:int, param10:Array, param11:String, param12:int, param13:Boolean, param14:Boolean, param15:Boolean, param16:Number, param17:Number, param18:Number)
 		{
@@ -159,7 +179,7 @@ package core.hud.components.explore
 				resume();
 			}
 		}
-
+		
 		public function addSkillIcon(param1:Texture, param2:int, param3:String):void
 		{
 			var _loc5_:Image = new Image(param1);
@@ -170,7 +190,7 @@ package core.hud.components.explore
 			new ToolTip(g, _loc4_, param3, null, "skill");
 			addChild(_loc4_);
 		}
-
+		
 		public function adjustTimeEstimate(param1:Number):Number
 		{
 			if (successfulEvents > 0)
@@ -183,7 +203,7 @@ package core.hud.components.explore
 			}
 			return param1;
 		}
-
+		
 		public function updateExploreObj():void
 		{
 			var _loc1_:Explore = g.me.getExploreByKey(areaKey);
@@ -195,7 +215,7 @@ package core.hud.components.explore
 				_loc1_.finished = true;
 			}
 		}
-
+		
 		public function updateState(param1:Boolean):void
 		{
 			this.lootClaimed = param1;
@@ -229,20 +249,20 @@ package core.hud.components.explore
 				resume();
 			}
 		}
-
+		
 		private function handleStarted():void
 		{
 			adjustActionButton();
 			actionButton.visible = false;
 		}
-
+		
 		private function adjustActionButton():void
 		{
 			actionButton.x = progressBar.x + progressBar.width + 10;
 			actionButton.y = progressBar.y - 6;
 			actionButton.visible = true;
 		}
-
+		
 		private function progressBarOnComplete():void
 		{
 			Console.write("progressBarOnComplete");
@@ -256,14 +276,14 @@ package core.hud.components.explore
 			adjustActionButton();
 			actionButton.enabled = true;
 		}
-
+		
 		private function handleClaimLoot():void
 		{
 			Console.write("handle claim loot");
 			progressBarOnComplete();
 			progressBar.setValueAndEffect((successfulEvents + 1) / (totalEvents + 1), successfulEvents < totalEvents);
 		}
-
+		
 		private function handleFailed():void
 		{
 			Console.write("handle failed");
@@ -274,7 +294,7 @@ package core.hud.components.explore
 			adjustActionButton();
 			actionButton.enabled = true;
 		}
-
+		
 		private function handleNotStarted():void
 		{
 			Console.write("hadnle not started");
@@ -285,7 +305,7 @@ package core.hud.components.explore
 			adjustActionButton();
 			actionButton.enabled = true;
 		}
-
+		
 		public function handleFinished():void
 		{
 			Console.write("handle finished");
@@ -299,18 +319,18 @@ package core.hud.components.explore
 			addChild(_loc1_);
 			removeChild(progressBar);
 		}
-
+		
 		private function showSelectTeam(param1:TouchEvent = null):void
 		{
 			dispatchEvent(new Event("showSelectTeam"));
 		}
-
+		
 		public function startExplore(param1:Vector.<CrewDisplayBox>, param2:Function = null):void
 		{
 			exploreStartedCallback = param2;
 			requestStartExplore(param1);
 		}
-
+		
 		private function requestStartExplore(param1:Vector.<CrewDisplayBox> = null):void
 		{
 			if (param1 == null)
@@ -329,7 +349,7 @@ package core.hud.components.explore
 			actionButton.enabled = false;
 			g.rpc("startExplore", exploreStarted, areaKey, param1.length, _loc2_);
 		}
-
+		
 		private function resume():void
 		{
 			Console.write("resume");
@@ -349,7 +369,7 @@ package core.hud.components.explore
 			adjustActionButton();
 			addChild(exploreTimer);
 		}
-
+		
 		private function exploreStarted(param1:Message):void
 		{
 			var _loc2_:Explore = null;
@@ -449,7 +469,7 @@ package core.hud.components.explore
 				}
 			}
 		}
-
+		
 		public function update():void
 		{
 			exploreMapArea.update();
@@ -459,23 +479,23 @@ package core.hud.components.explore
 				exploreTimer.update();
 			}
 		}
-
+		
 		public function stopEffect():void
 		{
 			progressBar.stopEffect();
 		}
-
+		
 		public function set exploring(param1:Boolean):void
 		{
 			this._exploring = param1;
 		}
-
+		
 		private function showRewardScreen(param1:TouchEvent = null):void
 		{
 			actionButton.enabled = false;
 			dispatchEvent(new Event("showRewardScreen"));
 		}
-
+		
 		public function get success():Boolean
 		{
 			if (finished && lootClaimed)
@@ -484,12 +504,12 @@ package core.hud.components.explore
 			}
 			return false;
 		}
-
+		
 		public function get failedValue():Number
 		{
 			return (failTime - startTime) / (finishTime - startTime);
 		}
-
+		
 		private function instantExplore(param1:Message):void
 		{
 			if (!param1.getBoolean(0))
@@ -524,46 +544,46 @@ package core.hud.components.explore
 			progressBarOnComplete();
 			exploreMapArea.explore = _loc2_;
 		}
-
+		
 		private function sendInstant():void
 		{
 			g.rpc("buyInstantExplore", instantExplore, areaKey);
 		}
-
+		
 		private function instant(param1:TouchEvent = null):void
 		{
 			var e:TouchEvent = param1;
 			g.creditManager.refresh(function():void
-				{
-					var _loc1_:int = CreditManager.getCostInstant(size);
-					confirmInstantExploreBox = new CreditBuyBox(g, _loc1_, "Are you sure you want to buy instant explore?");
-					g.addChildToOverlay(confirmInstantExploreBox);
-					confirmInstantExploreBox.addEventListener("accept", onAccept);
-					confirmInstantExploreBox.addEventListener("close", onClose);
-				});
+			{
+				var _loc1_:int = CreditManager.getCostInstant(size);
+				confirmInstantExploreBox = new CreditBuyBox(g, _loc1_, "Are you sure you want to buy instant explore?");
+				g.addChildToOverlay(confirmInstantExploreBox);
+				confirmInstantExploreBox.addEventListener("accept", onAccept);
+				confirmInstantExploreBox.addEventListener("close", onClose);
+			});
 		}
-
+		
 		private function onAccept(param1:Event):void
 		{
 			sendInstant();
 			confirmInstantExploreBox.removeEventListener("accept", onAccept);
 			confirmInstantExploreBox.removeEventListener("close", onClose);
 		}
-
+		
 		private function onClose(param1:Event):void
 		{
 			actionButton.enabled = true;
 			confirmInstantExploreBox.removeEventListener("accept", onAccept);
 			confirmInstantExploreBox.removeEventListener("close", onClose);
 		}
-
+		
 		private function send(param1:TouchEvent):void
 		{
 			g.removeChildFromOverlay(overlay);
 			actionButton.enabled = true;
 			showSelectTeam();
 		}
-
+		
 		override public function dispose():void
 		{
 			if (exploreMapArea)

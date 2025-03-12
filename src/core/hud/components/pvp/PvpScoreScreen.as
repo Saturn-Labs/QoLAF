@@ -8,22 +8,28 @@ package core.hud.components.pvp
 	import generics.Localize;
 	import starling.display.Sprite;
 	import starling.events.TouchEvent;
-
+	
 	public class PvpScoreScreen extends PvpScreen
 	{
 		private var leaveButton:Button;
+		
 		private var addedItems:Vector.<PvpScoreHolder>;
-
+		
 		private var scrollArea:ScrollContainer;
+		
 		private var mainBody:Sprite;
+		
 		private var infoBox:Box;
+		
 		private var rewardBox:Box;
+		
 		private var contentBody:Sprite;
+		
 		public function PvpScoreScreen(param1:Game)
 		{
 			super(param1);
 		}
-
+		
 		override public function load():void
 		{
 			super.load();
@@ -36,12 +42,12 @@ package core.hud.components.pvp
 			leaveButton.y = 520;
 			addChild(leaveButton);
 		}
-
+		
 		private function leaveMatch():void
 		{
 			g.send("leavePvpMatch");
 		}
-
+		
 		private function showConfirmDialog(param1:TouchEvent):void
 		{
 			var _loc2_:String = null;
@@ -55,7 +61,7 @@ package core.hud.components.pvp
 				leaveMatch();
 			}
 		}
-
+		
 		override public function unload():void
 		{
 			for each (var _loc1_:* in addedItems)
@@ -67,7 +73,7 @@ package core.hud.components.pvp
 			}
 			addedItems = new Vector.<PvpScoreHolder>();
 		}
-
+		
 		override public function update():void
 		{
 			var _loc6_:* = undefined;
@@ -238,7 +244,7 @@ package core.hud.components.pvp
 			contentBody.addChild(scrollArea);
 			scrollArea.addChild(mainBody);
 		}
-
+		
 		private function addInfoBox(param1:int, param2:int):void
 		{
 			var _loc4_:PvpScoreHolder = g.pvpManager.getScoreItem(g.me.id);
@@ -496,7 +502,7 @@ package core.hud.components.pvp
 				_loc5_ += 16;
 			}
 		}
-
+		
 		private function addRewardBox(param1:int, param2:int):void
 		{
 			var _loc7_:Number = NaN;

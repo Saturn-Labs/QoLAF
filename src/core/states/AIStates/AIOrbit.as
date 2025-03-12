@@ -7,23 +7,27 @@ package core.states.AIStates
 	import flash.geom.Point;
 	import generics.Util;
 	import movement.Heading;
-
+	
 	public class AIOrbit implements IState
 	{
 		private static const HALF_PI:Number = 1.5707963267948966;
-
 		private static const TICK_LENGTH_MS:Number = 0.033;
-
 		private static const TICK_LENGTH_W:Number = 30.303030303030305;
-
 		private var g:Game;
+		
 		private var s:EnemyShip;
+		
 		private var sm:StateMachine;
+		
 		private var lastCourse:Heading;
+		
 		private var error:Point;
+		
 		private var errorAngle:Number;
+		
 		private var convergeTime:Number = 1000;
 		private var convergeStartTime:Number;
+		
 		public function AIOrbit(param1:Game, param2:EnemyShip, param3:Boolean = false)
 		{
 			super();
@@ -40,7 +44,7 @@ package core.states.AIStates
 				lastCourse = null;
 			}
 		}
-
+		
 		public function enter():void
 		{
 			s.target = null;
@@ -49,7 +53,7 @@ package core.states.AIStates
 			s.accelerate = true;
 			s.forceupdate = true;
 		}
-
+		
 		public function execute():void
 		{
 			var _loc5_:Number = NaN;
@@ -118,7 +122,7 @@ package core.states.AIStates
 			s.regenerateShield();
 			s.regenerateHP();
 		}
-
+		
 		public function exit():void
 		{
 			var _loc1_:Heading = null;
@@ -132,12 +136,12 @@ package core.states.AIStates
 				s.course = _loc1_;
 			}
 		}
-
+		
 		public function set stateMachine(param1:StateMachine):void
 		{
 			this.sm = param1;
 		}
-
+		
 		public function get type():String
 		{
 			return "AIOrbit";

@@ -4,19 +4,27 @@ package core.hud.components.techTree
 	import core.player.TechSkill;
 	import core.scene.Game;
 	import starling.display.Sprite;
-
+	
 	public class TechBar extends Sprite
 	{
 		private var maxLevel:int;
+		
 		public var tech:String;
+		
 		public var table:String;
+		
 		public var eti:EliteTechIcon;
+		
 		private var _playerLevel:int;
+		
 		private var techIcons:Vector.<TechLevelIcon>;
-
+		
 		private var eliteTechIcon:EliteTechIcon;
+		
 		private var me:Player;
+		
 		private var _selectedTechLevelIcon:TechLevelIcon;
+		
 		public function TechBar(param1:Game, param2:TechSkill, param3:Player, param4:Boolean = true, param5:Boolean = false, param6:int = -1)
 		{
 			var _loc12_:int = 0;
@@ -96,7 +104,7 @@ package core.hud.components.techTree
 			eliteTechIcon = eti;
 			addChild(eliteTechIcon);
 		}
-
+		
 		public function reset():void
 		{
 			var _loc3_:int = 0;
@@ -133,7 +141,7 @@ package core.hud.components.techTree
 				_loc3_++;
 			}
 		}
-
+		
 		override public function dispose():void
 		{
 			for each (var _loc1_:* in techIcons)
@@ -143,7 +151,7 @@ package core.hud.components.techTree
 			removeEventListeners();
 			super.dispose();
 		}
-
+		
 		override public function set touchable(param1:Boolean):void
 		{
 			for each (var _loc2_:* in techIcons)
@@ -152,7 +160,7 @@ package core.hud.components.techTree
 			}
 			eliteTechIcon.touchable = param1;
 		}
-
+		
 		private function getUpgradeByLevel(param1:int):TechLevelIcon
 		{
 			for each (var _loc2_:* in techIcons)
@@ -164,7 +172,7 @@ package core.hud.components.techTree
 			}
 			return null;
 		}
-
+		
 		public function upgrade(param1:TechLevelIcon):void
 		{
 			param1.updateState("upgraded");

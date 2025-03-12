@@ -8,28 +8,34 @@ package extensions
 	import starling.rendering.IndexData;
 	import starling.rendering.VertexData;
 	import starling.textures.Texture;
-
+	
 	public class RibbonTrail extends Mesh implements IAnimatable
 	{
 		private static var sRenderAlpha:Vector.<Number> = new <Number>[1, 1, 1, 1];
-
+		
 		private static var sMapTexCoords:Vector.<Number> = new <Number>[0, 0, 0, 0];
-
+		
 		protected var mVertexData:VertexData;
+		
 		protected var mIndexData:IndexData;
+		
 		protected var mTexture:Texture;
+		
 		protected var mRibbonSegments:Vector.<RibbonSegment>;
-
+		
 		protected var mNumRibbonSegments:int;
+		
 		protected var mFollowingEnable:Boolean = true;
 		protected var mMovingRatio:Number = 0.5;
 		protected var mAlphaRatio:Number = 0.95;
 		protected var mRepeat:Boolean = false;
 		protected var mIsPlaying:Boolean = false;
 		protected var mFollowingRibbonSegmentLine:Vector.<RibbonSegment>;
-
+		
 		protected var g:Game;
+		
 		protected var alphaArray:Array;
+		
 		public function RibbonTrail(param1:Game, param2:int = 8)
 		{
 			alphaArray = [];
@@ -43,37 +49,37 @@ package extensions
 			style.textureRepeat = false;
 			blendMode = "add";
 		}
-
+		
 		override public function set color(param1:uint):void
 		{
 			vertexData.colorize("color", param1);
 		}
-
+		
 		public function get followingEnable():Boolean
 		{
 			return mFollowingEnable;
 		}
-
+		
 		public function set followingEnable(param1:Boolean):void
 		{
 			mFollowingEnable = param1;
 		}
-
+		
 		public function get isPlaying():Boolean
 		{
 			return mIsPlaying;
 		}
-
+		
 		public function set isPlaying(param1:Boolean):void
 		{
 			mIsPlaying = param1;
 		}
-
+		
 		public function get movingRatio():Number
 		{
 			return mMovingRatio;
 		}
-
+		
 		public function set movingRatio(param1:Number):void
 		{
 			if (mMovingRatio != param1)
@@ -81,12 +87,12 @@ package extensions
 				mMovingRatio = param1 < 0 ? 0 : (param1 > 1 ? 1 : param1);
 			}
 		}
-
+		
 		public function get alphaRatio():Number
 		{
 			return mAlphaRatio;
 		}
-
+		
 		public function set alphaRatio(param1:Number):void
 		{
 			if (mAlphaRatio != param1)
@@ -94,12 +100,12 @@ package extensions
 				mAlphaRatio = param1 < 0 ? 0 : (param1 > 1 ? 1 : param1);
 			}
 		}
-
+		
 		public function get repeat():Boolean
 		{
 			return mRepeat;
 		}
-
+		
 		public function set repeat(param1:Boolean):void
 		{
 			if (mRepeat != param1)
@@ -107,17 +113,17 @@ package extensions
 				mRepeat = param1;
 			}
 		}
-
+		
 		public function getRibbonSegment(param1:int):RibbonSegment
 		{
 			return mRibbonSegments[param1];
 		}
-
+		
 		public function followTrailSegmentsLine(param1:Vector.<RibbonSegment>):void
 		{
 			mFollowingRibbonSegmentLine = param1;
 		}
-
+		
 		public function resetAllTo(param1:Number, param2:Number, param3:Number, param4:Number, param5:Number = 1):void
 		{
 			var _loc7_:RibbonSegment = null;
@@ -134,7 +140,7 @@ package extensions
 				_loc6_++;
 			}
 		}
-
+		
 		protected function updatevertexData():void
 		{
 			var _loc4_:Number = 1 / (mNumRibbonSegments - 1);
@@ -164,17 +170,17 @@ package extensions
 				_loc2_++;
 			}
 		}
-
+		
 		protected function createTrailSegment():RibbonSegment
 		{
 			return new RibbonSegment();
 		}
-
+		
 		override public function hitTest(param1:Point):DisplayObject
 		{
 			return null;
 		}
-
+		
 		public function advanceTime(param1:Number):void
 		{
 			var _loc7_:RibbonSegment = null;
@@ -229,7 +235,7 @@ package extensions
 				_loc3_++;
 			}
 		}
-
+		
 		public function raiseCapacity(param1:int):void
 		{
 			var _loc4_:RibbonSegment = null;
@@ -253,7 +259,7 @@ package extensions
 			}
 			mRibbonSegments.fixed = true;
 		}
-
+		
 		override public function dispose():void
 		{
 			super.dispose();

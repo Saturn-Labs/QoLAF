@@ -8,23 +8,32 @@ package core.hud.components.credits
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.display.Sprite;
-
+	
 	public class CreditDayItem extends CreditBaseItem
 	{
 		public static var PRICE_1_DAY:int = 75;
 		public static var PRICE_3_DAY:int = 215;
 		public static var PRICE_7_DAY:int = 425;
 		protected var buyContainer:Sprite;
+		
 		protected var descriptionContainer:Sprite;
+		
 		protected var aquiredContainer:Sprite;
+		
 		protected var waitingContainer:Sprite;
+		
 		protected var description:String;
+		
 		protected var confirmText:String = "";
 		protected var preview:String;
+		
 		protected var aquiredText:Text;
+		
 		protected var expiryTime:Number;
+		
 		protected var aquired:Boolean = false;
 		protected var bundles:Array;
+		
 		public function CreditDayItem(param1:Game, param2:Sprite)
 		{
 			buyContainer = new Sprite();
@@ -35,7 +44,7 @@ package core.hud.components.credits
 			bundles = [];
 			super(param1, param2);
 		}
-
+		
 		override protected function load():void
 		{
 			super.load();
@@ -47,7 +56,7 @@ package core.hud.components.credits
 			updateAquiredText();
 			updateContainers();
 		}
-
+		
 		protected function addBuyOptions():void
 		{
 			var _loc4_:int = 0;
@@ -72,7 +81,7 @@ package core.hud.components.credits
 			buyContainer.x = 30;
 			infoContainer.addChild(buyContainer);
 		}
-
+		
 		private function createButton(param1:Object, param2:int):void
 		{
 			var button:Button;
@@ -84,28 +93,28 @@ package core.hud.components.credits
 				text += "s";
 			}
 			button = new Button(function():void
+			{
+				var buyConfirm:CreditBuyBox = new CreditBuyBox(g, obj.cost, confirmText);
+				buyConfirm.addEventListener("accept", function():void
 				{
-					var buyConfirm:CreditBuyBox = new CreditBuyBox(g, obj.cost, confirmText);
-					buyConfirm.addEventListener("accept", function():void
-						{
-							onBuy(obj.days);
-							buyConfirm.removeEventListeners();
-							button.enabled = true;
-						});
-					buyConfirm.addEventListener("close", function():void
-						{
-							buyConfirm.removeEventListeners();
-							button.enabled = true;
-						});
-					g.addChildToOverlay(buyConfirm);
-				}, text, "positive");
+					onBuy(obj.days);
+					buyConfirm.removeEventListeners();
+					button.enabled = true;
+				});
+				buyConfirm.addEventListener("close", function():void
+				{
+					buyConfirm.removeEventListeners();
+					button.enabled = true;
+				});
+				g.addChildToOverlay(buyConfirm);
+			}, text, "positive");
 			button.x = 20;
 			button.y = y;
 			button.width = 100;
 			button.alignWithText();
 			buyContainer.addChild(button);
 		}
-
+		
 		protected function addDescription():void
 		{
 			var _loc3_:int = 0;
@@ -133,7 +142,7 @@ package core.hud.components.credits
 			descriptionContainer.y = 130;
 			infoContainer.addChild(descriptionContainer);
 		}
-
+		
 		protected function addWaiting():void
 		{
 			var _loc1_:Text = new Text();
@@ -144,7 +153,7 @@ package core.hud.components.credits
 			waitingContainer.visible = false;
 			infoContainer.addChild(waitingContainer);
 		}
-
+		
 		protected function addAquired():void
 		{
 			aquiredText.x = 0;
@@ -156,20 +165,20 @@ package core.hud.components.credits
 			aquiredContainer.visible = false;
 			infoContainer.addChild(aquiredContainer);
 		}
-
+		
 		protected function updateContainers():void
 		{
 			buyContainer.visible = !aquired;
 			aquiredContainer.visible = aquired;
 			waitingContainer.visible = false;
 		}
-
+		
 		protected function onBuy(param1:int):void
 		{
 			buyContainer.visible = false;
 			waitingContainer.visible = true;
 		}
-
+		
 		protected function updateAquiredText():void
 		{
 			var _loc2_:Number = NaN;
@@ -182,7 +191,7 @@ package core.hud.components.credits
 				aquiredText.text = "Aquired!\nActive until: " + _loc1_.toLocaleDateString();
 			}
 		}
-
+		
 		protected function showFailed(param1:String):void
 		{
 			g.showErrorDialog(param1);

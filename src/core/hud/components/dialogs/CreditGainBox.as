@@ -7,15 +7,21 @@ package core.hud.components.dialogs
 	import starling.textures.Texture;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class CreditGainBox extends PopupMessage
 	{
 		private var g:Game;
+		
 		private var targetName:String;
+		
 		private var countText:Text;
+		
 		private var countText2:Text;
+		
 		private var creditBmp:Image;
+		
 		private var podsBmp:Image;
+		
 		public function CreditGainBox(param1:Game, param2:int, param3:int, param4:String, param5:String = "")
 		{
 			var _loc8_:Texture = null;
@@ -88,7 +94,7 @@ package core.hud.components.dialogs
 			}
 			redraw();
 		}
-
+		
 		override protected function redraw(param1:Event = null):void
 		{
 			super.redraw();
@@ -98,31 +104,31 @@ package core.hud.components.dialogs
 			box.width = 200;
 			box.height = _loc2_;
 		}
-
+		
 		private function getCaption(param1:String):String
 		{
 			switch (param1)
 			{
-				case "InviteRewardFlux1":
-					return targetName + " accepted your invite!";
-				case "InviteRewardFlux2":
-					return "Your friend: " + targetName + " reached level 10!";
-				case "planetCleared":
-					return "100% Explored Reward";
-				case "daily":
-					return "Daily Login Reward";
-				case "planetLanded":
-					return "Discovered New Planet";
-				case "fbLike":
-					return "Facebook like reward.";
-				case "missions":
-					return "You gained a Pod.";
-				case "level":
-					return "Congratulations! You have reached lvl " + g.me.level + "!";
-				case "pvp":
-					return targetName;
-				default:
-					return "For no apparent reason you got a reward!";
+			case "InviteRewardFlux1": 
+				return targetName + " accepted your invite!";
+			case "InviteRewardFlux2": 
+				return "Your friend: " + targetName + " reached level 10!";
+			case "planetCleared": 
+				return "100% Explored Reward";
+			case "daily": 
+				return "Daily Login Reward";
+			case "planetLanded": 
+				return "Discovered New Planet";
+			case "fbLike": 
+				return "Facebook like reward.";
+			case "missions": 
+				return "You gained a Pod.";
+			case "level": 
+				return "Congratulations! You have reached lvl " + g.me.level + "!";
+			case "pvp": 
+				return targetName;
+			default: 
+				return "For no apparent reason you got a reward!";
 			}
 		}
 	}

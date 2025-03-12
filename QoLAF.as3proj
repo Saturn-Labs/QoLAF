@@ -28,7 +28,7 @@
     <option benchmark="True" />
     <option es="False" />
     <option inline="False" />
-    <option locale="" />
+    <option locale="en_US" />
     <option loadConfig="" />
     <option optimize="False" />
     <option omitTraces="True" />
@@ -44,7 +44,7 @@
     <option verboseStackTraces="False" />
     <option linkReport="" />
     <option loadExterns="" />
-    <option staticLinkRSL="False" />
+    <option staticLinkRSL="True" />
     <option additional="" />
     <option compilerConstants="" />
     <option minorVersion="" />
@@ -63,11 +63,11 @@
   </externalLibraryPaths>
   <!-- Runtime Shared Libraries -->
   <rslPaths>
-    <!-- example: <element path="..." /> -->
+    <element path="" />
   </rslPaths>
   <!-- Intrinsic Libraries -->
   <intrinsics>
-    <!-- example: <element path="..." /> -->
+    <element path="" />
   </intrinsics>
   <!-- Assets to embed into the output SWF -->
   <library>
@@ -75,7 +75,7 @@
   </library>
   <!-- Class files to compile (other referenced classes will automatically be included) -->
   <compileTargets>
-    <compile path="src\Astroflux.as" />
+    <compile path="src\RymdenRunt.as" />
   </compileTargets>
   <!-- Paths to exclude from the Project Explorer tree -->
   <hiddenPaths>
@@ -84,16 +84,17 @@
   <!-- Executed before build -->
   <preBuildCommand>xcopy "$(ProjectDir)\src\application.xml" "$(OutputDir)\" /y
 xcopy "$(ProjectDir)\tools" "$(OutputDir)\" /y
-xcopy "$(ProjectDir)\assets\icons" "$(OutputDir)\icons\" /y
-$(ProjectDir)\data\post.cmd</preBuildCommand>
+xcopy "$(ProjectDir)\assets\icons" "$(OutputDir)\icons\" /y</preBuildCommand>
   <!-- Executed after build -->
   <postBuildCommand alwaysRun="False" />
   <!-- Other project options -->
   <options>
-    <option showHiddenPaths="False" />
+    <option showHiddenPaths="True" />
     <option testMovie="Custom" />
     <option testMovieCommand="$(FlexSDK)/bin/adl.exe bin/application.xml" />
   </options>
   <!-- Plugin storage -->
-  <storage />
+  <storage>
+    <entry key="air-descriptor"><![CDATA[src\application.xml]]></entry>
+  </storage>
 </project>

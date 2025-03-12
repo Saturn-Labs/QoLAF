@@ -2,15 +2,16 @@ package core.weapon
 {
 	import core.scene.Game;
 	import core.ship.PlayerShip;
-
+	
 	public class PetSpawner extends Weapon
 	{
 		public var maxPets:int;
+		
 		public function PetSpawner(param1:Game)
 		{
 			super(param1);
 		}
-
+		
 		override public function init(param1:Object, param2:int, param3:int = -1, param4:String = ""):void
 		{
 			var _loc6_:int = 0;
@@ -31,7 +32,7 @@ package core.weapon
 			}
 			reloadTime = 2400;
 		}
-
+		
 		override protected function shoot():void
 		{
 			var _loc2_:PlayerShip = null;

@@ -12,25 +12,27 @@ package core.hud.components
 	import starling.text.TextFormat;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class PowerBar extends DisplayObjectContainer
 	{
 		private static const HEAT_WIDTH:Number = 120;
-
 		private static const SMOOTHER_STEPS:int = 5;
-
 		private var heatNumber:TextField;
+		
 		private var g:Game;
+		
 		private var smoother:Vector.<Number>;
-
+		
 		private var soundManager:ISound;
+		
 		private const colorRed:uint = 16724770;
-
 		private const colorBlue:uint = 4474111;
-
 		private var heatBar:Image;
+		
 		private var loadBar:Image;
+		
 		private var heatBarBgr:Image;
+		
 		private var turnedLow:Boolean = false;
 		private var turnedOut:Boolean = false;
 		public function PowerBar(param1:Game)
@@ -39,7 +41,7 @@ package core.hud.components
 			super();
 			this.g = param1;
 		}
-
+		
 		public function load():void
 		{
 			var _loc3_:int = 0;
@@ -78,7 +80,7 @@ package core.hud.components
 			soundManager = SoundLocator.getService();
 			new ToolTip(g, this, Localize.t("You need <FONT COLOR='#8888ff'>POWER</FONT> to fire your weapons."), null, "power bar");
 		}
-
+		
 		public function update():void
 		{
 			var _loc4_:int = 0;
@@ -124,7 +126,7 @@ package core.hud.components
 			}
 			smoother.shift();
 		}
-
+		
 		public function updateLoadBar(param1:Number):void
 		{
 			if (loadBar != null)

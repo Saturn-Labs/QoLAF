@@ -7,17 +7,19 @@ package core.hud.components
 	import starling.display.Sprite;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class TopPvPPlayersList extends Sprite
 	{
 		private static var topPvpPlayersList:Array;
+		
 		private var textureManager:ITextureManager;
+		
 		public function TopPvPPlayersList()
 		{
 			super();
 			textureManager = TextureLocator.getService();
 		}
-
+		
 		public function showHighscore(param1:Message):void
 		{
 			var _loc3_:int = 0;
@@ -38,7 +40,7 @@ package core.hud.components
 			}
 			drawTopPvpPlayers();
 		}
-
+		
 		private function drawTopPvpPlayers():void
 		{
 			var _loc2_:int = 0;
@@ -51,7 +53,7 @@ package core.hud.components
 				_loc2_++;
 			}
 		}
-
+		
 		private function drawPlayerObject(param1:Object, param2:int, param3:Sprite):void
 		{
 			var _loc6_:Quad = null;

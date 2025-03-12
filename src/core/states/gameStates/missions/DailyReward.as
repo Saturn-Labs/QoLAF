@@ -14,12 +14,15 @@ package core.states.gameStates.missions
 	import starling.text.TextFormat;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class DailyReward extends Sprite
 	{
 		private static var textureManager:ITextureManager;
+		
 		private var g:Game;
+		
 		private var daily:Daily;
+		
 		public function DailyReward(param1:Game, param2:Daily)
 		{
 			super();
@@ -28,7 +31,7 @@ package core.states.gameStates.missions
 			textureManager = TextureLocator.getService();
 			draw();
 		}
-
+		
 		public function draw():void
 		{
 			var key:String;
@@ -119,13 +122,13 @@ package core.states.gameStates.missions
 					xpBoostIcon = new Image(textureManager.getTextureGUIByTextureName("button_pay"));
 					xpBoostIcon.useHandCursor = true;
 					xpBoostIcon.addEventListener("touch", function(param1:TouchEvent):void
+					{
+						if (param1.getTouch(xpBoostIcon, "ended"))
 						{
-							if (param1.getTouch(xpBoostIcon, "ended"))
-							{
-								g.enterState(new RoamingState(g));
-								g.enterState(new ShopState(g, "xpBoost"));
-							}
-						});
+							g.enterState(new RoamingState(g));
+							g.enterState(new ShopState(g, "xpBoost"));
+						}
+					});
 					xpBoostIcon.x = xpos;
 					xpos += xpBoostIcon.width + 5;
 					xpBoostIcon.y = boostText.y;
@@ -135,7 +138,7 @@ package core.states.gameStates.missions
 				xpos += 20;
 			}
 		}
-
+		
 		public function getRewardAmount(param1:Object):int
 		{
 			var _loc2_:int = 0;

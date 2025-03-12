@@ -12,16 +12,20 @@ package core.states.gameStates
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.TouchEvent;
-
+	
 	public class LandedPiratebay extends LandedState
 	{
 		private var shopItemBars:Vector.<ShopItemBar>;
-
+		
 		private var myCargo:Cargo;
+		
 		private var container:ScrollContainer;
+		
 		private var infoContainer:Sprite;
+		
 		private var hasBought:Boolean = false;
 		private var fluxCost:int;
+		
 		public function LandedPiratebay(param1:Game, param2:Body, param3:Boolean = true)
 		{
 			shopItemBars = new Vector.<ShopItemBar>();
@@ -30,7 +34,7 @@ package core.states.gameStates
 			fluxCost = CreditManager.getCostWeaponFactory(param2.obj.payVaultItem);
 			myCargo = param1.myCargo;
 		}
-
+		
 		override public function enter():void
 		{
 			super.enter();
@@ -57,12 +61,12 @@ package core.states.gameStates
 			addChild(_loc1_);
 			cargoRecieved();
 		}
-
+		
 		override public function execute():void
 		{
 			super.execute();
 		}
-
+		
 		private function cargoRecieved():void
 		{
 			var _loc5_:int = 0;
@@ -104,7 +108,7 @@ package core.states.gameStates
 			}
 			loadCompleted();
 		}
-
+		
 		private function hasWeaponInFleet(param1:String):Boolean
 		{
 			for each (var _loc3_:* in g.me.fleet)
@@ -119,7 +123,7 @@ package core.states.gameStates
 			}
 			return false;
 		}
-
+		
 		private function onSelect(param1:TouchEvent):void
 		{
 			var _loc2_:ShopItemBar = param1.target as ShopItemBar;
@@ -131,7 +135,7 @@ package core.states.gameStates
 				}
 			}
 		}
-
+		
 		private function bought(param1:Event):void
 		{
 			for each (var _loc2_:* in shopItemBars)
@@ -140,7 +144,7 @@ package core.states.gameStates
 			}
 			hasBought = true;
 		}
-
+		
 		override public function exit(param1:Function):void
 		{
 			if (hasBought)

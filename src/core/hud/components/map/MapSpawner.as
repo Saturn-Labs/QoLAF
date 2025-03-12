@@ -6,12 +6,14 @@ package core.hud.components.map
 	import starling.display.Sprite;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class MapSpawner
 	{
 		private var spawner:Spawner;
+		
 		private var scale:Number = 0.4;
 		private var layer:Image;
+		
 		public function MapSpawner(param1:Sprite, param2:Spawner)
 		{
 			super();
@@ -29,7 +31,7 @@ package core.hud.components.map
 			layer.touchable = false;
 			param1.addChild(layer);
 		}
-
+		
 		public function update():void
 		{
 			layer.visible = spawner.alive;

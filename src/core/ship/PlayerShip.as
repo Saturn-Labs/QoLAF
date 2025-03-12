@@ -11,80 +11,125 @@ package core.ship
 	import core.states.ship.Intro;
 	import core.states.ship.Roaming;
 	import core.states.ship.WarpJump;
-	import core.weapon.Debuff;
 	import core.weapon.Heat;
 	import core.weapon.Weapon;
 	import debug.Console;
 	import movement.Command;
-	import qolaf.modifiers.Modifier;
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.filters.DropShadowFilter;
 	import starling.textures.Texture;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class PlayerShip extends Ship
 	{
 		public var player:Player;
+		
 		public var weaponIsChanging:Boolean;
+		
 		public var weaponHeat:Heat;
+		
 		public var hasBoost:Boolean;
+		
 		public var boostCD:int;
+		
 		public var boostDuration:int;
+		
 		public var boostNextRdy:Number;
+		
 		public var ticksOfBoost:int;
+		
 		public var totalTicksOfBoost:int;
+		
 		public var boostEndedLastTick:Boolean;
+		
 		private var _landed:Boolean;
+		
 		public var maxPower:Number;
+		
 		public var powerRegBonus:Number;
+		
 		private var boostEndTime:Number;
+		
 		private var regenerateNextTime:Number;
+		
 		public var channelingEnd:Number;
+		
 		public var hasArmorConverter:Boolean;
+		
 		public var convCost:int;
+		
 		public var convGain:int;
+		
 		public var convCD:int;
+		
 		public var convNextRdy:Number;
+		
 		public var hasHardenedShield:Boolean;
+		
 		public var hardenMaxDmg:int;
+		
 		public var hardenCD:int;
+		
 		public var hardenDuration:int;
+		
 		public var hardenNextRdy:Number;
+		
 		public var hardenEndTimer:Number;
+		
 		public var usingHardenedShield:Boolean;
+		
 		public var hpBase:int;
+		
 		public var shieldHpBase:int;
+		
 		public var activeWeapons:int;
+		
 		public var unlockedWeaponSlots:int;
+		
 		private var quadEndTime:Number;
+		
 		private var quadEffect:Vector.<Emitter>;
-
+		
 		private var speedBoostEffect:Vector.<Emitter>;
-
+		
 		private var dmgBoostEffect:Vector.<Emitter>;
-
+		
 		private var hardenedShieldEffect:Vector.<Emitter>;
-
+		
 		private var killingSpreeEffect:Vector.<Emitter>;
-
+		
 		private var chargeUpEffect:Vector.<Emitter>;
-
+		
 		private var pvpPositionText:TextBitmap;
+		
 		private var nameText:TextBitmap;
+		
 		private var levelText:TextBitmap;
+		
 		private var supporterIcon:Image;
+		
 		private var aritfact_hp_base:int;
+		
 		private var aritfact_shield_base:int;
+		
 		private var aritfact_regen_base:int;
+		
 		public var aritfact_convAmount:Number;
+		
 		public var aritfact_cooldownReduction:Number;
+		
 		public var aritfact_speed:Number;
+		
 		public var aritfact_poweReg:Number;
+		
 		public var aritfact_powerMax:Number;
+		
 		public var aritfact_refire:Number;
+		
 		private var shadowImage:Image;
+		
 		public var hideShadow:Boolean = false;
 		private var lastSafeY:Number = 0;
 		private var lastSafeX:Number = 0;
@@ -126,7 +171,7 @@ package core.ship
 			aritfact_shield_base = 0;
 			aritfact_regen_base = 0;
 		}
-
+		
 		override public function regenerateShield():void
 		{
 			if (alive)
@@ -147,7 +192,7 @@ package core.ship
 				shieldRegenCounter += 33;
 			}
 		}
-
+		
 		override public function regenerateHP():void
 		{
 			if (alive && disableHealEndtime < g.time)
@@ -168,7 +213,7 @@ package core.ship
 				hpRegenCounter += 33;
 			}
 		}
-
+		
 		public function removeConvert():void
 		{
 			if (aritfact_convAmount != 0)
@@ -180,7 +225,7 @@ package core.ship
 				shieldRegenBonus = 0;
 			}
 		}
-
+		
 		public function addConvert():void
 		{
 			aritfact_hp_base = hpMax;
@@ -241,7 +286,7 @@ package core.ship
 				}
 			}
 		}
-
+		
 		override public function switchTexturesByObj(param1:Object, param2:String = "texture_main_NEW.png"):void
 		{
 			super.switchTexturesByObj(param1, param2);
@@ -260,7 +305,7 @@ package core.ship
 			shadowImage.filter = new DropShadowFilter(3, 0.785, 0, 0.7, 4);
 			shadowImage.filter.cache();
 		}
-
+		
 		override public function update():void
 		{
 			if (!alive || landed || player.isLanded)
@@ -296,7 +341,7 @@ package core.ship
 			safeZoneRegeneration();
 			super.update();
 		}
-
+		
 		private function safeZoneRegeneration():void
 		{
 			var _loc1_:Number = NaN;
@@ -315,7 +360,7 @@ package core.ship
 				regenerateNextTime = g.time + 1000;
 			}
 		}
-
+		
 		public function updateHeading():void
 		{
 			var _loc4_:* = undefined;
@@ -371,17 +416,17 @@ package core.ship
 				}
 			}
 		}
-
+		
 		public function damageBoostEffect():void
 		{
 			dmgBoostEffect = EmitterFactory.create("PI3sUBPqwESqkJ2LBoTRJA", g, pos.x, pos.y, this, true);
 		}
-
+		
 		private function boostEffect():void
 		{
 			speedBoostEffect = EmitterFactory.create("FWSygsW1x0q2sKlULeGZMA", g, pos.x, pos.y, this, true);
 		}
-
+		
 		public function dmgBoost():void
 		{
 			usingDmgBoost = true;
@@ -395,11 +440,8 @@ package core.ship
 			}
 			dmgBoostEndTime = g.time + dmgBoostDuration;
 			damageBoostEffect();
-
-			// QoLAF
-			addModifier(new Modifier(Debuff.POWER_BOOST, dmgBoostDuration));
 		}
-
+		
 		public function boost():void
 		{
 			Console.write("-BOOST-");
@@ -416,21 +458,18 @@ package core.ship
 			boostEndTime = g.time + boostDuration;
 			Console.write("boostEndTime: " + boostEndTime);
 			boostEffect();
-
-			// QoLAF
-			addModifier(new Modifier(Debuff.SPEED_BOOST, boostDuration));
 		}
-
+		
 		public function startKillingSpreeEffect():void
 		{
 			killingSpreeEffect = EmitterFactory.create("Go4yOCnz40u-tQvx7g9wNg", g, pos.x, pos.y, this, true);
 		}
-
+		
 		public function hardenShieldEffect():void
 		{
 			hardenedShieldEffect = EmitterFactory.create("uWIxfxRAgUm6ThgrRFnixw", g, pos.x, pos.y, this, true);
 		}
-
+		
 		public function startQuadEffect():void
 		{
 			var _loc1_:* = null;
@@ -443,12 +482,12 @@ package core.ship
 			}
 			quadEffect = EmitterFactory.create("uRAuUGfT40SlGCU7X8w3uQ", g, pos.x, pos.y, this, true);
 		}
-
+		
 		public function startChargeUpEffect(param1:String = "uWIxfxRAgUm6ThgrRFnixw"):void
 		{
 			chargeUpEffect = EmitterFactory.create(param1, g, pos.x, pos.y, this, true);
 		}
-
+		
 		public function killChargeUpEffect():void
 		{
 			for each (var _loc1_:* in chargeUpEffect)
@@ -456,13 +495,13 @@ package core.ship
 				_loc1_.killEmitter();
 			}
 		}
-
+		
 		public function useQuad(param1:Number):void
 		{
 			quadEndTime = param1;
 			startQuadEffect();
 		}
-
+		
 		public function hardenShield():void
 		{
 			usingHardenedShield = true;
@@ -476,16 +515,13 @@ package core.ship
 				hardenNextRdy = g.time + hardenCD * (1 - aritfact_cooldownReduction);
 			}
 			hardenShieldEffect();
-
-			// QoLAF
-			addModifier(new Modifier(Debuff.HARD_SHIELD, hardenDuration));
 		}
-
+		
 		public function converShieldEffect():void
 		{
 			EmitterFactory.create("4QGYSaBeX0ytftBD9hs4bg", g, pos.x, pos.y, this, true);
 		}
-
+		
 		public function convertShield():void
 		{
 			if (aritfact_cooldownReduction > 0.4)
@@ -496,11 +532,8 @@ package core.ship
 			{
 				convNextRdy = g.time + convCD * (1 - aritfact_cooldownReduction);
 			}
-
-			// QoLAF
-			addModifier(new Modifier(Debuff.HEALING, (convNextRdy - g.time) / 2));
 		}
-
+		
 		override public function reset():void
 		{
 			removeMeleeTextures();
@@ -545,7 +578,7 @@ package core.ship
 			pvpPositionText.text = "";
 			super.reset();
 		}
-
+		
 		public function enterRoaming():void
 		{
 			updateLabel();
@@ -554,7 +587,7 @@ package core.ship
 				stateMachine.changeState(new Roaming(this));
 			}
 		}
-
+		
 		public function enterWarpJump():void
 		{
 			if (!stateMachine.inState(WarpJump))
@@ -562,7 +595,7 @@ package core.ship
 				stateMachine.changeState(new WarpJump(g, this));
 			}
 		}
-
+		
 		public function enterIntro(param1:Number, param2:Number):void
 		{
 			if (!stateMachine.inState(Intro))
@@ -570,7 +603,7 @@ package core.ship
 				stateMachine.changeState(new Intro(g, this, param1, param2));
 			}
 		}
-
+		
 		override public function destroy(param1:Boolean = true):void
 		{
 			super.destroy(param1);
@@ -579,18 +612,18 @@ package core.ship
 				_loc2_.destroy();
 			}
 		}
-
+		
 		public function land():void
 		{
 			_landed = true;
 			engine.destroy();
 		}
-
+		
 		public function get landed():Boolean
 		{
 			return _landed;
 		}
-
+		
 		override public function draw():void
 		{
 			if (landed)
@@ -618,22 +651,22 @@ package core.ship
 				pvpPositionText.y = _mc.y - _mc.pivotY - 50;
 			}
 		}
-
+		
 		public function runCommand(param1:Command):void
 		{
 			switch (param1.type - 3)
 			{
-				case 0:
-					if (weapon != null)
-					{
-						this.weapon.fire = param1.active;
-					}
-					break;
-				default:
-					course.runCommand(param1);
+			case 0: 
+				if (weapon != null)
+				{
+					this.weapon.fire = param1.active;
+				}
+				break;
+			default: 
+				course.runCommand(param1);
 			}
 		}
-
+		
 		public function get weapon():Weapon
 		{
 			if (player == null || weapons == null)
@@ -646,7 +679,7 @@ package core.ship
 			}
 			return null;
 		}
-
+		
 		public function get isShooting():Boolean
 		{
 			for each (var _loc1_:* in weapons)
@@ -658,29 +691,29 @@ package core.ship
 			}
 			return false;
 		}
-
+		
 		public function hideStats():void
 		{
 			nameText.visible = false;
 		}
-
+		
 		override public function get type():String
 		{
 			return "playerShip";
 		}
-
+		
 		public function setIsHostile(param1:Boolean):void
 		{
 			isHostile = param1;
 			updateLabel();
 		}
-
+		
 		override public function set name(param1:String):void
 		{
 			super.name = param1;
 			updateLabel();
 		}
-
+		
 		public function updateLabel():void
 		{
 			if (g.me == null || player == null)
@@ -714,7 +747,7 @@ package core.ship
 				levelText.text = "dev";
 			}
 		}
-
+		
 		override public function addToCanvas():void
 		{
 			if (landed)
@@ -740,7 +773,7 @@ package core.ship
 			g.canvasTexts.addChild(nameText);
 			g.canvasTexts.addChild(levelText);
 		}
-
+		
 		override public function addToCanvasForReal():void
 		{
 			if (landed)
@@ -764,7 +797,7 @@ package core.ship
 			g.canvasTexts.addChild(nameText);
 			g.canvasTexts.addChild(levelText);
 		}
-
+		
 		override public function removeFromCanvas():void
 		{
 			super.removeFromCanvas();
@@ -780,7 +813,7 @@ package core.ship
 			g.canvasTexts.removeChild(nameText);
 			g.canvasTexts.removeChild(levelText);
 		}
-
+		
 		public function triggerMeleeTextures(param1:Number):void
 		{
 			tryMelee = true;
@@ -801,7 +834,7 @@ package core.ship
 			tryMelee = false;
 			isInMelee = true;
 		}
-
+		
 		private function removeMeleeTextures():void
 		{
 			if (!isInMelee)

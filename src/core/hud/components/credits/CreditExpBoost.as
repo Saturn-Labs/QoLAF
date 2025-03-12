@@ -5,11 +5,13 @@ package core.hud.components.credits
 	import playerio.Message;
 	import starling.display.Sprite;
 	import starling.events.Event;
-
+	
 	public class CreditExpBoost extends CreditDayItem
 	{
 		private var selectedDays:int;
+		
 		private var price:int;
+		
 		public function CreditExpBoost(param1:Game, param2:Sprite)
 		{
 			super(param1, param2);
@@ -20,21 +22,12 @@ package core.hud.components.credits
 			confirmText = Localize.t("This will add xp boost to your ship.");
 			aquired = param1.me.hasExpBoost;
 			expiryTime = param1.me.expBoost;
-			bundles.push( {
-						"days": 1,
-						"cost": 75
-					});
-			bundles.push( {
-						"days": 3,
-						"cost": 215
-					});
-			bundles.push( {
-						"days": 7,
-						"cost": 425
-					});
+			bundles.push({"days": 1, "cost": 75});
+			bundles.push({"days": 3, "cost": 215});
+			bundles.push({"days": 7, "cost": 425});
 			super.load();
 		}
-
+		
 		override protected function onBuy(param1:int):void
 		{
 			super.onBuy(param1);
@@ -53,7 +46,7 @@ package core.hud.components.credits
 			}
 			g.rpc("buyExpBoost", onBuyTractorBeam, param1);
 		}
-
+		
 		private function onBuyTractorBeam(param1:Message):void
 		{
 			if (!param1.getBoolean(0))

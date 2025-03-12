@@ -1,7 +1,7 @@
 package generics
 {
 	import flash.system.Capabilities;
-
+	
 	public class GUID
 	{
 		private static var counter:Number = 0;
@@ -9,27 +9,27 @@ package generics
 		{
 			super();
 		}
-
+		
 		public static function create():String
 		{
 			var _loc1_:Date = new Date();
 			var _loc3_:Number = Number(_loc1_.getTime());
 			var _loc2_:Number = Math.random() * 1.7976931348623157e+308;
 			var _loc6_:String = Capabilities.serverString;
-			var _loc4_:String = calculate(_loc3_ + _loc6_ + _loc2_ + counter++ ).toUpperCase();
+			var _loc4_:String = calculate(_loc3_ + _loc6_ + _loc2_ + counter++).toUpperCase();
 			return _loc4_.substring(0, 8) + "-" + _loc4_.substring(8, 12) + "-" + _loc4_.substring(12, 16) + "-" + _loc4_.substring(16, 20) + "-" + _loc4_.substring(20, 32);
 		}
-
+		
 		private static function calculate(param1:String):String
 		{
 			return hex_sha1(param1);
 		}
-
+		
 		private static function hex_sha1(param1:String):String
 		{
 			return binb2hex(core_sha1(str2binb(param1), param1.length * 8));
 		}
-
+		
 		private static function core_sha1(param1:Array, param2:Number):Array
 		{
 			var _loc9_:Number = NaN;
@@ -81,7 +81,7 @@ package generics
 			}
 			return new Array(_loc7_, _loc5_, _loc6_, _loc3_, _loc4_);
 		}
-
+		
 		private static function sha1_ft(param1:Number, param2:Number, param3:Number, param4:Number):Number
 		{
 			if (param1 < 20)
@@ -98,24 +98,24 @@ package generics
 			}
 			return param2 ^ param3 ^ param4;
 		}
-
+		
 		private static function sha1_kt(param1:Number):Number
 		{
 			return param1 < 20 ? 1518500249 : (param1 < 40 ? 1859775393 : (param1 < 60 ? -1894007588 : -899497514));
 		}
-
+		
 		private static function safe_add(param1:Number, param2:Number):Number
 		{
 			var _loc3_:Number = (param1 & 0xFFFF) + (param2 & 0xFFFF);
 			var _loc4_:Number = (param1 >> 16) + (param2 >> 16) + (_loc3_ >> 16);
 			return _loc4_ << 16 | _loc3_ & 0xFFFF;
 		}
-
+		
 		private static function rol(param1:Number, param2:Number):Number
 		{
 			return param1 << param2 | param1 >>> 32 - param2;
 		}
-
+		
 		private static function str2binb(param1:String):Array
 		{
 			var _loc4_:Number = NaN;
@@ -131,7 +131,7 @@ package generics
 			}
 			return _loc3_;
 		}
-
+		
 		private static function binb2hex(param1:Array):String
 		{
 			var _loc4_:Number = NaN;

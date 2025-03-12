@@ -13,20 +13,29 @@ package core.hud.components.credits
 	import starling.textures.Texture;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class CreditBaseItem extends Sprite implements ICreditItem
 	{
 		protected var g:Game;
+		
 		protected var dataManager:IDataManager;
+		
 		protected var textureManager:ITextureManager;
+		
 		protected var selected:Boolean = false;
 		protected var hover:Boolean = false;
 		private var bgr:Quad;
+		
 		protected var selectContainer:Sprite;
+		
 		protected var infoContainer:Sprite;
+		
 		protected var itemLabel:String;
+		
 		protected var bitmap:String;
+		
 		protected var spinner:Boolean;
+		
 		public function CreditBaseItem(param1:Game, param2:Sprite, param3:Boolean = false)
 		{
 			bgr = new Quad(260, 50, 0);
@@ -52,7 +61,7 @@ package core.hud.components.credits
 			drawSelectContainer();
 			this.addEventListener("removedFromStage", clean);
 		}
-
+		
 		protected function load():void
 		{
 			selectContainer.addChild(bgr);
@@ -66,7 +75,7 @@ package core.hud.components.credits
 			_loc2_.y = _loc1_.y;
 			selectContainer.addChild(_loc2_);
 		}
-
+		
 		private function drawSelectContainer():void
 		{
 			if (hover && !selected)
@@ -85,28 +94,28 @@ package core.hud.components.credits
 				bgr.alpha = 0.3;
 			}
 		}
-
+		
 		public function deselect():void
 		{
 			selected = false;
 			drawSelectContainer();
 			showInfo(selected);
 		}
-
+		
 		public function update():void
 		{
 		}
-
+		
 		protected function showInfo(param1:Boolean):void
 		{
 			infoContainer.visible = param1;
 		}
-
+		
 		public function select():void
 		{
 			onClick();
 		}
-
+		
 		protected function onClick(param1:TouchEvent = null):void
 		{
 			selected = !selected;
@@ -119,19 +128,19 @@ package core.hud.components.credits
 			param1.stopPropagation();
 			dispatchEvent(new TouchEvent("select", param1.touches));
 		}
-
+		
 		private function mouseOver(param1:TouchEvent):void
 		{
 			hover = true;
 			drawSelectContainer();
 		}
-
+		
 		private function mouseOut(param1:TouchEvent):void
 		{
 			hover = false;
 			drawSelectContainer();
 		}
-
+		
 		private function onTouch(param1:TouchEvent):void
 		{
 			if (spinner)
@@ -151,12 +160,12 @@ package core.hud.components.credits
 				mouseOut(param1);
 			}
 		}
-
+		
 		public function exit():void
 		{
 			infoContainer.removeChildren();
 		}
-
+		
 		private function clean(param1:Event = null):void
 		{
 			removeEventListener("removedFromStage", clean);

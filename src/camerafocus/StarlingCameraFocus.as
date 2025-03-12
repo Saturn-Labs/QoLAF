@@ -5,56 +5,103 @@ package camerafocus
 	import flash.utils.Dictionary;
 	import starling.display.DisplayObject;
 	import starling.display.Stage;
-
+	
 	public final class StarlingCameraFocus
 	{
 		private var _stage:Stage;
+		
 		private var _stageContainer:DisplayObject;
+		
 		private var _focusPosition:Point;
+		
 		private var _focusTracker:Point;
+		
 		private var _focusOrientation:Point;
+		
 		public var _focusCurrentLoc:Point;
+		
 		public var speed:Point;
+		
 		private var _focusLastLoc:Point;
+		
 		private var _focusDistX:Number;
+		
 		private var _focusDistY:Number;
+		
 		public var focusTarget:Object;
+		
 		private var _layersInfo:Dictionary;
+		
 		private var _boundaryLayer:DisplayObject;
+		
 		private var _switch:Boolean;
+		
 		private var _targetLastX:Number;
+		
 		private var _targetLastY:Number;
+		
 		private var _targetCurrentX:Number;
+		
 		private var _targetCurrentY:Number;
+		
 		private var _zoomFactor:Number;
+		
 		private var _intensity:Number;
+		
 		private var _shakeTimer:int;
+		
 		private var _shakeDecay:Number;
+		
 		public var trackStep:uint;
+		
 		public var swapStep:uint;
+		
 		public var zoomStep:uint;
+		
 		private var _tempStep:uint;
+		
 		private var _step:uint;
+		
 		public var ignoreLeftBound:Boolean;
+		
 		public var ignoreRightBound:Boolean;
+		
 		public var ignoreTopBound:Boolean;
+		
 		public var ignoreBottomBound:Boolean;
+		
 		public var isFocused:Boolean;
+		
 		public var isSwaping:Boolean;
+		
 		public var isZooming:Boolean;
+		
 		public var isShaking:Boolean;
+		
 		public var enableCallBack:Boolean;
+		
 		private var _boundaryEvent:CameraFocusEvent;
+		
 		private var _swapStartedEvent:CameraFocusEvent;
+		
 		private var _swapFinishedEvent:CameraFocusEvent;
+		
 		private var _zoomStartedEvent:CameraFocusEvent;
+		
 		private var _zoomFinishedEvent:CameraFocusEvent;
+		
 		private var _shakeStartedEvent:CameraFocusEvent;
+		
 		private var _shakeFinishedEvent:CameraFocusEvent;
+		
 		private var _upperLeftX:Number;
+		
 		private var _upperLeftY:Number;
+		
 		private var _lowerRightX:Number;
+		
 		private var _lowerRightY:Number;
+		
 		public function StarlingCameraFocus(param1:Stage, param2:DisplayObject, param3:Object, param4:Array, param5:Boolean = false)
 		{
 			super();
@@ -105,12 +152,12 @@ package camerafocus
 				pause();
 			}
 		}
-
+		
 		public function get zoomFactor():Number
 		{
 			return _zoomFactor;
 		}
-
+		
 		private function get globalTrackerLoc():Point
 		{
 			var _loc1_:Point = null;
@@ -128,27 +175,27 @@ package camerafocus
 			}
 			return _loc1_;
 		}
-
+		
 		public function getCameraCenter():Point
 		{
 			return _focusCurrentLoc;
 		}
-
+		
 		public function getLayerByName(param1:String):DisplayObject
 		{
 			return _layersInfo[param1].instance;
 		}
-
+		
 		public function start():void
 		{
 			_switch = true;
 		}
-
+		
 		public function pause():void
 		{
 			_switch = false;
 		}
-
+		
 		public function destroy():void
 		{
 			_stage = null;
@@ -164,18 +211,18 @@ package camerafocus
 			_shakeStartedEvent = null;
 			_shakeFinishedEvent = null;
 		}
-
+		
 		public function setFocusPosition(param1:Number, param2:Number):void
 		{
 			_focusPosition.x = param1;
 			_focusPosition.y = param2;
 		}
-
+		
 		public function setBoundary(param1:DisplayObject = null):void
 		{
 			_boundaryLayer = param1;
 		}
-
+		
 		public function jumpToFocus(param1:Object = null):void
 		{
 			if (param1 == null)
@@ -186,7 +233,7 @@ package camerafocus
 			_focusCurrentLoc.x = _focusLastLoc.x = _focusTracker.x = param1.x;
 			_focusCurrentLoc.y = _focusLastLoc.y = _focusTracker.y = param1.y;
 		}
-
+		
 		public function swapFocus(param1:Object, param2:uint = 10, param3:Boolean = false, param4:Number = 1, param5:int = 10):void
 		{
 			focusTarget = param1;
@@ -203,7 +250,7 @@ package camerafocus
 				zoomFocus(param4, param5);
 			}
 		}
-
+		
 		public function zoomFocus(param1:Number, param2:uint = 10):void
 		{
 			_zoomFactor = Math.max(0, param1);
@@ -214,7 +261,7 @@ package camerafocus
 				_stage.dispatchEvent(_zoomStartedEvent);
 			}
 		}
-
+		
 		public function shake(param1:Number, param2:int):void
 		{
 			_intensity = param1;
@@ -226,7 +273,7 @@ package camerafocus
 				_stage.dispatchEvent(_shakeStartedEvent);
 			}
 		}
-
+		
 		public function update():void
 		{
 			if (!_switch)
@@ -310,7 +357,7 @@ package camerafocus
 				}
 			}
 		}
-
+		
 		private function testBounds():Object
 		{
 			var _loc3_:Object = {"top": false, "bottom": false, "left": false, "right": false};
@@ -378,7 +425,7 @@ package camerafocus
 			}
 			return _loc3_;
 		}
-
+		
 		private function positionStageContainer():void
 		{
 			if (this.focusTarget is flash.geom.Point)
@@ -424,7 +471,7 @@ package camerafocus
 			}
 			_stageContainer.y = _stageContainer.y + (_focusPosition.y - _loc3_.y);
 		}
-
+		
 		private function positionParallax(param1:Object):void
 		{
 			var _loc7_:DisplayObject = null;
@@ -452,7 +499,7 @@ package camerafocus
 				}
 			}
 		}
-
+		
 		private function updateViewRectangle():void
 		{
 			_upperLeftX = _focusTracker.x - _stage.stageWidth * 0.5 / _zoomFactor;
@@ -460,7 +507,7 @@ package camerafocus
 			_lowerRightX = _focusTracker.x + _stage.stageWidth * 0.5 / _zoomFactor;
 			_lowerRightY = _focusTracker.y + _stage.stageHeight * 0.5 / _zoomFactor;
 		}
-
+		
 		public function isCircleOnScreen(param1:Number, param2:Number, param3:Number):Boolean
 		{
 			var _loc7_:Number = param1 + param3;
@@ -469,7 +516,7 @@ package camerafocus
 			var _loc5_:Number = param2 - param3;
 			return isOnScreen(_loc7_, _loc6_) || isOnScreen(_loc4_, _loc6_) || isOnScreen(_loc7_, _loc5_) || isOnScreen(_loc4_, _loc5_);
 		}
-
+		
 		public function isOnScreen(param1:Number, param2:Number):Boolean
 		{
 			return !(param1 < _upperLeftX || param2 < _upperLeftY || param1 > _lowerRightX || param2 > _lowerRightY);

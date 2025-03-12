@@ -7,10 +7,11 @@ package core.hud.components.credits
 	import starling.display.Sprite;
 	import starling.text.TextField;
 	import starling.text.TextFormat;
-
+	
 	public class CreditPods extends CreditBaseItem
 	{
 		protected var description:String;
+		
 		public function CreditPods(param1:Game, param2:Sprite)
 		{
 			var button:Button;
@@ -22,9 +23,9 @@ package core.hud.components.credits
 			itemLabel = Localize.t("AF Pods");
 			description = Localize.t("A pod can reward you with a ship, weapon, artefact, upgrade reset, paint-job, flux or resources. The reward is random, but if you buy 10 pods there will be at least one rare reward.");
 			button = new Button(function():void
-				{
-					g.enterState(new PodState(g));
-				}, Localize.t("Buy Pods"), "buy");
+			{
+				g.enterState(new PodState(g));
+			}, Localize.t("Buy Pods"), "buy");
 			button.x = 5;
 			infoContainer.addChild(button);
 			descriptionText = new TextField(280, 50, description, new TextFormat("font13", 12, 11184810, "left"));

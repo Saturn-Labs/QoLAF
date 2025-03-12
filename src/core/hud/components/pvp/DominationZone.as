@@ -8,35 +8,43 @@ package core.hud.components.pvp
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	import textures.TextureManager;
-
+	
 	public class DominationZone
 	{
 		private var textureManager:ITextureManager;
+		
 		public var zoneRadius:Number = 250;
 		public var id:int;
+		
 		public var name:String = "";
 		public var ownerTeam:int;
+		
 		public var capCounter:int;
+		
 		public var nrTeam:Vector.<int>;
-
+		
 		private var g:Game;
+		
 		private var friendlyZone:Image;
+		
 		private var neutralZone:Image;
+		
 		private var enemyZone:Image;
+		
 		private var img:Image;
+		
 		public var friendlyColor:uint = 255;
 		public var neutralColor:uint = 16777215;
 		public var enemyColor:uint = 16711680;
 		public var x:int;
+		
 		public var y:int;
+		
 		private var oldCapCounter:int = 0;
 		public var status:int = 0;
 		public const STATUS_IDLE:int = 0;
-
 		public const STATUS_MY_TEAM_ASSAULTING:int = 1;
-
 		public const STATUS_OPPONENT_TEAM_ASSAULTING:int = 2;
-
 		public function DominationZone(param1:Game, param2:Object, param3:int)
 		{
 			nrTeam = new Vector.<int>();
@@ -87,7 +95,7 @@ package core.hud.components.pvp
 				name = "Epsilon Station";
 			}
 		}
-
+		
 		public function updateZone():void
 		{
 			if (g.me == null)
@@ -165,7 +173,7 @@ package core.hud.components.pvp
 			}
 			oldCapCounter = capCounter;
 		}
-
+		
 		public function getMiniZone():Image
 		{
 			var _loc8_:Image = null;
@@ -193,7 +201,7 @@ package core.hud.components.pvp
 			_loc8_.blendMode = "add";
 			return _loc8_;
 		}
-
+		
 		private function createZoneImg(param1:Object, param2:uint, param3:String):Image
 		{
 			var _loc10_:Image = null;

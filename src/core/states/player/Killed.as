@@ -19,21 +19,32 @@ package core.states.player
 	import starling.filters.GlowFilter;
 	import starling.text.TextField;
 	import starling.text.TextFormat;
-
+	
 	public class Killed implements IState
 	{
 		public static var killedTime:Number;
+		
 		public static var killedPosition:Point = new Point(0, 0);
 		private var player:Player;
+		
 		private var g:Game;
+		
 		private var m:Message;
+		
 		private var sm:StateMachine;
+		
 		private var q:Quad;
+		
 		private var box:Box;
+		
 		private var deathInfo:TextField;
+		
 		private var dropInfo:TextField;
+		
 		private var respawnText:TextField;
+		
 		private var uberText:TextField;
+		
 		private var upperScaleLimit:Number = 1.1;
 		private var lowerScaleLimit:Number = 0.9;
 		private var limitIterator:Number = 0.02;
@@ -44,7 +55,7 @@ package core.states.player
 			this.g = param2;
 			this.m = param3;
 		}
-
+		
 		private function teleport(param1:Message):void
 		{
 			if (param1.getBoolean(0))
@@ -56,7 +67,7 @@ package core.states.player
 				g.showErrorDialog(param1.getString(1));
 			}
 		}
-
+		
 		public function enter():void
 		{
 			var killerText:String;
@@ -140,30 +151,30 @@ package core.states.player
 			{
 				lostXpText += "\n\n<FONT COLOR='#666666'>" + Localize.t("Lost XP") + "</FONT>\n-" + m.getString(3) + " " + Localize.t("XP");
 				xpProtectionButton = new Button(function(param1:Event):void
-					{
-						g.enterState(new ShopState(g, "xpProtection"));
-					}, Localize.t("Get XP protection"));
+				{
+					g.enterState(new ShopState(g, "xpProtection"));
+				}, Localize.t("Get XP protection"));
 			}
 			teleportToDeathButton = new Button(function(param1:Event):void
+			{
+				var e:Event = param1;
+				g.creditManager.refresh(function():void
 				{
-					var e:Event = param1;
-					g.creditManager.refresh(function():void
-						{
-							var confirmBuyWithFlux:CreditBuyBox = new CreditBuyBox(g, CreditManager.getCostTeleportToDeath(), Localize.t("Are you sure you want to teleport?"));
-							g.addChildToOverlay(confirmBuyWithFlux);
-							confirmBuyWithFlux.addEventListener("accept", function():void
-								{
-									g.rpc("buyTeleportToDeath", teleport, player.id);
-									confirmBuyWithFlux.removeEventListeners();
-									g.removeChildFromOverlay(confirmBuyWithFlux, true);
-								});
-							confirmBuyWithFlux.addEventListener("close", function():void
-								{
-									confirmBuyWithFlux.removeEventListeners();
-									g.removeChildFromOverlay(confirmBuyWithFlux, true);
-								});
-						});
-				}, "Teleport to killed location", "buy");
+					var confirmBuyWithFlux:CreditBuyBox = new CreditBuyBox(g, CreditManager.getCostTeleportToDeath(), Localize.t("Are you sure you want to teleport?"));
+					g.addChildToOverlay(confirmBuyWithFlux);
+					confirmBuyWithFlux.addEventListener("accept", function():void
+					{
+						g.rpc("buyTeleportToDeath", teleport, player.id);
+						confirmBuyWithFlux.removeEventListeners();
+						g.removeChildFromOverlay(confirmBuyWithFlux, true);
+					});
+					confirmBuyWithFlux.addEventListener("close", function():void
+					{
+						confirmBuyWithFlux.removeEventListeners();
+						g.removeChildFromOverlay(confirmBuyWithFlux, true);
+					});
+				});
+			}, "Teleport to killed location", "buy");
 			teleportToDeathButton.x = deathInfo.x;
 			teleportToDeathButton.y = deathInfo.y + deathInfo.height + teleportToDeathButton.height * 0.5;
 			box.addChild(teleportToDeathButton);
@@ -234,9 +245,9 @@ package core.states.player
 				if (!player.isCargoProtectionActive() && prop != "")
 				{
 					cargoProtectionButton = new Button(function(param1:Event):void
-						{
-							g.enterState(new ShopState(g, "cargoProtection"));
-						}, Localize.t("Get cargo protection"));
+					{
+						g.enterState(new ShopState(g, "cargoProtection"));
+					}, Localize.t("Get cargo protection"));
 					cargoProtectionButton.x = dropInfo.x;
 					cargoProtectionButton.y = dropInfo.height + cargoProtectionButton.height / 2;
 					box.addChild(cargoProtectionButton);
@@ -269,7 +280,7 @@ package core.states.player
 			box.addChild(uberText);
 			resize();
 		}
-
+		
 		private function resize(param1:Event = null):void
 		{
 			q.width = g.stage.stageWidth;
@@ -277,7 +288,7 @@ package core.states.player
 			box.y = g.stage.stageHeight / 6;
 			box.x = g.stage.stageWidth / 2 - 225;
 		}
-
+		
 		public function execute():void
 		{
 			var _loc2_:int = 0;
@@ -345,7 +356,7 @@ package core.states.player
 				respawnText.scaleY += limitIterator;
 			}
 		}
-
+		
 		public function exit():void
 		{
 			if (player.isMe)
@@ -374,12 +385,12 @@ package core.states.player
 				g.messageLog.visible = true;
 			}
 		}
-
+		
 		public function get type():String
 		{
 			return "Killed";
 		}
-
+		
 		public function set stateMachine(param1:StateMachine):void
 		{
 			this.sm = param1;

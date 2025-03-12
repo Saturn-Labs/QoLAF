@@ -4,17 +4,19 @@ package core.missions
 	import core.scene.Game;
 	import core.states.gameStates.missions.Daily;
 	import playerio.Message;
-
+	
 	public class DailyManager
 	{
 		private var g:Game;
+		
 		public var resetTime:Number;
+		
 		public function DailyManager(param1:Game)
 		{
 			super();
 			this.g = param1;
 		}
-
+		
 		public function addMessageHandlers():void
 		{
 			g.addMessageHandler("dailyMissionsProgress", m_updateProgress);
@@ -22,7 +24,7 @@ package core.missions
 			g.addMessageHandler("dailyMissionsReset", m_reset);
 			g.addMessageHandler("dailyMissionArtifact", m_addArtifactReward);
 		}
-
+		
 		public function initDailyMissionsFromMessage(param1:Message, param2:int):int
 		{
 			var _loc5_:Daily = null;
@@ -36,11 +38,11 @@ package core.missions
 			var _loc7_:int = param2 + 2;
 			while (_loc3_ > 0)
 			{
-				_loc5_ = getDaily(param1.getString(_loc7_++ ));
+				_loc5_ = getDaily(param1.getString(_loc7_++));
 				if (_loc5_)
 				{
-					_loc5_.status = param1.getInt(_loc7_++ );
-					_loc5_.progress = param1.getInt(_loc7_++ );
+					_loc5_.status = param1.getInt(_loc7_++);
+					_loc5_.progress = param1.getInt(_loc7_++);
 				}
 				else
 				{
@@ -50,7 +52,7 @@ package core.missions
 			}
 			return _loc7_;
 		}
-
+		
 		private function getDaily(param1:String):Daily
 		{
 			for each (var _loc2_:* in g.me.dailyMissions)
@@ -62,7 +64,7 @@ package core.missions
 			}
 			return null;
 		}
-
+		
 		private function m_updateProgress(param1:Message):void
 		{
 			var _loc4_:String = param1.getString(0);
@@ -74,7 +76,7 @@ package core.missions
 				g.textManager.createDailyUpdate(_loc3_.name + " " + Math.floor(_loc2_ / _loc3_.missionGoal * 100) + "%");
 			}
 		}
-
+		
 		private function m_setComplete(param1:Message):void
 		{
 			var _loc3_:String = param1.getString(0);
@@ -86,7 +88,7 @@ package core.missions
 				g.textManager.createDailyUpdate("Daily complete!");
 			}
 		}
-
+		
 		private function m_reset(param1:Message):void
 		{
 			var _loc3_:String = param1.getString(0);
@@ -97,7 +99,7 @@ package core.missions
 				_loc2_.progress = 0;
 			}
 		}
-
+		
 		public function addReward(param1:Message):void
 		{
 			var _loc5_:int = 0;
@@ -122,7 +124,7 @@ package core.missions
 				_loc5_ += 3;
 			}
 		}
-
+		
 		private function m_addArtifactReward(param1:Message):void
 		{
 			var _loc2_:Player = g.me;

@@ -7,70 +7,108 @@ package core.particle
 	import generics.GUID;
 	import starling.display.Sprite;
 	import starling.textures.Texture;
-
+	
 	public class Emitter
 	{
 		public static var POOL_SIZE_MIN:int = 5;
 		public static var POOL_SIZE_MAX:int = 100;
 		public static var IS_HIGH_GRAPHICS:Boolean = true;
 		public var name:String;
+		
 		private var _txt:Texture;
+		
 		public var speed:Number;
+		
 		public var speedVariance:Number;
+		
 		public var sourceVarianceX:Number = 0;
 		public var sourceVarianceY:Number = 0;
 		public var gravityX:Number = 0;
 		public var gravityY:Number = 0;
 		public var useFriction:Boolean;
+		
 		public var alive:Boolean;
+		
 		public var angle:Number;
+		
 		public var posX:Number = 0;
 		public var posY:Number = 0;
 		public var steadyStream:Boolean;
+		
 		public var followEmitter:Boolean;
+		
 		public var followTarget:Boolean;
+		
 		public var target:GameObject;
+		
 		public var targetPosX:Number = 0;
 		public var targetPosY:Number = 0;
 		public var global:Boolean;
+		
 		public var delay:Number;
+		
 		public var ttl:int;
+		
 		public var ttlVariance:int;
+		
 		private var _startSize:Number;
+		
 		public var startSizeVariance:Number;
+		
 		private var _finishSize:Number;
+		
 		public var finishSizeVariance:Number;
+		
 		public var angleVariance:Number;
+		
 		public var uniformDistribution:Boolean;
+		
 		public var centralGravity:Boolean;
+		
 		private var maxRadius:Number;
+		
 		private var maxSize:Number;
+		
 		public var startAlpha:Number;
+		
 		public var startAlphaVariance:Number;
+		
 		public var finishAlpha:Number;
+		
 		public var startBlendMode:String;
+		
 		public var finishBlendMode:String;
+		
 		public var shakeIntensity:Number = 0;
 		public var shakeDuration:Number = 0;
 		public var key:String;
+		
 		public var guid:String;
+		
 		public var xOffset:int = 0;
 		public var yOffset:int = 0;
 		public var canvasTarget:Sprite;
+		
 		public var oldImageKey:String = "";
 		private var _maxParticles:int;
+		
 		private var _duration:int;
+		
 		public var isEmitting:Boolean;
+		
 		private var timeElapsed:int = 0;
 		private var emittAccum:Number = 0;
 		private var g:Game;
+		
 		public var particles:Vector.<Particle>;
-
+		
 		private var inactiveParticles:Vector.<Particle>;
-
+		
 		public var collectiveMeshBatch:CollectiveMeshBatch;
+		
 		public var isOnScreen:Boolean = false;
 		public var forceUpdate:Boolean;
+		
 		public var distanceToCamera:int = 0;
 		public var distanceToCameraX:int = 0;
 		public var distanceToCameraY:int = 0;
@@ -95,43 +133,43 @@ package core.particle
 				_loc2_++;
 			}
 		}
-
+		
 		public static function setLowGraphics():void
 		{
 			POOL_SIZE_MIN = 2;
 			POOL_SIZE_MAX = 6;
 			IS_HIGH_GRAPHICS = false;
 		}
-
+		
 		public static function setHighGraphics():void
 		{
 			POOL_SIZE_MIN = 5;
 			POOL_SIZE_MAX = 100;
 			IS_HIGH_GRAPHICS = true;
 		}
-
+		
 		public function set startSize(param1:Number):void
 		{
 			_startSize = param1;
 			maxSize = Math.max(_startSize, _finishSize);
 		}
-
+		
 		public function get startSize():Number
 		{
 			return _startSize;
 		}
-
+		
 		public function set finishSize(param1:Number):void
 		{
 			_finishSize = param1;
 			maxSize = Math.max(_startSize, _finishSize);
 		}
-
+		
 		public function get finishSize():Number
 		{
 			return _finishSize;
 		}
-
+		
 		public function play():void
 		{
 			var _loc2_:Number = NaN;
@@ -167,19 +205,19 @@ package core.particle
 				}
 			}
 		}
-
+		
 		public function stop():void
 		{
 			isEmitting = false;
 			isOnScreen = false;
 			setParticlesInactive();
 		}
-
+		
 		public function get radius():Number
 		{
 			return maxRadius * maxSize;
 		}
-
+		
 		private function updatePosition():void
 		{
 			var _loc1_:Number = NaN;
@@ -205,7 +243,7 @@ package core.particle
 				angle = target.rotation;
 			}
 		}
-
+		
 		private function updateOnScreen():void
 		{
 			forceUpdate = false;
@@ -232,7 +270,7 @@ package core.particle
 			}
 			isOnScreen = false;
 		}
-
+		
 		public function update():void
 		{
 			var _loc2_:int = 0;
@@ -265,7 +303,7 @@ package core.particle
 			setBatchParent();
 			updateTime();
 		}
-
+		
 		private function updateTime():void
 		{
 			if (constantEmitter)
@@ -285,12 +323,12 @@ package core.particle
 				}
 			}
 		}
-
+		
 		private function get constantEmitter():Boolean
 		{
 			return _duration == -1;
 		}
-
+		
 		private function updateParticleCount():void
 		{
 			var _loc6_:int = 0;
@@ -337,7 +375,7 @@ package core.particle
 				_loc6_++;
 			}
 		}
-
+		
 		public function drawParticels():void
 		{
 			var _loc6_:Particle = null;
@@ -426,7 +464,7 @@ package core.particle
 				_loc11_--;
 			}
 		}
-
+		
 		public function setBatchParent():void
 		{
 			if (collectiveMeshBatch.parent != null)
@@ -442,7 +480,7 @@ package core.particle
 				g.canvasEffects.addChild(collectiveMeshBatch);
 			}
 		}
-
+		
 		private function add(param1:int = 0, param2:int = 1):void
 		{
 			if (particles.length > maxParticles || inactiveParticles.length == 0)
@@ -484,7 +522,7 @@ package core.particle
 			_loc7_.ticks = 0;
 			particles.push(_loc7_);
 		}
-
+		
 		private function remove(param1:Particle, param2:int):void
 		{
 			inactiveParticles.push(param1);
@@ -497,7 +535,7 @@ package core.particle
 				particles[param2] = particles.pop();
 			}
 		}
-
+		
 		private function setParticlesInactive():void
 		{
 			var _loc1_:int = 0;
@@ -513,7 +551,7 @@ package core.particle
 			}
 			particles.length = 0;
 		}
-
+		
 		public function killEmitter():void
 		{
 			var _loc1_:int = 0;
@@ -528,7 +566,7 @@ package core.particle
 			particles.length = 0;
 			removeFromCollectiveMeshBatch();
 		}
-
+		
 		private function removeFromCollectiveMeshBatch():void
 		{
 			if (collectiveMeshBatch == null)
@@ -537,7 +575,7 @@ package core.particle
 			}
 			collectiveMeshBatch.remove(this);
 		}
-
+		
 		public function dispose():void
 		{
 			sourceVarianceX = 0;
@@ -586,30 +624,25 @@ package core.particle
 			angle = 0;
 			collectiveMeshBatch = null;
 		}
-
+		
 		public function set startColor(param1:uint):void
 		{
 			_startColor = param1;
 			_originalStartColor = param1;
 		}
-
-		public function get startColor():uint
-		{
-			return _startColor;
-		}
-
+		
 		public function changeHue(param1:Number):void
 		{
 			_startColor = Color.HEXHue(_originalStartColor, param1);
 			_finishColor = Color.HEXHue(_originalFinishColor, param1);
 		}
-
+		
 		public function set finishColor(param1:uint):void
 		{
 			_finishColor = param1;
 			_originalFinishColor = param1;
 		}
-
+		
 		private function get ppms():Number
 		{
 			if (duration != -1)
@@ -622,17 +655,17 @@ package core.particle
 			}
 			return 1;
 		}
-
+		
 		public function set duration(param1:int):void
 		{
 			_duration = param1;
 		}
-
+		
 		public function get duration():int
 		{
 			return _duration;
 		}
-
+		
 		public function set maxParticles(param1:int):void
 		{
 			if (param1 > POOL_SIZE_MAX)
@@ -644,12 +677,12 @@ package core.particle
 				_maxParticles = param1;
 			}
 		}
-
+		
 		public function get maxParticles():int
 		{
 			return _maxParticles;
 		}
-
+		
 		public function fastForward(param1:int):void
 		{
 			var _loc2_:int = 0;
@@ -664,7 +697,7 @@ package core.particle
 				_loc2_++;
 			}
 		}
-
+		
 		public function set txt(param1:Texture):void
 		{
 			_txt = param1;
@@ -673,7 +706,7 @@ package core.particle
 				maxRadius = Math.max(param1.width, param1.height);
 			}
 		}
-
+		
 		public function get txt():Texture
 		{
 			return _txt;

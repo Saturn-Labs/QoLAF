@@ -22,26 +22,43 @@ package core.hud.components.dialogs
 	import starling.textures.Texture;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class CrewDialogBox extends Sprite
 	{
 		private var t:Text;
+		
 		private var face:Image;
+		
 		private var box:Box;
+		
 		private var closeButton:Button;
+		
 		private var soundManager:ISound;
+		
 		private var g:Game;
+		
 		private var tutorial:Tutorial;
+		
 		private var bgrQuad:Quad;
+		
 		private var readTime:int;
+		
 		private var readTimer:Timer;
+		
 		private var keyTimer:Timer;
+		
 		private var voice:String;
+		
 		private var callback:Function;
+		
 		private var crewNumber:int;
+		
 		private var showCloseButton:Boolean;
+		
 		private var showOverlay:Boolean;
+		
 		private var endKeys:Array;
+		
 		public function CrewDialogBox(param1:Game, param2:Tutorial)
 		{
 			t = new Text();
@@ -61,7 +78,7 @@ package core.hud.components.dialogs
 			addEventListener("addedToStage", stageAddHandler);
 			addEventListener("removedFromStage", clean);
 		}
-
+		
 		public function load(param1:Game, param2:String, param3:int = 0, param4:Boolean = false):void
 		{
 			var _loc6_:CrewMember = null;
@@ -106,7 +123,7 @@ package core.hud.components.dialogs
 			addChild(t);
 			addChild(closeButton);
 		}
-
+		
 		public function show(param1:String, param2:String = null, param3:Array = null, param4:int = -1, param5:Function = null, param6:int = -1, param7:Boolean = true, param8:Boolean = false, param9:String = ""):void
 		{
 			this.voice = param2;
@@ -151,12 +168,12 @@ package core.hud.components.dialogs
 				_loc10_.listenToKeys(param3, onListenToKeys);
 			}
 		}
-
+		
 		private function stageAddHandler(param1:Event):void
 		{
 			stage.addEventListener("keyDown", keyDown);
 		}
-
+		
 		private function keyDown(param1:KeyboardEvent):void
 		{
 			if (param1.keyCode == 13)
@@ -165,25 +182,25 @@ package core.hud.components.dialogs
 				hide();
 			}
 		}
-
+		
 		private function close(param1:TouchEvent):void
 		{
 			Console.write("dialog close: button");
 			hide();
 		}
-
+		
 		private function onListenToKeys():void
 		{
 			Console.write("dialog close: keys");
 			hide();
 		}
-
+		
 		private function onReadTimerComplete(param1:TimerEvent):void
 		{
 			Console.write("dialog close: timer");
 			hide();
 		}
-
+		
 		public function hide():void
 		{
 			Console.write("Removed hint dialog!");
@@ -200,7 +217,7 @@ package core.hud.components.dialogs
 				callback();
 			}
 		}
-
+		
 		private function clean(param1:Event):void
 		{
 			stage.removeEventListener("keyDown", keyDown);

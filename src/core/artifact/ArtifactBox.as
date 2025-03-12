@@ -12,20 +12,31 @@ package core.artifact
 	import starling.filters.GlowFilter;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class ArtifactBox extends Sprite
 	{
 		private var p:Player;
+		
 		private var g:Game;
+		
 		public var a:Artifact;
+		
 		private var textureManager:ITextureManager;
+		
 		private var artifactImage:Image;
+		
 		private var frame:Image;
+		
 		private var toolTip:ToolTip;
+		
 		private var colors:Array;
+		
 		public var locked:Boolean;
+		
 		public var unlockable:Boolean;
+		
 		public var slot:int;
+		
 		public function ArtifactBox(param1:Game, param2:Artifact)
 		{
 			colors = [11184810, 4491519, 4517444, 16729343, 16761634];
@@ -36,7 +47,7 @@ package core.artifact
 			toolTip = new ToolTip(param1, this, "", null, "artifactBox");
 			textureManager = TextureLocator.getService();
 		}
-
+		
 		public function update():void
 		{
 			removeChildren();
@@ -60,7 +71,7 @@ package core.artifact
 				addUpgradeIcon();
 			}
 		}
-
+		
 		private function addUpgradeIcon():void
 		{
 			var _loc1_:Image = null;
@@ -91,13 +102,13 @@ package core.artifact
 				addChild(_loc1_);
 			}
 		}
-
+		
 		private function drawFrame():void
 		{
 			frame = new Image(textureManager.getTextureGUIByTextureName("artifact_box"));
 			addChild(frame);
 		}
-
+		
 		private function setArtifact():void
 		{
 			var _loc4_:int = 0;
@@ -145,7 +156,7 @@ package core.artifact
 			toolTip.text = _loc2_;
 			toolTip.color = a.getColor();
 		}
-
+		
 		private function setLocked():void
 		{
 			var _loc1_:Image = new Image(textureManager.getTextureGUIByTextureName("lock"));
@@ -154,13 +165,13 @@ package core.artifact
 			_loc1_.y = 12;
 			addChild(_loc1_);
 		}
-
+		
 		private function addListeners():void
 		{
 			useHandCursor = true;
 			addEventListener("touch", onTouch);
 		}
-
+		
 		private function onTouch(param1:TouchEvent):void
 		{
 			if (param1.getTouch(this, "ended"))
@@ -168,7 +179,7 @@ package core.artifact
 				onClick(param1);
 			}
 		}
-
+		
 		private function onClick(param1:TouchEvent):void
 		{
 			if (locked && unlockable)
@@ -180,24 +191,24 @@ package core.artifact
 				dispatchEventWith("activeArtifactRemoved", true);
 			}
 		}
-
+		
 		public function get isEmpty():Boolean
 		{
 			return a == null;
 		}
-
+		
 		public function setEmpty():void
 		{
 			a = null;
 			update();
 		}
-
+		
 		public function setActive(param1:Artifact):void
 		{
 			this.a = param1;
 			update();
 		}
-
+		
 		override public function dispose():void
 		{
 			if (frame && frame.filter)

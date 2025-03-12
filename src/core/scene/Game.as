@@ -1,9 +1,5 @@
 package core.scene
 {
-	import flash.utils.getTimer;
-	import qolaf.data.ClientSettings;
-	import qolaf.ui.elements.ModifierTooltip;
-	import starling.core.Starling;
 	import com.google.analytics.AnalyticsTracker;
 	import com.google.analytics.GATracker;
 	import com.greensock.TweenMax;
@@ -86,7 +82,6 @@ package core.scene
 	import playerio.Client;
 	import playerio.Connection;
 	import playerio.Message;
-	import qolaf.target.TargetSystem;
 	import sound.Playlist;
 	import sound.SoundLocator;
 	import starling.core.Starling;
@@ -97,7 +92,7 @@ package core.scene
 	import starling.utils.AssetManager;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class Game extends SceneBase
 	{
 		public static const TICK_LENGTH:int = 33;
@@ -110,45 +105,83 @@ package core.scene
 		public static const REGENBONUS:int = 1;
 		public static const SYNC_FREQUENCY:Number = 50000;
 		public static var instance:Game;
+		
 		private static var tracker:AnalyticsTracker;
+		
 		public static var highSettings:Boolean = true;
 		public static var lastActive:int;
+		
 		public static var assets:AssetManager = new AssetManager();
 		public var solarSystem:SolarSystem;
+		
 		public var parallaxManager:ParallaxManager;
+		
 		public var playerManager:PlayerManager;
+		
 		public var unitManager:UnitManager;
+		
 		public var shipManager:ShipManager;
+		
 		public var ribbonTrailPool:RibbonTrailPool;
+		
 		public var linePool:LinePool;
+		
 		public var beamLinePool:BeamLinePool;
+		
 		public var bossManager:BossManager;
+		
 		public var emitterManager:EmitterManager;
+		
 		public var weaponManager:WeaponManager;
+		
 		public var projectileManager:ProjectileManager;
+		
 		public var bodyManager:BodyManager;
+		
 		public var spawnManager:SpawnManager;
+		
 		public var dailyManager:DailyManager;
+		
 		public var turretManager:TurretManager;
+		
 		public var messagePackHandler:MessagePackHandler;
+		
 		public var deathLineManager:DeathLineManager;
+		
 		public var gameStateMachine:GameStateMachine;
+		
 		public var hud:Hud;
+		
 		public var textManager:TextManager;
+		
 		public var dropManager:DropManager;
+		
 		public var commandManager:CommandManager;
+		
 		public var groupManager:GroupManager;
+		
 		public var friendManager:FriendManager;
+		
 		public var tutorial:Tutorial;
+		
 		public var creditManager:CreditManager;
+		
 		public var messageLog:MessageLog;
+		
 		public var chatInput:ChatInputText;
+		
 		public var dataManager:IDataManager;
+		
 		public var textureManager:ITextureManager;
+		
 		public var queueManager:QueueManager;
+		
 		public var pvpManager:PvpManager;
+		
 		public var controlZoneManager:ControlZoneManager;
+		
 		public var salesManager:SalesManager;
+		
 		public var quality:int = 10;
 		private var initSolarSystemComplete:Boolean = false;
 		private var initPlayerComplete:Boolean = false;
@@ -159,8 +192,11 @@ package core.scene
 		private var isTOSPopup:Boolean = false;
 		private var isSaleSpinner:Boolean = false;
 		private var nextSync:Number;
+		
 		private var welcomeText:ScreenTextField;
+		
 		private var solarSystemData:Text;
+		
 		private var requestID:String = "";
 		public var gameStartedTime:Number = 0;
 		private var enableTrackFPS:Boolean = false;
@@ -169,17 +205,16 @@ package core.scene
 		private var totalTime:Number = 0;
 		private var elapsedTime:Number = 0;
 		private var qualityText:Text;
+		
 		private var synchedEnemies:Boolean = false;
 		private var tweenCount:int = 0;
 		private var rot:Number = 0;
 		private var disconnectPopup:PopupMessage;
+		
 		private var loadingSprite:Sprite;
+		
 		private var loadingFadeTween:TweenMax;
-		private var clientTime:Number = 0;
-		private var oldClientTime:Number = 0;
-		public var deltaTime:Number = 0;
-		// QoLAF
-		public var targetSystem:TargetSystem;
+		
 		public function Game(param1:Client, param2:Connection, param3:Connection, param4:Room)
 		{
 			var client:Client = param1;
@@ -193,15 +228,12 @@ package core.scene
 			addMessageHandler("sdf", m_sdf);
 			addServiceMessageHandler("blg", m_blg);
 			addMessageHandler("test", function():void
-				{
-					trace("TEST RECEIVED");
-				});
+			{
+				trace("TEST RECEIVED");
+			});
 			instance = this;
-
-			// QoLAF
-			targetSystem = new TargetSystem(this);
 		}
-
+		
 		public static function trackPageView(param1:String):void
 		{
 			try
@@ -216,7 +248,7 @@ package core.scene
 			{
 			}
 		}
-
+		
 		public static function trackEvent(param1:String, param2:String, param3:String = null, param4:Number = NaN):void
 		{
 			try
@@ -231,27 +263,27 @@ package core.scene
 			{
 			}
 		}
-
+		
 		public static function isFacebookUser():Boolean
 		{
 			return Login.currentState == "facebook";
 		}
-
+		
 		public static function isKongregateUser():Boolean
 		{
 			return Login.currentState == "kongregate";
 		}
-
+		
 		public static function playerPerformedAction():void
 		{
 			lastActive = new Date().time;
 		}
-
+		
 		private function trackServerEvent(param1:Message):void
 		{
 			trackEvent(param1.getString(0), param1.getString(1), param1.getString(2), param1.getNumber(3));
 		}
-
+		
 		override protected function init(param1:starling.events.Event = null):void
 		{
 			super.init(param1);
@@ -288,7 +320,7 @@ package core.scene
 			dailyManager = new DailyManager(this);
 			textManager.loadHandlers();
 		}
-
+		
 		override protected function onJoinAndClockSynched(param1:starling.events.Event = null):void
 		{
 			this.canvas.visible = false;
@@ -323,7 +355,7 @@ package core.scene
 			salesManager.refresh();
 			send("initSolarSystem");
 		}
-
+		
 		private function handleRequestID(param1:Object):void
 		{
 			var _loc2_:String = null;
@@ -340,18 +372,13 @@ package core.scene
 				FB.api("/" + requestID, handleRequestID, _loc3_, "POST");
 			}
 		}
-
+		
 		private function onInitSolarSystem(param1:Message):void
 		{
 			if (settings == null)
 			{
 				settings = new Settings();
 			}
-
-			// QoLAF
-			if (clientSettings == null)
-				clientSettings = new ClientSettings(this);
-
 			settings.sb = this;
 			bodyManager.initSolarSystem(param1);
 			Console.write("Init solar system complete");
@@ -360,17 +387,21 @@ package core.scene
 			turretManager.addEarlyMessageHandlers();
 			send("initGame");
 		}
-
+		
 		private function onInitPlayer(param1:Message):void
 		{
 			var m:Message = param1;
 			try
 			{
-				rpcServiceRoom("requestRating", function():void
+				rpcServiceRoom("requestRating", (function():*
+				{
+					var rpcHandler:Function;
+					return rpcHandler = function(param1:Message):void
 					{
 						me.ranking = param1.getInt(0);
 						me.rating = param1.getNumber(1);
-					});
+					};
+				})());
 				playerManager.initPlayer(m, 0);
 				initPlayerComplete = true;
 				camera.focusTarget = me.ship.movieClip;
@@ -384,7 +415,7 @@ package core.scene
 				client.errorLog.writeError(e.toString(), " player init failed: " + client.connectUserId, e.getStackTrace(), {});
 			}
 		}
-
+		
 		private function onInitEnemyPlayers(param1:Message, param2:int = 0):void
 		{
 			if (param1.length == 0)
@@ -402,14 +433,14 @@ package core.scene
 				completeOnInitEnemyPlayers();
 			}
 		}
-
+		
 		private function completeOnInitEnemyPlayers():void
 		{
 			initEnemyPlayersComplete = true;
 			Console.write("Init enemy players complete");
 			tryRunGameLoop();
 		}
-
+		
 		public function toggleHighGraphics(param1:Boolean):void
 		{
 			highSettings = param1;
@@ -426,7 +457,7 @@ package core.scene
 				}
 			}
 		}
-
+		
 		private function onInitEnemies(param1:Message):void
 		{
 			Console.write("Init enemies received");
@@ -436,20 +467,20 @@ package core.scene
 			Console.write("Init enemies complete");
 			tryRunGameLoop();
 		}
-
+		
 		private function onInitDrops(param1:Message):void
 		{
 			initDropsComplete = true;
 			tryRunGameLoop();
 		}
-
+		
 		private function onInitServerComplete(param1:Message):void
 		{
 			Console.write("Init server complete");
 			initServerComplete = true;
 			tryRunGameLoop();
 		}
-
+		
 		private function tryRunGameLoop():void
 		{
 			if (initSolarSystemComplete && initPlayerComplete && initEnemyPlayersComplete && initEnemiesComplete && initDropsComplete && initServerComplete)
@@ -460,7 +491,7 @@ package core.scene
 				runGameLoop();
 			}
 		}
-
+		
 		private function tryOpenTOSPopup():void
 		{
 			var tosPopup:TOSPopup;
@@ -474,20 +505,20 @@ package core.scene
 				tosPopup = new TOSPopup(this);
 				addChildToOverlay(tosPopup);
 				tosPopup.addEventListener("accept", function(param1:starling.events.Event):void
-					{
-						removeChildFromOverlay(tosPopup, true);
-						sendAccept();
-						me.hasCorrectTOSVersion = true;
-					});
+				{
+					removeChildFromOverlay(tosPopup, true);
+					sendAccept();
+					me.hasCorrectTOSVersion = true;
+				});
 				tosPopup.addEventListener("close", function(param1:starling.events.Event):void
-					{
-						removeChildFromOverlay(tosPopup, true);
-						hud.show = false;
-						exit();
-					});
+				{
+					removeChildFromOverlay(tosPopup, true);
+					hud.show = false;
+					exit();
+				});
 			}
 		}
-
+		
 		public function tryOpenSaleSpinner():void
 		{
 			var salePopup:SaleSpinner;
@@ -498,17 +529,17 @@ package core.scene
 				salePopup = new SaleSpinner(this);
 				addChildToOverlay(salePopup);
 				salePopup.addEventListener("close", function(param1:starling.events.Event):void
-					{
-						removeChildFromOverlay(salePopup, true);
-					});
+				{
+					removeChildFromOverlay(salePopup, true);
+				});
 			}
 		}
-
+		
 		public function sendAccept():void
 		{
 			send("acceptedTOS", 3);
 		}
-
+		
 		private function runGameLoop():void
 		{
 			var clanApplicationCheck:ClanApplicationCheck;
@@ -577,10 +608,10 @@ package core.scene
 				pleaseRate = new PopupMessage("Close");
 				pleaseRate.text = "<FONT COLOR='#ffff44' SIZE='16'>Hello Captain!\n\n</FONT>Great having you onboard and also, great job this far.\n\nYou can help us a lot by giving us a 5 star rating.\n\nThanks /The Astroflux team!";
 				pleaseRate.addEventListener("close", function(param1:starling.events.Event):void
-					{
-						pleaseRate.removeEventListeners();
-						removeChildFromOverlay(pleaseRate);
-					});
+				{
+					pleaseRate.removeEventListeners();
+					removeChildFromOverlay(pleaseRate);
+				});
 				addChildToOverlay(pleaseRate);
 				pleaseRate.y += 60;
 			}
@@ -594,7 +625,7 @@ package core.scene
 			initTrackFPS();
 			startSystemMusic();
 		}
-
+		
 		private function trackFPS():void
 		{
 			if (runningFPS < 3)
@@ -649,7 +680,7 @@ package core.scene
 			}
 			Game.trackEvent("FPS in system", solarSystem.name, _loc1_, runningFPS);
 		}
-
+		
 		private function initTrackFPS():void
 		{
 			if ("".length > 0)
@@ -657,14 +688,14 @@ package core.scene
 				return;
 			}
 			TweenMax.delayedCall(60, function():void
-				{
-					frameCount = 0;
-					totalTime = 0;
-					elapsedTime = 0;
-					enableTrackFPS = true;
-				});
+			{
+				frameCount = 0;
+				totalTime = 0;
+				elapsedTime = 0;
+				enableTrackFPS = true;
+			});
 		}
-
+		
 		private function updateFPS(param1:EnterFrameEvent):void
 		{
 			totalTime += param1.passedTime;
@@ -693,7 +724,7 @@ package core.scene
 				}
 			}
 		}
-
+		
 		public function showQuality():void
 		{
 			if (!me.isDeveloper)
@@ -706,7 +737,7 @@ package core.scene
 			qualityText.color = 16777215;
 			addChildToOverlay(qualityText);
 		}
-
+		
 		public function setQuality(param1:int):void
 		{
 			if (param1 >= 0 && param1 <= 10)
@@ -718,7 +749,7 @@ package core.scene
 				qualityText.text = "" + param1;
 			}
 		}
-
+		
 		private function tryEnterIntro():void
 		{
 			if (Login.START_SETUP_IS_DONE)
@@ -730,7 +761,7 @@ package core.scene
 				TweenMax.delayedCall(0.1, tryEnterIntro);
 			}
 		}
-
+		
 		private function disconnectIfInactive():void
 		{
 			var diff:int = new Date().time - lastActive;
@@ -742,20 +773,20 @@ package core.scene
 				enableTrackFPS = false;
 				RymdenRunt.s.nativeStage.frameRate = 1;
 				showErrorDialog("Are you there captain? We lost contact. Last thing we heard on the radio was snoring sounds, you sleeping?", false, function():void
+				{
+					showErrorDialog("Reload the game log in again.", false, function():void
 					{
-						showErrorDialog("Reload the game log in again.", false, function():void
-							{
-								if (RymdenRunt.isDesktop)
-								{
-									exitDesktop();
-								}
-							});
+						if (RymdenRunt.isDesktop)
+						{
+							exitDesktop();
+						}
 					});
+				});
 				return;
 			}
 			TweenMax.delayedCall(1, disconnectIfInactive);
 		}
-
+		
 		public function enterLandedState():void
 		{
 			var _loc1_:Body = me.currentBody;
@@ -801,13 +832,13 @@ package core.scene
 			}
 			focusGameObject(_loc1_, true);
 		}
-
+		
 		private function onInitSyncEnemies(param1:Message):void
 		{
 			shipManager.initSyncEnemies(param1);
 			synchedEnemies = true;
 		}
-
+		
 		private function update(param1:EnterFrameEvent):void
 		{
 			if (gameStateMachine != null)
@@ -820,15 +851,9 @@ package core.scene
 				}
 			}
 		}
-
+		
 		public function tickUpdate():void
 		{
-			oldClientTime = clientTime;
-			clientTime = getTimer() / 1000.0;
-			if (oldClientTime == 0)
-				oldClientTime = clientTime;
-			deltaTime = clientTime - oldClientTime;
-
 			time = getServerTime();
 			playerManager.update();
 			textManager.update();
@@ -846,10 +871,6 @@ package core.scene
 			camera.update();
 			hud.update();
 			deathLineManager.update();
-
-			// QoLAF
-			targetSystem.update();
-
 			if (pvpManager != null)
 			{
 				pvpManager.update();
@@ -864,7 +885,7 @@ package core.scene
 				tryOpenSaleSpinner();
 			}
 		}
-
+		
 		private function updateSync():void
 		{
 			if (nextSync < time)
@@ -873,7 +894,7 @@ package core.scene
 				refreshClock();
 			}
 		}
-
+		
 		override protected function userJoined(param1:Message):void
 		{
 			if (playerManager == null)
@@ -889,12 +910,12 @@ package core.scene
 				}
 			}
 		}
-
+		
 		override protected function userLeft(param1:Message):void
 		{
 			playerManager.removePlayer(param1);
 		}
-
+		
 		public function enterState(param1:IGameState):void
 		{
 			if (gameStateMachine.inState(param1))
@@ -903,7 +924,7 @@ package core.scene
 			}
 			gameStateMachine.changeState(param1);
 		}
-
+		
 		public function fadeIntoState(param1:IGameState):void
 		{
 			var state:IGameState = param1;
@@ -911,23 +932,23 @@ package core.scene
 			{
 				return;
 			}
-			Login.fadeScreen.addEventListener("fadeInComplete", (function():Function
-					{
-						var onFadeInComplete:Function;
-						return onFadeInComplete = function(param1:starling.events.Event):void
-						{
-							gameStateMachine.changeState(state);
-							Login.fadeScreen.removeEventListener("fadeInComplete", onFadeInComplete);
-						};
-					})());
+			Login.fadeScreen.addEventListener("fadeInComplete", (function():*
+			{
+				var onFadeInComplete:Function;
+				return onFadeInComplete = function(param1:starling.events.Event):void
+				{
+					gameStateMachine.changeState(state);
+					Login.fadeScreen.removeEventListener("fadeInComplete", onFadeInComplete);
+				};
+			})());
 			Login.fadeScreen.fadeIn();
 		}
-
+		
 		public function get me():Player
 		{
 			return playerManager.me;
 		}
-
+		
 		public function softDisconnect(param1:String):void
 		{
 			var message:String = param1;
@@ -939,13 +960,13 @@ package core.scene
 			disconnectPopup.text = Localize.t(message);
 			addChildToOverlay(disconnectPopup);
 			disconnectPopup.addEventListener("close", function(param1:starling.events.Event):void
-				{
-					removeChildFromOverlay(disconnectPopup, true);
-					disconnectPopup = null;
-				});
+			{
+				removeChildFromOverlay(disconnectPopup, true);
+				disconnectPopup = null;
+			});
 			removeEventListener("enterFrame", update);
 		}
-
+		
 		override protected function handleDisconnect():void
 		{
 			var errorData:Object;
@@ -966,14 +987,14 @@ package core.scene
 			disconnectPopup.text = Localize.t("You got disconnected from the server.");
 			addChildToOverlay(disconnectPopup);
 			disconnectPopup.addEventListener("close", function(param1:starling.events.Event):void
-				{
-					removeChildFromOverlay(disconnectPopup, true);
-					disconnectPopup = null;
-					reload();
-				});
+			{
+				removeChildFromOverlay(disconnectPopup, true);
+				disconnectPopup = null;
+				reload();
+			});
 			removeEventListener("enterFrame", update);
 		}
-
+		
 		private function reload():void
 		{
 			var roomId:String;
@@ -997,14 +1018,14 @@ package core.scene
 			{
 				joinRoomManager.joinServiceRoom(this.serviceRoomId);
 				joinRoomManager.addEventListener("joinedServiceRoom", function(param1:starling.events.Event):void
-					{
-						joinRoomManager.removeEventListeners("joinedServiceRoom");
-						joinRoomManager.desiredRoomId = roomId;
-						joinRoomManager.joinGame(solarsystem, {"level": me.level});
-					});
+				{
+					joinRoomManager.removeEventListeners("joinedServiceRoom");
+					joinRoomManager.desiredRoomId = roomId;
+					joinRoomManager.joinGame(solarsystem, {"level": me.level});
+				});
 			}
 		}
-
+		
 		public function tryJoinMatch(param1:String, param2:String):void
 		{
 			if (param1 == null || param1 == "" || param2 == null || param2 == "")
@@ -1014,7 +1035,7 @@ package core.scene
 			Game.trackEvent("pvp", "match", "enter", me.level);
 			send("warpToPvpMatch", param1, param2);
 		}
-
+		
 		public function warpJump(param1:String, param2:String = "", param3:String = ""):void
 		{
 			var joinData:Object;
@@ -1044,13 +1065,13 @@ package core.scene
 			if (joinRoomManager.desiredSystemType == "domination" || joinRoomManager.desiredSystemType == "deathmatch")
 			{
 				rpcServiceRoom("requestTop10PvpHighscore", function(param1:Message):void
-					{
-						Login.fadeScreen.showHighscore(param1);
-					});
+				{
+					Login.fadeScreen.showHighscore(param1);
+				});
 			}
 			joinRoomManager.joinGame(destination, joinData);
 		}
-
+		
 		override public function exit():void
 		{
 			Console.write("Exit Game");
@@ -1103,13 +1124,13 @@ package core.scene
 			room = null;
 			super.exit();
 		}
-
+		
 		public function exitDesktop():void
 		{
 			Starling.current.stop();
 			RymdenRunt.instance.dispatchEvent(new flash.events.Event("exitgame"));
 		}
-
+		
 		override public function draw():void
 		{
 			var _loc3_:int = 0;
@@ -1201,7 +1222,7 @@ package core.scene
 				_loc3_++;
 			}
 		}
-
+		
 		public function focusGameObject(param1:GameObject, param2:Boolean = true):void
 		{
 			if (param1 == null)
@@ -1221,7 +1242,7 @@ package core.scene
 			projectileManager.forceUpdate();
 			dropManager.forceUpdate();
 		}
-
+		
 		private function drawWelcomeText():void
 		{
 			var pvpText:String;
@@ -1274,31 +1295,30 @@ package core.scene
 			solarSystemData.touchable = false;
 			addChild(solarSystemData);
 			TweenMax.to(solarSystemData, 2, {"alpha": 2});
-			welcomeText.addEventListener("paragraphFinished", (function():Function
+			welcomeText.addEventListener("paragraphFinished", (function():*
+			{
+				var r:Function;
+				return r = function(param1:starling.events.Event):void
+				{
+					welcomeText.removeEventListener("paragraphFinished", r);
+				};
+			})());
+			welcomeText.addEventListener("animationFinished", (function():*
+			{
+				var r:Function;
+				return r = function(param1:starling.events.Event):void
+				{
+					var e:starling.events.Event = param1;
+					welcomeText.removeEventListener("animationFinished", r);
+					TweenMax.to(solarSystemData, 1, {"alpha": 0, "onComplete": function():void
 					{
-						var r:Function;
-						return r = function(param1:starling.events.Event):void
-						{
-							welcomeText.removeEventListener("paragraphFinished", r);
-						};
-					})());
-			welcomeText.addEventListener("animationFinished", (function():Function
-					{
-						var r:Function;
-						return r = function(param1:starling.events.Event):void
-						{
-							var e:starling.events.Event = param1;
-							welcomeText.removeEventListener("animationFinished", r);
-							TweenMax.to(solarSystemData, 1, {"alpha": 0, "onComplete": function():void
-									{
-										removeChild(solarSystemData, true);
-										removeChildFromOverlay(welcomeText, true);
-									}
-								});
-						};
-					})());
+						removeChild(solarSystemData, true);
+						removeChildFromOverlay(welcomeText, true);
+					}});
+				};
+			})());
 		}
-
+		
 		override protected function resize(param1:starling.events.Event):void
 		{
 			if (stage == null)
@@ -1328,12 +1348,12 @@ package core.scene
 				tutorial.resize();
 			}
 		}
-
+		
 		private function onFBLike():void
 		{
 			send("fbLike");
 		}
-
+		
 		public function updateServiceRoom():void
 		{
 			var _loc1_:Message = serviceConnection.createMessage("updatePlayer");
@@ -1346,13 +1366,13 @@ package core.scene
 			_loc1_.add(me.activeSkin);
 			sendMessageToServiceRoom(_loc1_);
 		}
-
+		
 		private function onInvasion(param1:Message):void
 		{
 			textManager.createBossSpawnedText(solarSystem.getInvasionText());
 			SoundLocator.getService().play("z3gJhEGBNk-cdQCSQ0-AKA");
 		}
-
+		
 		public function showModalLoadingScreen(param1:String):void
 		{
 			blockHotkeys = true;
@@ -1369,7 +1389,7 @@ package core.scene
 			loadingSprite.addChild(_loc2_);
 			addChildToOverlay(loadingSprite);
 		}
-
+		
 		public function hideModalLoadingScreen():void
 		{
 			loadingFadeTween.kill();
@@ -1377,13 +1397,13 @@ package core.scene
 			loadingSprite.removeChildren(0, -1, true);
 			removeChildFromOverlay(loadingSprite, true);
 		}
-
+		
 		protected function receive(param1:flash.events.Event):void
 		{
 			Localize.newData(param1.target.data);
 			showMessageDialog("Texts are updated!");
 		}
-
+		
 		public function reloadTexts():void
 		{
 			var _loc2_:URLRequest = new URLRequest();
@@ -1396,37 +1416,37 @@ package core.scene
 			_loc1_.addEventListener("ioError", notFound);
 			_loc1_.load(_loc2_);
 		}
-
+		
 		protected function notFound(param1:flash.events.Event):void
 		{
 			showErrorDialog("not found " + param1);
 		}
-
+		
 		protected function notAllowed(param1:SecurityErrorEvent):void
 		{
 			showErrorDialog("security error " + param1);
 		}
-
+		
 		private function m_sdf(param1:Message):void
 		{
 			sendToServiceRoom(param1.type);
 		}
-
+		
 		private function m_blg(param1:Message):void
 		{
 			sendMessage(param1);
 		}
-
+		
 		private function startSystemMusic():void
 		{
 			Playlist.play(solarSystem.key);
 		}
-
+		
 		public function respawned():void
 		{
 			Playlist.next();
 		}
-
+		
 		public function killed():void
 		{
 			SoundLocator.getService().stopMusic();

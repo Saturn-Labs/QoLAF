@@ -10,17 +10,20 @@ package core.hud.components.hotkeys
 	import starling.textures.Texture;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class AbilityHotkey extends ImageButton
 	{
 		private var _cooldownTime:int = 1000;
 		protected var cooldownCounter:int = 0;
 		private var cooldownOverlay:Sprite;
+		
 		public var obj:Object;
+		
 		private var hotkeySymbol:Image;
+		
 		private const MIN_COOLDOWN:int = 200;
-
 		private var quad:Quad;
+		
 		public function AbilityHotkey(param1:Function, param2:Texture, param3:Texture, param4:Texture = null, param5:String = null)
 		{
 			quad = new Quad(10, 10);
@@ -34,7 +37,7 @@ package core.hud.components.hotkeys
 			hotkeySymbol.y = 2;
 			addChild(hotkeySymbol);
 		}
-
+		
 		public function update():void
 		{
 			if (_cooldownTime < 200)
@@ -57,11 +60,11 @@ package core.hud.components.hotkeys
 			}
 			draw();
 		}
-
+		
 		public function cooldownFinished():void
 		{
 		}
-
+		
 		public function initiateCooldown():void
 		{
 			if (_cooldownTime < 200)
@@ -76,7 +79,7 @@ package core.hud.components.hotkeys
 			cooldownCounter = _cooldownTime;
 			addChild(cooldownOverlay);
 		}
-
+		
 		private function draw():void
 		{
 			var _loc2_:Number = NaN;
@@ -90,12 +93,12 @@ package core.hud.components.hotkeys
 				cooldownOverlay.mask = quad;
 			}
 		}
-
+		
 		public function set cooldownTime(param1:int):void
 		{
 			_cooldownTime = param1;
 		}
-
+		
 		override protected function onClick(param1:TouchEvent):void
 		{
 			var _loc2_:ISound = SoundLocator.getService();

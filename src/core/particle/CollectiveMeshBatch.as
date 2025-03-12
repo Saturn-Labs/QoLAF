@@ -1,22 +1,23 @@
 package core.particle
 {
 	import starling.display.MeshBatch;
-
+	
 	public class CollectiveMeshBatch extends MeshBatch
 	{
 		private static var effectsBatch:CollectiveMeshBatch;
+		
 		private static var meshBatches:Vector.<CollectiveMeshBatch> = new Vector.<CollectiveMeshBatch>();
-
+		
 		private var hasBeenUpdated:Boolean = false;
 		private var emitters:Vector.<Emitter>;
-
+		
 		public function CollectiveMeshBatch()
 		{
 			emitters = new Vector.<Emitter>();
 			super();
 			batchable = false;
 		}
-
+		
 		public static function Create(param1:Emitter):CollectiveMeshBatch
 		{
 			var _loc2_:CollectiveMeshBatch = null;
@@ -34,7 +35,7 @@ package core.particle
 			effectsBatch.emitters.push(param1);
 			return effectsBatch;
 		}
-
+		
 		public static function AllMeshesAreUpdated():void
 		{
 			var _loc2_:int = 0;
@@ -55,7 +56,7 @@ package core.particle
 				effectsBatch.markUpdated();
 			}
 		}
-
+		
 		public static function dispose():void
 		{
 			effectsBatch.dispose();
@@ -67,7 +68,7 @@ package core.particle
 			}
 			meshBatches.length = 0;
 		}
-
+		
 		override public function clear():void
 		{
 			if (!hasBeenUpdated)
@@ -77,12 +78,12 @@ package core.particle
 			super.clear();
 			hasBeenUpdated = false;
 		}
-
+		
 		public function markUpdated():void
 		{
 			hasBeenUpdated = true;
 		}
-
+		
 		public function remove(param1:Emitter):void
 		{
 			if (emitters.indexOf(param1) == -1)

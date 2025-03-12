@@ -6,16 +6,17 @@ package core.hud.components
 	import starling.display.Image;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class PvPIcon extends DisplayObjectContainer
 	{
 		private var g:Game;
+		
 		public function PvPIcon(param1:Game)
 		{
 			super();
 			this.g = param1;
 		}
-
+		
 		public function load():void
 		{
 			if (!g.isSystemPvPEnabled())

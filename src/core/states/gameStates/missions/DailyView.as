@@ -18,18 +18,27 @@ package core.states.gameStates.missions
 	import starling.events.Event;
 	import starling.text.TextField;
 	import starling.text.TextFormat;
-
+	
 	public class DailyView extends Sprite
 	{
 		private var g:Game;
+		
 		private var box:GradientBox;
+		
 		private var daily:Daily;
+		
 		private var description:TextField;
+		
 		private var parentContainer:ScrollContainer;
+		
 		private var header:TextField;
+		
 		private var reward:DailyReward;
+		
 		private var statusBar:Statusbar;
+		
 		private var wikiButton:ImageButton;
+		
 		public function DailyView(param1:Game, param2:Daily, param3:ScrollContainer)
 		{
 			box = new GradientBox(290, 90, 0, 1, 15, 8978312);
@@ -41,7 +50,7 @@ package core.states.gameStates.missions
 			addChild(box);
 			draw();
 		}
-
+		
 		private function draw():void
 		{
 			var _loc1_:Quad = null;
@@ -62,7 +71,7 @@ package core.states.gameStates.missions
 				addChild(_loc2_);
 			}
 		}
-
+		
 		private function onNativeMouseEvent(param1:MouseEvent):void
 		{
 			var _loc5_:Point = null;
@@ -92,7 +101,7 @@ package core.states.gameStates.missions
 				navigateToURL(_loc4_, "_blank");
 			}
 		}
-
+		
 		private function addHeader():void
 		{
 			header = new TextField(box.width - box.padding * 2, 20, daily.name, new TextFormat("font13", 13, 16777215));
@@ -107,7 +116,7 @@ package core.states.gameStates.missions
 				header.format.horizontalAlign = "center";
 			}
 		}
-
+		
 		private function addDescription():void
 		{
 			description = new TextField(box.width - box.padding * 2, 60, daily.description, new TextFormat("Verdana", 12, 16777215));
@@ -128,7 +137,7 @@ package core.states.gameStates.missions
 				description.format.horizontalAlign = "center";
 			}
 		}
-
+		
 		private function addRewards():void
 		{
 			if (daily.isClaimed)
@@ -140,7 +149,7 @@ package core.states.gameStates.missions
 			reward.y = 20;
 			addChild(reward);
 		}
-
+		
 		private function addProgress():void
 		{
 			statusBar = new Statusbar(g, daily);
@@ -150,7 +159,7 @@ package core.states.gameStates.missions
 			statusBar.addEventListener("dailyMissionClaimed", onClaimed);
 			statusBar.addEventListener("dailyMissionReset", onReset);
 		}
-
+		
 		private function addWiki():void
 		{
 			if (daily.level > g.me.level || daily.isClaimed)
@@ -158,12 +167,12 @@ package core.states.gameStates.missions
 				return;
 			}
 			wikiButton = new ImageButton(function():void
-				{
-				}, g.textureManager.getTextureGUIByTextureName("wiki"));
+			{
+			}, g.textureManager.getTextureGUIByTextureName("wiki"));
 			wikiButton.x = width - 40;
 			addChild(wikiButton);
 		}
-
+		
 		private function onClaiming(param1:Event):void
 		{
 			removeChild(description);
@@ -171,14 +180,14 @@ package core.states.gameStates.missions
 			removeChild(reward);
 			removeChild(wikiButton);
 		}
-
+		
 		private function onClaimed(param1:Event):void
 		{
 			parentContainer.dispatchEventWith("dailyMissionsUpdateList");
 			addHeader();
 			addDescription();
 		}
-
+		
 		public function onReset(param1:Event):void
 		{
 			removeChildren();
@@ -188,12 +197,12 @@ package core.states.gameStates.missions
 			addProgress();
 			addWiki();
 		}
-
+		
 		public function isTypeMission():Boolean
 		{
 			return daily.json.type == "missions";
 		}
-
+		
 		override public function dispose():void
 		{
 			super.dispose();

@@ -7,18 +7,27 @@ package core.hud.components.starMap
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.TouchEvent;
-
+	
 	public class WarpPath extends Sprite
 	{
 		private var obj:Object;
+		
 		private var _icon1:SolarSystem;
+		
 		private var _icon2:SolarSystem;
+		
 		private var _bought:Boolean;
+		
 		private var _selected:Boolean;
+		
 		private var sb:SceneBase;
+		
 		private var line:Line;
+		
 		private var forwardArrow:TransitButton;
+		
 		private var backArrow:TransitButton;
+		
 		public function WarpPath(param1:SceneBase, param2:Object, param3:SolarSystem, param4:SolarSystem, param5:Boolean = false)
 		{
 			line = new Line();
@@ -37,69 +46,69 @@ package core.hud.components.starMap
 			addChild(backArrow);
 			draw();
 		}
-
+		
 		public function get key():String
 		{
 			return obj.key;
 		}
-
+		
 		override public function get name():String
 		{
 			return obj.name;
 		}
-
+		
 		public function get solarSystem1():String
 		{
 			return obj.solarSystem1;
 		}
-
+		
 		public function get solarSystem2():String
 		{
 			return obj.solarSystem2;
 		}
-
+		
 		public function get transit():Boolean
 		{
 			return obj.transit;
 		}
-
+		
 		public function get icon1():SolarSystem
 		{
 			return _icon1;
 		}
-
+		
 		public function get icon2():SolarSystem
 		{
 			return _icon2;
 		}
-
+		
 		public function get bought():Boolean
 		{
 			return _bought;
 		}
-
+		
 		public function set bought(param1:Boolean):void
 		{
 			_bought = param1;
 			draw();
 		}
-
+		
 		public function get selected():Boolean
 		{
 			return _selected;
 		}
-
+		
 		public function set selected(param1:Boolean):void
 		{
 			_selected = param1;
 			draw();
 		}
-
+		
 		public function get priceItems():Array
 		{
 			return obj.priceItems;
 		}
-
+		
 		public function isConnectedTo(param1:String, param2:String):Boolean
 		{
 			if (param1 == this.solarSystem1 && param2 == this.solarSystem2)
@@ -112,7 +121,7 @@ package core.hud.components.starMap
 			}
 			return false;
 		}
-
+		
 		private function draw():void
 		{
 			forwardArrow.visible = false;
@@ -160,7 +169,7 @@ package core.hud.components.starMap
 				backArrow.y = icon2.y + Math.sin(_loc9_ + 3.141592653589793) * (icon2.size + 20) - icon1.y;
 			}
 		}
-
+		
 		private function onTouch(param1:TouchEvent):void
 		{
 			var _loc2_:TransitButton = param1.currentTarget as TransitButton;
@@ -169,7 +178,7 @@ package core.hud.components.starMap
 				dispatchEvent(new Event("transitClick", false, {"solarSystemKey": _loc2_.target.key}));
 			}
 		}
-
+		
 		public function get costContainer():Sprite
 		{
 			var _loc1_:PriceCommodities = null;

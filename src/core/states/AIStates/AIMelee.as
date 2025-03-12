@@ -13,20 +13,30 @@ package core.states.AIStates
 	import generics.Random;
 	import generics.Util;
 	import movement.Heading;
-
+	
 	public class AIMelee implements IState
 	{
 		private var g:Game;
+		
 		private var s:EnemyShip;
+		
 		private var sm:StateMachine;
+		
 		private var targetAngleDiff:Number;
+		
 		private var targetStartAngle:Number;
+		
 		private var error:Point;
+		
 		private var errorAngle:Number;
+		
 		private var convergeTime:Number = 400;
 		private var convergeStartTime:Number;
+		
 		private var speedRotFactor:Number;
+		
 		private var closeRangeSQ:Number;
+		
 		public function AIMelee(param1:Game, param2:EnemyShip, param3:Unit, param4:Heading, param5:int)
 		{
 			super();
@@ -43,7 +53,7 @@ package core.states.AIStates
 				param2.factions.push("tempFaction");
 			}
 		}
-
+		
 		public function enter():void
 		{
 			s.accelerate = true;
@@ -56,7 +66,7 @@ package core.states.AIStates
 			closeRangeSQ *= closeRangeSQ;
 			speedRotFactor = s.engine.speed / (0.5 * s.engine.rotationSpeed);
 		}
-
+		
 		public function execute():void
 		{
 			var _loc3_:Point = null;
@@ -162,7 +172,7 @@ package core.states.AIStates
 				s.rotation = _loc7_;
 			}
 		}
-
+		
 		public function aim():Number
 		{
 			var _loc7_:int = 0;
@@ -195,7 +205,7 @@ package core.states.AIStates
 			}
 			return s.course.rotation;
 		}
-
+		
 		public function exit():void
 		{
 			if (s.meleeChargeEndTime != 0)
@@ -209,12 +219,12 @@ package core.states.AIStates
 				}
 			}
 		}
-
+		
 		public function set stateMachine(param1:StateMachine):void
 		{
 			this.sm = param1;
 		}
-
+		
 		public function get type():String
 		{
 			return "AIMelee";

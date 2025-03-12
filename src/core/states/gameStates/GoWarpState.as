@@ -8,24 +8,24 @@ package core.states.gameStates
 	import playerio.RoomInfo;
 	import starling.display.DisplayObject;
 	import starling.events.TouchEvent;
-
+	
 	public class GoWarpState extends PlayState
 	{
 		public function GoWarpState(param1:Game)
 		{
 			super(param1);
 		}
-
+		
 		override public function enter():void
 		{
 			super.enter();
 			g.hud.show = false;
 			g.client.multiplayer.listRooms("game", {}, 150, 0, handleRooms, function(param1:PlayerIOError):void
-				{
-					Console.write("Error: " + param1);
-				});
+			{
+				Console.write("Error: " + param1);
+			});
 		}
-
+		
 		private function handleRooms(param1:Array):void
 		{
 			var roomInfoText:TextBitmap;
@@ -36,26 +36,26 @@ package core.states.gameStates
 			var j:int = 0;
 			var k:int = 1;
 			rooms.sort(function(param1:Object, param2:Object):int
+			{
+				var _loc3_:int = 0;
+				if (param1.data.Name > param2.data.Name)
 				{
-					var _loc3_:int = 0;
-					if (param1.data.Name > param2.data.Name)
-					{
-						_loc3_ = 1;
-					}
-					else
-					{
-						_loc3_ = -1;
-					}
-					if (param1.data.version > param2.data.version)
-					{
-						_loc3_ = -1;
-					}
-					else if (param1.data.version < param2.data.version)
-					{
-						_loc3_ = 1;
-					}
-					return _loc3_;
-				});
+					_loc3_ = 1;
+				}
+				else
+				{
+					_loc3_ = -1;
+				}
+				if (param1.data.version > param2.data.version)
+				{
+					_loc3_ = -1;
+				}
+				else if (param1.data.version < param2.data.version)
+				{
+					_loc3_ = 1;
+				}
+				return _loc3_;
+			});
 			for each (ri in rooms)
 			{
 				if (!(ri.data.version != 1379 && !g.me.isDeveloper))
@@ -87,7 +87,7 @@ package core.states.gameStates
 			}
 			loadCompleted();
 		}
-
+		
 		public function createOnTouch(param1:RoomInfo):Function
 		{
 			var ri:RoomInfo = param1;
@@ -100,7 +100,7 @@ package core.states.gameStates
 				}
 			};
 		}
-
+		
 		override public function execute():void
 		{
 			if (loaded)
@@ -113,7 +113,7 @@ package core.states.gameStates
 			}
 			super.execute();
 		}
-
+		
 		override public function exit(param1:Function):void
 		{
 			container.removeChildren(0, -1, true);

@@ -7,13 +7,17 @@ package core.states.AIStates
 	import core.states.StateMachine;
 	import core.unit.Unit;
 	import movement.Heading;
-
+	
 	public class AIKamikaze implements IState
 	{
 		private var g:Game;
+		
 		private var s:EnemyShip;
+		
 		private var sm:StateMachine;
+		
 		private var startTime:Number;
+		
 		private var startDelay:Number = 1000;
 		public function AIKamikaze(param1:Game, param2:EnemyShip, param3:Unit, param4:Heading, param5:int)
 		{
@@ -28,7 +32,7 @@ package core.states.AIStates
 				param2.factions.push("tempFaction");
 			}
 		}
-
+		
 		public function enter():void
 		{
 			s.startKamikaze();
@@ -37,7 +41,7 @@ package core.states.AIStates
 			s.accelerate = false;
 			s.stopShooting();
 		}
-
+		
 		public function execute():void
 		{
 			if (s.kamikazeHoming && s.target != null && s.target.alive)
@@ -51,16 +55,16 @@ package core.states.AIStates
 			s.engine.update();
 			s.updateWeapons();
 		}
-
+		
 		public function exit():void
 		{
 		}
-
+		
 		public function set stateMachine(param1:StateMachine):void
 		{
 			this.sm = param1;
 		}
-
+		
 		public function get type():String
 		{
 			return "AIKamikaze";

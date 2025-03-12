@@ -16,19 +16,26 @@ package core.hud.components
 	import starling.events.Event;
 	import starling.filters.GlowFilter;
 	import textures.TextureLocator;
-
+	
 	public class SaleSpinner extends PopupMessage
 	{
 		private var g:Game;
+		
 		private var container:Sprite;
+		
 		private var sales:Vector.<Sale>;
-
+		
 		private var current:int = 0;
 		private var tween:TweenMax;
+		
 		private var supporterPackage:CreditSupporterItem;
+		
 		private var beginnerPackage:CreditBeginnerPackage;
+		
 		private var powerPackage:CreditPowerPackage;
+		
 		private var megaPackage:CreditMegaPackage;
+		
 		public function SaleSpinner(param1:Game)
 		{
 			container = new Sprite();
@@ -72,7 +79,7 @@ package core.hud.components
 			}
 			loadSale(sales[current]);
 		}
-
+		
 		private function loadSale(param1:Sale):void
 		{
 			var scrollContainer:ScrollContainer;
@@ -178,54 +185,45 @@ package core.hud.components
 				creditImage.pivotY = creditImage.height / 2;
 				blurFilter = new GlowFilter();
 				creditImage.filter = blurFilter;
-				tween = TweenMax.fromTo(blurFilter, 2, {
-							"blurX": 0,
-							"blurY": 0
-						}, {
-							"blurX": 20,
-							"blurY": 20,
-							"yoyo": true,
-							"repeat": -1,
-							"onUpdate": function():void
-							{
-								creditImage.filter = blurFilter;
-							}
-						});
+				tween = TweenMax.fromTo(blurFilter, 2, {"blurX": 0, "blurY": 0}, {"blurX": 20, "blurY": 20, "yoyo": true, "repeat": -1, "onUpdate": function():void
+				{
+					creditImage.filter = blurFilter;
+				}});
 				container.addChild(creditImage);
 				button = new Button(function():void
+				{
+					var buyFlux:BuyFlux = new BuyFlux(g);
+					buyFlux.addEventListener("buyFluxClose", function():void
 					{
-						var buyFlux:BuyFlux = new BuyFlux(g);
-						buyFlux.addEventListener("buyFluxClose", function():void
-							{
-								g.removeChildFromOverlay(buyFlux);
-								button.enabled = true;
-								g.creditManager.refresh(function():void
-									{
-									});
-							});
-						g.addChildToOverlay(buyFlux);
-					}, "Get Flux now!", "buy");
+						g.removeChildFromOverlay(buyFlux);
+						button.enabled = true;
+						g.creditManager.refresh(function():void
+						{
+						});
+					});
+					g.addChildToOverlay(buyFlux);
+				}, "Get Flux now!", "buy");
 				button.x = creditImage.x - button.width / 2;
 				button.y = creditImage.y + creditImage.height / 2 + 100;
 				container.addChild(button);
 			}
 			saleTimer = new SaleTimer(g, sale.startTime, sale.endTime, function():void
+			{
+				if (sales.length > 1)
 				{
-					if (sales.length > 1)
-					{
-						next();
-					}
-					else
-					{
-						close();
-					}
-				});
+					next();
+				}
+				else
+				{
+					close();
+				}
+			});
 			saleTimer.x = 100;
 			saleTimer.y = 10;
 			container.addChild(saleTimer);
 			redraw();
 		}
-
+		
 		private function next(param1:ImageButton = null):void
 		{
 			current++;
@@ -248,7 +246,7 @@ package core.hud.components
 			}
 			loadSale(sales[current]);
 		}
-
+		
 		private function previous(param1:ImageButton = null):void
 		{
 			current--;
@@ -271,7 +269,7 @@ package core.hud.components
 			}
 			loadSale(sales[current]);
 		}
-
+		
 		override protected function redraw(param1:Event = null):void
 		{
 			if (stage == null)
@@ -299,7 +297,7 @@ package core.hud.components
 				beginnerPackage.redraw();
 			}
 		}
-
+		
 		override protected function clean(param1:Event):void
 		{
 			if (supporterPackage != null)

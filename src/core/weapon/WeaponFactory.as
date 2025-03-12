@@ -5,14 +5,14 @@ package core.weapon
 	import data.*;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class WeaponFactory
 	{
 		public function WeaponFactory()
 		{
 			super();
 		}
-
+		
 		public static function create(param1:String, param2:Game, param3:Unit, param4:int, param5:int = -1, param6:String = ""):Weapon
 		{
 			var _loc7_:Weapon = null;

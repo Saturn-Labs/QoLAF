@@ -7,14 +7,15 @@ package core.group
 	import debug.Console;
 	import playerio.Message;
 	import starling.events.EventDispatcher;
-
+	
 	public class GroupManager extends EventDispatcher
 	{
 		private var g:Game;
+		
 		private var _groups:Vector.<Group>;
-
+		
 		private var _invites:Vector.<Invite>;
-
+		
 		public function GroupManager(param1:Game)
 		{
 			super();
@@ -22,7 +23,7 @@ package core.group
 			_groups = new Vector.<Group>();
 			_invites = new Vector.<Invite>();
 		}
-
+		
 		public function addMessageHandlers():void
 		{
 			g.addMessageHandler("addToGroup", addToGroup);
@@ -30,12 +31,12 @@ package core.group
 			g.addMessageHandler("addGroupInvite", addGroupInvite);
 			g.addMessageHandler("cancelGroupInvite", cancelGroupInvite);
 		}
-
+		
 		public function get groups():Vector.<Group>
 		{
 			return _groups;
 		}
-
+		
 		private function addToGroup(param1:Message):void
 		{
 			var _loc2_:String = param1.getString(0);
@@ -60,7 +61,7 @@ package core.group
 			_loc5_.addPlayer(_loc3_);
 			dispatchEventWith("update");
 		}
-
+		
 		public function autoJoinOrCreateGroup(param1:Player, param2:String):void
 		{
 			var _loc3_:Group = getGroupById(param2);
@@ -72,7 +73,7 @@ package core.group
 			_loc3_.addPlayer(param1);
 			dispatchEventWith("update");
 		}
-
+		
 		private function removeFromGroup(param1:Message):void
 		{
 			var _loc2_:String = param1.getString(0);
@@ -97,7 +98,7 @@ package core.group
 			}
 			dispatchEventWith("update");
 		}
-
+		
 		private function addGroupInvite(param1:Message):void
 		{
 			var _loc4_:String = param1.getString(0);
@@ -129,7 +130,7 @@ package core.group
 			MessageLog.write(_loc3_.name + " has invited you to a group. Type <FONT COLOR='#44ff44'>/y</FONT> to accept");
 			dispatchEventWith("update");
 		}
-
+		
 		public function findInvite(param1:String, param2:Player):Invite
 		{
 			for each (var _loc3_:* in _invites)
@@ -141,12 +142,12 @@ package core.group
 			}
 			return null;
 		}
-
+		
 		private function removeInvites():void
 		{
 			_invites.splice(0, _invites.length);
 		}
-
+		
 		public function acceptGroupInvite(param1:String = null):void
 		{
 			if (param1 == null && _invites.length > 0)
@@ -158,7 +159,7 @@ package core.group
 				g.send("acceptGroupInvite", param1);
 			}
 		}
-
+		
 		public function cancelGroupInvite(param1:String):void
 		{
 			var _loc3_:int = 0;
@@ -175,7 +176,7 @@ package core.group
 			}
 			g.send("cancelGroupInvite", param1);
 		}
-
+		
 		public function getGroupById(param1:String):Group
 		{
 			for each (var _loc2_:* in _groups)
@@ -187,12 +188,12 @@ package core.group
 			}
 			return null;
 		}
-
+		
 		public function invitePlayer(param1:Player):void
 		{
 			g.send("inviteToGroup", param1.id);
 		}
-
+		
 		public function leaveGroup():void
 		{
 			g.send("leaveGroup");

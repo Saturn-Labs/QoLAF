@@ -11,26 +11,31 @@ package core.weapon
 	import sound.ISound;
 	import sound.SoundLocator;
 	import starling.display.MeshBatch;
-
+	
 	public class Beam extends Weapon
 	{
 		private var startEffect:Vector.<Emitter>;
-
+		
 		private var startEffect2:Vector.<Emitter>;
-
+		
 		private var endEffect:Vector.<Emitter>;
-
+		
 		public var startPos:Point;
+		
 		public var startPos2:Point;
+		
 		public var endPos:Point;
+		
 		public var lastPos:Point;
+		
 		private var lines:Vector.<BeamLine>;
-
+		
 		private var lineBatch:MeshBatch;
+		
 		private var ready:Boolean = false;
 		public var nrTargets:int = 0;
 		public var secondaryTargets:Vector.<Unit>;
-
+		
 		private var beamColor:uint = 16777215;
 		private var beamAmplitude:Number = 2;
 		private var beamThickness:Number = 1;
@@ -40,9 +45,13 @@ package core.weapon
 		private var beamNodes:Number = 0;
 		private var glowColor:uint = 16711680;
 		private var oldDrawBeam:Boolean;
+		
 		private var drawBeam:Boolean;
+		
 		private var targetBody:Body;
+		
 		private var chargeUpMax:int;
+		
 		private var chargeUPCurrent:int = 0;
 		private var chargeUpCounter:int = 0;
 		private var chargeUpNext:int = 8;
@@ -51,6 +60,7 @@ package core.weapon
 		private var twin:Boolean = false;
 		private var twinOffset:Number = 0;
 		private var obj:Object;
+		
 		private var effectsInitialized:Boolean = false;
 		public function Beam(param1:Game)
 		{
@@ -67,7 +77,7 @@ package core.weapon
 			super(param1);
 			lineBatch.blendMode = "add";
 		}
-
+		
 		override public function init(param1:Object, param2:int, param3:int = -1, param4:String = ""):void
 		{
 			var _loc7_:int = 0;
@@ -139,7 +149,7 @@ package core.weapon
 			}
 			ready = true;
 		}
-
+		
 		private function initEffects():void
 		{
 			var _loc4_:int = 0;
@@ -170,7 +180,7 @@ package core.weapon
 			}
 			effectsInitialized = true;
 		}
-
+		
 		override public function destroy():void
 		{
 			for each (var _loc2_:* in startEffect)
@@ -194,7 +204,7 @@ package core.weapon
 			g.canvasEffects.removeChild(lineBatch);
 			super.destroy();
 		}
-
+		
 		override protected function shoot():void
 		{
 			var _loc10_:ISound = null;
@@ -328,7 +338,7 @@ package core.weapon
 			drawBeam = true;
 			updateEmitters();
 		}
-
+		
 		private function updateTargetOrder():void
 		{
 			var _loc1_:Unit = null;
@@ -346,7 +356,7 @@ package core.weapon
 				}
 			}
 		}
-
+		
 		private function updateEmitters():void
 		{
 			if (drawBeam == oldDrawBeam)
@@ -375,7 +385,7 @@ package core.weapon
 				}
 			}
 		}
-
+		
 		public function fireAtBody(param1:Body):void
 		{
 			var _loc9_:Number = NaN;
@@ -426,7 +436,7 @@ package core.weapon
 			}
 			updateEmitters();
 		}
-
+		
 		private function drawBeamEffect(param1:int, param2:Point, param3:Point, param4:int):int
 		{
 			var _loc8_:int = 0;
@@ -460,7 +470,7 @@ package core.weapon
 			}
 			return param1;
 		}
-
+		
 		override public function draw():void
 		{
 			var _loc3_:BeamLine = null;
@@ -535,7 +545,7 @@ package core.weapon
 			}
 			lineBatch.alpha = _loc5_ * beamAlpha;
 		}
-
+		
 		override public function set fire(param1:Boolean):void
 		{
 			if (targetBody != null || param1 == _fire)

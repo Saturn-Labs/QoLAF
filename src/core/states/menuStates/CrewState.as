@@ -7,22 +7,24 @@ package core.states.menuStates
 	import core.scene.Game;
 	import core.states.DisplayState;
 	import feathers.controls.ScrollContainer;
-
+	
 	public class CrewState extends DisplayState
 	{
 		public static var WIDTH:Number = 698;
 		public static var PADDING:Number = 31;
 		private var p:Player;
+		
 		private var mainBody:ScrollContainer;
+		
 		private var crew:Vector.<CrewDisplayBox>;
-
+		
 		public function CrewState(param1:Game)
 		{
 			crew = new Vector.<CrewDisplayBox>();
 			super(param1, HomeState);
 			this.p = param1.me;
 		}
-
+		
 		override public function enter():void
 		{
 			super.enter();
@@ -41,7 +43,7 @@ package core.states.menuStates
 			addChild(mainBody);
 			load();
 		}
-
+		
 		override public function execute():void
 		{
 			for each (var _loc1_:* in crew)
@@ -49,7 +51,7 @@ package core.states.menuStates
 				_loc1_.update();
 			}
 		}
-
+		
 		public function refresh():void
 		{
 			for each (var _loc1_:* in crew)
@@ -62,7 +64,7 @@ package core.states.menuStates
 			crew = new Vector.<CrewDisplayBox>();
 			load();
 		}
-
+		
 		private function load():void
 		{
 			var _loc2_:CrewDisplayBox = null;

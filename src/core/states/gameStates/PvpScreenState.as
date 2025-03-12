@@ -5,11 +5,13 @@ package core.states.gameStates
 	import core.hud.components.pvp.PvpScreen;
 	import core.scene.Game;
 	import starling.events.Event;
-
+	
 	public class PvpScreenState extends PlayState
 	{
 		private var obj:PvpScreen;
+		
 		private var nextUpdate:Number;
+		
 		public function PvpScreenState(param1:Game)
 		{
 			super(param1);
@@ -23,7 +25,7 @@ package core.states.gameStates
 				obj = new PvpQueueScreen(param1);
 			}
 		}
-
+		
 		override public function enter():void
 		{
 			super.enter();
@@ -32,12 +34,12 @@ package core.states.gameStates
 			addChild(obj);
 			g.hud.show = false;
 			obj.addEventListener("close", function(param1:Event):void
-				{
-					sm.revertState();
-				});
+			{
+				sm.revertState();
+			});
 			loadCompleted();
 		}
-
+		
 		override public function tickUpdate():void
 		{
 			super.tickUpdate();
@@ -47,7 +49,7 @@ package core.states.gameStates
 				obj.update();
 			}
 		}
-
+		
 		override public function execute():void
 		{
 			if (loaded)
@@ -64,7 +66,7 @@ package core.states.gameStates
 			}
 			super.execute();
 		}
-
+		
 		override public function exit(param1:Function):void
 		{
 			obj.unload();

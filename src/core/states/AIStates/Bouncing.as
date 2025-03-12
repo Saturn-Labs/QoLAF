@@ -7,20 +7,28 @@ package core.states.AIStates
 	import core.unit.Unit;
 	import flash.geom.Point;
 	import generics.Util;
-
+	
 	public class Bouncing implements IState
 	{
 		protected var m:Game;
+		
 		protected var p:Projectile;
+		
 		private var sm:StateMachine;
+		
 		private var isEnemy:Boolean;
+		
 		private var globalInterval:Number = 1000;
 		private var localTargetList:Vector.<Unit>;
-
+		
 		private var nextGlobalUpdate:Number;
+		
 		private var nextLocalUpdate:Number;
+		
 		private var localRangeSQ:Number;
+		
 		private var firstUpdate:Boolean;
+		
 		public function Bouncing(param1:Game, param2:Projectile)
 		{
 			super();
@@ -36,7 +44,7 @@ package core.states.AIStates
 				this.isEnemy = param2.unit.type == "enemyShip" || param2.unit.type == "turret";
 			}
 		}
-
+		
 		public function enter():void
 		{
 			if (p.ttl < globalInterval)
@@ -69,7 +77,7 @@ package core.states.AIStates
 				}
 			}
 		}
-
+		
 		public function execute():void
 		{
 			var _loc23_:Unit = null;
@@ -254,7 +262,7 @@ package core.states.AIStates
 				}
 			}
 		}
-
+		
 		public function aim(param1:Unit):void
 		{
 			var _loc6_:Number = 0;
@@ -273,16 +281,16 @@ package core.states.AIStates
 			var _loc11_:Number = _loc4_ + param1.speed.y * _loc3_;
 			p.course.rotation = Math.atan2(_loc11_ - _loc8_, _loc9_ - _loc5_);
 		}
-
+		
 		public function exit():void
 		{
 		}
-
+		
 		public function set stateMachine(param1:StateMachine):void
 		{
 			this.sm = param1;
 		}
-
+		
 		public function get type():String
 		{
 			return "Bouncing";

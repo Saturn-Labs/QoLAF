@@ -3,15 +3,16 @@ package movement
 	import flash.geom.Point;
 	import generics.Util;
 	import playerio.Message;
-
+	
 	public class Heading
 	{
 		public static const NR_OF_VARS:int = 10;
-
 		public var time:Number = 0;
 		public var pos:Point;
+		
 		public var rotation:Number = 0;
 		public var speed:Point;
+		
 		public var rotateLeft:Boolean = false;
 		public var rotateRight:Boolean = false;
 		public var accelerate:Boolean = false;
@@ -23,7 +24,7 @@ package movement
 			speed = new Point();
 			super();
 		}
-
+		
 		public function parseMessage(param1:Message, param2:int):int
 		{
 			this.time = param1.getNumber(param2);
@@ -38,7 +39,7 @@ package movement
 			this.rotateRight = param1.getBoolean(param2 + 9);
 			return param2 + 10;
 		}
-
+		
 		public function populateMessage(param1:Message):Message
 		{
 			param1.add(time);
@@ -53,7 +54,7 @@ package movement
 			param1.add(rotateRight);
 			return param1;
 		}
-
+		
 		public function almostEqual(param1:Heading):Boolean
 		{
 			var _loc2_:Number = 0.01;
@@ -79,7 +80,7 @@ package movement
 			}
 			return true;
 		}
-
+		
 		public function copy(param1:Heading):void
 		{
 			this.time = param1.time;
@@ -93,43 +94,43 @@ package movement
 			this.rotateLeft = param1.rotateLeft;
 			this.rotateRight = param1.rotateRight;
 		}
-
+		
 		public function clone():Heading
 		{
 			var _loc1_:Heading = new Heading();
 			_loc1_.copy(this);
 			return _loc1_;
 		}
-
+		
 		public function runCommand(param1:Command):void
 		{
 			switch (param1.type)
 			{
-				case 0:
-					this.accelerate = param1.active;
-					break;
-				case 1:
-					this.rotateLeft = param1.active;
-					break;
-				case 2:
-					this.rotateRight = param1.active;
-					break;
-				case 4:
-					accelerate = true;
-					deaccelerate = true;
-					rotateLeft = false;
-					rotateRight = false;
-					break;
-				case 8:
-					this.deaccelerate = param1.active;
+			case 0: 
+				this.accelerate = param1.active;
+				break;
+			case 1: 
+				this.rotateLeft = param1.active;
+				break;
+			case 2: 
+				this.rotateRight = param1.active;
+				break;
+			case 4: 
+				accelerate = true;
+				deaccelerate = true;
+				rotateLeft = false;
+				rotateRight = false;
+				break;
+			case 8: 
+				this.deaccelerate = param1.active;
 			}
 		}
-
+		
 		public function toString():String
 		{
 			return "x:" + Util.formatDecimal(pos.x, 1) + ", y:" + Util.formatDecimal(pos.y, 1) + ", angle:" + Util.formatDecimal(rotation, 1) + ", speedX:" + Util.formatDecimal(speed.x, 1) + ", speedY:" + Util.formatDecimal(speed.y, 1) + ", time:" + time;
 		}
-
+		
 		public function reset():void
 		{
 			this.time = 0;

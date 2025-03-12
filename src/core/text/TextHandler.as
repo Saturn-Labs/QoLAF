@@ -2,14 +2,15 @@ package core.text
 {
 	import core.scene.Game;
 	import flash.geom.Point;
-
+	
 	public class TextHandler
 	{
 		public var texts:Vector.<TextParticle>;
-
+		
 		private var inactiveTexts:Vector.<TextParticle>;
-
+		
 		private var g:Game;
+		
 		public function TextHandler(param1:Game)
 		{
 			super();
@@ -17,7 +18,7 @@ package core.text
 			this.g = param1;
 			texts = new Vector.<TextParticle>();
 		}
-
+		
 		public function update():void
 		{
 			var _loc4_:int = 0;
@@ -46,7 +47,7 @@ package core.text
 				_loc4_--;
 			}
 		}
-
+		
 		public function add(param1:String, param2:Point, param3:Point, param4:Number = 400, param5:uint = 16777215, param6:Number = 20, param7:Boolean = false, param8:String = "center", param9:String = "normal"):TextParticle
 		{
 			var _loc11_:TextParticle = null;
@@ -101,7 +102,7 @@ package core.text
 			}
 			return _loc11_;
 		}
-
+		
 		public function remove(param1:TextParticle, param2:int):void
 		{
 			param1.reset();
@@ -116,7 +117,7 @@ package core.text
 				g.canvasTexts.removeChild(param1);
 			}
 		}
-
+		
 		public function dispose():void
 		{
 			for each (var _loc1_:* in texts)

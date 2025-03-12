@@ -5,21 +5,21 @@ package core.login
 	import joinRoom.JoinRoomManager;
 	import playerio.RoomInfo;
 	import starling.display.Sprite;
-
+	
 	public class ServiceRoomSelector extends Sprite
 	{
 		public static const FULL:int = 1000;
-
 		public static const OPEN_SUPPORTERS:int = 950;
-
 		public static const NEW_ROOM_THRESHOLD:int = 950;
-
 		public static var playerLevel:int = 0;
 		public static var isSupporter:Boolean = false;
 		public static var totalFree:int = 0;
 		private var rooms:Array;
+		
 		private var roomPreviews:Array;
+		
 		private var callback:Function;
+		
 		private var isAutoSelectingRoom:Boolean = false;
 		public function ServiceRoomSelector(param1:Array, param2:Function)
 		{
@@ -38,7 +38,7 @@ package core.login
 			_loc3_.x = width / 2 - _loc3_.width / 2;
 			_loc3_.blendMode = "add";
 		}
-
+		
 		public function updateRecommended():void
 		{
 			var _loc3_:* = null;
@@ -69,7 +69,7 @@ package core.login
 				_loc3_.setRecommended(true);
 			}
 		}
-
+		
 		private function onSelect(param1:ServiceRoomPreview, param2:String):void
 		{
 			var r:ServiceRoomPreview;
@@ -87,11 +87,11 @@ package core.login
 				}
 			}
 			TweenMax.delayedCall(0.4, function():void
-				{
-					callback(id);
-				});
+			{
+				callback(id);
+			});
 		}
-
+		
 		private function addRooms():void
 		{
 			var ri:RoomInfo;
@@ -105,13 +105,13 @@ package core.login
 			var nextY:int = 0;
 			var usedIds:Array = [];
 			rooms.sort(function(param1:Object, param2:Object):int
+			{
+				if (param1.onlineUsers < param2.onlineUsers || param1.onlineUsers >= 1000)
 				{
-					if (param1.onlineUsers < param2.onlineUsers || param1.onlineUsers >= 1000)
-					{
-						return 1;
-					}
-					return -1;
-				});
+					return 1;
+				}
+				return -1;
+			});
 			for each (ri in rooms)
 			{
 				r = new ServiceRoomPreview(ri, onSelect, this);
@@ -150,7 +150,7 @@ package core.login
 			addChild(newRoom);
 			roomPreviews.unshift(newRoom);
 		}
-
+		
 		private function handleRoomClosing():void
 		{
 			var _loc2_:* = null;
@@ -167,7 +167,7 @@ package core.login
 			}
 			_loc2_.trySetClosing();
 		}
-
+		
 		public function getFree(param1:RoomInfo):int
 		{
 			var _loc2_:int = 950 - param1.onlineUsers;
@@ -177,7 +177,7 @@ package core.login
 			}
 			return _loc2_;
 		}
-
+		
 		public function updateTotalFree():void
 		{
 			totalFree = 0;
@@ -186,7 +186,7 @@ package core.login
 				totalFree += getFree(_loc1_);
 			}
 		}
-
+		
 		private function getNextRoomIndex():int
 		{
 			var _loc6_:int = 0;
@@ -218,7 +218,7 @@ package core.login
 			}
 			return 10000;
 		}
-
+		
 		public function setNewPlayer():void
 		{
 			if (isAutoSelectingRoom)
@@ -229,7 +229,7 @@ package core.login
 			this.visible = false;
 			TweenMax.delayedCall(2, connectToBestNoobRoom);
 		}
-
+		
 		private function connectToBestNoobRoom():void
 		{
 			var _loc2_:* = null;

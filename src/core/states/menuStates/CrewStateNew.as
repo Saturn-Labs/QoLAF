@@ -9,22 +9,25 @@ package core.states.menuStates
 	import core.states.DisplayState;
 	import feathers.controls.ScrollContainer;
 	import starling.events.Event;
-
+	
 	public class CrewStateNew extends DisplayState
 	{
 		public static var WIDTH:Number = 698;
 		private var p:Player;
+		
 		private var mainBody:ScrollContainer;
+		
 		private var selectedCrewMember:CrewDetails;
+		
 		private var crew:Vector.<CrewDisplayBoxNew>;
-
+		
 		public function CrewStateNew(param1:Game)
 		{
 			crew = new Vector.<CrewDisplayBoxNew>();
 			super(param1, HomeState);
 			this.p = param1.me;
 		}
-
+		
 		override public function enter():void
 		{
 			super.enter();
@@ -38,11 +41,11 @@ package core.states.menuStates
 			container.addEventListener("crewSelected", setActive);
 			load();
 		}
-
+		
 		override public function execute():void
 		{
 		}
-
+		
 		public function refresh():void
 		{
 			for each (var _loc1_:* in crew)
@@ -55,7 +58,7 @@ package core.states.menuStates
 			crew = new Vector.<CrewDisplayBoxNew>();
 			load();
 		}
-
+		
 		public function setActive(param1:Event):void
 		{
 			var _loc2_:CrewDisplayBoxNew = param1.target as CrewDisplayBoxNew;
@@ -78,12 +81,12 @@ package core.states.menuStates
 				selectedCrewMember.y = 53;
 			}
 		}
-
+		
 		private function onReloadDetails(param1:Event):void
 		{
 			reloadDetails();
 		}
-
+		
 		public function reloadDetails(param1:Boolean = false):void
 		{
 			if (!selectedCrewMember)
@@ -106,7 +109,7 @@ package core.states.menuStates
 			}
 			refresh();
 		}
-
+		
 		private function load():void
 		{
 			var _loc3_:CrewDisplayBoxNew = null;
@@ -135,7 +138,7 @@ package core.states.menuStates
 				mainBody.addChild(_loc2_);
 			}
 		}
-
+		
 		override public function exit():void
 		{
 			container.removeEventListener("reloadDetails", onReloadDetails);

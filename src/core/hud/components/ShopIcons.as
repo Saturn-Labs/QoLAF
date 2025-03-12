@@ -9,10 +9,11 @@ package core.hud.components
 	import starling.events.TouchEvent;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class ShopIcons extends DisplayObjectContainer
 	{
 		private var g:Game;
+		
 		private var xpBoostActive:Boolean = false;
 		private var tractorBeamActive:Boolean = false;
 		private var xpProtectionActive:Boolean = false;
@@ -20,13 +21,14 @@ package core.hud.components
 		private var supporterActive:Boolean = false;
 		private var confirmBox:PopupConfirmMessage = null;
 		private var textureManager:ITextureManager;
+		
 		public function ShopIcons(param1:Game)
 		{
 			textureManager = TextureLocator.getService();
 			super();
 			this.g = param1;
 		}
-
+		
 		public function load():void
 		{
 			var tractorBeamIcon:Image;
@@ -40,12 +42,12 @@ package core.hud.components
 			xpBoostIcon.scaleX = xpBoostIcon.scaleY = 0.5;
 			xpBoostIcon.useHandCursor = true;
 			xpBoostIcon.addEventListener("touch", function(param1:TouchEvent):void
+			{
+				if (param1.getTouch(xpBoostIcon, "ended"))
 				{
-					if (param1.getTouch(xpBoostIcon, "ended"))
-					{
-						g.enterState(new ShopState(g, "xpBoost"));
-					}
-				});
+					g.enterState(new ShopState(g, "xpBoost"));
+				}
+			});
 			addChild(xpBoostIcon);
 			new ToolTip(g, xpBoostIcon, toolTipText, null, "shopIcons");
 			tractorBeamActive = g.me.isTractorBeamActive();
@@ -56,19 +58,19 @@ package core.hud.components
 			tractorBeamIcon.x = xpBoostIcon.x + xpBoostIcon.width + 4;
 			tractorBeamIcon.useHandCursor = true;
 			tractorBeamIcon.addEventListener("touch", function(param1:TouchEvent):void
+			{
+				if (param1.getTouch(tractorBeamIcon, "ended"))
 				{
-					if (param1.getTouch(tractorBeamIcon, "ended"))
+					if (g.me.hasTractorBeam())
 					{
-						if (g.me.hasTractorBeam())
-						{
-							g.me.toggleTractorBeam();
-							g.hud.update();
-							g.send("toggleTractorBeam");
-							return;
-						}
-						g.enterState(new ShopState(g, "tractorBeam"));
+						g.me.toggleTractorBeam();
+						g.hud.update();
+						g.send("toggleTractorBeam");
+						return;
 					}
-				});
+					g.enterState(new ShopState(g, "tractorBeam"));
+				}
+			});
 			addChild(tractorBeamIcon);
 			new ToolTip(g, tractorBeamIcon, toolTipText, null, "shopIcons");
 			xpProtectionActive = g.me.hasXpProtection();
@@ -79,12 +81,12 @@ package core.hud.components
 			xpProtectionIcon.x = tractorBeamIcon.x + tractorBeamIcon.width + 4;
 			xpProtectionIcon.useHandCursor = true;
 			xpProtectionIcon.addEventListener("touch", function(param1:TouchEvent):void
+			{
+				if (param1.getTouch(xpProtectionIcon, "ended"))
 				{
-					if (param1.getTouch(xpProtectionIcon, "ended"))
-					{
-						g.enterState(new ShopState(g, "xpProtection"));
-					}
-				});
+					g.enterState(new ShopState(g, "xpProtection"));
+				}
+			});
 			addChild(xpProtectionIcon);
 			new ToolTip(g, xpProtectionIcon, toolTipText, null, "shopIcons");
 			cargoProtectionActive = g.me.isCargoProtectionActive();
@@ -95,12 +97,12 @@ package core.hud.components
 			cargoProtectionIcon.x = xpProtectionIcon.x + xpProtectionIcon.width + 4;
 			cargoProtectionIcon.useHandCursor = true;
 			cargoProtectionIcon.addEventListener("touch", function(param1:TouchEvent):void
+			{
+				if (param1.getTouch(cargoProtectionIcon, "ended"))
 				{
-					if (param1.getTouch(cargoProtectionIcon, "ended"))
-					{
-						g.enterState(new ShopState(g, "cargoProtection"));
-					}
-				});
+					g.enterState(new ShopState(g, "cargoProtection"));
+				}
+			});
 			addChild(cargoProtectionIcon);
 			new ToolTip(g, cargoProtectionIcon, toolTipText, null, "shopIcons");
 			supporterActive = g.me.hasSupporter();
@@ -111,17 +113,17 @@ package core.hud.components
 			supporterIcon.x = cargoProtectionIcon.x + cargoProtectionIcon.width + 4;
 			supporterIcon.useHandCursor = true;
 			supporterIcon.addEventListener("touch", function(param1:TouchEvent):void
+			{
+				if (param1.getTouch(supporterIcon, "ended"))
 				{
-					if (param1.getTouch(supporterIcon, "ended"))
-					{
-						g.enterState(new ShopState(g, "supporterPackage"));
-					}
-				});
+					g.enterState(new ShopState(g, "supporterPackage"));
+				}
+			});
 			addChild(supporterIcon);
 			new ToolTip(g, supporterIcon, toolTipText, null, "shopIcons");
 			visible = !g.me.guest;
 		}
-
+		
 		public function update():void
 		{
 			if (xpBoostActive != g.me.hasExpBoost || tractorBeamActive != g.me.isTractorBeamActive() || xpProtectionActive != g.me.hasXpProtection() || cargoProtectionActive != g.me.isCargoProtectionActive() || supporterActive != g.me.hasSupporter())

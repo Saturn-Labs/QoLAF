@@ -24,16 +24,17 @@ package core.ship
 	import flash.utils.Dictionary;
 	import movement.Heading;
 	import playerio.Message;
-
+	
 	public class ShipSync
 	{
 		private var g:Game;
+		
 		public function ShipSync(param1:Game)
 		{
 			super();
 			this.g = param1;
 		}
-
+		
 		public function addMessageHandlers():void
 		{
 			g.addMessageHandler("aiCourse", aiCourse);
@@ -41,7 +42,7 @@ package core.ship
 			g.addMessageHandler("AIStickyStart", aiStickyStart);
 			g.addMessageHandler("AIStickyEnd", aiStickyEnd);
 		}
-
+		
 		public function playerCourse(param1:Message, param2:int = 0):void
 		{
 			var _loc5_:Dictionary = g.playerManager.playersById;
@@ -80,7 +81,7 @@ package core.ship
 				_loc8_.setConvergeTarget(_loc9_);
 			}
 		}
-
+		
 		public function playerUsedBoost(param1:Message, param2:int):void
 		{
 			var _loc5_:Dictionary = g.playerManager.playersById;
@@ -117,7 +118,7 @@ package core.ship
 				_loc8_.setConvergeTarget(_loc9_);
 			}
 		}
-
+		
 		public function aiCourse(param1:Message):void
 		{
 			var _loc9_:int = 0;
@@ -157,14 +158,14 @@ package core.ship
 				{
 					switch (_loc6_)
 					{
-						case "AIChase":
-							_loc2_.stateMachine.changeState(new AIChase(g, _loc2_, _loc14_, _loc15_, 0));
-							break;
-						case "AIFollow":
-							_loc2_.stateMachine.changeState(new AIFollow(g, _loc2_, _loc14_, _loc15_, 0));
-							break;
-						case "AIMelee":
-							_loc2_.stateMachine.changeState(new AIMelee(g, _loc2_, _loc14_, _loc15_, 0));
+					case "AIChase": 
+						_loc2_.stateMachine.changeState(new AIChase(g, _loc2_, _loc14_, _loc15_, 0));
+						break;
+					case "AIFollow": 
+						_loc2_.stateMachine.changeState(new AIFollow(g, _loc2_, _loc14_, _loc15_, 0));
+						break;
+					case "AIMelee": 
+						_loc2_.stateMachine.changeState(new AIMelee(g, _loc2_, _loc14_, _loc15_, 0));
 					}
 				}
 				_loc5_ = param1.getInt(_loc9_ + 3 + 10);
@@ -188,7 +189,7 @@ package core.ship
 				_loc9_ = _loc9_ + (4 + 10);
 			}
 		}
-
+		
 		public function mirrorCourse(param1:Message):void
 		{
 			var _loc2_:Ship = g.playerManager.me.mirror;
@@ -200,7 +201,7 @@ package core.ship
 			_loc3_.parseMessage(param1, 0);
 			_loc2_.course = _loc3_;
 		}
-
+		
 		public function aiStickyStart(param1:Message):void
 		{
 			var _loc4_:Dictionary = g.shipManager.enemiesById;
@@ -222,7 +223,7 @@ package core.ship
 			_loc2_.meleeTargetAngleDiff = param1.getNumber(5);
 			_loc2_.meleeStuck = true;
 		}
-
+		
 		public function aiStickyEnd(param1:Message):void
 		{
 			var _loc4_:Dictionary = g.shipManager.enemiesById;
@@ -234,7 +235,7 @@ package core.ship
 			}
 			_loc2_.meleeStuck = false;
 		}
-
+		
 		public function aiCharge(param1:Message, param2:int):void
 		{
 			var _loc5_:Dictionary = g.shipManager.enemiesById;
@@ -252,7 +253,7 @@ package core.ship
 			_loc3_.engine.speed = (1 + _loc3_.meleeChargeSpeedBonus) * _loc3_.engine.speed;
 			_loc3_.chargeEffect = EmitterFactory.create("nHVuxJzeyE-JVcn7M-UOwA", g, _loc3_.pos.x, _loc3_.pos.y, _loc3_, true);
 		}
-
+		
 		public function aiStateChanged(param1:Message, param2:int = 0):void
 		{
 			var _loc11_:Dictionary = null;
@@ -281,100 +282,100 @@ package core.ship
 				}
 				switch (_loc4_)
 				{
-					case "AICloakStarted":
-						_loc3_.cloakStart();
-						break;
-					case "AICloakEnded":
-						_loc3_.cloakEnd(_loc13_);
-						break;
-					case "AIHardenShield":
-						_loc3_.hardenShield();
-						break;
-					case "AIObserve":
-						_loc5_ = param1.getInt(param2);
-						_loc12_ = g.unitManager.getTarget(_loc5_);
-						if (_loc12_ != null)
-						{
-							_loc3_.stateMachine.changeState(new AIObserve(g, _loc3_, _loc12_, _loc13_, _loc7_));
-						}
-						else
-						{
-							Console.write("No Ai target: " + _loc5_);
-						}
-						break;
-					case "AIChase":
-						_loc5_ = param1.getInt(param2);
-						_loc12_ = g.unitManager.getTarget(_loc5_);
-						if (_loc12_ != null)
-						{
-							_loc3_.stateMachine.changeState(new AIChase(g, _loc3_, _loc12_, _loc13_, _loc7_));
-						}
-						else
-						{
-							Console.write("No Ai target: " + _loc5_);
-						}
-						break;
-					case "AIResurect":
-						_loc3_.stateMachine.changeState(new AIResurect(g, _loc3_));
-					case "AIFollow":
-						_loc5_ = param1.getInt(param2);
-						_loc12_ = g.unitManager.getTarget(_loc5_);
-						if (_loc12_ != null)
-						{
-							_loc3_.stateMachine.changeState(new AIFollow(g, _loc3_, _loc12_, _loc13_, _loc7_));
-						}
-						else
-						{
-							Console.write("No Ai target: " + _loc5_);
-						}
-						break;
-					case "AIMelee":
-						_loc5_ = param1.getInt(param2);
-						_loc12_ = g.unitManager.getTarget(_loc5_);
-						if (_loc12_ != null)
-						{
-							_loc3_.stateMachine.changeState(new AIMelee(g, _loc3_, _loc12_, _loc13_, _loc7_));
-						}
-						else
-						{
-							Console.write("No Ai target: " + _loc5_);
-						}
-						break;
-					case "AIOrbit":
-						_loc3_.stateMachine.changeState(new AIOrbit(g, _loc3_));
-						break;
-					case "AIIdle":
-						_loc3_.stateMachine.changeState(new AIIdle(g, _loc3_, _loc3_.course));
-						break;
-					case "AIReturn":
-						_loc8_ = param1.getNumber(param2);
-						_loc10_ = param1.getNumber(param2 + 1);
-						_loc3_.stateMachine.changeState(new AIReturnOrbit(g, _loc3_, _loc8_, _loc10_, _loc13_, _loc7_));
-						break;
-					case "AIKamikaze":
-						_loc5_ = param1.getInt(param2);
-						_loc12_ = g.unitManager.getTarget(_loc5_);
-						if (_loc12_ != null)
-						{
-							_loc3_.stateMachine.changeState(new AIKamikaze(g, _loc3_, _loc12_, _loc13_, _loc7_));
-						}
-						else
-						{
-							Console.write("No Ai target: " + _loc5_);
-						}
-						break;
-					case "AIFlee":
-						_loc6_ = new Point(param1.getNumber(param2), param1.getNumber(param2 + 1));
-						_loc3_.stateMachine.changeState(new AIFlee(g, _loc3_, _loc6_, _loc13_, _loc7_));
-						break;
-					case "AITeleport":
-						_loc3_.stateMachine.changeState(new AITeleport(g, _loc3_, _loc3_.target, _loc7_, param1.getNumber(param2), param1.getNumber(param2 + 1)));
-						break;
-					case "AITeleportExit":
-						_loc3_.stateMachine.changeState(new AITeleportExit(g, _loc3_));
-						break;
-					case "AIExit":
-						_loc3_.stateMachine.changeState(new AIExit(g, _loc3_));
+				case "AICloakStarted": 
+					_loc3_.cloakStart();
+					break;
+				case "AICloakEnded": 
+					_loc3_.cloakEnd(_loc13_);
+					break;
+				case "AIHardenShield": 
+					_loc3_.hardenShield();
+					break;
+				case "AIObserve": 
+					_loc5_ = param1.getInt(param2);
+					_loc12_ = g.unitManager.getTarget(_loc5_);
+					if (_loc12_ != null)
+					{
+						_loc3_.stateMachine.changeState(new AIObserve(g, _loc3_, _loc12_, _loc13_, _loc7_));
+					}
+					else
+					{
+						Console.write("No Ai target: " + _loc5_);
+					}
+					break;
+				case "AIChase": 
+					_loc5_ = param1.getInt(param2);
+					_loc12_ = g.unitManager.getTarget(_loc5_);
+					if (_loc12_ != null)
+					{
+						_loc3_.stateMachine.changeState(new AIChase(g, _loc3_, _loc12_, _loc13_, _loc7_));
+					}
+					else
+					{
+						Console.write("No Ai target: " + _loc5_);
+					}
+					break;
+				case "AIResurect": 
+					_loc3_.stateMachine.changeState(new AIResurect(g, _loc3_));
+				case "AIFollow": 
+					_loc5_ = param1.getInt(param2);
+					_loc12_ = g.unitManager.getTarget(_loc5_);
+					if (_loc12_ != null)
+					{
+						_loc3_.stateMachine.changeState(new AIFollow(g, _loc3_, _loc12_, _loc13_, _loc7_));
+					}
+					else
+					{
+						Console.write("No Ai target: " + _loc5_);
+					}
+					break;
+				case "AIMelee": 
+					_loc5_ = param1.getInt(param2);
+					_loc12_ = g.unitManager.getTarget(_loc5_);
+					if (_loc12_ != null)
+					{
+						_loc3_.stateMachine.changeState(new AIMelee(g, _loc3_, _loc12_, _loc13_, _loc7_));
+					}
+					else
+					{
+						Console.write("No Ai target: " + _loc5_);
+					}
+					break;
+				case "AIOrbit": 
+					_loc3_.stateMachine.changeState(new AIOrbit(g, _loc3_));
+					break;
+				case "AIIdle": 
+					_loc3_.stateMachine.changeState(new AIIdle(g, _loc3_, _loc3_.course));
+					break;
+				case "AIReturn": 
+					_loc8_ = param1.getNumber(param2);
+					_loc10_ = param1.getNumber(param2 + 1);
+					_loc3_.stateMachine.changeState(new AIReturnOrbit(g, _loc3_, _loc8_, _loc10_, _loc13_, _loc7_));
+					break;
+				case "AIKamikaze": 
+					_loc5_ = param1.getInt(param2);
+					_loc12_ = g.unitManager.getTarget(_loc5_);
+					if (_loc12_ != null)
+					{
+						_loc3_.stateMachine.changeState(new AIKamikaze(g, _loc3_, _loc12_, _loc13_, _loc7_));
+					}
+					else
+					{
+						Console.write("No Ai target: " + _loc5_);
+					}
+					break;
+				case "AIFlee": 
+					_loc6_ = new Point(param1.getNumber(param2), param1.getNumber(param2 + 1));
+					_loc3_.stateMachine.changeState(new AIFlee(g, _loc3_, _loc6_, _loc13_, _loc7_));
+					break;
+				case "AITeleport": 
+					_loc3_.stateMachine.changeState(new AITeleport(g, _loc3_, _loc3_.target, _loc7_, param1.getNumber(param2), param1.getNumber(param2 + 1)));
+					break;
+				case "AITeleportExit": 
+					_loc3_.stateMachine.changeState(new AITeleportExit(g, _loc3_));
+					break;
+				case "AIExit": 
+					_loc3_.stateMachine.changeState(new AIExit(g, _loc3_));
 				}
 			}
 			catch (e:Error)
@@ -382,7 +383,7 @@ package core.ship
 				g.client.errorLog.writeError("MSG PACK: " + e.toString(), "State: " + _loc4_, e.getStackTrace(), {});
 			}
 		}
-
+		
 		private function fastforwardMe(param1:Ship, param2:Heading):void
 		{
 			g.commandManager.clearCommands(param2.time);
@@ -392,7 +393,7 @@ package core.ship
 				param1.convergerUpdateHeading(param2);
 			}
 		}
-
+		
 		private function fastforward(param1:Ship, param2:Heading):void
 		{
 			var _loc3_:Heading = param1.course;

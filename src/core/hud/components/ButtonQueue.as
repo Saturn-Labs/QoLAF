@@ -5,16 +5,23 @@ package core.hud.components
 	import generics.Localize;
 	import starling.display.Sprite;
 	import starling.events.TouchEvent;
-
+	
 	public class ButtonQueue extends Sprite
 	{
 		private var joinQueue:Button;
+		
 		private var leaveQueue:Button;
+		
 		private var acceptQueue:Button;
+		
 		private var tmpButton:Button;
+		
 		private var type:String;
+		
 		private var queueInfo:QueueInfoHolder;
+		
 		private var g:Game;
+		
 		public function ButtonQueue(param1:Game, param2:String, param3:QueueInfoHolder, param4:Boolean = true)
 		{
 			this.g = param1;
@@ -55,12 +62,12 @@ package core.hud.components
 			tmpButton.width = 200;
 			updateStatus();
 		}
-
+		
 		public function update():void
 		{
 			updateStatus();
 		}
-
+		
 		private function updateStatus():void
 		{
 			if (queueInfo == null)
@@ -157,7 +164,7 @@ package core.hud.components
 				acceptQueue.enabled = true;
 			}
 		}
-
+		
 		private function join(param1:TouchEvent):void
 		{
 			g.queueManager.removedFromAllQueues();
@@ -166,14 +173,14 @@ package core.hud.components
 			g.sendToServiceRoom("tryJoinQueue", type);
 			Game.trackEvent("pvp", "queue", "joined", g.me.level);
 		}
-
+		
 		private function leave(param1:TouchEvent):void
 		{
 			queueInfo.isWaiting = true;
 			updateStatus();
 			g.sendToServiceRoom("tryLeaveQueue", type);
 		}
-
+		
 		private function accept(param1:TouchEvent):void
 		{
 			queueInfo.isWaiting = true;
@@ -181,7 +188,7 @@ package core.hud.components
 			updateStatus();
 			g.sendToServiceRoom("acceptMatch", type);
 		}
-
+		
 		private function wait(param1:TouchEvent):void
 		{
 		}

@@ -8,14 +8,14 @@ package core.turret
 	import data.DataLocator;
 	import data.IDataManager;
 	import generics.Util;
-
+	
 	public class TurretFactory
 	{
 		public function TurretFactory()
 		{
 			super();
 		}
-
+		
 		public static function createTurret(param1:Object, param2:String, param3:Game, param4:Boss = null):Turret
 		{
 			var _loc8_:Number = NaN;

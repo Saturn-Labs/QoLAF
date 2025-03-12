@@ -16,109 +16,155 @@ package core.unit
 	import core.text.TextParticle;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.utils.Dictionary;
-	import qolaf.modifiers.IModifierTarget;
-	import qolaf.modifiers.Modifier;
-	import qolaf.events.ModifierAddedEvent;
-	import qolaf.events.ModifierRemovedEvent;
-	import qolaf.events.ModifierStackedEvent;
-	import qolaf.target.ITarget;
-	import qolaf.utils.Query;
-	import qolaf.utils.TargetUtils;
 	import sound.ISound;
 	import sound.SoundLocator;
 	import starling.display.Image;
 	import starling.filters.ColorMatrixFilter;
-	import starling.textures.Texture;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
-	// QoLAF
-	public class Unit extends GameObject implements IModifierTarget
+	
+	public class Unit extends GameObject
 	{
 		private static const HP_MAXWIDTH:int = 20;
 		private static const HP_MINWIDTH:int = 10;
 		private static const HP_MAXWIDTH_PVP:int = 50;
 		private var damageFilter:ColorMatrixFilter;
+		
 		private var healFilter:ColorMatrixFilter;
+		
 		protected var hpBar:Image;
+		
 		protected var shieldBar:Image;
+		
 		private var _bodyName:String;
+		
 		public var syncId:int;
+		
 		public var parentObj:GameObject;
+		
 		public var disableHealEndtime:Number;
+		
 		public var nextHitEffectReady:Number = 0;
 		public var lastDmgText:TextParticle;
+		
 		public var lastDmgTextOffset:int;
+		
 		public var lastDmgTime:Number;
+		
 		public var lastDmg:int;
+		
 		public var lastHealText:TextParticle;
+		
 		public var lastHealTextOffset:int;
+		
 		public var lastHealTime:Number;
+		
 		public var lastHeal:int;
+		
 		public var team:int;
+		
 		public var stateMachine:StateMachine;
+		
 		public var hasDmgBoost:Boolean;
+		
 		public var dmgBoostCD:int;
+		
 		public var dmgBoostNextRdy:Number;
+		
 		public var dmgBoostEndTime:Number;
+		
 		public var dmgBoostDuration:int;
+		
 		public var dmgBoostCost:Number;
+		
 		public var usingDmgBoost:Boolean;
+		
 		public var dmgBoostBonus:Number;
+		
 		public var alive:Boolean;
+		
 		public var uberDifficulty:Number;
+		
 		public var uberLevelFactor:Number;
+		
 		public var hp:int;
+		
 		private var _hpMax:int;
+		
 		public var armorThreshold:int;
+		
 		public var armorThresholdBase:int;
+		
 		public var shieldHp:int;
+		
 		protected var _shieldHpMax:int;
+		
 		public var xp:int;
+		
 		public var level:int;
+		
 		public var collisionRadius:Number;
+		
 		public var explosionEffect:String;
+		
 		public var explosionSound:String;
+		
 		public var shieldRegen:int;
+		
 		public var shieldRegenBase:int;
+		
 		public var shieldRegenCounter:int = 0;
 		public var shieldRegenDuration:int = 1000;
 		public var shieldRegenBonus:Number = 1;
 		public var hpRegen:Number;
+		
 		public var hpRegenCounter:int;
+		
 		public var hpRegenDuration:int = 1000;
 		public var invulnerable:Boolean = false;
 		public var essential:Boolean = true;
 		public var resistances:Vector.<Number>;
+		
 		private var barMaxWidth:int = 0;
 		private var isFlashing:Boolean = false;
 		protected var g:Game;
+		
 		private var _speed:Point;
+		
 		public var weaponPos:Point;
+		
 		public var enginePos:Point;
+		
 		public var group:Group;
+		
 		public var factions:Vector.<String>;
+		
 		public var isHostile:Boolean;
+		
 		public var dotTimers:Vector.<TweenMax>;
+		
 		public var dotEffect:String;
+		
 		public var obj:Object;
+		
 		public var active:Boolean = true;
 		public var hideIfInactive:Boolean;
+		
 		public var triggersToActivte:int = 1;
 		public var triggers:Vector.<Trigger>;
+		
 		public var lastBulletLocal:Number = 0;
 		public var lastBulletGlobal:Number = 0;
 		public var lastBulletTargetList:Vector.<Unit> = null;
+		
 		public var isBossUnit:Boolean = false;
 		public var forceupdate:Boolean;
+		
 		public var originalFilter:ColorMatrixFilter;
+		
 		public var owner:PlayerShip = null;
 		public var isInjured:Boolean = false;
 		private var miniBarsAreAddedToCanvas:Boolean = false;
-		// QoLAF
-		private var _modifiers:Vector.<Modifier> = new Vector.<Modifier>();
-
 		public function Unit(param1:Game)
 		{
 			var _loc3_:int = 0;
@@ -159,202 +205,9 @@ package core.unit
 			}
 			super();
 		}
-
-		// QoLAF
-		public function getModifiers():Vector.<Modifier>
-		{
-			return _modifiers;
-		}
-
-		// QoLAF
-		public function addModifier(modifier:Modifier):void
-		{
-			var found:Modifier = Query.first(_modifiers, function(obj:Modifier):Boolean
-				{
-					return obj.id == modifier.id;
-				});
-
-			if (found != null)
-			{
-				found.stackAndReset();
-				dispatchEvent(new ModifierStackedEvent(ModifierStackedEvent.EVENT, found));
-			}
-			else
-			{
-				found = modifier;
-				_modifiers.push(found);
-				dispatchEvent(new ModifierAddedEvent(ModifierAddedEvent.EVENT, found));
-			}
-		}
-
-		// QoLAF
-		public function removeModifier(modifier:Modifier):Boolean
-		{
-			if (!Query.removeEquals(_modifiers, modifier))
-				return false;
-			dispatchEvent(new ModifierRemovedEvent(ModifierRemovedEvent.EVENT, modifier));
-			return true;
-		}
-
-		// QoLAF
-		public function removeModifierById(modifierId:int):Boolean
-		{
-			var modifier:Modifier = Query.first(_modifiers, function(obj:Modifier):Boolean
-				{
-					return obj.id == modifierId;
-				});
-			if (modifier == null)
-				return false;
-			Query.removeEquals(_modifiers, modifier);
-			dispatchEvent(new ModifierRemovedEvent(ModifierRemovedEvent.EVENT, modifier));
-			return true;
-		}
-
-		// QoLAF
-		public function getName():String
-		{
-			return name;
-		}
-
-		// QoLAF
-		public function getTrueName():String
-		{
-			return TargetUtils.getTargetTrueName(this);
-		}
-
-		// QoLAF
-		public function getLevel():int
-		{
-			if (isBoss())
-				return getBoss().level;
-			else
-				return level;
-		}
-
-		// QoLAF
-		public function getParent():GameObject
-		{
-			return parentObj;
-		}
-
-		// QoLAF
-		public function isBoss():Boolean
-		{
-			return isBossUnit || parentObj is Boss;
-		}
-
-		// QoLAF
-		public function getBoss():Boss
-		{
-			if (!isBoss())
-				return null;
-
-			var obj:GameObject = parentObj;
-			var depth:int = 0;
-			var maxDepth:int = 10;
-			while (!(obj is Boss) && depth < maxDepth)
-			{
-				depth++;
-				obj = parentObj;
-			}
-			return obj as Boss;
-		}
-
-		// QoLAF
-		public function isAlive():Boolean
-		{
-			return alive;
-		}
-
-		// QoLAF
-		public function getPosition():Point
-		{
-			return pos;
-		}
-
-		// QoLAF
-		public function getTexture():Texture
-		{
-			return texture;
-		}
-
-		// QoLAF
-		public function getMaxHealth():int
-		{
-			if (isBoss())
-				return getBoss().hpMax;
-			return hpMax;
-		}
-
-		// QoLAF
-		public function getHealth():int
-		{
-			if (isBoss())
-				return getBoss().hp;
-			return hp;
-		}
-
-		// QoLAF
-		public function getMaxShield():int
-		{
-			return shieldHpMax;
-		}
-
-		// QoLAF
-		public function getShield():int
-		{
-			return shieldHp;
-		}
-
-		// QoLAF
-		public function hasAura():Boolean
-		{
-			if (isBoss())
-				return true;
-			else if (this is EnemyShip)
-			{
-				var s:EnemyShip = this as EnemyShip;
-				return s.rareEmitters.length >= 1;
-			}
-			return false;
-		}
-
-		// QoLAF
-		public function getAuraColor():uint
-		{
-			if (isBoss())
-				return 0xff0000;
-			else if (this is EnemyShip)
-			{
-				var s:EnemyShip = this as EnemyShip;
-				return s.rareEmitters.length >= 1 ? s.rareEmitters[0].startColor : 0xffffff;
-			}
-			return 0xffffff;
-		}
-
-		// QoLAF
-		public function isPlayer():Boolean
-		{
-			return this is PlayerShip;
-		}
-
-		// QoLAF
-		public function isLocalPlayer():Boolean
-		{
-			return isPlayer() ? (this as PlayerShip).player.isMe : false;
-		}
-
+		
 		override public function update():void
 		{
-			// QoLAF
-			for (var i:int = _modifiers.length - 1; i >= 0; i--)
-			{
-				if (_modifiers[i].hasEnded)
-				{
-					removeModifier(_modifiers[i]);
-				}
-			}
-
 			if (nextDistanceCalculation <= 0)
 			{
 				updateIsNear();
@@ -365,7 +218,7 @@ package core.unit
 			}
 			super.update();
 		}
-
+		
 		private function updateIsNear():void
 		{
 			if (g.me.ship == null || g.me.ship == this || isBossUnit && !(this is EnemyShip))
@@ -402,7 +255,7 @@ package core.unit
 				removeFromCanvas();
 			}
 		}
-
+		
 		public function updateHealthBars():void
 		{
 			if (miniBarsAreAddedToCanvas)
@@ -431,7 +284,7 @@ package core.unit
 				isInjured = false;
 			}
 		}
-
+		
 		public function set shieldHpMax(param1:int):void
 		{
 			_shieldHpMax = param1;
@@ -441,7 +294,7 @@ package core.unit
 			}
 			adjustMiniHealthBar();
 		}
-
+		
 		public function set hpMax(param1:int):void
 		{
 			_hpMax = param1;
@@ -451,7 +304,7 @@ package core.unit
 			}
 			adjustMiniHealthBar();
 		}
-
+		
 		private function adjustMiniHealthBar():void
 		{
 			if (g.solarSystem.isPvpSystemInEditor)
@@ -467,17 +320,17 @@ package core.unit
 				}
 			}
 		}
-
+		
 		public function get hpMax():int
 		{
 			return _hpMax;
 		}
-
+		
 		public function get shieldHpMax():int
 		{
 			return _shieldHpMax;
 		}
-
+		
 		public function regenerateShield():void
 		{
 			if (alive && shieldHp < _shieldHpMax)
@@ -494,7 +347,7 @@ package core.unit
 				shieldRegenCounter += 33;
 			}
 		}
-
+		
 		public function regenerateHP():void
 		{
 			if (alive && hp < _hpMax)
@@ -511,7 +364,7 @@ package core.unit
 				hpRegenCounter += 33;
 			}
 		}
-
+		
 		public function canBeDamage(param1:Unit, param2:Projectile):Boolean
 		{
 			var _loc4_:int = 0;
@@ -630,7 +483,7 @@ package core.unit
 			}
 			return true;
 		}
-
+		
 		public function takeDamage(param1:int):void
 		{
 			if (!isAddedToCanvas)
@@ -656,7 +509,7 @@ package core.unit
 			}
 			g.textManager.createDmgText(param1, this);
 		}
-
+		
 		private function damageFlash(param1:int, param2:Boolean = true, param3:Boolean = false):void
 		{
 			var dmg:int = param1;
@@ -681,17 +534,17 @@ package core.unit
 			}
 			_mc.filter.cache();
 			TweenMax.delayedCall(0.08, function():void
+			{
+				isFlashing = false;
+				_mc.filter = originalFilter == null ? null : originalFilter;
+				if (_mc.filter)
 				{
-					isFlashing = false;
-					_mc.filter = originalFilter == null ? null : originalFilter;
-					if (_mc.filter)
-					{
-						_mc.filter.cache();
-					}
-				});
+					_mc.filter.cache();
+				}
+			});
 		}
-
-		public function doDOTEffect(duration:int, param2:String, modifierId:int = -1, param4:String = ""):void
+		
+		public function doDOTEffect(param1:int, param2:String, param3:int = -1, param4:String = ""):void
 		{
 			var _loc9_:* = undefined;
 			var _loc5_:TweenMax = null;
@@ -699,37 +552,31 @@ package core.unit
 			{
 				return;
 			}
-			if (modifierId == 5)
+			if (param3 == 5)
 			{
-				if (shieldRegenCounter > -duration * 1000)
+				if (shieldRegenCounter > -param1 * 1000)
 				{
-					shieldRegenCounter = -duration * 1000;
+					shieldRegenCounter = -param1 * 1000;
 				}
 			}
-			if (modifierId == 6)
-			{
-				if (disableHealEndtime < g.time)
-				{
-					disableHealEndtime = g.time + duration * 1000;
-				}
-			}
-			if (modifierId == 11)
+			if (param3 == 6)
 			{
 				if (disableHealEndtime < g.time)
 				{
-					disableHealEndtime = g.time + duration * 1000;
-				}
-				if (shieldRegenCounter > -duration * 1000)
-				{
-					shieldRegenCounter = -duration * 1000;
+					disableHealEndtime = g.time + param1 * 1000;
 				}
 			}
-
-			if (modifierId != -1 && modifierId != 11)
+			if (param3 == 11)
 			{
-				addModifier(new Modifier(modifierId, duration * 1000));
+				if (disableHealEndtime < g.time)
+				{
+					disableHealEndtime = g.time + param1 * 1000;
+				}
+				if (shieldRegenCounter > -param1 * 1000)
+				{
+					shieldRegenCounter = -param1 * 1000;
+				}
 			}
-
 			if (dotTimers.length > 0 && dotTimers[0]._active && this.dotEffect == param2)
 			{
 				for each (var _loc8_:* in dotTimers)
@@ -747,7 +594,7 @@ package core.unit
 				_loc9_ = EmitterFactory.create(param2, g, pos.x, pos.y, this, true);
 				for each (var _loc7_:* in _loc9_)
 				{
-					_loc5_ = TweenMax.to(_loc7_, duration, {"startAlpha":0.1, "onComplete":removeDot(_loc7_)});
+					_loc5_ = TweenMax.to(_loc7_, param1, {"startAlpha": 0.1, "onComplete": removeDot(_loc7_)});
 					dotTimers.push(_loc5_);
 				}
 				this.dotEffect = param2;
@@ -757,12 +604,12 @@ package core.unit
 				g.textManager.createDebuffText(param4, this);
 			}
 		}
-
+		
 		override public function switchTexturesByObj(param1:Object, param2:String = "texture_main_NEW.png"):void
 		{
 			super.switchTexturesByObj(param1);
 		}
-
+		
 		private function removeDot(param1:Emitter):Function
 		{
 			var e:Emitter = param1;
@@ -771,7 +618,7 @@ package core.unit
 				e.killEmitter();
 			};
 		}
-
+		
 		public function activate():void
 		{
 			active = true;
@@ -783,7 +630,7 @@ package core.unit
 				_loc1_.reEnable();
 			}
 		}
-
+		
 		public function destroy(param1:Boolean = true):void
 		{
 			var _loc4_:ISound = null;
@@ -816,7 +663,7 @@ package core.unit
 			}
 			g.emitterManager.clean(this);
 		}
-
+		
 		override public function draw():void
 		{
 			var _loc2_:Number = pos.x;
@@ -861,17 +708,17 @@ package core.unit
 			}
 			super.draw();
 		}
-
+		
 		public function get speed():Point
 		{
 			return _speed;
 		}
-
+		
 		public function set speed(param1:Point):void
 		{
 			_speed = param1;
 		}
-
+		
 		override public function reset():void
 		{
 			var _loc1_:int = 0;
@@ -961,32 +808,32 @@ package core.unit
 			triggers.splice(0, -1);
 			triggersToActivte = 1;
 		}
-
+		
 		public function get type():String
 		{
 			return "Unit, unidentified type!";
 		}
-
-		override public function toString():String
+		
+		public function toString():String
 		{
 			return "[ Name: " + _name + " Body name: " + _bodyName + " Type: " + type + " ]";
 		}
-
+		
 		public function set bodyName(param1:String):void
 		{
 			_bodyName = param1;
 		}
-
+		
 		public function get bodyName():String
 		{
 			return _bodyName;
 		}
-
+		
 		public function addToCanvasForReal():void
 		{
 			super.addToCanvas();
 		}
-
+		
 		override public function removeFromCanvas():void
 		{
 			if (!isAddedToCanvas)
@@ -1001,7 +848,7 @@ package core.unit
 				miniBarsAreAddedToCanvas = false;
 			}
 		}
-
+		
 		public function hasFaction(param1:String):Boolean
 		{
 			for each (var _loc2_:* in factions)

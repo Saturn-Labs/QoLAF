@@ -7,18 +7,20 @@ package core.states.menuStates
 	import core.weapon.Weapon;
 	import starling.display.Image;
 	import starling.events.TouchEvent;
-
+	
 	public class ChangeWeaponState extends DisplayState
 	{
 		private var p:Player;
+		
 		private var slot:int;
+		
 		public function ChangeWeaponState(param1:Game, param2:Player, param3:int, param4:Boolean = false)
 		{
 			super(param1, HomeState, param4);
 			this.p = param2;
 			this.slot = param3;
 		}
-
+		
 		override public function enter():void
 		{
 			super.enter();
@@ -41,7 +43,7 @@ package core.states.menuStates
 				}
 			}
 		}
-
+		
 		private function createWeaponBox(param1:int, param2:int, param3:Weapon):void
 		{
 			var i:int = param1;
@@ -52,22 +54,22 @@ package core.states.menuStates
 			weaponBox.y = j * 50 + 110;
 			weaponBox.useHandCursor = true;
 			weaponBox.addEventListener("touch", function(param1:TouchEvent):void
+			{
+				if (param1.getTouch(weaponBox, "ended"))
 				{
-					if (param1.getTouch(weaponBox, "ended"))
-					{
-						g.playerManager.trySetActiveWeapons(p, slot, w.key);
-						g.hud.weaponHotkeys.refresh();
-						sm.revertState();
-					}
-				});
+					g.playerManager.trySetActiveWeapons(p, slot, w.key);
+					g.hud.weaponHotkeys.refresh();
+					sm.revertState();
+				}
+			});
 			addChild(weaponBox);
 		}
-
+		
 		override public function execute():void
 		{
 			super.execute();
 		}
-
+		
 		override public function exit():void
 		{
 			super.exit();

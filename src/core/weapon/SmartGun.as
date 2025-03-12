@@ -5,24 +5,24 @@ package core.weapon
 	import core.scene.Game;
 	import core.ship.PlayerShip;
 	import flash.geom.Point;
-
+	
 	public class SmartGun extends Weapon
 	{
 		public function SmartGun(param1:Game)
 		{
 			super(param1);
 		}
-
+		
 		override public function init(param1:Object, param2:int, param3:int = -1, param4:String = ""):void
 		{
 			super.init(param1, param2, param3, param4);
 		}
-
+		
 		override public function destroy():void
 		{
 			super.destroy();
 		}
-
+		
 		override protected function shoot():void
 		{
 			var _loc2_:PlayerShip = null;
@@ -79,7 +79,7 @@ package core.weapon
 				lastFire = g.time;
 			}
 		}
-
+		
 		private function fireProjectiles(param1:Number = 0):void
 		{
 			var _loc10_:int = 0;

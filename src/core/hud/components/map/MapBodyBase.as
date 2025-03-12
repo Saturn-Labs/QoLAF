@@ -14,30 +14,42 @@ package core.hud.components.map
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	import textures.TextureManager;
-
+	
 	public class MapBodyBase extends starling.display.Sprite
 	{
 		protected var radius:Number = 5;
 		protected var body:Body;
+		
 		protected var layer:starling.display.Sprite;
-
+		
 		protected var orbits:starling.display.Sprite;
-
+		
 		protected var crew:starling.display.Sprite;
-
+		
 		public var selected:Boolean = false;
 		protected var hover:Boolean;
+		
 		protected var text:TextBitmap;
+		
 		protected var percentage:TextBitmap;
+		
 		protected var line:Line;
+		
 		protected var imgHover:Image;
+		
 		protected var imgSelected:Image;
+		
 		protected var selectedColor:uint = 11184895;
 		protected var g:Game;
+		
 		protected var textureManager:ITextureManager;
+		
 		private var layerHeight:Number;
+		
 		private var layerWidth:Number;
+		
 		private var textWidth:Number;
+		
 		public function MapBodyBase(param1:Game, param2:starling.display.Sprite, param3:Body)
 		{
 			layer = new starling.display.Sprite();
@@ -64,14 +76,14 @@ package core.hud.components.map
 			}
 			layer.addEventListener("removedFromStage", clean);
 		}
-
+		
 		protected function init():void
 		{
 			layerHeight = layer.height;
 			layerWidth = layer.width;
 			textWidth = text.width;
 		}
-
+		
 		protected function addOrbits():void
 		{
 			if (body.children.length == 0)
@@ -96,7 +108,7 @@ package core.hud.components.map
 			_loc2_.touchable = false;
 			orbits.addChild(_loc2_);
 		}
-
+		
 		public function update():void
 		{
 			layer.x = body.pos.x * Map.SCALE - radius;
@@ -122,7 +134,7 @@ package core.hud.components.map
 				line.color = body.selectedTypeColor;
 			}
 		}
-
+		
 		private function onTouch(param1:TouchEvent):void
 		{
 			if (param1.getTouch(layer, "ended"))
@@ -138,7 +150,7 @@ package core.hud.components.map
 				out(param1);
 			}
 		}
-
+		
 		private function click(param1:TouchEvent):void
 		{
 			selected = !selected;
@@ -156,7 +168,7 @@ package core.hud.components.map
 			}
 			dispatchEventWith("selection");
 		}
-
+		
 		private function over(param1:TouchEvent):void
 		{
 			if (hover || selected)
@@ -166,7 +178,7 @@ package core.hud.components.map
 			hover = true;
 			layer.addChild(imgHover);
 		}
-
+		
 		private function out(param1:TouchEvent):void
 		{
 			if (!hover || selected)
@@ -176,7 +188,7 @@ package core.hud.components.map
 			hover = false;
 			layer.removeChild(imgHover);
 		}
-
+		
 		private function clean(param1:Event = null):void
 		{
 			removeEventListeners();

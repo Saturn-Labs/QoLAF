@@ -20,7 +20,7 @@ package startSetup
 	import starling.filters.GlowFilter;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class StartSetupE extends Sprite implements IStartSetup
 	{
 		private var _skin:String = "nGQoNJZcy0iFFnEFLWdkVw";
@@ -28,26 +28,44 @@ package startSetup
 		private var _split:String = "";
 		public var _joinName:String = "";
 		private var textureManager:ITextureManager;
+		
 		private var dataManager:IDataManager;
+		
 		private var confirmButton:Button;
+		
 		private var stf:ScreenTextField;
+		
 		private var description:Text;
+		
 		private var space:Sprite;
+		
 		private var timeAdjust:Number = 1;
 		private var speedUpSpace:Boolean = false;
 		private var skinStats:StartShipBaseStats;
+		
 		private var pickShipButton1:PickButton;
+		
 		private var pickShipButton2:PickButton;
+		
 		private var pickShipButton3:PickButton;
+		
 		private var pm:ParallaxManager;
+		
 		private var soundManager:ISound;
+		
 		private var textIndex:int = 0;
 		private var ships:Array;
+		
 		private var isRunning:Boolean;
+		
 		private var _progressText:Text;
+		
 		private var _timer:Date;
+		
 		private var _timeStart:int;
+		
 		private var logBook:Text;
+		
 		public function StartSetupE()
 		{
 			space = new Sprite();
@@ -67,7 +85,7 @@ package startSetup
 				addEventListener("addedToStage", initSelectShip);
 			}
 		}
-
+		
 		public static function showProgressText(param1:String):void
 		{
 			var _loc3_:IStartSetup = StartSetupLocator.getService();
@@ -97,36 +115,32 @@ package startSetup
 			}
 			_loc3_.sprite.addChild(_loc3_.progressText);
 		}
-
+		
 		public static function hideProgressText(param1:String):void
 		{
 			var s:String = param1;
 			var instance:IStartSetup = StartSetupLocator.getService();
-			TweenMax.to(instance.progressText, 1, {
-						"y": -100,
-						"alpha": 0,
-						"onComplete": function():void
-						{
-							instance.sprite.removeChild(instance.progressText);
-						}
-					});
+			TweenMax.to(instance.progressText, 1, {"y": -100, "alpha": 0, "onComplete": function():void
+			{
+				instance.sprite.removeChild(instance.progressText);
+			}});
 		}
-
+		
 		public function get skin():String
 		{
 			return _skin;
 		}
-
+		
 		public function get pvp():Boolean
 		{
 			return _pvp;
 		}
-
+		
 		public function get split():String
 		{
 			return _split;
 		}
-
+		
 		private function initSelectShip(param1:Event = null):void
 		{
 			var dataManager:IDataManager;
@@ -145,22 +159,22 @@ package startSetup
 			pm = new ParallaxManager(null, space, true);
 			addChild(space);
 			pm.load(obj, function():void
+			{
+				pm.randomize();
+				pm.refresh();
+				isRunning = true;
+				run();
+				for each (var _loc1_:* in pm.nebulas)
 				{
-					pm.randomize();
-					pm.refresh();
-					isRunning = true;
-					run();
-					for each (var _loc1_:* in pm.nebulas)
-					{
-						TweenMax.to(_loc1_, 1 / timeAdjust, {"alpha":1});
-					}
-					soundManager.playMusic("IOO5z1CeyESgoUp0yIuIPQ", true);
-					confirmButton = new Button(startGameFriendly, Localize.t("Go Now!"), "positive", 18);
-					addAnimatedText(Localize.t("Select escape vessel:"), 10000, 21000, -1, 100, "selectShip", 26, 16777215, 16777215, 10000);
-					TweenMax.delayedCall(1 / timeAdjust, addShips);
-				});
+					TweenMax.to(_loc1_, 1 / timeAdjust, {"alpha": 1});
+				}
+				soundManager.playMusic("IOO5z1CeyESgoUp0yIuIPQ", true);
+				confirmButton = new Button(startGameFriendly, Localize.t("Go Now!"), "positive", 18);
+				addAnimatedText(Localize.t("Select escape vessel:"), 10000, 21000, -1, 100, "selectShip", 26, 16777215, 16777215, 10000);
+				TweenMax.delayedCall(1 / timeAdjust, addShips);
+			});
 		}
-
+		
 		private function run():void
 		{
 			if (!isRunning)
@@ -180,7 +194,7 @@ package startSetup
 			pm.draw();
 			TweenMax.delayedCall(0.05, run);
 		}
-
+		
 		private function addAnimatedText(param1:String, param2:Number, param3:Number, param4:int = 0, param5:int = 0, param6:String = "", param7:int = 32, param8:uint = 16777215, param9:uint = 16777215, param10:Number = 0):void
 		{
 			if (stf != null && contains(stf))
@@ -206,7 +220,7 @@ package startSetup
 			stf.addEventListener("animationFinished", onAnimationFinished);
 			textIndex++;
 		}
-
+		
 		protected function onAnimationFinished(param1:Object):void
 		{
 			if (contains(stf))
@@ -221,24 +235,24 @@ package startSetup
 				}
 			}
 		}
-
+		
 		private function addShips():void
 		{
 			pickShipButton1 = new PickButton("player_aerodeck", function():void
-				{
-					changeSkin("hiTDnI9Ex0iLeFAktBnX0w", pickShipButton1);
-					_split = " (aerodeck)";
-				});
+			{
+				changeSkin("hiTDnI9Ex0iLeFAktBnX0w", pickShipButton1);
+				_split = " (aerodeck)";
+			});
 			pickShipButton2 = new PickButton("player_tramsnitter", function():void
-				{
-					changeSkin("Ijt0GhS0hkS09bixHLNEYg", pickShipButton2);
-					_split = " (tramsnitter)";
-				});
+			{
+				changeSkin("Ijt0GhS0hkS09bixHLNEYg", pickShipButton2);
+				_split = " (tramsnitter)";
+			});
 			pickShipButton3 = new PickButton("player_pixi", function():void
-				{
-					changeSkin("tx2VGh3l-U2Krrb4jmasjw", pickShipButton3);
-					_split = " (pixi)";
-				});
+			{
+				changeSkin("tx2VGh3l-U2Krrb4jmasjw", pickShipButton3);
+				_split = " (pixi)";
+			});
 			fillShipsArray();
 			ships[1].x = stage.stageWidth / 2;
 			ships[0].x = ships[1].x - 130;
@@ -256,16 +270,10 @@ package startSetup
 			pickShipButton2.deselect();
 			pickShipButton3.deselect();
 			TweenMax.to(pickShipButton1, 0.6 / timeAdjust, {"alpha": 1});
-			TweenMax.to(pickShipButton2, 0.6 / timeAdjust, {
-						"alpha": 1,
-						"delay": 0.3 / timeAdjust
-					});
-			TweenMax.to(pickShipButton3, 0.6 / timeAdjust, {
-						"alpha": 1,
-						"delay": 0.6 / timeAdjust
-					});
+			TweenMax.to(pickShipButton2, 0.6 / timeAdjust, {"alpha": 1, "delay": 0.3 / timeAdjust});
+			TweenMax.to(pickShipButton3, 0.6 / timeAdjust, {"alpha": 1, "delay": 0.6 / timeAdjust});
 		}
-
+		
 		private function fillShipsArray(param1:int = 0):void
 		{
 			var _loc2_:PickButton = null;
@@ -300,13 +308,13 @@ package startSetup
 			param1++;
 			fillShipsArray(param1);
 		}
-
+		
 		private function resetStf():void
 		{
 			stf.onAnimationFinished();
 			stf.createFadeOutPage("")(null);
 		}
-
+		
 		private function changeSkin(param1:String, param2:PickButton):void
 		{
 			var obj:Object;
@@ -355,140 +363,106 @@ package startSetup
 				skinStats = new StartShipBaseStats(obj, 2);
 			}
 			description.pivotX = description.width / 2;
-			TweenMax.to(description, 0.5 / timeAdjust, {
-						"alpha": 1,
-						"scaleX": 1
-					});
-			TweenMax.to(skinStats, 0.1 / timeAdjust, {
-						"alpha": 0,
-						"onComplete": function():void
-						{
-							skinStats.x = stage.stageWidth / 2 - skinStats.width / 2;
-							skinStats.y = 300;
-							skinStats.alpha = 0;
-							addChild(skinStats);
-							TweenMax.to(skinStats, 0.005, {
-										"alpha": 1,
-										"onComplete": function():void
-										{
-										}
-									});
-						}
-					});
+			TweenMax.to(description, 0.5 / timeAdjust, {"alpha": 1, "scaleX": 1});
+			TweenMax.to(skinStats, 0.1 / timeAdjust, {"alpha": 0, "onComplete": function():void
+			{
+				skinStats.x = stage.stageWidth / 2 - skinStats.width / 2;
+				skinStats.y = 300;
+				skinStats.alpha = 0;
+				addChild(skinStats);
+				TweenMax.to(skinStats, 0.005, {"alpha": 1, "onComplete": function():void
+				{
+				}});
+			}});
 			addAnimatedText(obj.name, 3000, 0, -1, 70, obj.name, 32, 16777215, 16777215, 4000);
 		}
-
+		
 		public function get timer():Date
 		{
 			return _timer;
 		}
-
+		
 		public function set timeStart(param1:int):void
 		{
 			_timeStart = param1;
 		}
-
+		
 		public function get timeStart():int
 		{
 			return _timeStart;
 		}
-
+		
 		public function get progressText():Text
 		{
 			return _progressText;
 		}
-
+		
 		public function get sprite():Sprite
 		{
 			return this;
 		}
-
+		
 		public function get getStage():Stage
 		{
 			return stage;
 		}
-
+		
 		public function set joinName(param1:String):void
 		{
 			_joinName = param1;
 		}
-
+		
 		private function startGameFriendly(param1:Event = null):void
 		{
 			var e:Event = param1;
 			soundManager.preCacheSound("7zeIcPFb-UWzgtR_3nrZ8Q", function():void
+			{
+				pm.cx = -5;
+				pm.cy = -2;
+				soundManager.play("7zeIcPFb-UWzgtR_3nrZ8Q");
+				TweenMax.to(stf, 0.5, {"y": 100, "onComplete": function():void
 				{
-					pm.cx = -5;
-					pm.cy = -2;
-					soundManager.play("7zeIcPFb-UWzgtR_3nrZ8Q");
-					TweenMax.to(stf, 0.5, {
-								"y": 100,
-								"onComplete": function():void
-								{
-									TweenMax.to(description, 0.5, {
-												"y": -100,
-												"onComplete": function():void
-												{
-													removeChild(description, true);
-												}
-											});
-									TweenMax.to(pickShipButton1, 0.5, {
-												"y": -100,
-												"onComplete": function():void
-												{
-													removeChild(pickShipButton1, true);
-												}
-											});
-									TweenMax.to(pickShipButton2, 0.5, {
-												"y": -100,
-												"onComplete": function():void
-												{
-													removeChild(pickShipButton2, true);
-												}
-											});
-									TweenMax.to(pickShipButton3, 0.5, {
-												"y": -100,
-												"onComplete": function():void
-												{
-													removeChild(pickShipButton3, true);
-												}
-											});
-									TweenMax.to(skinStats, 0.5, {
-												"y": -100,
-												"onComplete": function():void
-												{
-													removeChild(skinStats, true);
-												}
-											});
-									TweenMax.delayedCall(3 / timeAdjust, function():void
-										{
-											TweenMax.to(stf, 1 / timeAdjust, {
-														"y": -100,
-														"alpha": 0
-													});
-										});
-									soundManager.preCacheSound("-TW1TY5ePE-mLbzmtSwdKg", function():void
-										{
-											speedUpSpace = true;
-											pm.cx = -5;
-											pm.cy = -2;
-											soundManager.play("-TW1TY5ePE-mLbzmtSwdKg");
-											TweenMax.to(space, 6 / timeAdjust, {
-														"alpha": 0,
-														"ease": Circ.easeIn,
-														"onComplete": function():void
-														{
-															resetStf();
-															addAnimatedText("3 years later...", 3000, 2100, -1, 120, "3years");
-														}
-													});
-										});
-									confirmButton.visible = false;
-								}
-							});
-				});
+					TweenMax.to(description, 0.5, {"y": -100, "onComplete": function():void
+					{
+						removeChild(description, true);
+					}});
+					TweenMax.to(pickShipButton1, 0.5, {"y": -100, "onComplete": function():void
+					{
+						removeChild(pickShipButton1, true);
+					}});
+					TweenMax.to(pickShipButton2, 0.5, {"y": -100, "onComplete": function():void
+					{
+						removeChild(pickShipButton2, true);
+					}});
+					TweenMax.to(pickShipButton3, 0.5, {"y": -100, "onComplete": function():void
+					{
+						removeChild(pickShipButton3, true);
+					}});
+					TweenMax.to(skinStats, 0.5, {"y": -100, "onComplete": function():void
+					{
+						removeChild(skinStats, true);
+					}});
+					TweenMax.delayedCall(3 / timeAdjust, function():void
+					{
+						TweenMax.to(stf, 1 / timeAdjust, {"y": -100, "alpha": 0});
+					});
+					soundManager.preCacheSound("-TW1TY5ePE-mLbzmtSwdKg", function():void
+					{
+						speedUpSpace = true;
+						pm.cx = -5;
+						pm.cy = -2;
+						soundManager.play("-TW1TY5ePE-mLbzmtSwdKg");
+						TweenMax.to(space, 6 / timeAdjust, {"alpha": 0, "ease": Circ.easeIn, "onComplete": function():void
+						{
+							resetStf();
+							addAnimatedText("3 years later...", 3000, 2100, -1, 120, "3years");
+						}});
+					});
+					confirmButton.visible = false;
+				}});
+			});
 		}
-
+		
 		private function startWakeUp():void
 		{
 			speedUpSpace = false;
@@ -499,7 +473,7 @@ package startSetup
 			soundManager.preCacheSound("_BsBOsabf0WbIWdzrshcNg");
 			TweenMax.delayedCall(3 / timeAdjust, wakeUpCaptain);
 		}
-
+		
 		private function wakeUpCaptain():void
 		{
 			pm.randomize();
@@ -523,17 +497,13 @@ package startSetup
 			logBook.text = "We've been forced to abandon our beloved and peaceful home planet Homerus. They have destroyed everything. \n\nThree of us managed to escape in one of the emergency vessels before the alien invasion. We expect to be travelling for 3 years to reach Hyperion, the closest star system. \n\nI hope we make it there. If we get there alive, we need to make an important decision... \n\nAzuron, December 12, year 2149.\nCaptain " + _joinName;
 			logBook.filter = new GlowFilter(3725567);
 			addChild(logBook);
-			TweenMax.to(logBook, 2.5 / timeAdjust, {
-						"alpha": 1,
-						"delay": 1,
-						"onComplete": function():void
-						{
-							confirmButton.y -= 60;
-							addChild(confirmButton);
-						}
-					});
+			TweenMax.to(logBook, 2.5 / timeAdjust, {"alpha": 1, "delay": 1, "onComplete": function():void
+			{
+				confirmButton.y -= 60;
+				addChild(confirmButton);
+			}});
 		}
-
+		
 		private function onCompleteStartUp(param1:Event = null):void
 		{
 			TweenMax.to(logBook, 3, {"alpha": 0});

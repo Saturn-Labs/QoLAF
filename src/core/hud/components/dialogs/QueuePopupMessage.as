@@ -5,12 +5,15 @@ package core.hud.components.dialogs
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
 	import starling.events.TouchEvent;
-
+	
 	public class QueuePopupMessage extends PopupMessage
 	{
 		private var type:String;
+		
 		private var timeText:Text;
+		
 		public var confirmButton:Button;
+		
 		public function QueuePopupMessage(param1:String)
 		{
 			this.type = param1;
@@ -19,7 +22,7 @@ package core.hud.components.dialogs
 			confirmButton = new Button(confirm, "Join Match!", "positive");
 			box.addChild(confirmButton);
 		}
-
+		
 		override protected function keyDown(param1:KeyboardEvent):void
 		{
 			if (param1.keyCode == 13)
@@ -28,25 +31,25 @@ package core.hud.components.dialogs
 				confirm();
 			}
 		}
-
+		
 		public function setPopupText(param1:String):void
 		{
 			switch (type)
 			{
-				case "pvp dm":
-					text = "A Deathmatch is ready for you! Joining in:";
-					break;
-				case "pvp dom":
-					text = "A Domination Team-PvP Match is ready for you! Joining in:";
-					break;
-				case "pvp arena":
-					text = "You've been matched for an Arena fight! Joining in:";
-					break;
-				case "pvp random":
-					text = "You have been matched up for a random pvp battle. Joining in:";
-					break;
-				case "pvp arena ranked":
-					text = "You've been matched for a *RANKED* Arena fight! Joining in:";
+			case "pvp dm": 
+				text = "A Deathmatch is ready for you! Joining in:";
+				break;
+			case "pvp dom": 
+				text = "A Domination Team-PvP Match is ready for you! Joining in:";
+				break;
+			case "pvp arena": 
+				text = "You've been matched for an Arena fight! Joining in:";
+				break;
+			case "pvp random": 
+				text = "You have been matched up for a random pvp battle. Joining in:";
+				break;
+			case "pvp arena ranked": 
+				text = "You've been matched for a *RANKED* Arena fight! Joining in:";
 			}
 			timeText = new Text();
 			timeText.htmlText = param1;
@@ -56,23 +59,23 @@ package core.hud.components.dialogs
 			timeText.color = 16733525;
 			addChild(timeText);
 		}
-
+		
 		public function updateTime(param1:String):void
 		{
 			timeText.htmlText = param1;
 		}
-
+		
 		public function accept():void
 		{
 			dispatchEventWith("accept");
 		}
-
+		
 		protected function confirm(param1:TouchEvent = null):void
 		{
 			dispatchEventWith("accept");
 			removeEventListeners();
 		}
-
+		
 		override protected function redraw(param1:Event = null):void
 		{
 			super.redraw();

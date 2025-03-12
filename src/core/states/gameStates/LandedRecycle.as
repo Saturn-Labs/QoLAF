@@ -23,19 +23,27 @@ package core.states.gameStates
 	import starling.events.TouchEvent;
 	import starling.filters.ColorMatrixFilter;
 	import textures.TextureManager;
-
+	
 	public class LandedRecycle extends LandedState
 	{
 		private var junkTextItems:Array;
+		
 		private var mineralTextItems:Array;
+		
 		private var recycleButton:ImageButton;
+		
 		private var myCargo:Cargo;
+		
 		private var recycling:Boolean = false;
 		private var recycledItems:int = 0;
 		private var takeButton:Button;
+		
 		private var selectAllButton:Button;
+		
 		private var scrollContainer:ScrollContainer;
+		
 		private var scrollContainer2:ScrollContainer;
+		
 		public function LandedRecycle(param1:Game, param2:Body)
 		{
 			scrollContainer = new ScrollContainer();
@@ -45,7 +53,7 @@ package core.states.gameStates
 			junkTextItems = [];
 			mineralTextItems = [];
 		}
-
+		
 		override public function enter():void
 		{
 			super.enter();
@@ -142,7 +150,7 @@ package core.states.gameStates
 			addChild(scrollContainer2);
 			junkReceived();
 		}
-
+		
 		override public function execute():void
 		{
 			if (recycling)
@@ -151,7 +159,7 @@ package core.states.gameStates
 			}
 			super.execute();
 		}
-
+		
 		private function junkReceived():void
 		{
 			var _loc3_:Object = null;
@@ -176,7 +184,7 @@ package core.states.gameStates
 			loadCompleted();
 			addChild(recycleButton);
 		}
-
+		
 		private function createItem(param1:Object, param2:String, param3:int, param4:int, param5:Boolean = false):starling.display.Sprite
 		{
 			var bgr:Quad;
@@ -205,38 +213,26 @@ package core.states.gameStates
 			textQuantity.alignRight();
 			textQuantity.x = 220;
 			obj2 = {};
-			obj2 = {
-					"obj": obj,
-					"itemContainer": itemContainer,
-					"bgr": bgr,
-					"textName": textName,
-					"textQuantity": textQuantity,
-					"quantity": quantity,
-					"selected": false
-				};
+			obj2 = {"obj": obj, "itemContainer": itemContainer, "bgr": bgr, "textName": textName, "textQuantity": textQuantity, "quantity": quantity, "selected": false};
 			if (useTween)
 			{
 				obj2.quantity = 0;
-				TweenMax.to(obj2, 1 + 8 * (1 - 1000 / (1000 + quantity)), {
-							"quantity": quantity,
-							"onUpdate": function():void
-							{
-								textQuantity.text = int(obj2.quantity).toString();
-							},
-							"onComplete": function():void
-							{
-								recycledItems++;
-								if (recycledItems == mineralTextItems.length)
-								{
-									recycling = false;
-									takeButton.enabled = true;
-									if (myCargo.spaceJunkCount > 0)
-									{
-										selectAllButton.enabled = true;
-									}
-								}
-							}
-						});
+				TweenMax.to(obj2, 1 + 8 * (1 - 1000 / (1000 + quantity)), {"quantity": quantity, "onUpdate": function():void
+				{
+					textQuantity.text = int(obj2.quantity).toString();
+				}, "onComplete": function():void
+				{
+					recycledItems++;
+					if (recycledItems == mineralTextItems.length)
+					{
+						recycling = false;
+						takeButton.enabled = true;
+						if (myCargo.spaceJunkCount > 0)
+						{
+							selectAllButton.enabled = true;
+						}
+					}
+				}});
 			}
 			if (type == "mineral")
 			{
@@ -265,7 +261,7 @@ package core.states.gameStates
 			itemContainer.addChild(textQuantity);
 			return itemContainer;
 		}
-
+		
 		private function playRecycleLoop():void
 		{
 			if (!recycling)
@@ -273,11 +269,11 @@ package core.states.gameStates
 				return;
 			}
 			soundManager.play("akOV-VmtrUK-k5pYruy76g", null, function():void
-				{
-					playRecycleLoop();
-				});
+			{
+				playRecycleLoop();
+			});
 		}
-
+		
 		private function createTouch(param1:Object):Function
 		{
 			var obj2:Object = param1;
@@ -332,7 +328,7 @@ package core.states.gameStates
 				}
 			};
 		}
-
+		
 		private function recycle(param1:ImageButton):void
 		{
 			var _loc4_:ISound = SoundLocator.getService();
@@ -354,7 +350,7 @@ package core.states.gameStates
 			ButtonCargo.serverSaysCargoIsFull = false;
 			g.rpcMessage(_loc3_, junkRecycled);
 		}
-
+		
 		private function junkRecycled(param1:Message):void
 		{
 			var _loc2_:int = 0;
@@ -382,20 +378,17 @@ package core.states.gameStates
 				_loc2_++;
 			}
 		}
-
+		
 		private function tweenReduceJunk(param1:Object):void
 		{
 			var obj:Object = param1;
 			var textName:Text = obj.textName;
 			var textQuantity:Text = obj.textQuantity;
 			var itemObj:Object = obj.obj;
-			TweenMax.to(obj, 1 + 8 * (1 - 1000 / (1000 + obj.quantity)), {
-						"quantity": 0,
-						"onUpdate": function():void
-						{
-							textQuantity.text = int(obj.quantity).toString();
-						}
-					});
+			TweenMax.to(obj, 1 + 8 * (1 - 1000 / (1000 + obj.quantity)), {"quantity": 0, "onUpdate": function():void
+			{
+				textQuantity.text = int(obj.quantity).toString();
+			}});
 			textName.color = 4473924;
 			textQuantity.color = 4473924;
 			obj.selected = false;
@@ -407,24 +400,17 @@ package core.states.gameStates
 			obj.itemContainer.useHandCursor = false;
 			obj.itemContainer.removeEventListeners();
 		}
-
+		
 		private function removeMinerals(param1:Event = null):void
 		{
 			var mineralObj:Object;
 			var e:Event = param1;
 			for each (mineralObj in mineralTextItems)
 			{
-				TweenMax.fromTo(mineralObj.itemContainer, 1, {
-							"alpha": 1,
-							"y": mineralObj.itemContainer.y
-						}, {
-							"alpha": 0,
-							"y": mineralObj.itemContainer.y + 200,
-							"onComplete": function():void
-							{
-								removeChild(mineralObj.itemContainer);
-							}
-						});
+				TweenMax.fromTo(mineralObj.itemContainer, 1, {"alpha": 1, "y": mineralObj.itemContainer.y}, {"alpha": 0, "y": mineralObj.itemContainer.y + 200, "onComplete": function():void
+				{
+					removeChild(mineralObj.itemContainer);
+				}});
 			}
 			if (mineralTextItems.length > 0)
 			{
@@ -432,7 +418,7 @@ package core.states.gameStates
 			}
 			mineralTextItems.splice(0, mineralTextItems.length);
 		}
-
+		
 		private function selectAllJunk(param1:Event = null):void
 		{
 			var _loc2_:ColorMatrixFilter = null;

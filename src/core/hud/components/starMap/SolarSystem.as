@@ -15,48 +15,61 @@ package core.hud.components.starMap
 	import starling.events.TouchEvent;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class SolarSystem extends Sprite
 	{
 		public static const EDITOR_TYPE_REGULAR:String = "regular";
-
 		public static const EDITOR_TYPE_DEBUG:String = "debug";
-
 		public static const EDITOR_TYPE_PVP:String = "pvp";
-
 		public static const EDITOR_TYPE_PVP_DOMINATION:String = "pvp dom";
-
 		public static const EDITOR_TYPE_PVP_DM:String = "pvp dm";
-
 		public static const EDITOR_TYPE_PVP_ARENA:String = "pvp arena";
-
 		public static const EDITOR_TYPE_INSTANCE:String = "instance";
-
 		public static const START_SYSTEM:String = "HrAjOBivt0SHPYtxKyiB_Q";
-
 		public var pvpLvlCap:int;
+		
 		public var pvpAboveCap:Boolean;
+		
 		private var _discovered:Boolean;
+		
 		private var _hovered:Boolean;
+		
 		private var _selected:Boolean;
+		
 		private var _currentSolarSystemKey:String;
+		
 		private var obj:Object;
+		
 		public var key:String;
+		
 		public var textureManager:ITextureManager;
+		
 		private var fractionText:TextBitmap;
+		
 		public var nameText:TextBitmap;
+		
 		private var _hasFriends:Boolean = false;
 		private var _hasCrew:Boolean = false;
 		private var destroyed:TextBitmap;
+		
 		private var iconCurrent:Image;
+		
 		private var iconSelected:Image;
+		
 		private var iconHover:Image;
+		
 		private var iconNormal:Image;
+		
 		private var friendBullet:Image;
+		
 		private var crewBullet:Image;
+		
 		public var isPvpSystemInEditor:Boolean;
+		
 		public var type:String;
+		
 		private var g:Game;
+		
 		public function SolarSystem(param1:Game, param2:Object, param3:String, param4:Boolean = true, param5:String = "")
 		{
 			var _loc13_:Number = NaN;
@@ -191,66 +204,66 @@ package core.hud.components.starMap
 			this.addEventListener("touch", onTouch);
 			addEventListener("removedFromStage", clean);
 		}
-
+		
 		public function set discovered(param1:Boolean):void
 		{
 			_discovered = param1;
 			draw();
 		}
-
+		
 		public function get discovered():Boolean
 		{
 			return _discovered;
 		}
-
+		
 		public function get destinations():Array
 		{
 			return obj.destinations;
 		}
-
+		
 		public function set selected(param1:Boolean):void
 		{
 			_selected = param1;
 			draw();
 		}
-
+		
 		public function get size():Number
 		{
 			return obj.size;
 		}
-
+		
 		public function get color():uint
 		{
 			return obj.color;
 		}
-
+		
 		public function set hasFriends(param1:Boolean):void
 		{
 			_hasFriends = param1;
 			draw();
 		}
-
+		
 		public function get hasFriends():Boolean
 		{
 			return _hasFriends;
 		}
-
+		
 		public function set hasCrew(param1:Boolean):void
 		{
 			_hasCrew = param1;
 			draw();
 		}
-
+		
 		public function get hasCrew():Boolean
 		{
 			return _hasCrew;
 		}
-
+		
 		public function get galaxy():String
 		{
 			return obj.galaxy;
 		}
-
+		
 		private function draw():void
 		{
 			if (obj.size == null || obj.color == null)
@@ -305,7 +318,7 @@ package core.hud.components.starMap
 				destroyed.visible = true;
 			}
 		}
-
+		
 		public function get isDestroyed():Boolean
 		{
 			if (key == "DrMy6JjyO0OI0ui7c80bNw" && !isCurrentSolarSystem)
@@ -314,7 +327,7 @@ package core.hud.components.starMap
 			}
 			return false;
 		}
-
+		
 		private function mClick(param1:TouchEvent):void
 		{
 			if (isDestroyed)
@@ -327,7 +340,7 @@ package core.hud.components.starMap
 			_loc2_.play("3hVYqbNNSUWoDGk_pK1BdQ");
 			draw();
 		}
-
+		
 		private function mOver(param1:TouchEvent):void
 		{
 			if (isDestroyed)
@@ -337,7 +350,7 @@ package core.hud.components.starMap
 			_hovered = true;
 			draw();
 		}
-
+		
 		private function mOut(param1:TouchEvent):void
 		{
 			if (isDestroyed)
@@ -347,17 +360,17 @@ package core.hud.components.starMap
 			_hovered = false;
 			draw();
 		}
-
+		
 		public function get dev():Boolean
 		{
 			return obj.dev;
 		}
-
+		
 		public function get isCurrentSolarSystem():Boolean
 		{
 			return key == _currentSolarSystemKey;
 		}
-
+		
 		private function onTouch(param1:TouchEvent):void
 		{
 			if (param1.getTouch(this, "ended"))
@@ -373,13 +386,13 @@ package core.hud.components.starMap
 				mOut(param1);
 			}
 		}
-
+		
 		public function clean(param1:Event = null):void
 		{
 			this.removeEventListeners();
 			dispose();
 		}
-
+		
 		public function getInvasionText():String
 		{
 			return obj.invasionText;

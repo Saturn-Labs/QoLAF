@@ -4,13 +4,17 @@ package core.hud.components.credits
 	import core.scene.Game;
 	import facebook.FB;
 	import starling.events.Event;
-
+	
 	public class FBInviteUnlock extends Button
 	{
 		private var g:Game;
+		
 		private var nrReq:int;
+		
 		private var successCallBack:Function;
+		
 		private var failCallBack:Function;
+		
 		public function FBInviteUnlock(param1:Game, param2:int, param3:Function, param4:Function)
 		{
 			this.g = param1;
@@ -19,13 +23,13 @@ package core.hud.components.credits
 			this.failCallBack = param4;
 			super(invite, "or Invite " + param2 + " Friends", "highlight");
 		}
-
+		
 		public function setNrRequired(param1:int):void
 		{
 			this.nrReq = param1;
 			tf.text = "or Invite " + param1 + " Friends";
 		}
-
+		
 		public function invite(param1:Event):void
 		{
 			var _loc2_:Object = {};
@@ -35,7 +39,7 @@ package core.hud.components.credits
 			_loc2_.filters = ["app_non_users"];
 			FB.ui(_loc2_, onUICallback);
 		}
-
+		
 		private function onUICallback(param1:Object):void
 		{
 			if (param1 == null)

@@ -10,13 +10,17 @@ package core.states.AIStates
 	import core.weapon.Weapon;
 	import flash.geom.Point;
 	import generics.Util;
-
+	
 	public class AITurret implements IState
 	{
 		private var g:Game;
+		
 		private var t:Turret;
+		
 		private var sm:StateMachine;
+		
 		private var me:Player;
+		
 		public function AITurret(param1:Game, param2:Turret)
 		{
 			super();
@@ -24,11 +28,11 @@ package core.states.AIStates
 			this.t = param2;
 			this.me = param1.me;
 		}
-
+		
 		public function enter():void
 		{
 		}
-
+		
 		public function execute():void
 		{
 			if (me == null)
@@ -69,7 +73,7 @@ package core.states.AIStates
 			t.updateWeapons();
 			t.rotation = _loc1_;
 		}
-
+		
 		public function aim():void
 		{
 			var _loc11_:Point = null;
@@ -102,16 +106,16 @@ package core.states.AIStates
 				t.rotation = Math.atan2(_loc3_ - _loc11_.y, _loc4_ - _loc11_.x);
 			}
 		}
-
+		
 		public function exit():void
 		{
 		}
-
+		
 		public function set stateMachine(param1:StateMachine):void
 		{
 			this.sm = param1;
 		}
-
+		
 		public function get type():String
 		{
 			return "AITurret";

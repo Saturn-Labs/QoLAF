@@ -19,7 +19,7 @@ package core.hud.components.map
 	import starling.events.Event;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class Map extends Sprite
 	{
 		public static var SCALE:Number = 0.1;
@@ -29,23 +29,29 @@ package core.hud.components.map
 		public static var PADDING:Number = 31;
 		public var clearedFraction:Number = 0;
 		private var mapBgr:Image;
+		
 		private var mapContainer:Sprite;
+		
 		private var coords:TextBitmap;
+		
 		private var mapPlayers:Vector.<MapPlayer>;
-
+		
 		private var mapBodies:Vector.<MapBodyBase>;
-
+		
 		private var mapSpawners:Vector.<MapSpawner>;
-
+		
 		private var mapBosses:Vector.<MapBoss>;
-
+		
 		private var mapDeathLines:Vector.<MapDeathLine>;
-
+		
 		private var mapLastKilled:MapKilled;
+		
 		private var pvpZones:Vector.<MapPvpZone>;
-
+		
 		private var closeButton:ButtonExpandableHud;
+		
 		private var g:Game;
+		
 		public function Map(param1:Game)
 		{
 			mapContainer = new Sprite();
@@ -59,7 +65,7 @@ package core.hud.components.map
 			this.g = param1;
 			super();
 		}
-
+		
 		public function load(param1:Number = 0.1, param2:Number = 698, param3:Number = 538, param4:Number = 31, param5:Number = 10, param6:Boolean = false):void
 		{
 			var textureManager:ITextureManager;
@@ -255,9 +261,9 @@ package core.hud.components.map
 				addChild(coords);
 			}
 			closeButton = new ButtonExpandableHud(function():void
-				{
-					dispatchEvent(new Event("close"));
-				}, Localize.t("close"));
+			{
+				dispatchEvent(new Event("close"));
+			}, Localize.t("close"));
 			closeButton.x = 760 - 46 - closeButton.width;
 			closeButton.y = 0;
 			if (!pvpMode)
@@ -265,13 +271,13 @@ package core.hud.components.map
 				addChild(closeButton);
 			}
 		}
-
+		
 		public function playerJoined(param1:Player):void
 		{
 			var _loc2_:MapPlayer = new MapPlayer(mapContainer, param1, g, g.solarSystem.type == "pvp dom");
 			mapPlayers.push(_loc2_);
 		}
-
+		
 		public function update():void
 		{
 			var _loc1_:DisplayObject = null;
@@ -308,7 +314,7 @@ package core.hud.components.map
 			}
 			mapLastKilled.update();
 		}
-
+		
 		override public function dispose():void
 		{
 			for each (var _loc1_:* in mapDeathLines)

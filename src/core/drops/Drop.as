@@ -12,25 +12,38 @@ package core.drops
 	import playerio.Message;
 	import sound.ISound;
 	import sound.SoundLocator;
-
+	
 	public class Drop extends GameObject
 	{
 		public var key:String;
+		
 		public var collisionRadius:Number;
+		
 		public var speed:Point;
+		
 		public var size:int;
+		
 		public var quantity:int;
+		
 		public var expireTime:Number;
+		
 		public var tractorBeamPlayer:Player;
+		
 		public var effect:Vector.<Emitter>;
-
+		
 		public var expired:Boolean;
+		
 		protected var _picked:Boolean;
+		
 		protected var g:Game;
+		
 		private var fadeTween:TweenMax = null;
 		private var randAngleSpeed:Number;
+		
 		private var beamLine:BeamLine;
+		
 		public var obj:Object;
+		
 		public function Drop(param1:Game)
 		{
 			speed = new Point();
@@ -41,7 +54,7 @@ package core.drops
 			beamLine.init(1, 3, 3, 11184895, 0.6, 3, 6724095);
 			randAngleSpeed = Math.random() / 12;
 		}
-
+		
 		public function pickup(param1:Player, param2:Message, param3:int):Boolean
 		{
 			var _loc4_:PlayerShip = null;
@@ -70,7 +83,7 @@ package core.drops
 			expire();
 			return true;
 		}
-
+		
 		override public function update():void
 		{
 			tractorBeamUpdate();
@@ -96,7 +109,7 @@ package core.drops
 				nextDistanceCalculation -= 33;
 			}
 		}
-
+		
 		public function updateIsNear():void
 		{
 			if (g.me.ship == null)
@@ -128,7 +141,7 @@ package core.drops
 				removeFromCanvas();
 			}
 		}
-
+		
 		public function addToCanvasForReal():void
 		{
 			if (!effect && !expired)
@@ -142,7 +155,7 @@ package core.drops
 			g.hud.radar.add(this);
 			addToCanvas();
 		}
-
+		
 		public function tractorBeamUpdate():void
 		{
 			if (!isAddedToCanvas || tractorBeamPlayer == null || tractorBeamPlayer.ship == null || tractorBeamPlayer.ship.course == null)
@@ -163,7 +176,7 @@ package core.drops
 			speed.x = _loc2_ * _loc7_;
 			speed.y = _loc4_ * _loc7_;
 		}
-
+		
 		public function expire():void
 		{
 			if (effect)
@@ -180,7 +193,7 @@ package core.drops
 			_picked = false;
 			expired = true;
 		}
-
+		
 		override public function reset():void
 		{
 			collisionRadius = 0;
@@ -205,13 +218,13 @@ package core.drops
 			g.beamLinePool.removeLine(beamLine);
 			super.reset();
 		}
-
+		
 		override public function draw():void
 		{
 			drawBeamEffect();
 			super.draw();
 		}
-
+		
 		private function drawBeamEffect():void
 		{
 			if (!isAddedToCanvas || tractorBeamPlayer == null || tractorBeamPlayer.ship == null || beamLine == null)
@@ -243,13 +256,13 @@ package core.drops
 			beamLine.y = this.pos.y;
 			beamLine.lineTo(_loc1_.x, _loc1_.y);
 		}
-
+		
 		override public function addToCanvas():void
 		{
 			canvas.addChild(beamLine);
 			super.addToCanvas();
 		}
-
+		
 		override public function removeFromCanvas():void
 		{
 			var _loc1_:int = 0;

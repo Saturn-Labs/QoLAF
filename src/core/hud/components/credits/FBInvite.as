@@ -5,16 +5,17 @@ package core.hud.components.credits
 	import facebook.FB;
 	import playerio.Message;
 	import starling.events.Event;
-
+	
 	public class FBInvite extends Button
 	{
 		private var g:Game;
+		
 		public function FBInvite(param1:Game)
 		{
 			this.g = param1;
 			super(invite, "Invite friends", "positive");
 		}
-
+		
 		public function invite(param1:Event):void
 		{
 			var _loc2_:Object = {};
@@ -24,7 +25,7 @@ package core.hud.components.credits
 			_loc2_.filters = ["app_non_users"];
 			FB.ui(_loc2_, onUICallback);
 		}
-
+		
 		private function onUICallback(param1:Object):void
 		{
 			var _loc3_:Message = null;

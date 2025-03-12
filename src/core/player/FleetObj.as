@@ -3,7 +3,7 @@ package core.player
 	import data.DataLocator;
 	import data.IDataManager;
 	import playerio.Message;
-
+	
 	public class FleetObj
 	{
 		public var skin:String = "";
@@ -14,14 +14,18 @@ package core.player
 		public var engineHue:Number = 0;
 		public var activeWeapon:String = "";
 		public var activeArtifactSetup:int;
+		
 		public var lastUsed:Number = 0;
 		public var weapons:Array;
+		
 		public var weaponsState:Array;
+		
 		public var weaponsHotkeys:Array;
+		
 		public var techSkills:Vector.<TechSkill>;
-
+		
 		public var nrOfUpgrades:Vector.<int>;
-
+		
 		public function FleetObj()
 		{
 			weapons = [];
@@ -31,7 +35,7 @@ package core.player
 			nrOfUpgrades = Vector.<int>([0, 0, 0, 0, 0, 0, 0]);
 			super();
 		}
-
+		
 		public function initFromSkin(param1:String):void
 		{
 			var _loc4_:TechSkill = null;
@@ -49,28 +53,28 @@ package core.player
 				techSkills.push(_loc4_);
 				if (_loc5_.table == "Weapons")
 				{
-					weapons.push( {"weapon": _loc5_.tech});
+					weapons.push({"weapon": _loc5_.tech});
 					weaponsState.push(false);
 					weaponsHotkeys.push(0);
 				}
 			}
 		}
-
+		
 		public function initFromMessage(param1:Message, param2:int):int
 		{
-			skin = param1.getString(param2++ );
-			activeArtifactSetup = param1.getInt(param2++ );
-			activeWeapon = param1.getString(param2++ );
-			shipHue = param1.getNumber(param2++ );
-			shipBrightness = param1.getNumber(param2++ );
-			shipSaturation = param1.getNumber(param2++ );
-			shipContrast = param1.getNumber(param2++ );
-			engineHue = param1.getNumber(param2++ );
-			lastUsed = param1.getNumber(param2++ );
+			skin = param1.getString(param2++);
+			activeArtifactSetup = param1.getInt(param2++);
+			activeWeapon = param1.getString(param2++);
+			shipHue = param1.getNumber(param2++);
+			shipBrightness = param1.getNumber(param2++);
+			shipSaturation = param1.getNumber(param2++);
+			shipContrast = param1.getNumber(param2++);
+			engineHue = param1.getNumber(param2++);
+			lastUsed = param1.getNumber(param2++);
 			param2 = initWeaponsFromMessage(param1, param2);
 			return initTechSkillsFromMessage(param1, param2, skin);
 		}
-
+		
 		private function initWeaponsFromMessage(param1:Message, param2:int):int
 		{
 			var _loc4_:int = 0;
@@ -81,14 +85,14 @@ package core.player
 			_loc4_ = param2 + 1;
 			while (_loc4_ < param2 + _loc3_ * 3 + 1)
 			{
-				weapons.push( {"weapon": param1.getString(_loc4_)});
+				weapons.push({"weapon": param1.getString(_loc4_)});
 				weaponsState.push(param1.getBoolean(_loc4_ + 1));
 				weaponsHotkeys.push(param1.getInt(_loc4_ + 2));
 				_loc4_ += 3;
 			}
 			return _loc4_;
 		}
-
+		
 		private function initTechSkillsFromMessage(param1:Message, param2:int, param3:String):int
 		{
 			var _loc9_:int = 0;

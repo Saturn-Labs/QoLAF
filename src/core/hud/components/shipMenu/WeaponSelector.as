@@ -14,13 +14,15 @@ package core.hud.components.shipMenu
 	import starling.textures.Texture;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class WeaponSelector extends Sprite
 	{
 		private var g:Game;
+		
 		private var p:Player;
+		
 		private var icons:Vector.<MenuSelectIcon>;
-
+		
 		public function WeaponSelector(param1:Game, param2:Player)
 		{
 			icons = new Vector.<MenuSelectIcon>();
@@ -29,7 +31,7 @@ package core.hud.components.shipMenu
 			this.p = param2;
 			load();
 		}
-
+		
 		private function load():void
 		{
 			var _loc4_:int = 0;
@@ -65,7 +67,7 @@ package core.hud.components.shipMenu
 				_loc4_++;
 			}
 		}
-
+		
 		private function addWeaponSelectIcon(param1:int, param2:Texture, param3:String, param4:Boolean = true, param5:Boolean = false, param6:Boolean = false, param7:String = null, param8:String = null):void
 		{
 			var i:int = param1;
@@ -83,29 +85,29 @@ package core.hud.components.shipMenu
 			if (!locked)
 			{
 				weaponSelectIcon.addEventListener("touch", function(param1:TouchEvent):void
+				{
+					if (param1.getTouch(weaponSelectIcon, "ended"))
 					{
-						if (param1.getTouch(weaponSelectIcon, "ended"))
-						{
-							dispatchEventWith("changeWeapon", false, weaponSelectIcon.number);
-						}
-					});
+						dispatchEventWith("changeWeapon", false, weaponSelectIcon.number);
+					}
+				});
 			}
 			else if (locked && enabled)
 			{
 				weaponSelectIcon.addEventListener("touch", function(param1:TouchEvent):void
+				{
+					if (param1.getTouch(weaponSelectIcon, "ended"))
 					{
-						if (param1.getTouch(weaponSelectIcon, "ended"))
-						{
-							openUnlockSlot(weaponSelectIcon.number);
-						}
-					});
+						openUnlockSlot(weaponSelectIcon.number);
+					}
+				});
 			}
 			if (tooltip != null)
 			{
 				new ToolTip(g, weaponSelectIcon, tooltip, null, "HomeState");
 			}
 		}
-
+		
 		private function openUnlockSlot(param1:int):void
 		{
 			var fluxCost:int;
@@ -121,29 +123,29 @@ package core.hud.components.shipMenu
 			{
 				buyBox.addBuyForFluxButton(fluxCost, number, "buyWeaponSlotWithFlux", "Are you sure you want to buy a weapon slot?");
 				buyBox.addEventListener("fluxBuy", function(param1:Event):void
-					{
-						Game.trackEvent("used flux", "bought weapon slot", "number " + number);
-						p.unlockedWeaponSlots = number;
-						g.removeChildFromOverlay(buyBox, true);
-						refresh();
-					});
+				{
+					Game.trackEvent("used flux", "bought weapon slot", "number " + number);
+					p.unlockedWeaponSlots = number;
+					g.removeChildFromOverlay(buyBox, true);
+					refresh();
+				});
 			}
 			buyBox.addEventListener("accept", function(param1:Event):void
-				{
-					var e:Event = param1;
-					g.me.tryUnlockSlot("slotWeapon", number, function():void
-						{
-							g.removeChildFromOverlay(buyBox, true);
-							refresh();
-						});
-				});
-			buyBox.addEventListener("close", function(param1:Event):void
+			{
+				var e:Event = param1;
+				g.me.tryUnlockSlot("slotWeapon", number, function():void
 				{
 					g.removeChildFromOverlay(buyBox, true);
+					refresh();
 				});
+			});
+			buyBox.addEventListener("close", function(param1:Event):void
+			{
+				g.removeChildFromOverlay(buyBox, true);
+			});
 			g.addChildToOverlay(buyBox);
 		}
-
+		
 		public function refresh():void
 		{
 			for each (var _loc1_:* in icons)
@@ -156,7 +158,7 @@ package core.hud.components.shipMenu
 			icons = new Vector.<MenuSelectIcon>();
 			load();
 		}
-
+		
 		override public function dispose():void
 		{
 			for each (var _loc1_:* in icons)

@@ -8,24 +8,33 @@ package core.turret
 	import core.weapon.Weapon;
 	import flash.geom.Point;
 	import generics.Util;
-
+	
 	public class Turret extends Unit
 	{
 		public var weapon:Weapon;
+		
 		public var aimSkill:Number;
+		
 		public var aimArc:Number;
+		
 		public var target:Ship;
+		
 		public var visionRange:int;
+		
 		public var offset:Point;
+		
 		public var startAngle:Number;
+		
 		public var angleTargetPos:Point;
+		
 		public var rotationSpeed:Number;
+		
 		public function Turret(param1:Game)
 		{
 			weaponPos = new Point();
 			super(param1);
 		}
-
+		
 		override public function update():void
 		{
 			if (!alive || !active)
@@ -71,7 +80,7 @@ package core.turret
 			}
 			super.update();
 		}
-
+		
 		public function updateRotation():void
 		{
 			var _loc7_:Number = NaN;
@@ -143,7 +152,7 @@ package core.turret
 				}
 			}
 		}
-
+		
 		public function updateWeapons():void
 		{
 			if (weapon != null)
@@ -151,7 +160,7 @@ package core.turret
 				weapon.update();
 			}
 		}
-
+		
 		override public function destroy(param1:Boolean = true):void
 		{
 			hpBar.visible = false;
@@ -159,7 +168,7 @@ package core.turret
 			visible = false;
 			super.destroy(param1);
 		}
-
+		
 		public function rebuild():void
 		{
 			hp = hpMax;
@@ -169,17 +178,17 @@ package core.turret
 			visible = true;
 			alive = true;
 		}
-
+		
 		override public function set id(param1:int):void
 		{
 			super.id = param1;
 		}
-
+		
 		override public function get id():int
 		{
 			return super.id;
 		}
-
+		
 		override public function get type():String
 		{
 			return "turret";

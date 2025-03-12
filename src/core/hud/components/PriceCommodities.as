@@ -8,22 +8,32 @@ package core.hud.components
 	import starling.display.Sprite;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class PriceCommodities extends Sprite
 	{
 		private static const THRESHHOLD:int = 10000;
-
 		public var table:String;
+		
 		public var item:String;
+		
 		public var amount:int;
+		
 		public var type:String;
+		
 		private var dataManager:IDataManager;
+		
 		private var textureManager:ITextureManager;
+		
 		private var itemImage:Image;
+		
 		private var nameText:Text;
+		
 		private var quantityText:Text;
+		
 		private var color:uint;
+		
 		private var sb:SceneBase;
+		
 		public function PriceCommodities(param1:SceneBase, param2:String, param3:int, param4:String = "", param5:int = -1)
 		{
 			nameText = new Text();
@@ -54,12 +64,12 @@ package core.hud.components
 			}
 			load();
 		}
-
+		
 		public function canAfford():Boolean
 		{
 			return sb.myCargo.hasCommodities(item, amount);
 		}
-
+		
 		public function load():void
 		{
 			if (sb.myCargo.hasCommodities(item, amount))

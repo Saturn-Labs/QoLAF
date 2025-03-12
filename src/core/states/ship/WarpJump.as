@@ -8,22 +8,25 @@ package core.states.ship
 	import core.states.StateMachine;
 	import sound.ISound;
 	import sound.SoundLocator;
-
+	
 	public class WarpJump implements IState
 	{
 		private var ship:PlayerShip;
+		
 		private var sm:StateMachine;
+		
 		private var g:Game;
+		
 		private var hyperDriveEngaged:Boolean = false;
 		private var warpJumpEffect:Vector.<Emitter>;
-
+		
 		public function WarpJump(param1:Game, param2:PlayerShip)
 		{
 			super();
 			this.g = param1;
 			this.ship = param2;
 		}
-
+		
 		public function enter():void
 		{
 			var soundManager:ISound;
@@ -36,16 +39,16 @@ package core.states.ship
 			{
 				soundManager = SoundLocator.getService();
 				soundManager.play("-TW1TY5ePE-mLbzmtSwdKg", function():void
-					{
-						ship.accelerate = true;
-					});
+				{
+					ship.accelerate = true;
+				});
 			}
 			else
 			{
 				ship.accelerate = true;
 			}
 		}
-
+		
 		public function execute():void
 		{
 			ship.rotation = 0;
@@ -68,7 +71,7 @@ package core.states.ship
 			ship.updateHeading();
 			ship.engine.update();
 		}
-
+		
 		public function exit():void
 		{
 			for each (var _loc1_:* in warpJumpEffect)
@@ -76,12 +79,12 @@ package core.states.ship
 				_loc1_.killEmitter();
 			}
 		}
-
+		
 		public function get type():String
 		{
 			return "WarpJump";
 		}
-
+		
 		public function set stateMachine(param1:StateMachine):void
 		{
 			this.sm = param1;

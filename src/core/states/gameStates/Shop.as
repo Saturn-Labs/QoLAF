@@ -26,20 +26,31 @@ package core.states.gameStates
 	import starling.events.TouchEvent;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class Shop extends Sprite
 	{
 		private var g:Game;
+		
 		private var container:Sprite;
+		
 		private var infoContainer:Sprite;
+		
 		private var bg:Image;
+		
 		private var items:Array;
+		
 		private var closeButton:ButtonExpandableHud;
+		
 		private var balance:CreditLabel;
+		
 		private var textureManager:ITextureManager;
+		
 		private var redeemButton:Button;
+		
 		private var state:String;
+		
 		private var pods:CreditPods;
+		
 		public function Shop(param1:Game, param2:String = "")
 		{
 			var g:Game = param1;
@@ -53,11 +64,11 @@ package core.states.gameStates
 			this.state = state;
 			textureManager = TextureLocator.getService();
 			closeButton = new ButtonExpandableHud(function():void
-				{
-					dispatchEventWith("close");
-				}, Localize.t("close"));
+			{
+				dispatchEventWith("close");
+			}, Localize.t("close"));
 		}
-
+		
 		public function load(param1:Function):void
 		{
 			var name:TextBitmap;
@@ -91,19 +102,19 @@ package core.states.gameStates
 			addChild(balance);
 			refreshCreditManager();
 			getMoreButton = new Button(function():void
+			{
+				var buyFlux:BuyFlux;
+				select(pods);
+				buyFlux = new BuyFlux(g);
+				buyFlux.addEventListener("buyFluxClose", function():void
 				{
-					var buyFlux:BuyFlux;
-					select(pods);
-					buyFlux = new BuyFlux(g);
-					buyFlux.addEventListener("buyFluxClose", function():void
-						{
-							buyFlux.removeEventListeners("buyFluxClose");
-							g.removeChildFromOverlay(buyFlux);
-							refreshCreditManager();
-							getMoreButton.enabled = true;
-						});
-					g.addChildToOverlay(buyFlux);
-				}, Localize.t("Get more"), "positive");
+					buyFlux.removeEventListeners("buyFluxClose");
+					g.removeChildFromOverlay(buyFlux);
+					refreshCreditManager();
+					getMoreButton.enabled = true;
+				});
+				g.addChildToOverlay(buyFlux);
+			}, Localize.t("Get more"), "positive");
 			getMoreButton.x = balance.x + 45;
 			getMoreButton.y = balance.y;
 			getMoreButton.alignWithText();
@@ -118,7 +129,7 @@ package core.states.gameStates
 			loadItems();
 			callback();
 		}
-
+		
 		private function loadItems():void
 		{
 			var _loc8_:int = 0;
@@ -208,7 +219,7 @@ package core.states.gameStates
 				pods.select();
 			}
 		}
-
+		
 		private function onRedeem(param1:TouchEvent):void
 		{
 			var redeem:Redeem;
@@ -216,34 +227,34 @@ package core.states.gameStates
 			select(pods);
 			redeem = new Redeem(g);
 			redeem.addEventListener("close", function(param1:Event):void
-				{
-					redeem.removeEventListeners();
-					g.removeChildFromOverlay(redeem);
-					redeemButton.enabled = true;
-				});
+			{
+				redeem.removeEventListeners();
+				g.removeChildFromOverlay(redeem);
+				redeemButton.enabled = true;
+			});
 			redeem.addEventListener("success", function(param1:Event):void
-				{
-					redeem.removeEventListeners();
-					g.removeChildFromOverlay(redeem);
-					dispatchEventWith("close");
-				});
+			{
+				redeem.removeEventListeners();
+				g.removeChildFromOverlay(redeem);
+				dispatchEventWith("close");
+			});
 			g.addChildToOverlay(redeem);
 		}
-
+		
 		private function refreshCreditManager():void
 		{
 			g.creditManager.refresh(function():void
-				{
-					updateCreditText();
-				});
+			{
+				updateCreditText();
+			});
 		}
-
+		
 		private function updateCreditText(param1:Event = null):void
 		{
 			balance.text = Localize.t("You have: ") + CreditManager.FLUX;
 			balance.alignRight();
 		}
-
+		
 		private function onSelect(param1:TouchEvent):void
 		{
 			var _loc2_:ICreditItem = param1.target as ICreditItem;
@@ -255,13 +266,13 @@ package core.states.gameStates
 				}
 			}
 		}
-
+		
 		private function select(param1:ICreditItem):void
 		{
 			deselectAll();
 			param1.select();
 		}
-
+		
 		private function deselectAll():void
 		{
 			for each (var _loc1_:* in items)
@@ -269,7 +280,7 @@ package core.states.gameStates
 				_loc1_.deselect();
 			}
 		}
-
+		
 		private function bought(param1:Event):void
 		{
 			refreshCreditManager();
@@ -278,11 +289,11 @@ package core.states.gameStates
 				_loc2_.update();
 			}
 		}
-
+		
 		public function update():void
 		{
 		}
-
+		
 		public function exit():void
 		{
 			for each (var _loc2_:* in items)

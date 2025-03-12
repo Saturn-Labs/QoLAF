@@ -11,16 +11,21 @@ package core.hud.components.hotkeys
 	import starling.display.DisplayObjectContainer;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class WeaponHotkeys extends DisplayObjectContainer
 	{
 		private var g:Game;
+		
 		public var selectedHotkey:WeaponHotkey;
+		
 		private var hotkeys:Vector.<WeaponHotkey>;
-
+		
 		private var ship:PlayerShip;
+		
 		private var player:Player;
+		
 		private var textureManager:ITextureManager;
+		
 		public function WeaponHotkeys(param1:Game)
 		{
 			super();
@@ -28,7 +33,7 @@ package core.hud.components.hotkeys
 			textureManager = TextureLocator.getService();
 			hotkeys = new Vector.<WeaponHotkey>();
 		}
-
+		
 		public function load():void
 		{
 			var _loc2_:Object = null;
@@ -62,22 +67,22 @@ package core.hud.components.hotkeys
 			}
 			highlightWeapon(ship.weapons[player.selectedWeaponIndex].hotkey);
 		}
-
+		
 		private function createWeaponToolTip(param1:Weapon):String
 		{
 			return param1.getDescription(param1 is Beam);
 		}
-
+		
 		private function clickedHotkey(param1:WeaponHotkey):void
 		{
 			player.sendChangeWeapon(param1.key);
 			selectedHotkey = param1;
 		}
-
+		
 		public function reloadWeapon():void
 		{
 		}
-
+		
 		public function highlightWeapon(param1:int):void
 		{
 			for each (var _loc2_:* in hotkeys)
@@ -93,7 +98,7 @@ package core.hud.components.hotkeys
 				}
 			}
 		}
-
+		
 		public function update():void
 		{
 			for each (var _loc1_:* in hotkeys)
@@ -101,7 +106,7 @@ package core.hud.components.hotkeys
 				_loc1_.update();
 			}
 		}
-
+		
 		public function refresh():void
 		{
 			ToolTip.disposeType("WeaponHotkeys");

@@ -25,53 +25,32 @@ package core.hud.components.cargo
 	import starling.textures.Texture;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class Cargo extends Sprite
 	{
 		private static const TYPE_MINERAL:String = "mineral";
-
 		private static const TYPE_SPACE_JUNK:String = "spaceJunk";
-
 		private static const TYPE_DATA_ITEM:String = "dataItem";
-
-		private static const upgradeCosts:Array = new Array( {"9PxxP960kkejxGFHhy608A": 0}, {"9PxxP960kkejxGFHhy608A": 20}, {
-					"h2-67R6yGEmPpWkPHATIeQ": 20,
-					"lmPr7d35rkq0Ev6RQRJGVw": 1
-				}, {
-					"hZ2FpZBh-kmRldjIi3rEwg": 30,
-					"Q-4DCSknqkaIGa1016-ggA": 1,
-					"K0RisGHC2UqZks1UVcYFOA": 1
-				}, {
-					"-1XaRBMHpEyTJxGsUtxGXw": 35,
-					"fPujzCjldEeJflK-PnPvBQ": 2,
-					"Q-4DCSknqkaIGa1016-ggA": 1
-				}, {
-					"1c46ec4C1UyRzxzv8hRqvw": 80,
-					"-1XaRBMHpEyTJxGsUtxGXw": 35,
-					"K0RisGHC2UqZks1UVcYFOA": 10,
-					"lmPr7d35rkq0Ev6RQRJGVw": 5
-				}, {
-					"1c46ec4C1UyRzxzv8hRqvw": 100,
-					"Q-4DCSknqkaIGa1016-ggA": 20,
-					"fPujzCjldEeJflK-PnPvBQ": 20,
-					"K0RisGHC2UqZks1UVcYFOA": 20,
-					"lmPr7d35rkq0Ev6RQRJGVw": 15
-				});
-
+		private static const upgradeCosts:Array = new Array({"9PxxP960kkejxGFHhy608A": 0}, {"9PxxP960kkejxGFHhy608A": 20}, {"h2-67R6yGEmPpWkPHATIeQ": 20, "lmPr7d35rkq0Ev6RQRJGVw": 1}, {"hZ2FpZBh-kmRldjIi3rEwg": 30, "Q-4DCSknqkaIGa1016-ggA": 1, "K0RisGHC2UqZks1UVcYFOA": 1}, {"-1XaRBMHpEyTJxGsUtxGXw": 35, "fPujzCjldEeJflK-PnPvBQ": 2, "Q-4DCSknqkaIGa1016-ggA": 1}, {"1c46ec4C1UyRzxzv8hRqvw": 80, "-1XaRBMHpEyTJxGsUtxGXw": 35, "K0RisGHC2UqZks1UVcYFOA": 10, "lmPr7d35rkq0Ev6RQRJGVw": 5}, {"1c46ec4C1UyRzxzv8hRqvw": 100, "Q-4DCSknqkaIGa1016-ggA": 20, "fPujzCjldEeJflK-PnPvBQ": 20, "K0RisGHC2UqZks1UVcYFOA": 20, "lmPr7d35rkq0Ev6RQRJGVw": 15});
 		private var _commodities:Vector.<CargoItem>;
-
+		
 		private var _spaceJunk:Vector.<CargoItem>;
-
+		
 		private var _dataItems:Vector.<CargoItem>;
-
+		
 		private var _minerals:Vector.<CargoItem>;
-
+		
 		private var playerId:String;
+		
 		private var g:Game;
+		
 		private var container:ScrollContainer;
+		
 		private var confirmBox:PopupConfirmMessage = null;
 		private var upgradeNames:Array;
+		
 		public var compressorCapacities:Array;
+		
 		public var spaceJunkCount:int = 0;
 		public function Cargo(param1:Game, param2:String)
 		{
@@ -87,39 +66,39 @@ package core.hud.components.cargo
 			this.playerId = param2;
 			param1.addMessageHandler("cargoIsFull", handleServerSaysCargoIsFull);
 		}
-
+		
 		private function handleServerSaysCargoIsFull(param1:Message):void
 		{
 			ButtonCargo.serverSaysCargoIsFull = true;
 			g.hud.cargoButton.update();
 		}
-
+		
 		public function reloadCargoView(param1:Function = null):void
 		{
 			var callback:Function = param1;
 			reloadCargoFromServer(function():void
+			{
+				draw();
+				if (callback != null)
 				{
-					draw();
-					if (callback != null)
-					{
-						callback();
-					}
-				});
+					callback();
+				}
+			});
 		}
-
+		
 		public function reloadCargoFromServer(param1:Function = null):void
 		{
 			var callback:Function = param1;
 			g.rpc("getCargo", function(param1:Message):void
+			{
+				cargoRecieved(param1);
+				if (callback != null)
 				{
-					cargoRecieved(param1);
-					if (callback != null)
-					{
-						callback();
-					}
-				}, playerId, "Commodities");
+					callback();
+				}
+			}, playerId, "Commodities");
 		}
-
+		
 		private function cargoRecieved(param1:Message):void
 		{
 			var table:String;
@@ -158,39 +137,39 @@ package core.hud.components.cargo
 				i += 4;
 			}
 			_spaceJunk.sort(function(param1:CargoItem, param2:CargoItem):int
+			{
+				if (param1.amount > param2.amount)
 				{
-					if (param1.amount > param2.amount)
-					{
-						return -1;
-					}
-					return 1;
-				});
+					return -1;
+				}
+				return 1;
+			});
 			for each (ci2 in spaceJunk)
 			{
 				spaceJunkCount += ci2.amount;
 			}
 		}
-
+		
 		public function get commoditites():Vector.<CargoItem>
 		{
 			return _commodities;
 		}
-
+		
 		public function get spaceJunk():Vector.<CargoItem>
 		{
 			return _spaceJunk;
 		}
-
+		
 		public function get minerals():Vector.<CargoItem>
 		{
 			return _minerals;
 		}
-
+		
 		public function get dataItems():Vector.<CargoItem>
 		{
 			return _dataItems;
 		}
-
+		
 		public function hasMinerals(param1:String, param2:int):Boolean
 		{
 			for each (var _loc3_:* in _minerals)
@@ -202,7 +181,7 @@ package core.hud.components.cargo
 			}
 			return false;
 		}
-
+		
 		public function hasCommodities(param1:String, param2:int):Boolean
 		{
 			for each (var _loc3_:* in _commodities)
@@ -214,7 +193,7 @@ package core.hud.components.cargo
 			}
 			return false;
 		}
-
+		
 		private function draw(param1:Boolean = false):void
 		{
 			var junkCapacityBar:Quad;
@@ -276,71 +255,71 @@ package core.hud.components.cargo
 			capacityHeadline.y = junkPercText.y + junkPercText.height + 5;
 			addChild(capacityHeadline);
 			ejectButton = new Button(function():void
-				{
-					confirmBox = new PopupConfirmMessage(Localize.t("Yes, do it!"), Localize.t("No!"));
-					confirmBox.text = Localize.t("Are you really sure you want to drop ALL of your cargo?");
-					g.addChildToOverlay(confirmBox, true);
-					confirmBox.addEventListener("accept", onAccept);
-					confirmBox.addEventListener("close", onClose);
-				}, Localize.t("Eject Cargo"), "negative");
+			{
+				confirmBox = new PopupConfirmMessage(Localize.t("Yes, do it!"), Localize.t("No!"));
+				confirmBox.text = Localize.t("Are you really sure you want to drop ALL of your cargo?");
+				g.addChildToOverlay(confirmBox, true);
+				confirmBox.addEventListener("accept", onAccept);
+				confirmBox.addEventListener("close", onClose);
+			}, Localize.t("Eject Cargo"), "negative");
 			ejectButton.x = 525;
 			ejectButton.y = -33;
 			addChild(ejectButton);
 			button = new Button(function():void
+			{
+				var fluxCost:int;
+				var costs:Object;
+				var type:String;
+				var newlevel:int = g.me.compressorLevel + 1;
+				var buyBox:PopupBuyMessage = new PopupBuyMessage(g);
+				buyBox.text = Localize.t("Upgrade Compressor");
+				fluxCost = CreditManager.getCostCompressor(newlevel);
+				costs = upgradeCosts[newlevel];
+				for (type in costs)
 				{
-					var fluxCost:int;
-					var costs:Object;
-					var type:String;
-					var newlevel:int = g.me.compressorLevel + 1;
-					var buyBox:PopupBuyMessage = new PopupBuyMessage(g);
-					buyBox.text = Localize.t("Upgrade Compressor");
-					fluxCost = CreditManager.getCostCompressor(newlevel);
-					costs = upgradeCosts[newlevel];
-					for (type in costs)
+					buyBox.addCost(new PriceCommodities(g, type, costs[type]));
+				}
+				if (fluxCost > 0)
+				{
+					buyBox.addBuyForFluxButton(fluxCost, newlevel, "upgradeCompressorWithFlux", Localize.t("Are you sure you want to upgrade your compressor?"));
+					buyBox.addEventListener("fluxBuy", function(param1:Event):void
 					{
-						buyBox.addCost(new PriceCommodities(g, type, costs[type]));
-					}
-					if (fluxCost > 0)
+						SoundLocator.getService().play("7zeIcPFb-UWzgtR_3nrZ8Q");
+						g.me.compressorLevel = newlevel;
+						g.removeChildFromOverlay(buyBox, true);
+						draw(true);
+						Game.trackEvent("used flux", "upgrade cargo", "level " + newlevel, fluxCost);
+					});
+				}
+				buyBox.addEventListener("accept", function(param1:Event):void
+				{
+					var e:Event = param1;
+					g.rpc("upgradeCompressor", function(param1:Message):void
 					{
-						buyBox.addBuyForFluxButton(fluxCost, newlevel, "upgradeCompressorWithFlux", Localize.t("Are you sure you want to upgrade your compressor?"));
-						buyBox.addEventListener("fluxBuy", function(param1:Event):void
+						if (param1.getBoolean(0))
+						{
+							SoundLocator.getService().play("7zeIcPFb-UWzgtR_3nrZ8Q");
+							g.me.compressorLevel = newlevel;
+							for (var _loc2_:* in costs)
 							{
-								SoundLocator.getService().play("7zeIcPFb-UWzgtR_3nrZ8Q");
-								g.me.compressorLevel = newlevel;
-								g.removeChildFromOverlay(buyBox, true);
-								draw(true);
-								Game.trackEvent("used flux", "upgrade cargo", "level " + newlevel, fluxCost);
-							});
-					}
-					buyBox.addEventListener("accept", function(param1:Event):void
+								removeJunk(_loc2_, costs[_loc2_]);
+							}
+							draw(true);
+							ButtonCargo.serverSaysCargoIsFull = false;
+						}
+						else
 						{
-							var e:Event = param1;
-							g.rpc("upgradeCompressor", function(param1:Message):void
-								{
-									if (param1.getBoolean(0))
-									{
-										SoundLocator.getService().play("7zeIcPFb-UWzgtR_3nrZ8Q");
-										g.me.compressorLevel = newlevel;
-										for (var _loc2_:* in costs)
-										{
-											removeJunk(_loc2_, costs[_loc2_]);
-										}
-										draw(true);
-										ButtonCargo.serverSaysCargoIsFull = false;
-									}
-									else
-									{
-										g.showErrorDialog(param1.getString(1), true);
-									}
-									g.removeChildFromOverlay(buyBox, true);
-								});
-						});
-					buyBox.addEventListener("close", function(param1:Event):void
-						{
-							g.removeChildFromOverlay(buyBox, true);
-						});
-					g.addChildToOverlay(buyBox);
-				}, Localize.t("Upgrade"), "buy");
+							g.showErrorDialog(param1.getString(1), true);
+						}
+						g.removeChildFromOverlay(buyBox, true);
+					});
+				});
+				buyBox.addEventListener("close", function(param1:Event):void
+				{
+					g.removeChildFromOverlay(buyBox, true);
+				});
+				g.addChildToOverlay(buyBox);
+			}, Localize.t("Upgrade"), "buy");
 			button.autoEnableAfterClick = true;
 			button.x = 568;
 			button.y = 415;
@@ -375,13 +354,7 @@ package core.hud.components.cargo
 				{
 					if (tween)
 					{
-						TweenMax.fromTo(compressor, 1, {
-									"scaleX": 10,
-									"scaleY": 10
-								}, {
-									"scaleX": 1,
-									"scaleY": 1
-								});
+						TweenMax.fromTo(compressor, 1, {"scaleX": 10, "scaleY": 10}, {"scaleX": 1, "scaleY": 1});
 					}
 					cmf = new ColorMatrixFilter();
 					cmf.adjustContrast(2);
@@ -448,7 +421,7 @@ package core.hud.components.cargo
 			container.height = 300;
 			addChild(container);
 		}
-
+		
 		private function onAccept(param1:Event):void
 		{
 			g.removeChildFromOverlay(confirmBox, true);
@@ -456,13 +429,13 @@ package core.hud.components.cargo
 			g.send("dropJunk");
 			removeAllJunk();
 		}
-
+		
 		private function onClose(param1:Event):void
 		{
 			g.removeChildFromOverlay(confirmBox, true);
 			confirmBox.removeEventListeners();
 		}
-
+		
 		public function getCommoditiesAmount(param1:String):int
 		{
 			for each (var _loc2_:* in commoditites)
@@ -474,7 +447,7 @@ package core.hud.components.cargo
 			}
 			return 0;
 		}
-
+		
 		public function removeMinerals(param1:String, param2:int):void
 		{
 			for each (var _loc3_:* in _minerals)
@@ -485,7 +458,7 @@ package core.hud.components.cargo
 				}
 			}
 		}
-
+		
 		public function removeJunk(param1:String, param2:int):void
 		{
 			for each (var _loc3_:* in _spaceJunk)
@@ -497,7 +470,7 @@ package core.hud.components.cargo
 			}
 			spaceJunkCount -= param2;
 		}
-
+		
 		public function removeAllJunk():void
 		{
 			for each (var _loc1_:* in _spaceJunk)
@@ -506,7 +479,7 @@ package core.hud.components.cargo
 			}
 			spaceJunkCount = 0;
 		}
-
+		
 		public function addItem(param1:String, param2:String, param3:int):void
 		{
 			var _loc4_:* = null;
@@ -562,7 +535,7 @@ package core.hud.components.cargo
 				}
 			}
 		}
-
+		
 		public function redraw(param1:Function = null):void
 		{
 			draw();
@@ -571,7 +544,7 @@ package core.hud.components.cargo
 				param1();
 			}
 		}
-
+		
 		public function get isFull():Boolean
 		{
 			return spaceJunkCount >= compressorCapacities[g.me.compressorLevel];

@@ -8,33 +8,35 @@ package core.states.gameStates
 	import feathers.controls.ScrollContainer;
 	import playerio.Message;
 	import starling.events.Event;
-
+	
 	public class LandedCantina extends LandedState
 	{
 		public static var WIDTH:Number = 698;
 		private var mainBody:ScrollContainer;
+		
 		private var selectedCrewMember:CrewDetails;
+		
 		private var crewMembers:Vector.<CrewMember>;
-
+		
 		private var crew:Vector.<CrewDisplayBoxNew>;
-
+		
 		public function LandedCantina(param1:Game, param2:Body)
 		{
 			crew = new Vector.<CrewDisplayBoxNew>();
 			super(param1, param2, param2.name);
 		}
-
+		
 		override public function enter():void
 		{
 			super.enter();
 			g.rpc("getCantinaCrew", onGetCantinaCrew);
 		}
-
+		
 		private function onReloadDetails():void
 		{
 			reloadDetails();
 		}
-
+		
 		public function reloadDetails(param1:Boolean = false):void
 		{
 			if (!selectedCrewMember)
@@ -49,7 +51,7 @@ package core.states.gameStates
 			selectedCrewMember = _loc2_;
 			addChild(selectedCrewMember);
 		}
-
+		
 		private function removeActiveCrewMember(param1:CrewDetails):void
 		{
 			var _loc3_:int = 0;
@@ -69,7 +71,7 @@ package core.states.gameStates
 				_loc3_++;
 			}
 		}
-
+		
 		public function setActive(param1:Event):void
 		{
 			var _loc2_:CrewDisplayBoxNew = param1.target as CrewDisplayBoxNew;
@@ -83,7 +85,7 @@ package core.states.gameStates
 			selectedCrewMember.x = 350;
 			selectedCrewMember.y = 53;
 		}
-
+		
 		private function onGetCantinaCrew(param1:Message):void
 		{
 			var _loc4_:CrewMember = null;
@@ -91,49 +93,49 @@ package core.states.gameStates
 			var _loc5_:Array = null;
 			crewMembers = new Vector.<CrewMember>();
 			var _loc6_:int = 0;
-			var _loc3_:int = param1.getInt(_loc6_++ );
+			var _loc3_:int = param1.getInt(_loc6_++);
 			while (_loc6_ < param1.length)
 			{
 				_loc4_ = new CrewMember(g);
-				_loc4_.seed = param1.getInt(_loc6_++ );
-				_loc4_.key = param1.getString(_loc6_++ );
-				_loc4_.name = param1.getString(_loc6_++ );
-				_loc4_.solarSystem = param1.getString(_loc6_++ );
-				_loc4_.area = param1.getString(_loc6_++ );
-				_loc4_.body = param1.getString(_loc6_++ );
-				_loc4_.imageKey = param1.getString(_loc6_++ );
-				_loc4_.injuryEnd = param1.getNumber(_loc6_++ );
-				_loc4_.injuryStart = param1.getNumber(_loc6_++ );
-				_loc4_.trainingEnd = param1.getNumber(_loc6_++ );
-				_loc4_.trainingType = param1.getInt(_loc6_++ );
-				_loc4_.artifactEnd = param1.getNumber(_loc6_++ );
-				_loc4_.artifact = param1.getString(_loc6_++ );
-				_loc4_.missions = param1.getInt(_loc6_++ );
-				_loc4_.successMissions = param1.getInt(_loc6_++ );
-				_loc4_.rank = param1.getInt(_loc6_++ );
-				_loc4_.fullLocation = param1.getString(_loc6_++ );
-				_loc4_.skillPoints = param1.getInt(_loc6_++ );
+				_loc4_.seed = param1.getInt(_loc6_++);
+				_loc4_.key = param1.getString(_loc6_++);
+				_loc4_.name = param1.getString(_loc6_++);
+				_loc4_.solarSystem = param1.getString(_loc6_++);
+				_loc4_.area = param1.getString(_loc6_++);
+				_loc4_.body = param1.getString(_loc6_++);
+				_loc4_.imageKey = param1.getString(_loc6_++);
+				_loc4_.injuryEnd = param1.getNumber(_loc6_++);
+				_loc4_.injuryStart = param1.getNumber(_loc6_++);
+				_loc4_.trainingEnd = param1.getNumber(_loc6_++);
+				_loc4_.trainingType = param1.getInt(_loc6_++);
+				_loc4_.artifactEnd = param1.getNumber(_loc6_++);
+				_loc4_.artifact = param1.getString(_loc6_++);
+				_loc4_.missions = param1.getInt(_loc6_++);
+				_loc4_.successMissions = param1.getInt(_loc6_++);
+				_loc4_.rank = param1.getInt(_loc6_++);
+				_loc4_.fullLocation = param1.getString(_loc6_++);
+				_loc4_.skillPoints = param1.getInt(_loc6_++);
 				_loc2_ = [];
-				_loc2_.push(param1.getNumber(_loc6_++ ));
-				_loc2_.push(param1.getNumber(_loc6_++ ));
-				_loc2_.push(param1.getNumber(_loc6_++ ));
+				_loc2_.push(param1.getNumber(_loc6_++));
+				_loc2_.push(param1.getNumber(_loc6_++));
+				_loc2_.push(param1.getNumber(_loc6_++));
 				_loc4_.skills = _loc2_;
 				_loc5_ = [];
-				_loc5_.push(param1.getNumber(_loc6_++ ));
-				_loc5_.push(param1.getNumber(_loc6_++ ));
-				_loc5_.push(param1.getNumber(_loc6_++ ));
-				_loc5_.push(param1.getNumber(_loc6_++ ));
-				_loc5_.push(param1.getNumber(_loc6_++ ));
-				_loc5_.push(param1.getNumber(_loc6_++ ));
-				_loc5_.push(param1.getNumber(_loc6_++ ));
-				_loc5_.push(param1.getNumber(_loc6_++ ));
-				_loc5_.push(param1.getNumber(_loc6_++ ));
+				_loc5_.push(param1.getNumber(_loc6_++));
+				_loc5_.push(param1.getNumber(_loc6_++));
+				_loc5_.push(param1.getNumber(_loc6_++));
+				_loc5_.push(param1.getNumber(_loc6_++));
+				_loc5_.push(param1.getNumber(_loc6_++));
+				_loc5_.push(param1.getNumber(_loc6_++));
+				_loc5_.push(param1.getNumber(_loc6_++));
+				_loc5_.push(param1.getNumber(_loc6_++));
+				_loc5_.push(param1.getNumber(_loc6_++));
 				_loc4_.specials = _loc5_;
 				crewMembers.push(_loc4_);
 			}
 			load();
 		}
-
+		
 		private function load():void
 		{
 			var _loc2_:CrewDisplayBoxNew = null;
@@ -161,12 +163,12 @@ package core.states.gameStates
 			addChild(mainBody);
 			loadCompleted();
 		}
-
+		
 		override public function execute():void
 		{
 			super.execute();
 		}
-
+		
 		override public function exit(param1:Function):void
 		{
 			mainBody.removeEventListener("reloadDetails", onReloadDetails);

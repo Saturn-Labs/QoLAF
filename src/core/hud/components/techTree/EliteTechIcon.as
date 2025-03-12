@@ -18,49 +18,69 @@ package core.hud.components.techTree
 	import starling.text.TextFormat;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class EliteTechIcon extends Sprite
 	{
 		public static var ICON_WIDTH:int = 40;
 		public static var ICON_PADDING:int = 5;
 		public static const STATE_LOCKED:String = "locked";
-
 		public static const STATE_NO_SPECIAL:String = "no special selected";
-
 		public static const STATE_SELECTED:String = "selected";
-
 		public static const STATE_UPGRADABLE:String = "special selected and can be upgraded";
-
 		public static const STATE_FULLY_UPGRADED:String = "fully upgraded";
-
 		public static const STATE_CANT_BE_UPGRADED:String = "cant upgrade";
-
 		public var level:int;
+		
 		public var mineralType1:String;
+		
 		public var mineralType2:String;
+		
 		public var table:String;
+		
 		public var tech:String;
+		
 		public var upgradeNameRaw:String;
+		
 		public var upgradeName:String;
+		
 		public var description:String;
+		
 		public var techSkill:TechSkill;
+		
 		private var bitmap:Image;
+		
 		private var bitmapHover:Image;
+		
 		private var bitmapNotAvailable:Image;
+		
 		private var bitmapAvailable:Image;
+		
 		private var bitmapSelected:Image;
+		
 		private var bitmapMax:Image;
+		
 		private var bitmapLocked:Image;
+		
 		private var textureManager:ITextureManager;
+		
 		private var dataManager:IDataManager;
+		
 		private var techItemObject:Object;
+		
 		private var state:String;
+		
 		private var tb:TechBar;
+		
 		private var showTooltip:Boolean;
+		
 		private var canBeUpgraded:Boolean;
+		
 		private var number:TextField;
+		
 		private var g:Game;
+		
 		private var icon:Image;
+		
 		public function EliteTechIcon(param1:Game, param2:TechBar, param3:String, param4:TechSkill, param5:Boolean, param6:Boolean)
 		{
 			super();
@@ -122,7 +142,7 @@ package core.hud.components.techTree
 				new ToolTip(Game.instance, this, "<font color='#ffffff'>" + Localize.t(description) + "</font>");
 			}
 		}
-
+		
 		private function updateIcon():void
 		{
 			if (icon != null)
@@ -131,7 +151,7 @@ package core.hud.components.techTree
 			}
 			addIcon();
 		}
-
+		
 		private function addIcon():void
 		{
 			var _loc1_:String = null;
@@ -159,7 +179,7 @@ package core.hud.components.techTree
 			addChild(bitmapHover);
 			addChild(number);
 		}
-
+		
 		private function setMineralType2():void
 		{
 			var _loc4_:int = 0;
@@ -186,7 +206,7 @@ package core.hud.components.techTree
 				mineralType2 = "gO_f-y0QEU68vVwJ_XVmOg";
 			}
 		}
-
+		
 		public function getMineralType2(param1:int):String
 		{
 			var _loc5_:int = 0;
@@ -210,7 +230,7 @@ package core.hud.components.techTree
 			}
 			return "gO_f-y0QEU68vVwJ_XVmOg";
 		}
-
+		
 		public function getCostForResource(param1:String, param2:int, param3:*):int
 		{
 			var _loc5_:int = 0;
@@ -226,12 +246,12 @@ package core.hud.components.techTree
 			}
 			return _loc5_;
 		}
-
+		
 		public function updateMineralType2():void
 		{
 			setMineralType2();
 		}
-
+		
 		public function updateState(param1:String):void
 		{
 			if (level >= 100)
@@ -259,56 +279,56 @@ package core.hud.components.techTree
 			}
 			switch (param1)
 			{
-				case "locked":
-					bitmap.alpha = bitmapHover.alpha = 0.3;
-					bitmapLocked.visible = true;
-					number.format.size = 16;
-					number.text = "?";
-					number.x = ICON_WIDTH / 2 + 2;
-					number.y = ICON_WIDTH / 2 + 5;
-					number.alignPivot();
-					useHandCursor = false;
-					if (icon != null)
-					{
-						icon.visible = false;
-					}
-					break;
-				case "no special selected":
-					bitmap.alpha = bitmapHover.alpha = 0.3;
-					bitmapLocked.visible = false;
-					bitmapAvailable.visible = true;
-					number.format.size = 28;
-					number.text = "?";
-					number.x = ICON_WIDTH / 2 + 1;
-					number.y = ICON_WIDTH / 2 + 1;
-					number.alignPivot();
-					TweenMax.fromTo(number, 1, {"scaleX": 1, "scaleY": 1}, {"scaleX": 1.2, "scaleY": 1.2, "yoyo": true, "repeat": -1});
-					if (icon != null)
-					{
-						icon.visible = false;
-					}
-					break;
-				case "selected":
-					updateLevelText();
-					updateIcon();
-					number.alignPivot("left", "top");
-					bitmapHover.visible = true;
-					bitmapSelected.visible = true;
-					break;
-				case "special selected and can be upgraded":
-					updateLevelText();
-					updateIcon();
-					number.alignPivot("left", "top");
-					bitmap.alpha = bitmapHover.alpha = 0.5;
-					bitmapAvailable.visible = false;
-					break;
-				case "fully upgraded":
-					bitmap.alpha = bitmapHover.alpha = 1;
-					bitmapAvailable.visible = false;
-					updateLevelText();
+			case "locked": 
+				bitmap.alpha = bitmapHover.alpha = 0.3;
+				bitmapLocked.visible = true;
+				number.format.size = 16;
+				number.text = "?";
+				number.x = ICON_WIDTH / 2 + 2;
+				number.y = ICON_WIDTH / 2 + 5;
+				number.alignPivot();
+				useHandCursor = false;
+				if (icon != null)
+				{
+					icon.visible = false;
+				}
+				break;
+			case "no special selected": 
+				bitmap.alpha = bitmapHover.alpha = 0.3;
+				bitmapLocked.visible = false;
+				bitmapAvailable.visible = true;
+				number.format.size = 28;
+				number.text = "?";
+				number.x = ICON_WIDTH / 2 + 1;
+				number.y = ICON_WIDTH / 2 + 1;
+				number.alignPivot();
+				TweenMax.fromTo(number, 1, {"scaleX": 1, "scaleY": 1}, {"scaleX": 1.2, "scaleY": 1.2, "yoyo": true, "repeat": -1});
+				if (icon != null)
+				{
+					icon.visible = false;
+				}
+				break;
+			case "selected": 
+				updateLevelText();
+				updateIcon();
+				number.alignPivot("left", "top");
+				bitmapHover.visible = true;
+				bitmapSelected.visible = true;
+				break;
+			case "special selected and can be upgraded": 
+				updateLevelText();
+				updateIcon();
+				number.alignPivot("left", "top");
+				bitmap.alpha = bitmapHover.alpha = 0.5;
+				bitmapAvailable.visible = false;
+				break;
+			case "fully upgraded": 
+				bitmap.alpha = bitmapHover.alpha = 1;
+				bitmapAvailable.visible = false;
+				updateLevelText();
 			}
 		}
-
+		
 		private function updateLevelText():void
 		{
 			if (level == 100)
@@ -328,7 +348,7 @@ package core.hud.components.techTree
 			number.format.size = 12;
 			number.format.verticalAlign = "bottom";
 		}
-
+		
 		private function mouseOver(param1:TouchEvent = null):void
 		{
 			if (state == "selected")
@@ -341,7 +361,7 @@ package core.hud.components.techTree
 				this.dispatchEventWith("mOver", true);
 			}
 		}
-
+		
 		private function mouseOut(param1:TouchEvent):void
 		{
 			if (state == "selected")
@@ -354,7 +374,7 @@ package core.hud.components.techTree
 				this.dispatchEventWith("mOut", true);
 			}
 		}
-
+		
 		public function update(param1:int):void
 		{
 			level = param1;
@@ -362,7 +382,7 @@ package core.hud.components.techTree
 			updateIcon();
 			mouseClick(new TouchEvent("", new Vector.<Touch>()), true);
 		}
-
+		
 		private function mouseClick(param1:TouchEvent, param2:Boolean = false):void
 		{
 			var popup:EliteTechPopupMenu;
@@ -381,11 +401,15 @@ package core.hud.components.techTree
 			{
 				popup = new EliteTechPopupMenu(g, this);
 				g.addChildToOverlay(popup);
-				popup.addEventListener("close", function():void
+				popup.addEventListener("close", (function():*
+				{
+					var closePopup:Function;
+					return closePopup = function(param1:Event):void
 					{
 						g.removeChildFromOverlay(popup);
 						popup.removeEventListeners();
-					});
+					};
+				})());
 				return;
 			}
 			if (state == "selected")
@@ -398,7 +422,7 @@ package core.hud.components.techTree
 			}
 			this.dispatchEventWith("mClick", true);
 		}
-
+		
 		private function onTouch(param1:TouchEvent):void
 		{
 			if (param1.getTouch(this, "ended"))
@@ -414,7 +438,7 @@ package core.hud.components.techTree
 				mouseOut(param1);
 			}
 		}
-
+		
 		public function upgrade():void
 		{
 			if (level == 100)
@@ -426,7 +450,7 @@ package core.hud.components.techTree
 				updateState("special selected and can be upgraded");
 			}
 		}
-
+		
 		public function getDescriptionNextLevel(param1:int = -1):String
 		{
 			if (param1 == -1)
@@ -439,7 +463,7 @@ package core.hud.components.techTree
 			}
 			return EliteTechs.getStatTextByLevel(techSkill.activeEliteTech, techItemObject, param1);
 		}
-
+		
 		public function getDescription():String
 		{
 			var _loc1_:String = "";
@@ -458,7 +482,7 @@ package core.hud.components.techTree
 			}
 			return _loc1_;
 		}
-
+		
 		override public function dispose():void
 		{
 			removeEventListeners();

@@ -15,19 +15,27 @@ package core.hud.components.techTree
 	import starling.events.TouchEvent;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class EliteTechPopupMenu extends Sprite
 	{
 		private var container:ScrollContainer;
+		
 		private var box:Box;
+		
 		private var closeButton:Button;
+		
 		private var g:Game;
+		
 		private var eti:EliteTechIcon;
+		
 		private var textureManager:ITextureManager;
+		
 		private var dataManager:IDataManager;
+		
 		private var eliteTechs:Vector.<EliteTechBar>;
-
+		
 		protected var bgr:Quad;
+		
 		public function EliteTechPopupMenu(param1:Game, param2:EliteTechIcon)
 		{
 			container = new ScrollContainer();
@@ -44,7 +52,7 @@ package core.hud.components.techTree
 			load();
 			addEventListener("addedToStage", stageAddHandler);
 		}
-
+		
 		private function load():void
 		{
 			var _loc3_:int = 0;
@@ -72,7 +80,7 @@ package core.hud.components.techTree
 			addChild(bgr);
 			addChild(box);
 		}
-
+		
 		public function updateAndClose(param1:Message):void
 		{
 			if (!param1.getBoolean(0))
@@ -82,7 +90,7 @@ package core.hud.components.techTree
 			eti.update(param1.getInt(1));
 			close();
 		}
-
+		
 		public function disableAll():void
 		{
 			for each (var _loc1_:* in eliteTechs)
@@ -91,7 +99,7 @@ package core.hud.components.techTree
 			}
 			closeButton.touchable = false;
 		}
-
+		
 		protected function redraw(param1:Event = null):void
 		{
 			if (stage == null)
@@ -105,7 +113,7 @@ package core.hud.components.techTree
 			bgr.width = stage.stageWidth;
 			bgr.height = stage.stageHeight;
 		}
-
+		
 		private function stageAddHandler(param1:Event):void
 		{
 			addEventListener("removedFromStage", clean);
@@ -114,13 +122,13 @@ package core.hud.components.techTree
 			bgr.height = stage.stageHeight;
 			redraw();
 		}
-
+		
 		protected function close(param1:TouchEvent = null):void
 		{
 			dispatchEventWith("close");
 			removeEventListeners();
 		}
-
+		
 		protected function clean(param1:Event):void
 		{
 			stage.removeEventListener("resize", redraw);

@@ -9,11 +9,13 @@ package core.hud.components.credits
 	import starling.events.Event;
 	import starling.text.TextField;
 	import starling.text.TextFormat;
-
+	
 	public class RedeemSuccess extends PopupMessage
 	{
 		private var container:Sprite;
+		
 		private var g:Game;
+		
 		public function RedeemSuccess(param1:Game, param2:String)
 		{
 			var _loc11_:int = 0;
@@ -64,7 +66,7 @@ package core.hud.components.credits
 			box.addChild(container);
 			this.textField.height = container.height;
 		}
-
+		
 		override protected function redraw(param1:Event = null):void
 		{
 			if (stage == null)

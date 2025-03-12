@@ -29,22 +29,35 @@ package core.states.gameStates.missions
 	import starling.text.TextFormat;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class MissionView extends Sprite
 	{
 		private var mission:Mission;
+		
 		private var g:Game;
+		
 		private var heading:Text;
+		
 		private var description:Text;
+		
 		private var missionType:Object;
+		
 		private var box:GradientBox;
+		
 		private var dataManager:IDataManager;
+		
 		private var fluxIcon:Image;
+		
 		private var dropBase:DropBase;
+		
 		private var boxWidth:int;
+		
 		private var textureManager:ITextureManager;
+		
 		private var tween:TweenMax;
+		
 		private var timeLeft:Text;
+		
 		public function MissionView(param1:Game, param2:Mission, param3:int)
 		{
 			timeLeft = new Text();
@@ -54,7 +67,7 @@ package core.states.gameStates.missions
 			this.boxWidth = param3;
 			this.textureManager = TextureLocator.getService();
 		}
-
+		
 		public static function fixText(param1:Game, param2:Object, param3:String):String
 		{
 			if (param2.value != null)
@@ -65,7 +78,7 @@ package core.states.gameStates.missions
 			param3 = param3.replace("[h]", "<font color='#ffffff'>");
 			return param3.replace("[/h]", "</font>");
 		}
-
+		
 		public function init():void
 		{
 			var instance:MissionView;
@@ -91,48 +104,48 @@ package core.states.gameStates.missions
 			if (mission.majorType == "time" && !mission.finished)
 			{
 				cancelButton = new Button(function():void
+				{
+					g.creditManager.refresh(function():void
 					{
-						g.creditManager.refresh(function():void
+						var confirmBuyWithFlux:CreditBuyBox = new CreditBuyBox(g, CreditManager.getCostSkipMission(), Localize.t("Skip this timed mission and receive a new one!"));
+						g.addChildToOverlay(confirmBuyWithFlux);
+						confirmBuyWithFlux.addEventListener("accept", function(param1:Event):void
+						{
+							var e:Event = param1;
+							g.rpc("skipMission", function(param1:Message):void
 							{
-								var confirmBuyWithFlux:CreditBuyBox = new CreditBuyBox(g, CreditManager.getCostSkipMission(), Localize.t("Skip this timed mission and receive a new one!"));
-								g.addChildToOverlay(confirmBuyWithFlux);
-								confirmBuyWithFlux.addEventListener("accept", function(param1:Event):void
-									{
-										var e:Event = param1;
-										g.rpc("skipMission", function(param1:Message):void
-											{
-												if (param1.getBoolean(0))
-												{
-													Game.trackEvent("used flux", "skipped mission", "player level " + g.me.level, CreditManager.getCostSkipMission());
-													removeAndRedrawList();
-													g.creditManager.refresh();
-												}
-												else
-												{
-													g.showErrorDialog(param1.getString(1), false);
-												}
-											}, mission.id);
-										confirmBuyWithFlux.removeEventListeners();
-									});
-								confirmBuyWithFlux.addEventListener("close", function(param1:Event):void
-									{
-										confirmBuyWithFlux.removeEventListeners();
-										cancelButton.enabled = true;
-										g.removeChildFromOverlay(confirmBuyWithFlux, true);
-									});
-							});
-					}, Localize.t("Skip Mission"), "normal", 12);
+								if (param1.getBoolean(0))
+								{
+									Game.trackEvent("used flux", "skipped mission", "player level " + g.me.level, CreditManager.getCostSkipMission());
+									removeAndRedrawList();
+									g.creditManager.refresh();
+								}
+								else
+								{
+									g.showErrorDialog(param1.getString(1), false);
+								}
+							}, mission.id);
+							confirmBuyWithFlux.removeEventListeners();
+						});
+						confirmBuyWithFlux.addEventListener("close", function(param1:Event):void
+						{
+							confirmBuyWithFlux.removeEventListeners();
+							cancelButton.enabled = true;
+							g.removeChildFromOverlay(confirmBuyWithFlux, true);
+						});
+					});
+				}, Localize.t("Skip Mission"), "normal", 12);
 				cancelButton.x = width - cancelButton.width - box.padding * 2;
 				cancelButton.y = height - cancelButton.height - box.padding * 2;
 				addChild(cancelButton);
 			}
 			instance[missionType.type]();
 		}
-
+		
 		public function level():void
 		{
 		}
-
+		
 		public function transport():void
 		{
 			var _loc1_:Object = null;
@@ -167,17 +180,17 @@ package core.states.gameStates.missions
 				_loc7_++;
 			}
 		}
-
+		
 		private function kill():void
 		{
 			var _loc1_:* = this;
 			_loc1_[missionType.subtype]();
 		}
-
+		
 		private function pvpStart():void
 		{
 		}
-
+		
 		private function player():void
 		{
 			var _loc1_:Text = new Text();
@@ -187,7 +200,7 @@ package core.states.gameStates.missions
 			_loc1_.htmlText = Localize.t("Killed") + ": <font color='#ae0808'>" + mission.count + " / " + missionType.value;
 			box.addChild(_loc1_);
 		}
-
+		
 		private function frenzy():void
 		{
 			var _loc1_:Text = new Text();
@@ -197,11 +210,11 @@ package core.states.gameStates.missions
 			_loc1_.htmlText = Localize.t("Longest killing frenzy") + ": <font color='#ae0808'>" + mission.count + " / " + missionType.value;
 			box.addChild(_loc1_);
 		}
-
+		
 		private function explore():void
 		{
 		}
-
+		
 		private function pickup():void
 		{
 			var _loc3_:Object = null;
@@ -220,7 +233,7 @@ package core.states.gameStates.missions
 			_loc1_.htmlText = Localize.t("Picked up") + ": <font color='#08ae08'>" + mission.count + " / " + missionType.value;
 			box.addChild(_loc1_);
 		}
-
+		
 		private function recycle():void
 		{
 			var _loc3_:Object = null;
@@ -239,11 +252,11 @@ package core.states.gameStates.missions
 			_loc1_.htmlText = Localize.t("Recycled") + ": <font color='#08ae08'>" + mission.count + " / " + missionType.value;
 			box.addChild(_loc1_);
 		}
-
+		
 		private function reputation():void
 		{
 		}
-
+		
 		private function boss():void
 		{
 			var _loc1_:Text = new Text();
@@ -253,7 +266,7 @@ package core.states.gameStates.missions
 			_loc1_.htmlText = Localize.t("Killed") + ": <font color='#ae7108'>" + mission.count + " / 1";
 			box.addChild(_loc1_);
 		}
-
+		
 		private function ship():void
 		{
 			var _loc9_:Object = null;
@@ -303,7 +316,7 @@ package core.states.gameStates.missions
 			_loc3_.htmlText = Localize.t("Killed") + ": <font color='#ae7108'>" + mission.count + " / " + missionType.value;
 			box.addChild(_loc3_);
 		}
-
+		
 		private function spawner():void
 		{
 			var _loc2_:String = null;
@@ -327,7 +340,7 @@ package core.states.gameStates.missions
 			_loc3_.scaleX = _loc3_.scaleY = 0.7;
 			box.addChild(_loc3_);
 		}
-
+		
 		private function addReward():Number
 		{
 			var x:int;
@@ -431,13 +444,13 @@ package core.states.gameStates.missions
 					xpBoostIcon = new Image(textureManager.getTextureGUIByTextureName("button_pay"));
 					xpBoostIcon.useHandCursor = true;
 					xpBoostIcon.addEventListener("touch", function(param1:TouchEvent):void
+					{
+						if (param1.getTouch(xpBoostIcon, "ended"))
 						{
-							if (param1.getTouch(xpBoostIcon, "ended"))
-							{
-								g.enterState(new RoamingState(g));
-								g.enterState(new ShopState(g, "xpBoost"));
-							}
-						});
+							g.enterState(new RoamingState(g));
+							g.enterState(new ShopState(g, "xpBoost"));
+						}
+					});
 					xpBoostIcon.x = xpText.x + xpText.width / 2 + 5;
 					xpBoostIcon.y = xpText.y;
 					addChild(xpBoostIcon);
@@ -483,7 +496,7 @@ package core.states.gameStates.missions
 			}
 			return rewardY;
 		}
-
+		
 		public function update():void
 		{
 			if (mission.majorType == "time")
@@ -491,7 +504,7 @@ package core.states.gameStates.missions
 				drawExpireTime();
 			}
 		}
-
+		
 		private function drawExpireTime():void
 		{
 			var _loc2_:int = (mission.expires - g.time) / 1000;
@@ -517,7 +530,7 @@ package core.states.gameStates.missions
 				timeLeft.htmlText = "(" + Localize.t("expires in") + ": " + _loc7_ + ":" + _loc6_ + ":" + _loc3_ + ")";
 			}
 		}
-
+		
 		private function addRewardItem(param1:DropItem, param2:int, param3:int):int
 		{
 			var _loc6_:Image = null;
@@ -556,7 +569,7 @@ package core.states.gameStates.missions
 			box.addChild(_loc4_);
 			return param3 + _loc6_.height + 5;
 		}
-
+		
 		private function addRewardButton(param1:Number):void
 		{
 			var _loc2_:Button = new Button(tryCollectReward, Localize.t("COLLECT REWARD").toUpperCase(), "positive");
@@ -569,7 +582,7 @@ package core.states.gameStates.missions
 			_loc2_.y = height - _loc2_.height - box.padding * 2;
 			addChild(_loc2_);
 		}
-
+		
 		private function addHeading():void
 		{
 			heading = new Text();
@@ -580,7 +593,7 @@ package core.states.gameStates.missions
 			heading.htmlText = fixText(g, missionType, _loc1_);
 			addChild(heading);
 		}
-
+		
 		private function addDescription():void
 		{
 			description = new Text();
@@ -616,12 +629,12 @@ package core.states.gameStates.missions
 			}
 			addChild(description);
 		}
-
+		
 		private function tryCollectReward(param1:TouchEvent):void
 		{
 			g.rpc("requestMissionReward", rewardArrived, mission.id, mission.majorType);
 		}
-
+		
 		private function rewardArrived(param1:Message):void
 		{
 			var _loc3_:Boolean = param1.getBoolean(0);
@@ -649,39 +662,31 @@ package core.states.gameStates.missions
 			g.hud.cargoButton.flash();
 			animateCollectReward();
 		}
-
+		
 		private function removeAndRedrawList():void
 		{
-			tween = TweenMax.to(this, 0.3, {
-						"alpha": 0,
-						"onComplete": redrawParentList,
-						"ease": Circ.easeIn
-					});
+			tween = TweenMax.to(this, 0.3, {"alpha": 0, "onComplete": redrawParentList, "ease": Circ.easeIn});
 		}
-
+		
 		private function redrawParentList():void
 		{
 			g.me.removeMission(mission);
 			dispatchEventWith("reload");
 		}
-
+		
 		private function animateCollectReward():void
 		{
-			tween = TweenMax.to(this, 0.3, {
-						"alpha": 0,
-						"onComplete": collectReward,
-						"ease": Circ.easeIn
-					});
+			tween = TweenMax.to(this, 0.3, {"alpha": 0, "onComplete": collectReward, "ease": Circ.easeIn});
 			var _loc1_:ISound = SoundLocator.getService();
 			_loc1_.preCacheSound("7zeIcPFb-UWzgtR_3nrZ8Q");
 		}
-
+		
 		private function collectReward():void
 		{
 			dispatchEventWith("animateCollectReward", true);
 			g.textManager.createMissionCompleteText();
 		}
-
+		
 		private function transferItemToCargo(param1:Object):void
 		{
 			var _loc4_:String = param1.table;

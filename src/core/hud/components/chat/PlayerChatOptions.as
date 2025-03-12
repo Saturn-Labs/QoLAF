@@ -8,14 +8,19 @@ package core.hud.components.chat
 	import starling.events.TouchEvent;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class PlayerChatOptions extends ScrollContainer
 	{
 		private var g:Game;
+		
 		private var obj:Object;
+		
 		private var muteImage:Image;
+		
 		private var messageImage:Image;
+		
 		private var banImage:Image;
+		
 		public function PlayerChatOptions(param1:Game, param2:Object)
 		{
 			super();
@@ -47,7 +52,7 @@ package core.hud.components.chat
 				new ToolTip(param1, banImage, "silence player", null, "PlayerChatOptions");
 			}
 		}
-
+		
 		private function onMute(param1:TouchEvent):void
 		{
 			if (param1.getTouch(muteImage, "ended"))
@@ -56,7 +61,7 @@ package core.hud.components.chat
 				g.messageLog.removePlayerMessages(obj.playerKey);
 			}
 		}
-
+		
 		private function onPrivateMessage(param1:TouchEvent):void
 		{
 			if (param1.getTouch(messageImage, "ended"))
@@ -64,7 +69,7 @@ package core.hud.components.chat
 				g.chatInput.setText("/w " + obj.playerName + " ");
 			}
 		}
-
+		
 		private function onSilence(param1:TouchEvent):void
 		{
 			if (param1.getTouch(banImage, "ended"))
@@ -72,7 +77,7 @@ package core.hud.components.chat
 				g.chatInput.setText("/silence " + obj.playerKey + " ");
 			}
 		}
-
+		
 		override public function dispose():void
 		{
 			muteImage.removeEventListeners();

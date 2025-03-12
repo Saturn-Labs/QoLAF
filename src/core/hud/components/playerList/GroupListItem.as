@@ -5,14 +5,17 @@ package core.hud.components.playerList
 	import core.scene.Game;
 	import starling.display.Quad;
 	import starling.display.Sprite;
-
+	
 	public class GroupListItem extends Sprite
 	{
 		private var g:Game;
+		
 		private var group:Group;
+		
 		private var playerListItems:Vector.<PlayerListItem>;
-
+		
 		private var separator:Quad;
+		
 		public function GroupListItem(param1:Game, param2:Group)
 		{
 			var _loc5_:int = 0;
@@ -46,12 +49,12 @@ package core.hud.components.playerList
 				removeChild(separator);
 			}
 		}
-
+		
 		override public function get height():Number
 		{
 			return group.length * 60 + 5;
 		}
-
+		
 		override public function dispose():void
 		{
 			removeChildren(0, -1, true);

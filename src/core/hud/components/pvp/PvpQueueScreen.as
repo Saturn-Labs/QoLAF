@@ -5,17 +5,17 @@ package core.hud.components.pvp
 	import core.hud.components.Text;
 	import core.scene.Game;
 	import generics.Localize;
-
+	
 	public class PvpQueueScreen extends PvpScreen
 	{
 		private var buttons:Vector.<ButtonQueue>;
-
+		
 		public function PvpQueueScreen(param1:Game)
 		{
 			buttons = new Vector.<ButtonQueue>();
 			super(param1);
 		}
-
+		
 		override public function load():void
 		{
 			var _loc3_:Number = NaN;
@@ -145,7 +145,7 @@ package core.hud.components.pvp
 			addChild(_loc2_);
 			buttons.push(_loc2_);
 		}
-
+		
 		override public function update():void
 		{
 			for each (var _loc1_:* in buttons)

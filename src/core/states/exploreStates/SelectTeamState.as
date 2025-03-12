@@ -22,29 +22,43 @@ package core.states.exploreStates
 	import starling.textures.Texture;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class SelectTeamState extends DisplayState
 	{
 		public static var WIDTH:Number = 698;
 		public static var PADDING:Number = 31;
 		private var effectBackground:Bitmap;
+		
 		private var _callback:Function;
+		
 		private var confirmBox:PopupConfirmMessage;
+		
 		private var sendButton:Button;
+		
 		private var sizeText:TextBitmap;
+		
 		private var mainBody:ScrollContainer;
+		
 		private var clock:Image;
+		
 		private var hr:Image;
+		
 		private var time:TextBitmap;
+		
 		private var chance:Text;
+		
 		private var crewBoxes:Vector.<CrewDisplayBox>;
-
+		
 		private var selectedCrew:Vector.<CrewDisplayBox>;
-
+		
 		private var selectedText:TextBitmap;
+		
 		private var selectedText3:TextBitmap;
+		
 		private var b:Body;
+		
 		private var area:ExploreArea;
+		
 		public function SelectTeamState(param1:Game, param2:Body, param3:ExploreArea)
 		{
 			crewBoxes = new Vector.<CrewDisplayBox>();
@@ -53,7 +67,7 @@ package core.states.exploreStates
 			this.b = param2;
 			this.area = param3;
 		}
-
+		
 		override public function enter():void
 		{
 			var bottomY:int;
@@ -115,12 +129,12 @@ package core.states.exploreStates
 			hr.y = bottomY - 25;
 			addChild(hr);
 			sendButton = new Button(function(param1:Event):void
+			{
+				if (selectedCrew.length > 0)
 				{
-					if (selectedCrew.length > 0)
-					{
-						send();
-					}
-				}, "START EXPLORE", "positive");
+					send();
+				}
+			}, "START EXPLORE", "positive");
 			sendButton.x = 562;
 			sendButton.y = 532;
 			sendButton.size = 13;
@@ -135,7 +149,7 @@ package core.states.exploreStates
 			addChild(mainBody);
 			load();
 		}
-
+		
 		public function addSkillIcon(param1:Texture, param2:int, param3:String):void
 		{
 			var _loc4_:Sprite = new Sprite();
@@ -147,7 +161,7 @@ package core.states.exploreStates
 			new ToolTip(g, _loc4_, param3, null, "skill");
 			addChild(_loc4_);
 		}
-
+		
 		override public function execute():void
 		{
 			for each (var _loc1_:* in crewBoxes)
@@ -155,7 +169,7 @@ package core.states.exploreStates
 				_loc1_.update();
 			}
 		}
-
+		
 		private function send():void
 		{
 			confirmBox = new PopupConfirmMessage();
@@ -164,7 +178,7 @@ package core.states.exploreStates
 			confirmBox.addEventListener("accept", onAccept);
 			confirmBox.addEventListener("close", onClose);
 		}
-
+		
 		private function onAccept(param1:Event):void
 		{
 			var e:Event = param1;
@@ -172,12 +186,12 @@ package core.states.exploreStates
 			confirmBox.removeEventListener("accept", onAccept);
 			confirmBox.removeEventListener("close", onClose);
 			area.startExplore(selectedCrew, function():void
-				{
-					ExploreMap.forceSelectAreaKey = area.areaKey;
-					sm.changeState(new ExploreState(g, area.body));
-				});
+			{
+				ExploreMap.forceSelectAreaKey = area.areaKey;
+				sm.changeState(new ExploreState(g, area.body));
+			});
 		}
-
+		
 		private function onClose(param1:Event):void
 		{
 			var _loc3_:int = 0;
@@ -198,7 +212,7 @@ package core.states.exploreStates
 			selectedCrew.splice(0, selectedCrew.length);
 			reload();
 		}
-
+		
 		private function reload():void
 		{
 			if (selectedCrew.length > 0)
@@ -213,7 +227,7 @@ package core.states.exploreStates
 			clock.x = time.x - 32;
 			chance.htmlText = getChance().toLocaleUpperCase();
 		}
-
+		
 		private function getTime():String
 		{
 			var _loc2_:Vector.<Number> = new Vector.<Number>();
@@ -256,7 +270,7 @@ package core.states.exploreStates
 			}
 			return _loc5_;
 		}
-
+		
 		private function getChance():String
 		{
 			var _loc1_:Number = NaN;
@@ -313,12 +327,12 @@ package core.states.exploreStates
 			}
 			return "<FONT COLOR='#ff0000'>None</FONT>";
 		}
-
+		
 		override public function get type():String
 		{
 			return "SelectTeamState";
 		}
-
+		
 		private function load():void
 		{
 			var c:CrewMember;
@@ -381,32 +395,32 @@ package core.states.exploreStates
 				mainBody.addChild(cdb);
 				crewBoxes.push(cdb);
 				cdb.addEventListener("teamSelected", function(param1:Event):void
+				{
+					var _loc2_:CrewDisplayBox = null;
+					var _loc3_:int = 0;
+					if (param1.target is CrewDisplayBox)
 					{
-						var _loc2_:CrewDisplayBox = null;
-						var _loc3_:int = 0;
-						if (param1.target is CrewDisplayBox)
+						_loc2_ = param1.target as CrewDisplayBox;
+						if (_loc2_.toggleSelected())
 						{
-							_loc2_ = param1.target as CrewDisplayBox;
-							if (_loc2_.toggleSelected())
-							{
-								selectedCrew.push(_loc2_);
-							}
-							else
-							{
-								_loc3_ = int(selectedCrew.indexOf(_loc2_));
-								if (_loc3_ != -1)
-								{
-									selectedCrew.splice(_loc3_, 1);
-								}
-							}
-							reload();
+							selectedCrew.push(_loc2_);
 						}
-					});
+						else
+						{
+							_loc3_ = int(selectedCrew.indexOf(_loc2_));
+							if (_loc3_ != -1)
+							{
+								selectedCrew.splice(_loc3_, 1);
+							}
+						}
+						reload();
+					}
+				});
 			}
 			reload();
 			g.tutorial.showSendCrewHint();
 		}
-
+		
 		override public function exit():void
 		{
 			ToolTip.disposeType("skill");

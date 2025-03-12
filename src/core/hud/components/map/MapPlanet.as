@@ -14,7 +14,7 @@ package core.hud.components.map
 	import generics.Util;
 	import starling.display.Image;
 	import starling.display.Sprite;
-
+	
 	public class MapPlanet extends MapBodyBase
 	{
 		public function MapPlanet(param1:Game, param2:Sprite, param3:Body)
@@ -31,7 +31,7 @@ package core.hud.components.map
 			addText();
 			init();
 		}
-
+		
 		private function addImage():void
 		{
 			if (body.texture == null)
@@ -55,7 +55,7 @@ package core.hud.components.map
 			imgHover.blendMode = "add";
 			imgSelected = imgHover;
 		}
-
+		
 		private function addCrew():void
 		{
 			var _loc1_:Image = null;
@@ -73,7 +73,7 @@ package core.hud.components.map
 				}
 			}
 		}
-
+		
 		private function addTooltip():void
 		{
 			var _loc7_:int = 0;
@@ -114,21 +114,13 @@ package core.hud.components.map
 					_loc7_ = 26;
 				}
 				_loc2_ += "\n<FONT COLOR='" + Area.COLORTYPESTR[_loc3_.majorType] + "'> " + _loc3_.skillLevel + "      </FONT>";
-				_loc1_.push( {
-							"img": CrewDisplayBox.IMAGES_SKILLS[_loc3_.majorType],
-							"x": _loc7_,
-							"y": 38 + 19 * _loc5_
-						});
+				_loc1_.push({"img": CrewDisplayBox.IMAGES_SKILLS[_loc3_.majorType], "x": _loc7_, "y": 38 + 19 * _loc5_});
 				_loc6_ = 0;
 				for each (var _loc4_:* in _loc3_.types)
 				{
 					_loc6_++;
 					_loc2_ += "    ";
-					_loc1_.push( {
-								"img": CrewDisplayBox.IMAGES_SPECIALS[_loc4_],
-								"x": _loc7_ + _loc6_ * 18,
-								"y": 38 + 19 * _loc5_
-							});
+					_loc1_.push({"img": CrewDisplayBox.IMAGES_SPECIALS[_loc4_], "x": _loc7_ + _loc6_ * 18, "y": 38 + 19 * _loc5_});
 				}
 				if (g.me.hasExploredArea(_loc8_))
 				{
@@ -157,7 +149,7 @@ package core.hud.components.map
 			}
 			new ToolTip(g, layer, _loc2_, _loc1_, "Map", 400);
 		}
-
+		
 		private function addText():void
 		{
 			var _loc4_:ControlZone = null;

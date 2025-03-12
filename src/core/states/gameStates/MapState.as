@@ -4,16 +4,17 @@ package core.states.gameStates
 	import core.hud.components.map.Map;
 	import core.scene.Game;
 	import starling.events.Event;
-
+	
 	public class MapState extends PlayState
 	{
 		private var map:Map;
+		
 		public function MapState(param1:Game)
 		{
 			super(param1);
 			map = new Map(param1);
 		}
-
+		
 		override public function enter():void
 		{
 			super.enter();
@@ -23,12 +24,12 @@ package core.states.gameStates
 			g.hud.show = false;
 			g.tutorial.showMapTargetHint();
 			map.addEventListener("close", function(param1:Event):void
-				{
-					sm.revertState();
-				});
+			{
+				sm.revertState();
+			});
 			loadCompleted();
 		}
-
+		
 		override public function tickUpdate():void
 		{
 			if (!map.visible)
@@ -38,7 +39,7 @@ package core.states.gameStates
 			super.tickUpdate();
 			map.update();
 		}
-
+		
 		override public function execute():void
 		{
 			if (loaded)
@@ -59,7 +60,7 @@ package core.states.gameStates
 			}
 			super.execute();
 		}
-
+		
 		override public function exit(param1:Function):void
 		{
 			ToolTip.disposeType("Map");

@@ -8,16 +8,21 @@ package core.ship
 	import core.weapon.Weapon;
 	import flash.geom.Point;
 	import movement.Heading;
-
+	
 	public class Ship extends Unit
 	{
 		public var engine:Engine;
+		
 		public var weapons:Vector.<Weapon>;
-
+		
 		protected var _usingBoost:Boolean;
+		
 		public var boostBonus:int;
+		
 		public var isTeleporting:Boolean;
+		
 		private var converger:Converger;
+		
 		public var isVisible:Boolean = false;
 		public var nextUpdate:Number = 0;
 		public var rollDir:Number = 0;
@@ -32,7 +37,7 @@ package core.ship
 			enginePos = new Point();
 			weaponPos = new Point();
 		}
-
+		
 		override public function update():void
 		{
 			var _loc1_:Number = NaN;
@@ -82,7 +87,7 @@ package core.ship
 				}
 			}
 		}
-
+		
 		public function updateWeapons():void
 		{
 			var _loc1_:Weapon = null;
@@ -96,7 +101,7 @@ package core.ship
 				_loc3_++;
 			}
 		}
-
+		
 		public function updateBeamWeapons():void
 		{
 			var _loc1_:Weapon = null;
@@ -113,7 +118,7 @@ package core.ship
 				_loc3_++;
 			}
 		}
-
+		
 		public function updateNonBeamWeapons():void
 		{
 			var _loc1_:Weapon = null;
@@ -130,7 +135,7 @@ package core.ship
 				_loc3_++;
 			}
 		}
-
+		
 		override public function destroy(param1:Boolean = true):void
 		{
 			engine.destroy();
@@ -140,7 +145,7 @@ package core.ship
 			}
 			super.destroy(param1);
 		}
-
+		
 		public function runConverger():void
 		{
 			if (converger != null)
@@ -148,7 +153,7 @@ package core.ship
 				converger.run();
 			}
 		}
-
+		
 		override public function set pos(param1:Point):void
 		{
 			if (course != null)
@@ -156,7 +161,7 @@ package core.ship
 				course.pos = param1;
 			}
 		}
-
+		
 		override public function get pos():Point
 		{
 			if (converger == null || converger.course == null)
@@ -165,27 +170,27 @@ package core.ship
 			}
 			return converger.course.pos;
 		}
-
+		
 		override public function set x(param1:Number):void
 		{
 			pos.x = param1;
 		}
-
+		
 		override public function set y(param1:Number):void
 		{
 			pos.y = param1;
 		}
-
+		
 		override public function get x():Number
 		{
 			return pos.x;
 		}
-
+		
 		override public function get y():Number
 		{
 			return pos.y;
 		}
-
+		
 		override public function set speed(param1:Point):void
 		{
 			if (course != null)
@@ -193,7 +198,7 @@ package core.ship
 				course.speed = param1;
 			}
 		}
-
+		
 		override public function get speed():Point
 		{
 			if (course != null)
@@ -202,7 +207,7 @@ package core.ship
 			}
 			return new Point();
 		}
-
+		
 		override public function set rotation(param1:Number):void
 		{
 			if (course != null)
@@ -210,7 +215,7 @@ package core.ship
 				course.rotation = param1;
 			}
 		}
-
+		
 		override public function get rotation():Number
 		{
 			if (course != null)
@@ -219,7 +224,7 @@ package core.ship
 			}
 			return 0;
 		}
-
+		
 		public function initCourse(param1:Heading):void
 		{
 			if (course != null)
@@ -227,7 +232,7 @@ package core.ship
 				converger.setCourse(param1, false);
 			}
 		}
-
+		
 		public function set course(param1:Heading):void
 		{
 			if (course != null)
@@ -235,7 +240,7 @@ package core.ship
 				converger.setCourse(param1);
 			}
 		}
-
+		
 		public function get course():Heading
 		{
 			if (converger != null)
@@ -244,7 +249,7 @@ package core.ship
 			}
 			return null;
 		}
-
+		
 		public function set accelerate(param1:Boolean):void
 		{
 			if (course != null)
@@ -252,7 +257,7 @@ package core.ship
 				course.accelerate = param1;
 			}
 		}
-
+		
 		public function get accelerate():Boolean
 		{
 			if (course != null)
@@ -261,42 +266,42 @@ package core.ship
 			}
 			return false;
 		}
-
+		
 		public function setConvergeTarget(param1:Heading):void
 		{
 			converger.setConvergeTarget(param1);
 		}
-
+		
 		public function clearConvergeTarget():void
 		{
 			converger.clearConvergeTarget();
 		}
-
+		
 		public function getConverger():Converger
 		{
 			return converger;
 		}
-
+		
 		public function convergerUpdateHeading(param1:Heading):void
 		{
 			converger.updateHeading(param1);
 		}
-
+		
 		public function setAngleTargetPos(param1:Point):void
 		{
 			converger.setAngleTargetPos(param1);
 		}
-
+		
 		public function isFacingAngleTarget():Boolean
 		{
 			return converger.isFacingAngleTarget();
 		}
-
+		
 		public function setNextTurnDirection(param1:int):void
 		{
 			converger.setNextTurnDirection(param1);
 		}
-
+		
 		override public function reset():void
 		{
 			engine = null;
@@ -309,13 +314,13 @@ package core.ship
 			weapons.splice(0, weapons.length);
 			super.reset();
 		}
-
+		
 		override public function addToCanvasForReal():void
 		{
 			super.addToCanvas();
 			engine.show();
 		}
-
+		
 		override public function removeFromCanvas():void
 		{
 			if (!isAddedToCanvas)
@@ -325,12 +330,12 @@ package core.ship
 			engine.hide();
 			super.removeFromCanvas();
 		}
-
+		
 		override public function get type():String
 		{
 			return "ship";
 		}
-
+		
 		public function get usingBoost():Boolean
 		{
 			return _usingBoost;

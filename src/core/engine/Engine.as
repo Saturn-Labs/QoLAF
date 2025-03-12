@@ -9,32 +9,43 @@ package core.engine
 	import extensions.RibbonTrail;
 	import flash.geom.Point;
 	import generics.Color;
-
+	
 	public class Engine extends GameObject
 	{
 		public var thrustEmitters:Vector.<Emitter>;
-
+		
 		public var idleThrustEmitters:Vector.<Emitter>;
-
+		
 		public var speed:Number;
+		
 		private var _rotationSpeed:Number;
+		
 		public var rotationMod:Number;
+		
 		public var acceleration:Number;
+		
 		public var accelerating:Boolean;
+		
 		private var g:Game;
+		
 		public var ship:Ship;
+		
 		public var alive:Boolean;
+		
 		public var dual:Boolean = false;
 		public var dualDistance:int = 0;
 		public var obj:Object;
+		
 		public var colorHue:Number = 0;
 		public var ribbonBaseMovingRatio:Number = 1;
 		public var hasRibbonTrail:Boolean = false;
 		public var ribbonThickness:Number = 0;
 		public var ribbonTrail:RibbonTrail;
+		
 		private var followingRibbonSegment:RibbonSegment;
+		
 		public var followingRibbonSegmentLine:Vector.<RibbonSegment>;
-
+		
 		public function Engine(param1:Game)
 		{
 			followingRibbonSegment = new RibbonSegment();
@@ -50,7 +61,7 @@ package core.engine
 			ship = null;
 			accelerating = false;
 		}
-
+		
 		override public function update():void
 		{
 			var _loc6_:Point = null;
@@ -92,7 +103,7 @@ package core.engine
 				}
 			}
 		}
-
+		
 		public function accelerate():void
 		{
 			var _loc2_:int = 0;
@@ -126,7 +137,7 @@ package core.engine
 				}
 			}
 		}
-
+		
 		public function idle():void
 		{
 			var _loc2_:int = 0;
@@ -160,7 +171,7 @@ package core.engine
 				}
 			}
 		}
-
+		
 		public function stop():void
 		{
 			var _loc2_:int = 0;
@@ -190,13 +201,13 @@ package core.engine
 				}
 			}
 		}
-
+		
 		public function destroy():void
 		{
 			hide();
 			reset();
 		}
-
+		
 		public function hide():void
 		{
 			var _loc2_:int = 0;
@@ -227,7 +238,7 @@ package core.engine
 			thrustEmitters = null;
 			idleThrustEmitters = null;
 		}
-
+		
 		public function show():void
 		{
 			var _loc5_:* = undefined;
@@ -330,17 +341,17 @@ package core.engine
 				}
 			}
 		}
-
+		
 		public function get rotationSpeed():Number
 		{
 			return _rotationSpeed * rotationMod;
 		}
-
+		
 		public function set rotationSpeed(param1:Number):void
 		{
 			_rotationSpeed = param1;
 		}
-
+		
 		public function resetTrail():void
 		{
 			if (hasRibbonTrail)
@@ -350,7 +361,7 @@ package core.engine
 				ribbonTrail.advanceTime(33);
 			}
 		}
-
+		
 		override public function reset():void
 		{
 			thrustEmitters = null;

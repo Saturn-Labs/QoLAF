@@ -7,17 +7,25 @@ package core.states.AIStates
 	import core.unit.Unit;
 	import flash.geom.Point;
 	import movement.Heading;
-
+	
 	public class AIFollow implements IState
 	{
 		private var g:Game;
+		
 		private var s:EnemyShip;
+		
 		private var sm:StateMachine;
+		
 		private var closeRangeSQ:Number;
+		
 		private var speedRotFactor:Number;
+		
 		private var rollPeriod:Number;
+		
 		private var rollPeriodFactor:Number;
+		
 		private var target:Unit;
+		
 		public function AIFollow(param1:Game, param2:EnemyShip, param3:Unit, param4:Heading, param5:int)
 		{
 			super();
@@ -27,7 +35,7 @@ package core.states.AIStates
 			this.s = param2;
 			this.g = param1;
 		}
-
+		
 		public function enter():void
 		{
 			closeRangeSQ = 40000;
@@ -35,7 +43,7 @@ package core.states.AIStates
 			s.roll = false;
 			s.accelerate = false;
 		}
-
+		
 		public function execute():void
 		{
 			if (target == null)
@@ -63,16 +71,16 @@ package core.states.AIStates
 			s.updateHealthBars();
 			s.engine.update();
 		}
-
+		
 		public function exit():void
 		{
 		}
-
+		
 		public function set stateMachine(param1:StateMachine):void
 		{
 			this.sm = param1;
 		}
-
+		
 		public function get type():String
 		{
 			return "AIFollow";

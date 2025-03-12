@@ -5,22 +5,24 @@ package core.states.AIStates
 	import core.scene.Game;
 	import core.states.IState;
 	import generics.Util;
-
+	
 	public class Cluster extends ProjectileBullet implements IState
 	{
 		protected var newProjectile:Projectile;
+		
 		private var clusterAngle:Number;
+		
 		public function Cluster(param1:Game, param2:Projectile)
 		{
 			super(param1, param2);
 		}
-
+		
 		override public function enter():void
 		{
 			clusterAngle = Util.degreesToRadians(p.clusterAngle);
 			super.enter();
 		}
-
+		
 		override public function execute():void
 		{
 			var _loc4_:Number = NaN;

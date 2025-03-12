@@ -3,36 +3,35 @@ package data
 	import com.adobe.serialization.json.JSONDecoder;
 	import core.artifact.Artifact;
 	import debug.Console;
-	import embeds.CacheJson;
 	import flash.utils.ByteArray;
 	import playerio.*;
 	import starling.display.Sprite;
-
+	
 	public class DataManager extends Sprite implements IDataManager
-	{
-		private var CacheFile:Class;
+	{	
 		private var _client:Client;
+		
 		private var json:Object;
+		
 		public var _artifacts:Vector.<Artifact>;
-
+		
 		public function DataManager(param1:Client)
 		{
-			CacheFile = embeds.CacheJson;
 			_artifacts = new Vector.<Artifact>();
 			super();
 			this._client = param1;
 		}
-
+		
 		public function getArtifacts():Vector.<Artifact>
 		{
 			return _artifacts;
 		}
-
+		
 		public function setClient(param1:Client):void
 		{
 			_client = param1;
 		}
-
+		
 		public function loadKeyFromBigDB(param1:String, param2:String, param3:Function):void
 		{
 			if (param1 == null || param2 == null || param1.length == 0 || param2.length == 0)
@@ -42,28 +41,28 @@ package data
 			}
 			loadFromBigDB(param1, param2, param3);
 		}
-
+		
 		private function loadFromBigDB(param1:String, param2:String, param3:Function):void
 		{
 			var table:String = param1;
 			var key:String = param2;
 			var callback:Function = param3;
 			_client.bigDB.load(table, key, function(param1:DatabaseObject):void
+			{
+				try
 				{
-					try
-					{
-						callback(param1);
-					}
-					catch (e:Error)
-					{
-						_client.errorLog.writeError(e.toString(), "loadFromBigDB failed, table: " + table + ", key: " + key, e.getStackTrace(), {});
-					}
-				}, function(param1:PlayerIOError):void
+					callback(param1);
+				}
+				catch (e:Error)
 				{
-					Console.write("FAILED DATA - TABLE: " + table + " KEY: " + key + " ERROR: " + param1.name);
-				});
+					_client.errorLog.writeError(e.toString(), "loadFromBigDB failed, table: " + table + ", key: " + key, e.getStackTrace(), {});
+				}
+			}, function(param1:PlayerIOError):void
+			{
+				Console.write("FAILED DATA - TABLE: " + table + " KEY: " + key + " ERROR: " + param1.name);
+			});
 		}
-
+		
 		public function loadRangeFromBigDB(param1:String, param2:String, param3:Array = null, param4:Function = null, param5:int = 1000):void
 		{
 			var table:String = param1;
@@ -72,14 +71,14 @@ package data
 			var callback:Function = param4;
 			var maxCount:int = param5;
 			_client.bigDB.loadRange(table, index, indexPath, null, null, maxCount, function(param1:Array):void
-				{
-					callback(param1);
-				}, function(param1:PlayerIOError):void
-				{
-					Console.write("FAILED DATA - TABLE: " + table + " INDEX: " + index + " INDEX_PATH: " + indexPath + " ERROR: " + param1);
-				});
+			{
+				callback(param1);
+			}, function(param1:PlayerIOError):void
+			{
+				Console.write("FAILED DATA - TABLE: " + table + " INDEX: " + index + " INDEX_PATH: " + indexPath + " ERROR: " + param1);
+			});
 		}
-
+		
 		public function loadKeysFromBigDB(param1:String, param2:Array, param3:Function = null):void
 		{
 			var key:String;
@@ -98,14 +97,14 @@ package data
 				i--;
 			}
 			_client.bigDB.loadKeys(table, keys, function(param1:Array):void
-				{
-					callback(param1);
-				}, function(param1:PlayerIOError):void
-				{
-					Console.write("FAILED DATA - TABLE: " + table + " KEYS: " + keys + " ERROR: " + param1);
-				});
+			{
+				callback(param1);
+			}, function(param1:PlayerIOError):void
+			{
+				Console.write("FAILED DATA - TABLE: " + table + " KEYS: " + keys + " ERROR: " + param1);
+			});
 		}
-
+		
 		private function IsNullOrEmpty(param1:String):Boolean
 		{
 			if (param1 == null || param1 == "" || param1 == " ")
@@ -114,7 +113,7 @@ package data
 			}
 			return false;
 		}
-
+		
 		public function loadKey(param1:String, param2:String):Object
 		{
 			if (IsNullOrEmpty(param1))
@@ -134,7 +133,7 @@ package data
 			}
 			return json[param1][param2];
 		}
-
+		
 		public function loadKeys(param1:String, param2:Array):Array
 		{
 			var _loc4_:Object = null;
@@ -147,7 +146,7 @@ package data
 			}
 			return _loc3_;
 		}
-
+		
 		public function loadTable(param1:String):Object
 		{
 			if (!json.hasOwnProperty(param1))
@@ -157,7 +156,7 @@ package data
 			}
 			return json[param1];
 		}
-
+		
 		public function loadRange(param1:String, param2:String, param3:String):Object
 		{
 			var _loc5_:Object = null;
@@ -180,7 +179,7 @@ package data
 			}
 			return _loc4_;
 		}
-
+		
 		public function loadFirstByProperty(param1:String, param2:String, param3:String):Object
 		{
 			var _loc4_:Object = null;
@@ -202,10 +201,10 @@ package data
 			}
 			return null;
 		}
-
+		
 		public function cacheCommonData():void
 		{
-			var _loc2_:ByteArray = new CacheFile() as ByteArray;
+			var _loc2_:ByteArray = new EmbeddedAssets.CacheFile() as ByteArray;
 			var _loc1_:JSONDecoder = new JSONDecoder(_loc2_.readUTFBytes(_loc2_.length), true);
 			json = _loc1_.getValue();
 		}

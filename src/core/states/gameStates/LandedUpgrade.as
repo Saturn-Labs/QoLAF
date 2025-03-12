@@ -5,12 +5,14 @@ package core.states.gameStates
 	import core.hud.components.techTree.TechTree;
 	import core.scene.Game;
 	import core.solarSystem.Body;
-
+	
 	public class LandedUpgrade extends LandedState
 	{
 		private var myCargo:Cargo;
+		
 		private var stopMusic:Boolean = true;
 		private var techTree:TechTree;
+		
 		private var shownOffer:Boolean = false;
 		public function LandedUpgrade(param1:Game, param2:Body)
 		{
@@ -18,7 +20,7 @@ package core.states.gameStates
 			me = param1.me;
 			myCargo = param1.myCargo;
 		}
-
+		
 		override public function enter():void
 		{
 			var name:Text;
@@ -43,18 +45,18 @@ package core.states.gameStates
 			techTree.y = 120;
 			addChild(techTree);
 			g.myCargo.reloadCargoFromServer(function():void
-				{
-					techTree.load();
-					loadCompleted();
-				});
+			{
+				techTree.load();
+				loadCompleted();
+			});
 			g.tutorial.showUpgradeAdvice();
 		}
-
+		
 		override public function execute():void
 		{
 			super.execute();
 		}
-
+		
 		override public function exit(param1:Function):void
 		{
 			techTree.exit();

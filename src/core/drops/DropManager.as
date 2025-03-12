@@ -7,21 +7,23 @@ package core.drops
 	import flash.utils.Dictionary;
 	import generics.Random;
 	import playerio.Message;
-
+	
 	public class DropManager
 	{
 		public static const PICKUPINTERVAL:Number = 250;
-
 		public static const ATTEMPTS_TO_TIMEOUT:int = 80;
-
 		public var dropsById:Dictionary;
+		
 		public var drops:Vector.<Drop>;
-
+		
 		private var createdDropIds:Dictionary;
+		
 		private var pickupQueue:Vector.<PickUpMsg>;
-
+		
 		private var nextPickUpTime:Number;
+		
 		private var g:Game;
+		
 		public function DropManager(param1:Game)
 		{
 			super();
@@ -32,17 +34,17 @@ package core.drops
 			createdDropIds = new Dictionary();
 			pickupQueue = new Vector.<PickUpMsg>();
 		}
-
+		
 		public function addMessageHandlers():void
 		{
 			g.addMessageHandler("spawnDrops", onSpawn);
 		}
-
+		
 		public function initDrops(param1:Message):void
 		{
 			spawn(param1);
 		}
-
+		
 		public function update():void
 		{
 			var _loc3_:int = 0;
@@ -76,12 +78,12 @@ package core.drops
 			}
 			nextPickUpTime = g.time + 250;
 		}
-
+		
 		public function getDrop():Drop
 		{
 			return new Drop(g);
 		}
-
+		
 		private function remove(param1:Drop, param2:int):void
 		{
 			drops.splice(param2, 1);
@@ -91,12 +93,12 @@ package core.drops
 			param1.removeFromCanvas();
 			param1.reset();
 		}
-
+		
 		private function onSpawn(param1:Message):void
 		{
 			spawn(param1);
 		}
-
+		
 		public function spawn(param1:Message, param2:int = 0, param3:int = 0):void
 		{
 			var _loc8_:* = 0;
@@ -131,7 +133,7 @@ package core.drops
 				_loc8_ += 9;
 			}
 		}
-
+		
 		public function getDropItems(param1:String, param2:Game, param3:Number):DropBase
 		{
 			var _loc5_:Boolean = false;
@@ -205,7 +207,7 @@ package core.drops
 			}
 			return _loc10_;
 		}
-
+		
 		public function getDropItem(param1:Object, param2:Random):DropItem
 		{
 			var _loc6_:DropItem = null;
@@ -252,7 +254,7 @@ package core.drops
 			}
 			return null;
 		}
-
+		
 		private function createSetDrop(param1:Drop, param2:Message, param3:int):void
 		{
 			var _loc4_:Drop = null;
@@ -275,7 +277,7 @@ package core.drops
 			dropsById[param1.id.toString()] = param1;
 			drops.push(param1);
 		}
-
+		
 		public function tryBeamPickup(param1:Message, param2:int):void
 		{
 			var _loc5_:String = param1.getString(param2);
@@ -289,7 +291,7 @@ package core.drops
 			}
 			pickupQueue.push(new PickUpMsg(param1, 3 * 80, param2));
 		}
-
+		
 		public function tryPickup(param1:Message = null, param2:PickUpMsg = null, param3:int = 0):void
 		{
 			var _loc9_:int = 0;
@@ -357,12 +359,12 @@ package core.drops
 				pickupQueue.splice(_loc9_, 1);
 			}
 		}
-
+		
 		private function buyTractorBeam():void
 		{
 			g.send("buyTractorBeam");
 		}
-
+		
 		public function dispose():void
 		{
 			for each (var _loc1_:* in drops)
@@ -375,7 +377,7 @@ package core.drops
 			pickupQueue = null;
 			dropsById = null;
 		}
-
+		
 		public function forceUpdate():void
 		{
 			var _loc1_:Drop = null;
@@ -396,8 +398,11 @@ import playerio.Message;
 class PickUpMsg
 {
 	public var msg:Message;
+	
 	public var timeout:int;
+	
 	public var i:int;
+	
 	public function PickUpMsg(param1:Message, param2:int, param3:int = 0)
 	{
 		super();

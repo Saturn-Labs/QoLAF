@@ -2,7 +2,7 @@ package generics
 {
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-
+	
 	public class Util
 	{
 		public static var Math2PI:Number = 6.283185307179586;
@@ -10,23 +10,12 @@ package generics
 		{
 			super();
 		}
-
-		public static function lerp(start:Number, end:Number, t:Number):Number
-		{
-			var v:Number = start + (end - start) * t;
-			return isNaN(v) ? end : v;
-		}
-
-		public static function distance(lhs:Point, rhs:Point):Number
-		{
-			return Math.sqrt(Math.pow(rhs.x - lhs.x, 2) + Math.pow(rhs.y - lhs.y, 2));
-		}
-
+		
 		public static function degreesToRadians(param1:Number):Number
 		{
 			return param1 * 3.141592653589793 / 180;
 		}
-
+		
 		public static function getRotationEaseAmount(param1:Number, param2:Number):Number
 		{
 			if (param1 > 3.141592653589793)
@@ -39,7 +28,7 @@ package generics
 			}
 			return param1 * param2;
 		}
-
+		
 		public static function angleDifference(param1:Number, param2:Number):Number
 		{
 			var _loc3_:Number = param1 - param2;
@@ -53,12 +42,12 @@ package generics
 			}
 			return _loc3_;
 		}
-
+		
 		public static function radiansToDegrees(param1:Number):Number
 		{
 			return param1 * 180 / 3.141592653589793;
 		}
-
+		
 		public static function isAngleBetween(param1:Number, param2:Number, param3:Number):Boolean
 		{
 			var _loc4_:Boolean = false;
@@ -79,23 +68,23 @@ package generics
 			}
 			return _loc4_;
 		}
-
+		
 		public static function clampDegrees(param1:Number):Number
 		{
 			return param1 % 360;
 		}
-
+		
 		public static function clampRadians(param1:Number):Number
 		{
 			param1 /= Math2PI;
 			return (param1 - Math.floor(param1)) * Math2PI;
 		}
-
+		
 		public static function formatDecimal(param1:Number, param2:int = 1):Number
 		{
 			return Math.floor(param1 * 10 * param2) / 10 * param2;
 		}
-
+		
 		public static function sign(param1:Number):Number
 		{
 			if (param1 >= 0)
@@ -104,7 +93,7 @@ package generics
 			}
 			return -1;
 		}
-
+		
 		public static function formatAmount(param1:Number):String
 		{
 			var _loc2_:String = "";
@@ -115,12 +104,12 @@ package generics
 			}
 			return _loc2_ == "" ? param1.toString() : param1.toFixed(1) + _loc2_;
 		}
-
+		
 		public static function dotProduct(param1:Number, param2:Number, param3:Number, param4:Number):Number
 		{
 			return param1 * param3 + param2 * param4;
 		}
-
+		
 		public static function intersectLineAndRect(param1:Number, param2:Number, param3:Number, param4:Number, param5:Rectangle):Point
 		{
 			var _loc6_:Point = Util.intersectLines(param1, param2, param3, param4, param5.right, param5.y, param5.right, param5.bottom);
@@ -138,7 +127,7 @@ package generics
 			}
 			return _loc6_;
 		}
-
+		
 		public static function intersectLines(param1:Number, param2:Number, param3:Number, param4:Number, param5:Number, param6:Number, param7:Number, param8:Number):Point
 		{
 			var _loc12_:* = NaN;
@@ -202,7 +191,7 @@ package generics
 			}
 			return null;
 		}
-
+		
 		public static function getFormattedTime(param1:Number):String
 		{
 			var _loc5_:int = Math.floor(param1 / 1000);
@@ -225,33 +214,10 @@ package generics
 			}
 			return _loc3_;
 		}
-
+		
 		public static function trimUsername(param1:String):String
 		{
 			return param1.replace(/^([\s|\t|\n]+)?(.*)([\s|\t|\n]+)?$/gm, "$2");
-		}
-
-		public static function clamp(value:Number, min:Number, max:Number):Number
-		{
-			return Math.max(min, Math.min(value, max));
-		}
-
-		public static function normalize(value:Number, min:Number, max:Number):Number
-		{
-			if (max - min == 0)
-			{
-				return 0;
-			}
-			return (value - min) / (max - min);
-		}
-
-		public static function rescale(value:Number, sourceMin:Number, sourceMax:Number, targetMin:Number, targetMax:Number):Number
-		{
-			if (sourceMax - sourceMin == 0)
-			{
-				return targetMin;
-			}
-			return targetMin + ((value - sourceMin) / (sourceMax - sourceMin)) * (targetMax - targetMin);
 		}
 	}
 }

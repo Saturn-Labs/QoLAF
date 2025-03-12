@@ -6,15 +6,18 @@ package core.states.ship
 	import core.ship.PlayerShip;
 	import core.states.IState;
 	import core.states.StateMachine;
-
+	
 	public class Intro implements IState
 	{
 		private var ship:PlayerShip;
+		
 		private var sm:StateMachine;
+		
 		private var g:Game;
+		
 		private var hyperDriveEngaged:Boolean = true;
 		private var warpJumpEffect:Vector.<Emitter>;
-
+		
 		private var startX:Number = 0;
 		private var startY:Number = 0;
 		public function Intro(param1:Game, param2:PlayerShip, param3:Number, param4:Number)
@@ -25,7 +28,7 @@ package core.states.ship
 			this.startX = param3;
 			this.startY = param4;
 		}
-
+		
 		public function enter():void
 		{
 			warpJumpEffect = EmitterFactory.create("vtJpEIW2Z0aMfEtayo62GA", g, ship.x, ship.y, ship, true);
@@ -34,7 +37,7 @@ package core.states.ship
 				_loc1_.fastForward(2000);
 			}
 		}
-
+		
 		public function execute():void
 		{
 			var _loc2_:Number = NaN;
@@ -60,7 +63,7 @@ package core.states.ship
 			}
 			ship.engine.update();
 		}
-
+		
 		public function exit():void
 		{
 			for each (var _loc1_:* in warpJumpEffect)
@@ -68,12 +71,12 @@ package core.states.ship
 				_loc1_.killEmitter();
 			}
 		}
-
+		
 		public function get type():String
 		{
 			return "WarpJump";
 		}
-
+		
 		public function set stateMachine(param1:StateMachine):void
 		{
 			this.sm = param1;

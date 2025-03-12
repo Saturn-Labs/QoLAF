@@ -15,19 +15,29 @@ package core.hud.components.dialogs
 	import starling.textures.Texture;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class CreditBuyBox extends Sprite
 	{
 		private var g:Game;
+		
 		private var cost:int;
+		
 		private var caption:String;
+		
 		private var textureManager:ITextureManager;
+		
 		private var countText:Text;
+		
 		private var captionText:Text;
+		
 		private var box:Box;
+		
 		private var cancelButton:Button;
+		
 		private var acceptButton:Button;
+		
 		private var bgr:Quad;
+		
 		public function CreditBuyBox(param1:Game, param2:int, param3:String)
 		{
 			countText = new Text();
@@ -43,7 +53,7 @@ package core.hud.components.dialogs
 			redraw();
 			param1.addResizeListener(redraw);
 		}
-
+		
 		private function redraw(param1:Event = null):void
 		{
 			bgr.alpha = 0.5;
@@ -52,7 +62,7 @@ package core.hud.components.dialogs
 			box.x = Math.round(g.stage.stageWidth / 2 - box.width / 2);
 			box.y = Math.round(g.stage.stageHeight / 2 - box.height / 2);
 		}
-
+		
 		private function load():void
 		{
 			var youHave:TextBitmap;
@@ -82,20 +92,20 @@ package core.hud.components.dialogs
 				style = "positive";
 			}
 			getMoreButton = new Button(function():void
+			{
+				var buyFlux:BuyFlux = new BuyFlux(g);
+				buyFlux.addEventListener("buyFluxClose", function():void
 				{
-					var buyFlux:BuyFlux = new BuyFlux(g);
-					buyFlux.addEventListener("buyFluxClose", function():void
-						{
-							buyFlux.removeEventListeners();
-							g.removeChildFromOverlay(buyFlux);
-							g.creditManager.refresh(function():void
-								{
-									youHave.text = "You have: " + CreditManager.FLUX;
-								});
-							getMoreButton.enabled = true;
-						});
-					g.addChildToOverlay(buyFlux);
-				}, "Get more", style);
+					buyFlux.removeEventListeners();
+					g.removeChildFromOverlay(buyFlux);
+					g.creditManager.refresh(function():void
+					{
+						youHave.text = "You have: " + CreditManager.FLUX;
+					});
+					getMoreButton.enabled = true;
+				});
+				g.addChildToOverlay(buyFlux);
+			}, "Get more", style);
 			getMoreButton.x = youHave.x + youHave.width + 20;
 			getMoreButton.y = youHave.y;
 			getMoreButton.alignWithText();
@@ -127,21 +137,21 @@ package core.hud.components.dialogs
 			creditIcon.y = 10;
 			box.addChild(creditIcon);
 		}
-
+		
 		public function reload():void
 		{
 			removeChild(box, true);
 			load();
 			redraw();
 		}
-
+		
 		private function close(param1:TouchEvent):void
 		{
 			dispatchEventWith("close");
 			g.removeResizeListener(redraw);
 			g.removeChildFromOverlay(this, true);
 		}
-
+		
 		private function accept(param1:TouchEvent):void
 		{
 			dispatchEventWith("accept");

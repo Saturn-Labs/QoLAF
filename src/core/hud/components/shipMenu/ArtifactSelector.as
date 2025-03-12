@@ -13,14 +13,17 @@ package core.hud.components.shipMenu
 	import starling.textures.Texture;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class ArtifactSelector extends Sprite
 	{
 		private var g:Game;
+		
 		private var p:Player;
+		
 		private var icons:Vector.<MenuSelectIcon>;
-
+		
 		private var textureManager:ITextureManager;
+		
 		public function ArtifactSelector(param1:Game, param2:Player)
 		{
 			icons = new Vector.<MenuSelectIcon>();
@@ -30,7 +33,7 @@ package core.hud.components.shipMenu
 			textureManager = TextureLocator.getService();
 			load();
 		}
-
+		
 		private function load():void
 		{
 			var _loc3_:int = 0;
@@ -65,7 +68,7 @@ package core.hud.components.shipMenu
 				_loc3_++;
 			}
 		}
-
+		
 		private function createArtifactIcon(param1:int, param2:Texture, param3:String, param4:Boolean = true, param5:Boolean = false, param6:Boolean = false, param7:String = null):void
 		{
 			var number:int = param1;
@@ -84,27 +87,27 @@ package core.hud.components.shipMenu
 			if (!locked)
 			{
 				artifactIcon.addEventListener("touch", function(param1:TouchEvent):void
+				{
+					if (param1.getTouch(artifactIcon, "ended"))
 					{
-						if (param1.getTouch(artifactIcon, "ended"))
-						{
-							dispatchEventWith("artifactSelected");
-						}
-					});
+						dispatchEventWith("artifactSelected");
+					}
+				});
 			}
 			else if (locked && enabled)
 			{
 				artifactIcon.addEventListener("touch", function(param1:TouchEvent):void
+				{
+					if (param1.getTouch(artifactIcon, "ended"))
 					{
-						if (param1.getTouch(artifactIcon, "ended"))
-						{
-							openUnlockSlot(artifactIcon.number);
-						}
-					});
+						openUnlockSlot(artifactIcon.number);
+					}
+				});
 			}
 			addChild(artifactIcon);
 			icons.push(artifactIcon);
 		}
-
+		
 		private function openUnlockSlot(param1:int):void
 		{
 			var number:int = param1;
@@ -117,29 +120,29 @@ package core.hud.components.shipMenu
 			{
 				buyBox.addBuyForFluxButton(fluxCost, number, "buyArtifactSlotWithFlux", "Are you sure you want to buy an artifact slot?");
 				buyBox.addEventListener("fluxBuy", function(param1:Event):void
-					{
-						Game.trackEvent("used flux", "bought artifact (ship menu)", "number " + number);
-						p.unlockedArtifactSlots = number;
-						g.removeChildFromOverlay(buyBox, true);
-						refresh();
-					});
+				{
+					Game.trackEvent("used flux", "bought artifact (ship menu)", "number " + number);
+					p.unlockedArtifactSlots = number;
+					g.removeChildFromOverlay(buyBox, true);
+					refresh();
+				});
 			}
 			buyBox.addEventListener("accept", function(param1:Event):void
-				{
-					var e:Event = param1;
-					g.me.tryUnlockSlot("slotArtifact", number, function():void
-						{
-							g.removeChildFromOverlay(buyBox, true);
-							refresh();
-						});
-				});
-			buyBox.addEventListener("close", function(param1:Event):void
+			{
+				var e:Event = param1;
+				g.me.tryUnlockSlot("slotArtifact", number, function():void
 				{
 					g.removeChildFromOverlay(buyBox, true);
+					refresh();
 				});
+			});
+			buyBox.addEventListener("close", function(param1:Event):void
+			{
+				g.removeChildFromOverlay(buyBox, true);
+			});
 			g.addChildToOverlay(buyBox);
 		}
-
+		
 		public function refresh():void
 		{
 			for each (var _loc1_:* in icons)
@@ -152,7 +155,7 @@ package core.hud.components.shipMenu
 			icons = new Vector.<MenuSelectIcon>();
 			load();
 		}
-
+		
 		override public function dispose():void
 		{
 			for each (var _loc1_:* in icons)

@@ -8,14 +8,19 @@ package core.hud.components.dialogs
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
 	import starling.events.TouchEvent;
-
+	
 	public class PopupMessage extends Sprite
 	{
 		protected var textField:Text;
+		
 		protected var box:Box;
+		
 		public var closeButton:Button;
+		
 		public var callback:Function;
+		
 		protected var bgr:Quad;
+		
 		public function PopupMessage(param1:String = "OK", param2:uint = 5592405)
 		{
 			box = new Box(200, 100, "highlight", 1, 15);
@@ -34,7 +39,7 @@ package core.hud.components.dialogs
 			box.addChild(closeButton);
 			addEventListener("addedToStage", stageAddHandler);
 		}
-
+		
 		private function stageAddHandler(param1:Event):void
 		{
 			addEventListener("removedFromStage", clean);
@@ -44,12 +49,12 @@ package core.hud.components.dialogs
 			bgr.height = stage.stageHeight;
 			redraw();
 		}
-
+		
 		public function enableCloseButton(param1:Boolean):void
 		{
 			closeButton.enabled = param1;
 		}
-
+		
 		protected function keyDown(param1:KeyboardEvent):void
 		{
 			if (param1.keyCode == 13)
@@ -58,7 +63,7 @@ package core.hud.components.dialogs
 				close();
 			}
 		}
-
+		
 		protected function close(param1:TouchEvent = null):void
 		{
 			dispatchEventWith("close");
@@ -68,7 +73,7 @@ package core.hud.components.dialogs
 				callback();
 			}
 		}
-
+		
 		public function set text(param1:String):void
 		{
 			textField.htmlText = param1;
@@ -77,7 +82,7 @@ package core.hud.components.dialogs
 				redraw();
 			}
 		}
-
+		
 		protected function redraw(param1:Event = null):void
 		{
 			if (stage == null)
@@ -94,7 +99,7 @@ package core.hud.components.dialogs
 			bgr.width = stage.stageWidth;
 			bgr.height = stage.stageHeight;
 		}
-
+		
 		protected function clean(param1:Event):void
 		{
 			stage.removeEventListener("resize", redraw);

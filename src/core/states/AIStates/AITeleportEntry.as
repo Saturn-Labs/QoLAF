@@ -6,20 +6,23 @@ package core.states.AIStates
 	import core.ship.EnemyShip;
 	import core.states.IState;
 	import core.states.StateMachine;
-	import core.weapon.Debuff;
 	import generics.Random;
 	import movement.Heading;
-	import qolaf.modifiers.Modifier;
-
+	
 	public class AITeleportEntry implements IState
 	{
 		private var g:Game;
+		
 		private var s:EnemyShip;
+		
 		private var sm:StateMachine;
+		
 		private var targetX:Number;
+		
 		private var targetY:Number;
+		
 		private var emitters1:Vector.<Emitter>;
-
+		
 		public function AITeleportEntry(param1:Game, param2:EnemyShip, param3:Heading)
 		{
 			super();
@@ -38,21 +41,18 @@ package core.states.AIStates
 			this.g = param1;
 			this.s = param2;
 		}
-
+		
 		public function enter():void
 		{
 			s.invulnerable = true;
 			s.visible = false;
 			emitters1 = EmitterFactory.create("5BSaDIEYj0mEuVkMVp1JGw", g, targetX, targetY, null, true);
-
-			// QoLAF
-			s.addModifier(new Modifier(Debuff.TELEPORTING, 0, true));
 		}
-
+		
 		public function execute():void
 		{
 		}
-
+		
 		public function exit():void
 		{
 			for each (var _loc1_:* in emitters1)
@@ -71,16 +71,13 @@ package core.states.AIStates
 			{
 				s.shieldRegenCounter = -3000;
 			}
-
-			// QoLAF
-			s.removeModifierById(Debuff.TELEPORTING);
 		}
-
+		
 		public function set stateMachine(param1:StateMachine):void
 		{
 			this.sm = param1;
 		}
-
+		
 		public function get type():String
 		{
 			return "AITeleportEntry";

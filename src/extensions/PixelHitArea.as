@@ -7,23 +7,32 @@ package extensions
 	import flash.utils.Dictionary;
 	import flash.utils.getTimer;
 	import starling.utils.Color;
-
+	
 	public class PixelHitArea
 	{
 		private static var hitAreas:Dictionary;
+		
 		private static var id:int = 0;
 		public var width:Number;
+		
 		public var height:Number;
+		
 		public var name:String;
+		
 		public var scaleBitmapData:Number;
+		
 		private var sampleWidth:uint;
+		
 		private var sampleHeight:uint;
+		
 		private var alphaData:Vector.<uint>;
-
+		
 		private var tempData:Vector.<uint>;
-
+		
 		private var createTime:int;
+		
 		private var _disposed:Boolean;
+		
 		public function PixelHitArea(param1:Bitmap, param2:Number = 1, param3:String = "")
 		{
 			var _loc7_:* = 0;
@@ -62,7 +71,7 @@ package extensions
 			_loc5_ = null;
 			createTime = getTimer() - _loc4_;
 		}
-
+		
 		private static function registerHitArea(param1:PixelHitArea, param2:String):void
 		{
 			if (hitAreas == null)
@@ -75,7 +84,7 @@ package extensions
 			}
 			hitAreas[param2] = param1;
 		}
-
+		
 		public static function disposeHitArea(param1:PixelHitArea):void
 		{
 			for (var _loc2_:* in hitAreas)
@@ -87,7 +96,7 @@ package extensions
 				}
 			}
 		}
-
+		
 		public static function dispose():void
 		{
 			var _loc2_:PixelHitArea = null;
@@ -103,7 +112,7 @@ package extensions
 			hitAreas = null;
 			id = 0;
 		}
-
+		
 		public static function getHitArea(param1:String):PixelHitArea
 		{
 			if (hitAreas[param1])
@@ -112,7 +121,7 @@ package extensions
 			}
 			throw new Error("HitArea " + param1 + " not found");
 		}
-
+		
 		public static function getDebugInfo():String
 		{
 			var _loc5_:PixelHitArea = null;
@@ -135,12 +144,12 @@ package extensions
 			_loc2_ += "-----------------------\r";
 			return _loc2_ + ("total:\t\t" + _loc1_.toFixed(2) + " mb \t\t\t" + _loc6_ + " ms");
 		}
-
+		
 		private function getAlpha(param1:uint):uint
 		{
 			return param1 < tempData.length ? Color.getAlpha(tempData[param1]) : 0;
 		}
-
+		
 		public function getAlphaPixel(param1:uint, param2:uint):uint
 		{
 			var _loc3_:Number = (Math.floor(param2 * scaleBitmapData) * sampleWidth + Math.floor(param1 * scaleBitmapData)) / 4;
@@ -164,28 +173,28 @@ package extensions
 			}
 			return 0;
 		}
-
+		
 		public function dispose():void
 		{
 			alphaData = null;
 			disposed = true;
 		}
-
+		
 		public function getMemorySize():Number
 		{
 			return !!alphaData ? getSize(alphaData) : 0;
 		}
-
+		
 		public function getCreatTime():Number
 		{
 			return createTime;
 		}
-
+		
 		public function get disposed():Boolean
 		{
 			return _disposed;
 		}
-
+		
 		public function set disposed(param1:Boolean):void
 		{
 			_disposed = param1;

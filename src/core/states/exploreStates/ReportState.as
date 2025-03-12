@@ -24,23 +24,31 @@ package core.states.exploreStates
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.TouchEvent;
-
+	
 	public class ReportState extends DisplayState
 	{
 		private var area:ExploreArea;
+		
 		private var loadText:TextBitmap;
+		
 		private var levelUpHeading:TextBitmap;
+		
 		private var firstStepContainer:Sprite;
+		
 		private var crewStepContainers:Vector.<Sprite>;
-
+		
 		private var rewardStepContainer:Sprite;
+		
 		private var nextButton:Button;
+		
 		private var rewardTweens:Vector.<TweenMax>;
-
+		
 		private var crewTweens:Vector.<Vector.<TweenMax>>;
-
+		
 		private var currentCrewIndex:int;
+		
 		private var crewMembers:Array;
+		
 		public function ReportState(param1:Game, param2:ExploreArea)
 		{
 			loadText = new TextBitmap();
@@ -54,7 +62,7 @@ package core.states.exploreStates
 			super(param1, ExploreState);
 			this.area = param2;
 		}
-
+		
 		override public function enter():void
 		{
 			super.enter();
@@ -67,7 +75,7 @@ package core.states.exploreStates
 			addChild(loadText);
 			g.rpc("getExploreReport", reportArrived, area.areaKey);
 		}
-
+		
 		private function reportArrived(param1:Message):void
 		{
 			var _loc11_:int = 0;
@@ -100,15 +108,7 @@ package core.states.exploreStates
 				_loc9_.format.color = Style.COLOR_VALID;
 				_loc9_.text = "SUCCESS!";
 				_loc9_.center();
-				TweenMax.fromTo(_loc9_, 1, {
-							"scaleX": 2,
-							"scaleY": 2,
-							"rotation": 2
-						}, {
-							"scaleX": 1,
-							"scaleY": 1,
-							"rotation": 0
-						});
+				TweenMax.fromTo(_loc9_, 1, {"scaleX": 2, "scaleY": 2, "rotation": 2}, {"scaleX": 1, "scaleY": 1, "rotation": 0});
 				SoundLocator.getService().play("7zeIcPFb-UWzgtR_3nrZ8Q");
 			}
 			else
@@ -116,15 +116,7 @@ package core.states.exploreStates
 				_loc9_.format.color = Style.COLOR_INVALID;
 				_loc9_.text = "FAILED!";
 				_loc9_.center();
-				TweenMax.fromTo(_loc9_, 1, {
-							"scaleX": 2,
-							"scaleY": 2,
-							"rotation": -2
-						}, {
-							"scaleX": 1,
-							"scaleY": 1,
-							"rotation": 0
-						});
+				TweenMax.fromTo(_loc9_, 1, {"scaleX": 2, "scaleY": 2, "rotation": -2}, {"scaleX": 1, "scaleY": 1, "rotation": 0});
 				SoundLocator.getService().play("14BaNTN3tEmfQKMGWfEE6w");
 			}
 			var _loc17_:TextBitmap = new TextBitmap();
@@ -153,10 +145,7 @@ package core.states.exploreStates
 				_loc4_ = new LootItem(_loc6_, _loc16_, _loc14_);
 				_loc4_.x = 760 / 2 - _loc4_.width / 2;
 				_loc4_.y = 310 + _loc8_ * (_loc4_.height + 5);
-				rewardTweens.push(TweenMax.from(_loc4_, 1, {
-								"alpha": 0,
-								"paused": true
-							}));
+				rewardTweens.push(TweenMax.from(_loc4_, 1, {"alpha": 0, "paused": true}));
 				rewardStepContainer.addChild(_loc4_);
 				if (_loc14_ > 0)
 				{
@@ -176,12 +165,7 @@ package core.states.exploreStates
 			_loc18_.x = 760 / 2;
 			_loc18_.y = 105;
 			_loc18_.center();
-			rewardTweens.push(TweenMax.from(_loc18_, 1.4, {
-							"alpha": 0,
-							"scaleX": 4,
-							"scaleY": 4,
-							"paused": true
-						}));
+			rewardTweens.push(TweenMax.from(_loc18_, 1.4, {"alpha": 0, "scaleX": 4, "scaleY": 4, "paused": true}));
 			rewardStepContainer.addChild(_loc18_);
 			_loc7_;
 			while (_loc7_ < 3)
@@ -198,19 +182,14 @@ package core.states.exploreStates
 					_loc10_.update();
 					_loc10_.y = 200;
 					_loc10_.x = 760 / 2 - 3 * (_loc10_.width + 15) / 2 + (_loc10_.width + 15) * _loc7_;
-					rewardTweens.push(TweenMax.from(_loc10_, 1 + _loc7_, {
-									"alpha": 0,
-									"scaleX": 2,
-									"scaleY": 2,
-									"paused": true
-								}));
+					rewardTweens.push(TweenMax.from(_loc10_, 1 + _loc7_, {"alpha": 0, "scaleX": 2, "scaleY": 2, "paused": true}));
 					rewardStepContainer.addChild(_loc10_);
 				}
 				_loc7_++;
 			}
 			levelUp(param1, _loc11_);
 		}
-
+		
 		private function createArtifactFunction(param1:int, param2:int, param3:String):Function
 		{
 			var artifactCount:int = param1;
@@ -227,30 +206,25 @@ package core.states.exploreStates
 				_loc2_.update();
 				_loc2_.y = 200;
 				_loc2_.x = 760 / 2 - 3 * (_loc2_.width + 15) / 2 + (_loc2_.width + 15) * i;
-				rewardTweens.push(TweenMax.from(_loc2_, 1 + i, {
-								"alpha": 0,
-								"scaleX": 2,
-								"scaleY": 2,
-								"paused": true
-							}));
+				rewardTweens.push(TweenMax.from(_loc2_, 1 + i, {"alpha": 0, "scaleX": 2, "scaleY": 2, "paused": true}));
 				rewardStepContainer.addChild(_loc2_);
 				g.me.artifacts.push(param1);
 			};
 		}
-
+		
 		private function setNextButtonPosition():void
 		{
 			nextButton.size = 13;
 			nextButton.x = 760 - nextButton.width - 73;
 			nextButton.y = 500;
 		}
-
+		
 		private function initiateCrewStep(param1:TouchEvent):void
 		{
 			firstStepContainer.visible = false;
 			nextCrewStep();
 		}
-
+		
 		private function nextCrewStep(param1:int = 0):void
 		{
 			var tween:TweenMax;
@@ -279,7 +253,7 @@ package core.states.exploreStates
 			crewStepContainers[i].addChild(nextButton);
 			addChild(crewStepContainers[i]);
 		}
-
+		
 		private function initiateRewardStep():void
 		{
 			var tween:TweenMax;
@@ -301,12 +275,12 @@ package core.states.exploreStates
 			}
 			addChild(rewardStepContainer);
 		}
-
+		
 		override public function get type():String
 		{
 			return "ReportState";
 		}
-
+		
 		private function placeCrewSkills(param1:Event):void
 		{
 			var _loc6_:int = 0;
@@ -326,7 +300,7 @@ package core.states.exploreStates
 			_loc3_.y = 80;
 			_loc4_.addChild(_loc3_);
 		}
-
+		
 		private function levelUp(param1:Message, param2:int):void
 		{
 			var _loc9_:Array = null;
@@ -377,29 +351,19 @@ package core.states.exploreStates
 				_loc15_ = new Image(textureManager.getTextureGUIByKey(_loc10_.imageKey));
 				_loc15_.x = 760 / 2 - _loc15_.width / 2;
 				_loc15_.y = 100;
-				_loc3_.push(TweenMax.from(_loc15_, 1, {
-								"alpha": 0,
-								"paused": true
-							}));
+				_loc3_.push(TweenMax.from(_loc15_, 1, {"alpha": 0, "paused": true}));
 				_loc18_.addChild(_loc15_);
 				_loc5_ = new TextBitmap(760 / 2, _loc15_.y + _loc15_.height + 20);
 				_loc5_.size = 18;
 				_loc5_.text = _loc10_.name;
 				_loc5_.center();
-				_loc3_.push(TweenMax.from(_loc5_, 1, {
-								"alpha": 0,
-								"paused": true
-							}));
+				_loc3_.push(TweenMax.from(_loc5_, 1, {"alpha": 0, "paused": true}));
 				_loc18_.addChild(_loc5_);
 				_loc14_ = new Text(100, _loc5_.y + _loc5_.height + 20);
 				_loc14_.size = 20;
 				_loc14_.text = "New skill points: " + _loc6_;
 				_loc14_.color = 16777215;
-				_loc3_.push(TweenMax.from(_loc14_, 0.5, {
-								"scaleX": 1.2,
-								"scaleY": 1.2,
-								"paused": true
-							}));
+				_loc3_.push(TweenMax.from(_loc14_, 0.5, {"scaleX": 1.2, "scaleY": 1.2, "paused": true}));
 				_loc9_.push(_loc14_);
 				_loc12_ = new Button(placeCrewSkills, "Place skill points", "reward");
 				_loc12_.x = 760 / 2 - _loc12_.width / 2;
@@ -412,16 +376,7 @@ package core.states.exploreStates
 					_loc16_.color = Style.COLOR_INJURED;
 					_loc16_.text = "Injured " + Util.formatDecimal(_loc10_.injuryTime / 1000 / 60, 1) + " min ";
 					_loc9_.push(_loc16_);
-					_loc3_.push(TweenMax.fromTo(_loc16_, 1, {
-									"scaleX": 2,
-									"scaleY": 2,
-									"rotation": -2
-								}, {
-									"paused": true,
-									"scaleX": 1,
-									"scaleY": 1,
-									"rotation": 0
-								}));
+					_loc3_.push(TweenMax.fromTo(_loc16_, 1, {"scaleX": 2, "scaleY": 2, "rotation": -2}, {"paused": true, "scaleX": 1, "scaleY": 1, "rotation": 0}));
 				}
 				_loc8_ = 0;
 				while (_loc8_ < _loc9_.length)

@@ -9,31 +9,34 @@ package core.hud.components.shipMenu
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	import textures.TextureManager;
-
+	
 	public class MenuSelectIcon extends Sprite
 	{
 		private static const WIDTH:int = 40;
-
 		private static const HEIGHT:int = 40;
-
 		public static const BITMAP_WEAPON:String = "slot_weapon.png";
-
 		public static const BITMAP_ARTIFACT:String = "slot_artifact.png";
-
 		public static const BITMAP_CREW:String = "slot_crew.png";
-
 		public static const BITMAP_FRIEND:String = "slot_friend.png";
-
 		private var bmp:Image;
+		
 		private var bgrBmp:Image;
+		
 		private var lockBmp:Image;
+		
 		public var number:int = 0;
 		private var _captionText:Text;
+		
 		private var _levelText:Text;
+		
 		private var _numberText:Text;
+		
 		private var textureManager:ITextureManager;
+		
 		private var _locked:Boolean;
+		
 		private var _inUse:Boolean;
+		
 		public function MenuSelectIcon(param1:int, param2:Texture, param3:String, param4:Boolean, param5:Boolean, param6:Boolean, param7:int = 0, param8:String = null)
 		{
 			var that:Sprite;
@@ -68,20 +71,20 @@ package core.hud.components.shipMenu
 				useHandCursor = true;
 				_numberText.color = 16777215;
 				addEventListener("touch", function(param1:TouchEvent):void
+				{
+					var _loc2_:ColorMatrixFilter = null;
+					if (param1.interactsWith(that))
 					{
-						var _loc2_:ColorMatrixFilter = null;
-						if (param1.interactsWith(that))
-						{
-							_loc2_ = new ColorMatrixFilter();
-							_loc2_.adjustBrightness(0.2);
-							filter = _loc2_;
-						}
-						else if (filter)
-						{
-							filter.dispose();
-							filter = null;
-						}
-					});
+						_loc2_ = new ColorMatrixFilter();
+						_loc2_.adjustBrightness(0.2);
+						filter = _loc2_;
+					}
+					else if (filter)
+					{
+						filter.dispose();
+						filter = null;
+					}
+				});
 			}
 			else
 			{
@@ -107,12 +110,12 @@ package core.hud.components.shipMenu
 			addChild(_captionText);
 			addChild(_numberText);
 		}
-
+		
 		public function get locked():Boolean
 		{
 			return _locked;
 		}
-
+		
 		public function set locked(param1:Boolean):void
 		{
 			_locked = param1;
@@ -133,12 +136,12 @@ package core.hud.components.shipMenu
 				_numberText.touchable = true;
 			}
 		}
-
+		
 		public function changeBitmapData(param1:Texture):void
 		{
 			bmp.texture = param1;
 		}
-
+		
 		public function set inUse(param1:Boolean):void
 		{
 			_inUse = param1;
@@ -148,7 +151,7 @@ package core.hud.components.shipMenu
 			_captionText.visible = param1;
 			_levelText.visible = param1;
 		}
-
+		
 		public function set caption(param1:String):void
 		{
 			_captionText.glowIn(0, 1, 2, 8);
@@ -157,7 +160,7 @@ package core.hud.components.shipMenu
 			_captionText.x = 38 - _captionText.width;
 			_captionText.y = 2;
 		}
-
+		
 		public function set level(param1:int):void
 		{
 			if (param1 == 0)

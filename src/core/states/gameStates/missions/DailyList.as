@@ -4,12 +4,15 @@ package core.states.gameStates.missions
 	import feathers.controls.ScrollContainer;
 	import starling.display.Sprite;
 	import starling.events.Event;
-
+	
 	public class DailyList extends Sprite
 	{
 		private var g:Game;
+		
 		private var views:Array;
+		
 		private var container:ScrollContainer;
+		
 		public function DailyList(param1:Game)
 		{
 			var _loc7_:int = 0;
@@ -50,7 +53,7 @@ package core.states.gameStates.missions
 				_loc7_++;
 			}
 		}
-
+		
 		private function updateList(param1:Event):void
 		{
 			var _loc2_:DailyView = null;
@@ -66,7 +69,7 @@ package core.states.gameStates.missions
 				_loc3_++;
 			}
 		}
-
+		
 		override public function dispose():void
 		{
 			super.dispose();

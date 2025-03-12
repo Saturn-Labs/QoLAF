@@ -30,168 +30,157 @@ package core.solarSystem
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	import textures.TextureManager;
-
+	
 	public class Body extends GameObject
 	{
 		public static const TYPE_SUN:String = "sun";
-
 		public static const TYPE_PLANET:String = "planet";
-
 		public static const TYPE_RECYCLE_STATION:String = "junk yard";
-
 		public static const TYPE_WEAPONS_FACTORY:String = "shop";
-
 		public static const TYPE_UPGRADE_STATION:String = "research";
-
 		public static const TYPE_WARP_GATE:String = "warpGate";
-
 		public static const TYPE_COMET:String = "comet";
-
 		public static const TYPE_HIDDEN:String = "hidden";
-
 		public static const TYPE_BOSS:String = "boss";
-
 		public static const TYPE_PIRATE:String = "pirate";
-
 		public static const TYPE_WARNING:String = "warning";
-
 		public static const TYPE_HANGAR:String = "hangar";
-
 		public static const TYPE_CANTINA:String = "cantina";
-
 		public static const TYPE_PAINT_SHOP:String = "paintShop";
-
 		public static const TYPE_LORE:String = "lore";
-
 		public static const INHABITANTS_NONE:String = "none";
-
 		public static const INHABITANTS_FRIENDLY:String = "friendly";
-
 		public static const INHABITANTS_NEUTRAL:String = "neutral";
-
 		public static const INHABITANTS_HOSTILE:String = "hostile";
-
 		public static const DEFENCE_NONE:String = "none";
-
 		public static const DEFENCE_WEAK:String = "weak";
-
 		public static const DEFENCE_AVERAGE:String = "medium";
-
 		public static const DEFENCE_STRONG:String = "strong";
-
 		public static const DEFENCE_VERY_STRONG:String = "very strong";
-
 		public static const SIZE_TINY:String = "tiny";
-
 		public static const SIZE_SMALL:String = "small";
-
 		public static const SIZE_AVERAGE:String = "average";
-
 		public static const SIZE_LARGE:String = "large";
-
 		public static const SIZE_ENORMOUS:String = "enormous";
-
 		public static const COLOR_WARP_GATE:uint = 2271846;
-
 		public static const COLOR_RESEARCH:uint = 6702114;
-
 		public static const COLOR_SHOP:uint = 4474111;
-
 		public static const COLOR_PIRATE:uint = 16729156;
-
 		public static const COLOR_RECYCLE_STATION:uint = 8921702;
-
 		public static const COLOR_PLANET:uint = 16689475;
-
 		public static const COLOR_ORBIT:uint = 49151;
-
 		public static const COLOR_WARNING:uint = 15636992;
-
 		public static const COLOR_CLAN:uint = 16746666;
-
 		public static const COLOR_CANTINA:uint = 14412091;
-
 		public static const COLOR_PAINT_SHOP:uint = 16720639;
-
 		public static const COLOR_LORE:uint = 16720639;
-
 		public static const SELECTED_COLOR_WARP_GATE:uint = 8978346;
-
 		public static const SELECTED_COLOR_RESEARCH:uint = 16746530;
-
 		public static const SELECTED_COLOR_SHOP:uint = 11184895;
-
 		public static const SELECTED_COLOR_JUNK_YARD:uint = 16729258;
-
 		public static const SELECTED_COLOR_PLANET:uint = 16777215;
-
 		public static const SELECTED_COLOR_PIRATE:uint = 16746632;
-
 		public static const SELECTED_COLOR_HANGAR:uint = 16746717;
-
 		public static const SELECTED_COLOR_CANTINA:uint = 7796211;
-
 		public static const SELECTED_COLOR_LORE:uint = 7796211;
-
 		private static const EXPLOSION_EFFECT:String = "A-jBfvjj0EOstT59I4n-3w";
-
 		private static const CREW_SPAWN_CHANCE:int = 20;
-
 		public var key:String;
+		
 		public var explorable:Boolean;
+		
 		public var landable:Boolean;
+		
 		public var level:int;
+		
 		public var spawnersCleared:Boolean = true;
 		public var extraAreas:int;
+		
 		public var energyFieldGoingDownStartTime:Number = 0;
 		private var tween:TweenMax = null;
 		private var tween2:TweenMax = null;
 		public var obj:Object;
+		
 		public var areas:Dictionary;
+		
 		public var warningRadius:int;
+		
 		public var labelOffset:int;
+		
 		public var population:int;
+		
 		public var type:String;
+		
 		public var size:String;
+		
 		public var defence:String;
+		
 		public var inhabitants:String;
+		
 		public var description:String;
+		
 		public var elite:Boolean;
+		
 		public var exploreAreas:Vector.<ExploreArea>;
-
+		
 		public var exploreMap:ExploreMap;
+		
 		public var generatedShells:Vector.<Vector.<Point>>;
-
+		
 		public var generatedAreas:Array;
+		
 		public var boss:String;
+		
 		public var safeZoneRadius:int;
+		
 		private var safeZoneActive:Image;
+		
 		private var safeZoneDisabled:Image;
+		
 		public var hostileZoneRadius:int;
+		
 		private var hostileZone:Image;
+		
 		public var time:Number;
+		
 		public var course:BodyHeading;
+		
 		public var parentBody:Body;
+		
 		public var effectTarget:GameObject;
+		
 		public var emitters:Vector.<Emitter>;
-
+		
 		public var children:Vector.<Body>;
-
+		
 		public var spawners:Vector.<Spawner>;
-
+		
 		public var collisionRadius:Number;
+		
 		private var g:Game;
+		
 		private var soundManager:ISound;
+		
 		private var dataManager:IDataManager;
+		
 		public var seed:Number;
+		
 		public var wpArray:Array;
+		
 		private var rand:Random;
+		
 		private var spawnPeriod:int;
+		
 		private var currentRandom:int;
+		
 		private var currentStep:int;
+		
 		private var step:int;
+		
 		private var bodyFilter:FragmentFilter;
+		
 		private var glowImage:Image;
+		
 		private var glow:Boolean = false;
 		private var glowOffsetX:Number = 0;
 		private var glowOffsetY:Number = 0;
@@ -201,7 +190,9 @@ package core.solarSystem
 		public var canTriggerMission:Boolean = false;
 		public var mission:String = "";
 		public var missionHint:TextField;
+		
 		private var hintTween:TweenMax;
+		
 		public var controlZoneTimeFactor:Number = 0;
 		public var controlZoneCompleteRewardFactor:Number = 0;
 		public var controlZoneGrabRewardFactor:Number = 0;
@@ -220,7 +211,7 @@ package core.solarSystem
 			soundManager = SoundLocator.getService();
 			dataManager = DataLocator.getService();
 		}
-
+		
 		public function updateIsNear():void
 		{
 			if (g.me.ship == null || type == "hidden" || type == "boss")
@@ -252,7 +243,7 @@ package core.solarSystem
 				removeFromCanvas();
 			}
 		}
-
+		
 		public function updateBody(param1:Number):void
 		{
 			var _loc4_:int = 0;
@@ -304,7 +295,7 @@ package core.solarSystem
 				nextDistanceCalculation -= 33;
 			}
 		}
-
+		
 		private function stepRandomTo(param1:int):void
 		{
 			while (param1 > currentRandom)
@@ -313,13 +304,13 @@ package core.solarSystem
 				currentRandom++;
 			}
 		}
-
+		
 		public function addChild(param1:Body):void
 		{
 			this.children.push(param1);
 			param1.parentBody = this;
 		}
-
+		
 		public function setSpawnersCleared(param1:Boolean = true):void
 		{
 			var _loc2_:int = 0;
@@ -341,22 +332,16 @@ package core.solarSystem
 			}
 			if (hostileZone != null)
 			{
-				tween = TweenMax.fromTo(hostileZone, 6, {"alpha": 1}, {
-							"alpha": 0,
-							"repeat": 0
-						});
+				tween = TweenMax.fromTo(hostileZone, 6, {"alpha": 1}, {"alpha": 0, "repeat": 0});
 			}
 			if (safeZoneActive != null)
 			{
 				safeZoneActive.visible = true;
 				safeZoneActive.alpha = 0;
-				tween2 = TweenMax.fromTo(safeZoneActive, 6, {"alpha": 0}, {
-							"alpha": 1,
-							"repeat": 0
-						});
+				tween2 = TweenMax.fromTo(safeZoneActive, 6, {"alpha": 0}, {"alpha": 1, "repeat": 0});
 			}
 		}
-
+		
 		public function getExploreAreaTypes():Array
 		{
 			var _loc3_:Object = null;
@@ -381,7 +366,7 @@ package core.solarSystem
 			}
 			return _loc2_;
 		}
-
+		
 		public function isPlayerOverMe(param1:Player):Boolean
 		{
 			if (!landable || param1.ship == null)
@@ -396,7 +381,7 @@ package core.solarSystem
 			}
 			return false;
 		}
-
+		
 		public function addChildren(param1:Vector.<Body>):void
 		{
 			for each (var _loc2_:* in param1)
@@ -405,7 +390,7 @@ package core.solarSystem
 				_loc2_.parentBody = this;
 			}
 		}
-
+		
 		public function preDraw(param1:Object):void
 		{
 			var _loc3_:Matrix = null;
@@ -496,11 +481,7 @@ package core.solarSystem
 				glowImage.height = 200;
 				glowOffsetX = -60;
 				glowOffsetY = 0;
-				glowTween = TweenMax.fromTo(glowImage, 1, {"alpha": 0.1}, {
-							"alpha": 0.3,
-							"yoyo": true,
-							"repeat": -1
-						});
+				glowTween = TweenMax.fromTo(glowImage, 1, {"alpha": 0.1}, {"alpha": 0.3, "yoyo": true, "repeat": -1});
 			}
 			else if (param1.type == "junk yard")
 			{
@@ -510,11 +491,7 @@ package core.solarSystem
 				glowImage.height = 100;
 				glowOffsetX = 0;
 				glowOffsetY = 0;
-				glowTween = TweenMax.fromTo(glowImage, 0.2, {"alpha": 0.1}, {
-							"alpha": 0.2,
-							"yoyo": true,
-							"repeat": -1
-						});
+				glowTween = TweenMax.fromTo(glowImage, 0.2, {"alpha": 0.1}, {"alpha": 0.2, "yoyo": true, "repeat": -1});
 			}
 			else if (param1.type == "research")
 			{
@@ -524,11 +501,7 @@ package core.solarSystem
 				glowImage.height = 200;
 				glowOffsetX = 0;
 				glowOffsetY = 0;
-				glowTween = TweenMax.fromTo(glowImage, 1, {"alpha": 0.1}, {
-							"alpha": 0.3,
-							"yoyo": true,
-							"repeat": -1
-						});
+				glowTween = TweenMax.fromTo(glowImage, 1, {"alpha": 0.1}, {"alpha": 0.3, "yoyo": true, "repeat": -1});
 			}
 			else if (param1.type == "shop")
 			{
@@ -538,11 +511,7 @@ package core.solarSystem
 				glowImage.height = 200;
 				glowOffsetX = -15;
 				glowOffsetY = -40;
-				glowTween = TweenMax.fromTo(glowImage, 1.5, {"alpha": 0.1}, {
-							"alpha": 0.35,
-							"yoyo": true,
-							"repeat": -1
-						});
+				glowTween = TweenMax.fromTo(glowImage, 1.5, {"alpha": 0.1}, {"alpha": 0.35, "yoyo": true, "repeat": -1});
 			}
 			else if (param1.type == "pirate")
 			{
@@ -552,11 +521,7 @@ package core.solarSystem
 				glowImage.height = 200;
 				glowOffsetX = -5;
 				glowOffsetY = -10;
-				glowTween = TweenMax.fromTo(glowImage, 1.5, {"alpha": 0.1}, {
-							"alpha": 0.35,
-							"yoyo": true,
-							"repeat": -1
-						});
+				glowTween = TweenMax.fromTo(glowImage, 1.5, {"alpha": 0.1}, {"alpha": 0.35, "yoyo": true, "repeat": -1});
 			}
 			else if (param1.type == "hangar")
 			{
@@ -566,11 +531,7 @@ package core.solarSystem
 				glowImage.height = 220;
 				glowOffsetX = 0;
 				glowOffsetY = 0;
-				glowTween = TweenMax.fromTo(glowImage, 1.5, {"alpha": 0.1}, {
-							"alpha": 0.35,
-							"yoyo": true,
-							"repeat": -1
-						});
+				glowTween = TweenMax.fromTo(glowImage, 1.5, {"alpha": 0.1}, {"alpha": 0.35, "yoyo": true, "repeat": -1});
 			}
 			else if (param1.type == "cantina")
 			{
@@ -580,11 +541,7 @@ package core.solarSystem
 				glowImage.height = 220;
 				glowOffsetX = 0;
 				glowOffsetY = 0;
-				glowTween = TweenMax.fromTo(glowImage, 1.5, {"alpha": 0.1}, {
-							"alpha": 0.35,
-							"yoyo": true,
-							"repeat": -1
-						});
+				glowTween = TweenMax.fromTo(glowImage, 1.5, {"alpha": 0.1}, {"alpha": 0.35, "yoyo": true, "repeat": -1});
 			}
 			else if (param1.type == "lore")
 			{
@@ -594,26 +551,14 @@ package core.solarSystem
 				glowImage.height = 220;
 				glowOffsetX = 0;
 				glowOffsetY = 0;
-				glowTween = TweenMax.fromTo(glowImage, 1.5, {"alpha": 0.1}, {
-							"alpha": 0.35,
-							"yoyo": true,
-							"repeat": -1
-						});
+				glowTween = TweenMax.fromTo(glowImage, 1.5, {"alpha": 0.1}, {"alpha": 0.35, "yoyo": true, "repeat": -1});
 			}
 			if (canTriggerMission)
 			{
-				hintTween = TweenMax.fromTo(missionHint, 1.4, {
-							"scaleX": 0.5,
-							"scaleY": 0.5
-						}, {
-							"scaleX": 1.5,
-							"scaleY": 1.5,
-							"yoyo": true,
-							"repeat": -1
-						});
+				hintTween = TweenMax.fromTo(missionHint, 1.4, {"scaleX": 0.5, "scaleY": 0.5}, {"scaleX": 1.5, "scaleY": 1.5, "yoyo": true, "repeat": -1});
 			}
 		}
-
+		
 		override public function draw():void
 		{
 			if (type == "hidden" || type == "boss")
@@ -684,7 +629,7 @@ package core.solarSystem
 			}
 			super.draw();
 		}
-
+		
 		public function get parentPos():Point
 		{
 			if (parentBody == null)
@@ -693,7 +638,7 @@ package core.solarSystem
 			}
 			return parentBody.course.pos;
 		}
-
+		
 		public function set effect(param1:Vector.<Emitter>):void
 		{
 			var _loc2_:int = 0;
@@ -705,7 +650,7 @@ package core.solarSystem
 				_loc2_++;
 			}
 		}
-
+		
 		public function addSpawners(param1:Object, param2:String):void
 		{
 			var _loc7_:Object = null;
@@ -730,7 +675,7 @@ package core.solarSystem
 				createSpawner(_loc7_, _loc8_.toString(), _loc4_, _loc5_);
 			}
 		}
-
+		
 		private function createSpawner(param1:Object, param2:String, param3:Body, param4:int):void
 		{
 			var _loc5_:Spawner = SpawnFactory.createSpawner(param1, param2, g);
@@ -742,7 +687,7 @@ package core.solarSystem
 			}
 			param3.spawners.push(_loc5_);
 		}
-
+		
 		public function setInSafeZone(param1:Player):void
 		{
 			if (safeZoneRadius == 0)
@@ -770,7 +715,7 @@ package core.solarSystem
 				param1.ship.weapon.fire = false;
 			}
 		}
-
+		
 		public function isOnScreen(param1:StarlingCameraFocus):Boolean
 		{
 			if (safeZoneRadius > 0)
@@ -783,84 +728,84 @@ package core.solarSystem
 			}
 			return param1.isCircleOnScreen(pos.x, pos.y, radius);
 		}
-
+		
 		public function get typeColor():uint
 		{
 			var _loc1_:* = 0;
 			switch (type)
 			{
-				case "junk yard":
-					_loc1_ = 8921702;
-					break;
-				case "research":
-					_loc1_ = 6702114;
-					break;
-				case "shop":
-					_loc1_ = 4474111;
-					break;
-				case "pirate":
-					_loc1_ = 16729156;
-					break;
-				case "warpGate":
-					_loc1_ = 2271846;
-					break;
-				case "hangar":
-					_loc1_ = 16746666;
-					break;
-				case "cantina":
-					_loc1_ = 14412091;
-					break;
-				case "paintShop":
-					_loc1_ = 16720639;
-					break;
-				case "lore":
-					_loc1_ = 16720639;
-				default:
-					_loc1_ = 16689475;
+			case "junk yard": 
+				_loc1_ = 8921702;
+				break;
+			case "research": 
+				_loc1_ = 6702114;
+				break;
+			case "shop": 
+				_loc1_ = 4474111;
+				break;
+			case "pirate": 
+				_loc1_ = 16729156;
+				break;
+			case "warpGate": 
+				_loc1_ = 2271846;
+				break;
+			case "hangar": 
+				_loc1_ = 16746666;
+				break;
+			case "cantina": 
+				_loc1_ = 14412091;
+				break;
+			case "paintShop": 
+				_loc1_ = 16720639;
+				break;
+			case "lore": 
+				_loc1_ = 16720639;
+			default: 
+				_loc1_ = 16689475;
 			}
 			return _loc1_;
 		}
-
+		
 		public function get selectedTypeColor():uint
 		{
 			var _loc1_:* = 0;
 			switch (type)
 			{
-				case "junk yard":
-					_loc1_ = 16729258;
-					break;
-				case "pirate":
-					_loc1_ = 16746632;
-					break;
-				case "research":
-					_loc1_ = 16746530;
-					break;
-				case "shop":
-					_loc1_ = 11184895;
-					break;
-				case "warpGate":
-					_loc1_ = 8978346;
-					break;
-				case "hangar":
-					_loc1_ = 16746717;
-					break;
-				case "cantina":
-					_loc1_ = 7796211;
-					break;
-				case "lore":
-					_loc1_ = 7796211;
-					break;
-				default:
-					_loc1_ = 16777215;
+			case "junk yard": 
+				_loc1_ = 16729258;
+				break;
+			case "pirate": 
+				_loc1_ = 16746632;
+				break;
+			case "research": 
+				_loc1_ = 16746530;
+				break;
+			case "shop": 
+				_loc1_ = 11184895;
+				break;
+			case "warpGate": 
+				_loc1_ = 8978346;
+				break;
+			case "hangar": 
+				_loc1_ = 16746717;
+				break;
+			case "cantina": 
+				_loc1_ = 7796211;
+				break;
+			case "lore": 
+				_loc1_ = 7796211;
+				break;
+			default: 
+				_loc1_ = 16777215;
 			}
 			return _loc1_;
 		}
-
+		
 		public function get isStation():Boolean
 		{
 			return type == "warpGate" || type == "junk yard" || type == "research" || type == "shop";
 		}
-
+		
 		public function explode():void
 		{
 			type = "hidden";
@@ -870,7 +815,7 @@ package core.solarSystem
 				soundManager.play("5psyX2Y9e0m39q43L_uEGg");
 			}
 		}
-
+		
 		private function addToCanvasForReal():void
 		{
 			canvas = g.canvasBodies;
@@ -904,7 +849,7 @@ package core.solarSystem
 				}
 			}
 		}
-
+		
 		override public function removeFromCanvas():void
 		{
 			if (!isAddedToCanvas)
@@ -923,7 +868,7 @@ package core.solarSystem
 			}
 			super.removeFromCanvas();
 		}
-
+		
 		public function turnOffEffects():void
 		{
 			if (bodyFilter)
@@ -945,7 +890,7 @@ package core.solarSystem
 				glowTween.kill();
 			}
 		}
-
+		
 		override public function reset():void
 		{
 			if (bodyFilter != null)

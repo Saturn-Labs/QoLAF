@@ -16,14 +16,14 @@ package core.ship
 	import sound.ISound;
 	import sound.SoundLocator;
 	import starling.filters.ColorMatrixFilter;
-
+	
 	public class ShipFactory
 	{
 		public function ShipFactory()
 		{
 			super();
 		}
-
+		
 		public static function createPlayer(param1:Game, param2:Player, param3:PlayerShip, param4:Array):PlayerShip
 		{
 			var _loc5_:ColorMatrixFilter = null;
@@ -69,7 +69,7 @@ package core.ship
 			param3.shieldHp = param3.shieldHpMax;
 			return param3;
 		}
-
+		
 		public static function createPlayerShipColorMatrixFilter(param1:FleetObj):ColorMatrixFilter
 		{
 			if (RymdenRunt.isBuggedFlashVersion)
@@ -88,7 +88,7 @@ package core.ship
 			_loc2_.adjustContrast(_loc3_);
 			return _loc2_;
 		}
-
+		
 		public static function CreatePlayerShipWeapon(param1:Game, param2:Player, param3:int, param4:Array, param5:PlayerShip):void
 		{
 			var _loc8_:int = 0;
@@ -137,7 +137,7 @@ package core.ship
 				CreatePlayerShipWeapon(param1, param2, param3, param4, param5);
 			}
 		}
-
+		
 		private static function addArmorTechToShip(param1:Player, param2:PlayerShip):void
 		{
 			var _loc5_:int = 0;
@@ -183,7 +183,7 @@ package core.ship
 			_loc8_ = _loc7_.activeEliteTech;
 			EliteTechs.addEliteTechs(param2, _loc4_, _loc9_, _loc8_);
 		}
-
+		
 		private static function addShieldTechToShip(param1:Player, param2:PlayerShip):void
 		{
 			var _loc5_:int = 0;
@@ -229,7 +229,7 @@ package core.ship
 			_loc8_ = _loc7_.activeEliteTech;
 			EliteTechs.addEliteTechs(param2, _loc4_, _loc9_, _loc8_);
 		}
-
+		
 		private static function addEngineTechToShip(param1:Player, param2:PlayerShip):void
 		{
 			var _loc6_:int = 0;
@@ -279,7 +279,7 @@ package core.ship
 			_loc13_ = _loc7_.activeEliteTech;
 			EliteTechs.addEliteTechs(param2, _loc9_, _loc12_, _loc13_);
 		}
-
+		
 		private static function addPowerTechToShip(param1:Player, param2:PlayerShip):void
 		{
 			var _loc5_:int = 0;
@@ -329,7 +329,7 @@ package core.ship
 			_loc8_ = _loc7_.activeEliteTech;
 			EliteTechs.addEliteTechs(param2, _loc4_, _loc9_, _loc8_);
 		}
-
+		
 		private static function addLevelBonusToShip(param1:Game, param2:Number, param3:PlayerShip):void
 		{
 			if (param1.solarSystem.isPvpSystemInEditor)
@@ -350,7 +350,7 @@ package core.ship
 			param3.shieldRegenBase = param3.shieldRegenBase * (100 + 1 * (param2 - 1)) / 100;
 			param3.shieldRegen = param3.shieldRegenBase;
 		}
-
+		
 		private static function addLevelBonusToWeapon(param1:Game, param2:Number, param3:Weapon, param4:Player):void
 		{
 			if (param1.solarSystem.isPvpSystemInEditor)
@@ -367,7 +367,7 @@ package core.ship
 				param3.debuffValue2.addLevelBonus(param2, 8);
 			}
 		}
-
+		
 		public static function createEnemy(param1:Game, param2:String, param3:int = 0):EnemyShip
 		{
 			var _loc7_:Number = NaN;
@@ -564,7 +564,7 @@ package core.ship
 			}
 			return _loc4_;
 		}
-
+		
 		private static function CreateEnemyShipWeapon(param1:Game, param2:int, param3:Array, param4:EnemyShip):void
 		{
 			var _loc6_:Weapon = null;
@@ -591,7 +591,7 @@ package core.ship
 				CreateEnemyShipWeapon(param1, param2, param3, param4);
 			}
 		}
-
+		
 		private static function CreateEnemyShipExtraWeapon(param1:Game, param2:int, param3:Object, param4:EnemyShip, param5:int):void
 		{
 			var _loc7_:Weapon = null;
@@ -620,7 +620,7 @@ package core.ship
 				param4.weapons.push(_loc6_);
 			}
 		}
-
+		
 		public static function createBody(param1:String, param2:Game, param3:Unit):void
 		{
 			var _loc6_:IDataManager = DataLocator.getService();

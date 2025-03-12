@@ -5,14 +5,14 @@ package core.states.gameStates
 	import core.scene.Game;
 	import core.solarSystem.Body;
 	import starling.events.Event;
-
+	
 	public class LandedLore extends LandedState
 	{
 		public function LandedLore(param1:Game, param2:Body)
 		{
 			super(param1, param2, param2.name);
 		}
-
+		
 		override public function enter():void
 		{
 			var _loc3_:int = 0;
@@ -30,7 +30,7 @@ package core.states.gameStates
 			RymdenRunt.s.nativeStage.frameRate = 60;
 			loadCompleted();
 		}
-
+		
 		private function runLore(param1:int, param2:Array):void
 		{
 			var i:int = param1;
@@ -43,39 +43,39 @@ package core.states.gameStates
 			stf.pageReadTime = 180000;
 			addChild(stf);
 			i++;
-			stf.addEventListener("beforeFadeOut", (function():Function
+			stf.addEventListener("beforeFadeOut", (function():*
+			{
+				var r:Function;
+				return r = function(param1:Event):void
+				{
+					var nextButton:Button;
+					var e:Event = param1;
+					stf.removeEventListener("beforeFadeOut", r);
+					if (i > s.length - 1)
 					{
-						var r:Function;
-						return r = function(param1:Event):void
+						return;
+					}
+					nextButton = new Button(function():void
+					{
+						stf.stop();
+						stf.doFadeOut();
+						stf.addEventListener("pageFinished", (function():*
 						{
-							var nextButton:Button;
-							var e:Event = param1;
-							stf.removeEventListener("beforeFadeOut", r);
-							if (i > s.length - 1)
+							var r:Function;
+							return r = function(param1:Event):void
 							{
-								return;
-							}
-							nextButton = new Button(function():void
-								{
-									stf.stop();
-									stf.doFadeOut();
-									stf.addEventListener("pageFinished", (function():Function
-											{
-												var r:Function;
-												return r = function(param1:Event):void
-												{
-													stf.removeEventListener("pageFinished", r);
-													runLore(i, s);
-													removeChild(stf);
-													removeChild(nextButton);
-												};
-											})());
-								}, "Continue");
-							nextButton.x = 340;
-							nextButton.y = 500;
-							addChild(nextButton);
-						};
-					})());
+								stf.removeEventListener("pageFinished", r);
+								runLore(i, s);
+								removeChild(stf);
+								removeChild(nextButton);
+							};
+						})());
+					}, "Continue");
+					nextButton.x = 340;
+					nextButton.y = 500;
+					addChild(nextButton);
+				};
+			})());
 		}
 	}
 }

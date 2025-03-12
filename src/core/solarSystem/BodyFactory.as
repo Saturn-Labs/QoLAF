@@ -8,14 +8,14 @@ package core.solarSystem
 	import data.DataLocator;
 	import data.IDataManager;
 	import debug.Console;
-
+	
 	public class BodyFactory
 	{
 		public function BodyFactory()
 		{
 			super();
 		}
-
+		
 		public static function createSolarSystem(param1:Game, param2:String):void
 		{
 			var _loc5_:IDataManager = DataLocator.getService();
@@ -42,7 +42,7 @@ package core.solarSystem
 				}
 			}
 		}
-
+		
 		private static function addUpgradeStation(param1:Game):void
 		{
 			var _loc3_:Body = param1.bodyManager.getRoot();
@@ -77,7 +77,7 @@ package core.solarSystem
 			_loc3_.hostileZoneRadius = 0;
 			_loc3_.preDraw(_loc2_);
 		}
-
+		
 		private static function createBodies(param1:Game, param2:Object):void
 		{
 			var _loc8_:int = 0;

@@ -13,24 +13,26 @@ package core.hud.components.radar
 	import starling.display.Sprite;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
-
+	
 	public class Radar extends Sprite
 	{
 		public static const outerDetectionRadius:Number = 5000;
-
 		public static const innerDetectionRadius:Number = 2500;
-
 		private var unitsDetected:Number = 0;
 		private var _scale:Number = 10;
 		public var radius:Number = 60;
 		private var textureManager:ITextureManager;
+		
 		private var g:Game;
+		
 		private var blips:Vector.<Blip>;
-
+		
 		private var loaded:Boolean = false;
 		private var blipBatch:MeshBatch;
+		
 		private var firstHalf:Boolean = true;
 		private var quadBatch:MeshBatch;
+		
 		private var updateCount:int = 0;
 		public function Radar(param1:Game)
 		{
@@ -42,7 +44,7 @@ package core.hud.components.radar
 			textureManager = TextureLocator.getService();
 			touchable = false;
 		}
-
+		
 		public function load():void
 		{
 			var _loc6_:* = null;
@@ -87,13 +89,13 @@ package core.hud.components.radar
 			addChild(quadBatch);
 			loaded = true;
 		}
-
+		
 		private function drawBackground():void
 		{
 			var _loc1_:Image = new Image(textureManager.getTextureGUIByTextureName("radar_bg"));
 			addChild(_loc1_);
 		}
-
+		
 		private function drawCenter():void
 		{
 			var _loc1_:Image = new Image(textureManager.getTextureGUIByTextureName("radar_player"));
@@ -102,14 +104,14 @@ package core.hud.components.radar
 			_loc1_.y = 60;
 			addChild(_loc1_);
 		}
-
+		
 		private function createBlip(param1:GameObject, param2:PlayerShip = null):void
 		{
 			var _loc3_:Blip = null;
 			_loc3_ = new Blip(param1, param2, g);
 			blips.push(_loc3_);
 		}
-
+		
 		public function add(param1:GameObject):void
 		{
 			var _loc2_:PlayerShip = null;
@@ -127,7 +129,7 @@ package core.hud.components.radar
 			}
 			createBlip(param1);
 		}
-
+		
 		public function remove(param1:GameObject):void
 		{
 			var _loc2_:Blip = null;
@@ -149,7 +151,7 @@ package core.hud.components.radar
 				_loc3_++;
 			}
 		}
-
+		
 		public function update():void
 		{
 			var _loc2_:Blip = null;
@@ -180,7 +182,7 @@ package core.hud.components.radar
 				_loc3_++;
 			}
 		}
-
+		
 		public function inHostileZone():Boolean
 		{
 			if (unitsDetected > 0)
@@ -189,7 +191,7 @@ package core.hud.components.radar
 			}
 			return false;
 		}
-
+		
 		override public function dispose():void
 		{
 			for each (var _loc1_:* in blips)
@@ -219,13 +221,17 @@ import textures.TextureLocator;
 class Blip extends Image
 {
 	private static const scale:Number = 10;
-
 	public static var radarRadius:Number = 60;
 	public var go:GameObject;
+	
 	private var blipWidth:Number;
+	
 	private var blipHeight:Number;
+	
 	private var radius:Number;
+	
 	private var g:Game;
+	
 	public function Blip(param1:GameObject, param2:PlayerShip, param3:Game)
 	{
 		var _loc9_:Texture = null;
@@ -310,7 +316,7 @@ class Blip extends Image
 		blipHeight = height;
 		radius = Math.sqrt(0.25 * blipWidth * blipWidth + 0.25 * blipHeight * blipHeight) - 1;
 	}
-
+	
 	public function isGameObject(param1:GameObject):Boolean
 	{
 		if (this.go == param1)
@@ -319,12 +325,12 @@ class Blip extends Image
 		}
 		return false;
 	}
-
+	
 	public function getGameObject():GameObject
 	{
 		return go;
 	}
-
+	
 	public function updateVisibility():Boolean
 	{
 		var _loc3_:Spawner = null;
@@ -413,7 +419,7 @@ class Blip extends Image
 		}
 		return visible;
 	}
-
+	
 	private function setRadarPos(param1:Boolean = true):Boolean
 	{
 		var _loc4_:Number = Number(go.distanceToCamera);
@@ -443,7 +449,7 @@ class Blip extends Image
 		}
 		return false;
 	}
-
+	
 	private function getRadarAlphaIndex():Number
 	{
 		var _loc3_:Number = 5000;
@@ -455,7 +461,7 @@ class Blip extends Image
 		}
 		return 1;
 	}
-
+	
 	override public function dispose():void
 	{
 		go = null;

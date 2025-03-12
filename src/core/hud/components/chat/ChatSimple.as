@@ -4,11 +4,13 @@ package core.hud.components.chat
 	import feathers.controls.Label;
 	import starling.display.Sprite;
 	import starling.events.Event;
-
+	
 	public class ChatSimple extends Sprite
 	{
 		private var g:Game;
+		
 		private var tf:Label;
+		
 		private var maxLines:int = 10;
 		private var nextTimeout:Number = 0;
 		public function ChatSimple(param1:Game)
@@ -22,7 +24,7 @@ package core.hud.components.chat
 			addChild(tf);
 			addEventListener("addedToStage", updateTexts);
 		}
-
+		
 		public function update(param1:Event = null):void
 		{
 			if (nextTimeout != 0 && nextTimeout < g.time)
@@ -30,7 +32,7 @@ package core.hud.components.chat
 				updateTexts();
 			}
 		}
-
+		
 		public function updateTexts(param1:Event = null):void
 		{
 			var _loc4_:Object = null;

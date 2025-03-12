@@ -12,16 +12,23 @@ package core.states.AIStates
 	import generics.Random;
 	import generics.Util;
 	import movement.Heading;
-
+	
 	public class AIChase implements IState
 	{
 		private var g:Game;
+		
 		private var s:EnemyShip;
+		
 		private var sm:StateMachine;
+		
 		private var closeRangeSQ:Number;
+		
 		private var speedRotFactor:Number;
+		
 		private var rollPeriod:Number;
+		
 		private var rollPeriodFactor:Number;
+		
 		public function AIChase(param1:Game, param2:EnemyShip, param3:Unit, param4:Heading, param5:int)
 		{
 			super();
@@ -38,7 +45,7 @@ package core.states.AIStates
 				param2.factions.push("tempFaction");
 			}
 		}
-
+		
 		public function enter():void
 		{
 			var _loc1_:Random = new Random(1 / s.id);
@@ -63,7 +70,7 @@ package core.states.AIStates
 			s.roll = false;
 			s.engine.accelerate();
 		}
-
+		
 		public function execute():void
 		{
 			var _loc6_:Point = null;
@@ -113,7 +120,7 @@ package core.states.AIStates
 				s.rotation = _loc4_;
 			}
 		}
-
+		
 		public function aim():Number
 		{
 			var _loc7_:int = 0;
@@ -155,7 +162,7 @@ package core.states.AIStates
 			}
 			return s.course.rotation;
 		}
-
+		
 		public function exit():void
 		{
 			s.rollPassive = 0;
@@ -163,12 +170,12 @@ package core.states.AIStates
 			s.rollMod = 0;
 			s.rollDir = 0;
 		}
-
+		
 		public function set stateMachine(param1:StateMachine):void
 		{
 			this.sm = param1;
 		}
-
+		
 		public function get type():String
 		{
 			return "AIChase";

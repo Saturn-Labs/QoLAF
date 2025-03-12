@@ -9,13 +9,17 @@ package core.hud.components.chat
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.TouchEvent;
-
+	
 	public class ChatAdvanced extends Sprite
 	{
 		private var g:Game;
+		
 		private var scrollView:Sprite;
+		
 		private var scroll:ScrollContainer;
+		
 		private var playerChatOptions:PlayerChatOptions;
+		
 		public function ChatAdvanced(param1:Game)
 		{
 			super();
@@ -39,7 +43,7 @@ package core.hud.components.chat
 			addEventListener("addedToStage", load);
 			addEventListener("removedFromStage", unload);
 		}
-
+		
 		private function load(param1:Event):void
 		{
 			var obj:Object;
@@ -49,17 +53,21 @@ package core.hud.components.chat
 			{
 				addText(obj);
 			}
-			Starling.juggler.delayCall(function():void
+			Starling.juggler.delayCall((function():*
+			{
+				var later:Function;
+				return later = function():void
 				{
 					scroll.scrollToPosition(0, scroll.maxVerticalScrollPosition, 0);
-				}, 0.2);
+				};
+			})(), 0.2);
 		}
-
+		
 		private function unload(param1:Event):void
 		{
 			scroll.removeChildren(0, -1, true);
 		}
-
+		
 		public function updateText(param1:Object):void
 		{
 			var obj:Object = param1;
@@ -75,13 +83,17 @@ package core.hud.components.chat
 			addText(obj);
 			if (scroll.verticalScrollPosition == scroll.maxVerticalScrollPosition)
 			{
-				Starling.juggler.delayCall(function():void
+				Starling.juggler.delayCall((function():*
+				{
+					var later:Function;
+					return later = function():void
 					{
 						scroll.scrollToPosition(0, scroll.maxVerticalScrollPosition, 0);
-					}, 0.2);
+					};
+				})(), 0.2);
 			}
 		}
-
+		
 		private function addText(param1:Object):void
 		{
 			var tf:Label;
@@ -105,22 +117,22 @@ package core.hud.components.chat
 				tf.useHandCursor = true;
 				tf.touchable = true;
 				tf.addEventListener("touch", function(param1:TouchEvent):void
+				{
+					var _loc2_:int = 0;
+					if (param1.getTouch(tf, "ended"))
 					{
-						var _loc2_:int = 0;
-						if (param1.getTouch(tf, "ended"))
+						if (playerChatOptions)
 						{
-							if (playerChatOptions)
-							{
-								scroll.removeChild(playerChatOptions, true);
-							}
-							_loc2_ = scroll.getChildIndex(tf);
-							playerChatOptions = new PlayerChatOptions(g, obj);
-							scroll.addChildAt(playerChatOptions, _loc2_ + 1);
+							scroll.removeChild(playerChatOptions, true);
 						}
-					});
+						_loc2_ = scroll.getChildIndex(tf);
+						playerChatOptions = new PlayerChatOptions(g, obj);
+						scroll.addChildAt(playerChatOptions, _loc2_ + 1);
+					}
+				});
 			}
 		}
-
+		
 		override public function dispose():void
 		{
 			removeEventListeners();

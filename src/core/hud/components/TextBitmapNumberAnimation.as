@@ -1,22 +1,29 @@
 package core.hud.components
 {
 	import com.greensock.TweenMax;
-
+	
 	public class TextBitmapNumberAnimation extends TextBitmap
 	{
 		private var current:int;
+		
 		private var from:int;
+		
 		private var to:int;
+		
 		private var increase:int;
+		
 		private var delay:Number;
+		
 		private var id:int;
+		
 		private var callback:Function;
+		
 		public function TextBitmapNumberAnimation(param1:int = 0, param2:int = 0, param3:String = "", param4:int = 13)
 		{
 			id = Math.random() * 100;
 			super(param1, param2, param3, param4);
 		}
-
+		
 		public function animate(param1:int, param2:int, param3:int, param4:Function = null):void
 		{
 			this.callback = param4;
@@ -33,7 +40,7 @@ package core.hud.components
 			current = param1;
 			next();
 		}
-
+		
 		private function next():void
 		{
 			var _loc1_:Boolean = false;

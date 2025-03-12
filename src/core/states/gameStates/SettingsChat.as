@@ -9,14 +9,16 @@ package core.states.gameStates
 	import starling.events.Event;
 	import starling.text.TextField;
 	import starling.text.TextFormat;
-
+	
 	public class SettingsChat extends Sprite
 	{
 		private static var labelFormat:TextFormat = new TextFormat("DAIDRR", 13, 16777215, "left");
 		private var g:Game;
+		
 		private var xpos:int = 50;
 		private var ypos:int = 0;
 		private var scrollArea:ScrollContainer;
+		
 		public function SettingsChat(param1:Game)
 		{
 			super();
@@ -45,7 +47,7 @@ package core.states.gameStates
 			addChannel("death", "Player death");
 			addChannel("loot", "Loot found");
 		}
-
+		
 		private function addChannel(param1:String, param2:String):void
 		{
 			var label:TextField;
@@ -56,9 +58,9 @@ package core.states.gameStates
 			check.y = ypos;
 			check.isSelected = !g.messageLog.isMuted(msgType);
 			check.addEventListener("change", function(param1:Event):void
-				{
-					g.messageLog.toggleMuted(msgType, !check.isSelected);
-				});
+			{
+				g.messageLog.toggleMuted(msgType, !check.isSelected);
+			});
 			scrollArea.addChild(check);
 			label = new TextField(200, 13, text, labelFormat);
 			label.x = xpos + 30;

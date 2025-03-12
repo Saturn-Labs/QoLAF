@@ -10,7 +10,7 @@ package core.hud.components
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
-
+	
 	public class Text extends DisplayObjectContainer
 	{
 		public static var H_ALIGN_LEFT:int = 0;
@@ -23,12 +23,19 @@ package core.hud.components
 		private static var GLOW_COLOR:uint = 16777215;
 		private static var LEADING:int = 8;
 		private var texture:Texture;
+		
 		protected var finalLayer:Image;
+		
 		private var layer:Bitmap;
+		
 		protected var tf:TextField;
+		
 		private var format:TextFormat;
+		
 		protected var _hAlign:int;
+		
 		private var _vAlign:int;
+		
 		private var _centerVertical:Boolean = false;
 		private var oldText:String = "";
 		public function Text(param1:int = 0, param2:int = 0, param3:Boolean = false, param4:String = "DAIDRR")
@@ -54,7 +61,7 @@ package core.hud.components
 			this.y = param2;
 			addEventListener("removedFromStage", clean);
 		}
-
+		
 		public function set glow(param1:Boolean):void
 		{
 			var _loc2_:GlowFilter = null;
@@ -68,19 +75,19 @@ package core.hud.components
 				layer.filters = [];
 			}
 		}
-
+		
 		public function glowIn(param1:uint, param2:Number = 1, param3:int = 6, param4:int = 2):void
 		{
 			var _loc5_:GlowFilter = new GlowFilter(param1, param2, param3, param3, param4, 4);
 			layer.filters = [_loc5_];
 		}
-
+		
 		public function centerPivot():void
 		{
 			pivotX = width / 2;
 			pivotY = height / 2;
 		}
-
+		
 		public function center():void
 		{
 			if (_hAlign == H_ALIGN_CENTER && _vAlign == V_ALIGN_MIDDLE)
@@ -91,7 +98,7 @@ package core.hud.components
 			_vAlign = V_ALIGN_MIDDLE;
 			draw();
 		}
-
+		
 		public function alignRight():void
 		{
 			if (_hAlign == H_ALIGN_RIGHT)
@@ -101,7 +108,7 @@ package core.hud.components
 			_hAlign = H_ALIGN_RIGHT;
 			draw();
 		}
-
+		
 		public function alignLeft():void
 		{
 			if (_hAlign == H_ALIGN_LEFT)
@@ -111,7 +118,7 @@ package core.hud.components
 			_hAlign = H_ALIGN_LEFT;
 			draw();
 		}
-
+		
 		public function alignCenter():void
 		{
 			if (_hAlign == H_ALIGN_CENTER)
@@ -121,7 +128,7 @@ package core.hud.components
 			_hAlign = H_ALIGN_CENTER;
 			draw();
 		}
-
+		
 		public function alignTop():void
 		{
 			if (_vAlign == V_ALIGN_TOP)
@@ -131,7 +138,7 @@ package core.hud.components
 			_vAlign = V_ALIGN_TOP;
 			draw();
 		}
-
+		
 		public function alignMiddle():void
 		{
 			if (_vAlign == V_ALIGN_MIDDLE)
@@ -141,7 +148,7 @@ package core.hud.components
 			_vAlign = V_ALIGN_MIDDLE;
 			draw();
 		}
-
+		
 		public function alignBottom():void
 		{
 			if (_vAlign == V_ALIGN_BOTTOM)
@@ -151,7 +158,7 @@ package core.hud.components
 			_vAlign = V_ALIGN_BOTTOM;
 			draw();
 		}
-
+		
 		public function set sharpness(param1:int):void
 		{
 			if (tf.sharpness == param1)
@@ -161,7 +168,7 @@ package core.hud.components
 			tf.sharpness = param1;
 			draw();
 		}
-
+		
 		public function set size(param1:Number):void
 		{
 			if (format.size == param1)
@@ -171,12 +178,12 @@ package core.hud.components
 			format.size = param1;
 			defaultTextFormat = format;
 		}
-
+		
 		public function get size():Number
 		{
 			return format.size as Number;
 		}
-
+		
 		public function set color(param1:uint):void
 		{
 			if (param1 == format.color)
@@ -186,12 +193,12 @@ package core.hud.components
 			format.color = param1;
 			defaultTextFormat = format;
 		}
-
+		
 		public function get color():uint
 		{
 			return format.color as uint;
 		}
-
+		
 		override public function set width(param1:Number):void
 		{
 			if (tf.width == param1)
@@ -201,12 +208,12 @@ package core.hud.components
 			tf.width = param1;
 			draw();
 		}
-
+		
 		override public function get width():Number
 		{
 			return tf.width;
 		}
-
+		
 		public function set font(param1:String):void
 		{
 			if (format.font == param1)
@@ -216,7 +223,7 @@ package core.hud.components
 			format.font = param1;
 			defaultTextFormat = format;
 		}
-
+		
 		public function set bold(param1:Boolean):void
 		{
 			if (format.bold == param1)
@@ -226,7 +233,7 @@ package core.hud.components
 			format.bold = param1;
 			defaultTextFormat = format;
 		}
-
+		
 		public function set wordWrap(param1:Boolean):void
 		{
 			if (tf.wordWrap == param1)
@@ -244,7 +251,7 @@ package core.hud.components
 			}
 			draw();
 		}
-
+		
 		override public function set height(param1:Number):void
 		{
 			if (param1 == tf.height)
@@ -254,12 +261,12 @@ package core.hud.components
 			tf.height = param1;
 			draw();
 		}
-
+		
 		override public function get height():Number
 		{
 			return tf.textHeight;
 		}
-
+		
 		public function set htmlText(param1:String):void
 		{
 			if (oldText == param1)
@@ -280,12 +287,12 @@ package core.hud.components
 			tf.height = _loc2_;
 			draw();
 		}
-
+		
 		public function get htmlText():String
 		{
 			return tf.htmlText;
 		}
-
+		
 		public function set text(param1:String):void
 		{
 			if (oldText == param1)
@@ -306,22 +313,22 @@ package core.hud.components
 			tf.height = _loc2_;
 			draw();
 		}
-
+		
 		override public function set x(param1:Number):void
 		{
 			super.x = Math.floor(param1);
 		}
-
+		
 		override public function set y(param1:Number):void
 		{
 			super.y = Math.floor(param1);
 		}
-
+		
 		public function get text():String
 		{
 			return tf.text;
 		}
-
+		
 		public function set defaultTextFormat(param1:TextFormat):void
 		{
 			tf.defaultTextFormat = param1;
@@ -329,7 +336,7 @@ package core.hud.components
 			oldText = "";
 			text = _loc2_;
 		}
-
+		
 		protected function draw():void
 		{
 			var bd:BitmapData;
@@ -410,7 +417,7 @@ package core.hud.components
 				addChild(finalLayer);
 			}
 		}
-
+		
 		public function clean(param1:Event = null):void
 		{
 			removeEventListeners();

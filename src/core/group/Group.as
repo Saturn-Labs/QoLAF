@@ -3,13 +3,15 @@ package core.group
 	import core.hud.components.chat.MessageLog;
 	import core.player.Player;
 	import core.scene.Game;
-
+	
 	public class Group
 	{
 		private var _players:Vector.<Player>;
-
+		
 		private var _id:String;
+		
 		private var g:Game;
+		
 		public function Group(param1:Game, param2:String)
 		{
 			_players = new Vector.<Player>();
@@ -17,12 +19,12 @@ package core.group
 			this._id = param2;
 			this.g = param1;
 		}
-
+		
 		public function get id():String
 		{
 			return _id;
 		}
-
+		
 		public function addPlayer(param1:Player):void
 		{
 			if (_players.indexOf(param1) != -1)
@@ -54,7 +56,7 @@ package core.group
 				}
 			}
 		}
-
+		
 		public function removePlayer(param1:Player):void
 		{
 			if (_players.indexOf(param1) == -1)
@@ -85,12 +87,12 @@ package core.group
 				}
 			}
 		}
-
+		
 		public function get length():int
 		{
 			return _players.length;
 		}
-
+		
 		public function get players():Vector.<Player>
 		{
 			return _players;

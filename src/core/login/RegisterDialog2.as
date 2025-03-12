@@ -9,18 +9,27 @@ package core.login
 	import playerio.PlayerIORegistrationError;
 	import starling.core.Starling;
 	import starling.display.Sprite;
-
+	
 	public class RegisterDialog2 extends Sprite
 	{
 		private var registerBox:Sprite;
+		
 		private var mySharedObject:SharedObject;
+		
 		private var username:String;
+		
 		private var client:Client;
+		
 		private var registerButton:LoginButton;
+		
 		private var emailInput:LoginInput;
+		
 		private var nameInput:LoginInput;
+		
 		private var passwordInput:LoginInput;
+		
 		private var passwordConfirmInput:LoginInput;
+		
 		public function RegisterDialog2(param1:Login)
 		{
 			var cancelButton:LoginButton;
@@ -44,16 +53,16 @@ package core.login
 			registerButton.y = passwordConfirmInput.y + 70;
 			registerBox.addChild(registerButton);
 			cancelButton = new LoginButton(Localize.t("Cancel"), function():void
-				{
-					Starling.current.nativeStage.focus = null;
-					login.setState("site");
-				});
+			{
+				Starling.current.nativeStage.focus = null;
+				login.setState("site");
+			});
 			cancelButton.x = registerBox.width - cancelButton.width;
 			cancelButton.y = registerButton.y;
 			registerBox.addChild(cancelButton);
 			addChild(registerBox);
 		}
-
+		
 		public function onRegisterSimple():void
 		{
 			var _loc2_:String = trim(emailInput.text);
@@ -110,7 +119,7 @@ package core.login
 				register(_loc2_, _loc5_);
 			}
 		}
-
+		
 		private function register(param1:String, param2:String):void
 		{
 			mySharedObject = SharedObject.getLocal("AstrofluxLogin");
@@ -119,14 +128,14 @@ package core.login
 			var _loc3_:Date = new Date();
 			PlayerIO.quickConnect.simpleRegister(Starling.current.nativeStage, Login.gameId, _loc3_.getTime().toString(), param2, param1, null, null, null, Login.partnerId, RymdenRunt.partnerSegmentArray, handleConnect, handleRegError);
 		}
-
+		
 		private function updateStatus(param1:String = ""):void
 		{
 			var _loc2_:ConnectEvent = new ConnectEvent("connectStatus", true);
 			_loc2_.message = param1;
 			dispatchEvent(_loc2_);
 		}
-
+		
 		private function handleConnect(param1:Client):void
 		{
 			this.client = param1;
@@ -144,7 +153,7 @@ package core.login
 			_loc2_.joinData["name"] = username;
 			dispatchEvent(_loc2_);
 		}
-
+		
 		private function handleRegError(param1:PlayerIORegistrationError):void
 		{
 			updateStatus();
@@ -152,13 +161,13 @@ package core.login
 			passwordInput.error = param1.passwordError;
 			registerButton.enabled = true;
 		}
-
+		
 		private function isValidEmail(param1:String):Boolean
 		{
 			var _loc2_:RegExp = /^[0-9a-zA-Z][-._a-zA-Z0-9]*@([0-9a-zA-Z][-._0-9a-zA-Z]*\.)+[a-zA-Z]/;
 			return _loc2_.test(param1);
 		}
-
+		
 		private function trim(param1:String):String
 		{
 			return param1.replace(/^([\s|\t|\n]+)?(.*)([\s|\t|\n]+)?$/gm, "$2");

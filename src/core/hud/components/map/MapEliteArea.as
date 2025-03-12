@@ -8,7 +8,7 @@ package core.hud.components.map
 	import starling.display.Sprite;
 	import starling.textures.Texture;
 	import textures.TextureManager;
-
+	
 	public class MapEliteArea extends MapBodyBase
 	{
 		public function MapEliteArea(param1:Game, param2:starling.display.Sprite, param3:Body)
@@ -20,7 +20,7 @@ package core.hud.components.map
 			layer.touchable = false;
 			init();
 		}
-
+		
 		private function addImage():void
 		{
 			var _loc1_:Texture = textureManager.getTextureGUIByTextureName("warning.png");
@@ -29,7 +29,7 @@ package core.hud.components.map
 			_loc2_.y = 15 + body.labelOffset;
 			layer.addChild(_loc2_);
 		}
-
+		
 		override protected function addOrbits():void
 		{
 			var _loc2_:flash.display.Sprite = new flash.display.Sprite();
@@ -40,7 +40,7 @@ package core.hud.components.map
 			var _loc1_:Image = TextureManager.imageFromSprite(_loc2_, body.key);
 			layer.addChild(_loc1_);
 		}
-
+		
 		private function addText():void
 		{
 			var _loc1_:TextBitmap = new TextBitmap();
